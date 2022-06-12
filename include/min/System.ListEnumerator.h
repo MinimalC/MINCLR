@@ -1,0 +1,67 @@
+/* Gemeinfrei. Public Domain. */
+
+#if !defined(have_System_Type)
+#warning "System.Type.h not included"
+#include "System.Type.h"
+#endif
+/* #if !defined(have_System_List)
+#warning "System.List.h not included"
+#include "System.List.h"
+#endif */
+#if !defined(have_System_ListEnumerator)
+#define have_System_ListEnumerator
+
+#define struct_System_ListEnumerator  struct class_System_ListEnumerator
+typedef __fixed struct_System_ListEnumerator {
+    struct_System_Object base;
+
+    System_List array;
+
+    System_size index;
+
+}  * System_ListEnumerator;
+
+#define stack_System_ListEnumerator()  (struct_System_ListEnumerator){ .base = stack_System_Object(System_ListEnumerator), .array = __null, }
+
+__export struct_System_Type  System_ListEnumeratorType;
+
+typedef System_void __delegate(System_ListEnumerator_free)(System_ListEnumerator that);
+typedef System_ListEnumerator __delegate(System_ListEnumerator_init)(System_ListEnumerator that, System_List array);
+typedef System_Object __delegate(System_ListEnumerator_get_current)(System_ListEnumerator that);
+typedef System_boolean __delegate(System_ListEnumerator_moveNext)(System_ListEnumerator that);
+
+#define System_ListEnumerator_new  System_ListEnumerator_new__00
+
+__export System_ListEnumerator  System_ListEnumerator_new(System_List array);
+__export System_ListEnumerator  base_System_ListEnumerator_init(System_ListEnumerator that, System_List array);
+__export System_void  base_System_ListEnumerator_free(System_ListEnumerator that);
+__export System_Object  base_System_ListEnumerator_get_current(System_ListEnumerator that);
+__export System_boolean  base_System_ListEnumerator_moveNext(System_ListEnumerator that);
+
+#define System_ListEnumerator_init(o,...)  ((function_System_ListEnumerator_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ListEnumerator_init))(o,__VA_ARGS__)
+#define System_ListEnumerator_free(o)  ((function_System_ListEnumerator_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
+#define System_ListEnumerator_get_current(o)  ((function_System_ListEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
+#define System_ListEnumerator_moveNext(o)  ((function_System_ListEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
+
+#define inline_System_ListEnumerator_new(a)  (base_System_ListEnumerator_init(inline_System_Object_allocClass(System_ListEnumerator), a))
+
+#if !defined(have_System_internal)
+#undef  System_ListEnumerator_new
+#define System_ListEnumerator_new  inline_System_ListEnumerator_new
+#endif
+
+#if defined(using_System)
+#define struct_ListArrayEnumerator  struct_System_ListEnumerator
+#define __ListArrayEnumerator  System_ListEnumerator
+#define __ListArrayEnumeratorType  System_ListEnumeratorType
+#define function_ListArrayEnumerator_init  function_System_ListEnumerator_init
+#define function_ListArrayEnumerator_free  function_System_ListEnumerator_free
+#define base_ListArrayEnumerator_init  base_System_ListEnumerator_init
+#define base_ListArrayEnumerator_free  base_System_ListEnumerator_free
+#define __ListArrayEnumerator_new  System_ListEnumerator_new
+#define __ListArrayEnumerator_init  System_ListEnumerator_init
+#define __ListArrayEnumerator_free  System_ListEnumerator_free
+#endif
+
+
+#endif

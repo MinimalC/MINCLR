@@ -1,0 +1,158 @@
+/* Gemeinfrei. Public Domain. */
+#if !defined(have_System_Type)
+#warning "System.Type.h not included"
+#include "System.Type.h"
+#endif
+#if !defined(have_System_File)
+#define have_System_File
+
+
+typedef System_intptr  enum_System_File_mode;
+
+#define System_File_mode_readOnly                 00
+#define System_File_mode_writeOnly                01
+#define System_File_mode_readWrite                02
+#define System_File_mode_create                 0100
+#define System_File_mode_exclusive              0200
+#define System_File_mode_noControllingTerminal  0400
+#define System_File_mode_truncate              01000
+#define System_File_mode_append                02000
+#define System_File_mode_nonBlock              04000
+#define System_File_mode_dsync                010000
+#define System_File_mode_async                020000
+#define System_File_mode_direct               040000
+#define System_File_mode_LargeFile           0100000
+#define System_File_mode_Directory           0200000
+#define System_File_mode_nonFollow           0400000
+#define System_File_mode_noAccessTime       01000000
+#define System_File_mode_closeOnExecute     02000000
+#define System_File_mode_sync              (04000000 | System_File_mode_dsync)
+#define System_File_mode_Path              010000000
+#define System_File_mode_temporary        (020000000 | System_File_mode_Directory)
+
+
+typedef System_intptr  enum_System_File_permission;
+
+#define System_File_permission_UserRead             0400
+#define System_File_permission_UserWrite            0200
+#define System_File_permission_UserReadWrite        (System_File_permission_UserRead | System_File_permission_UserWrite)
+#define System_File_permission_UserExecute          0100
+#define System_File_permission_UserEverything       (System_File_permission_UserRead | System_File_permission_UserWrite | System_File_permission_UserExecute)
+#define System_File_permission_GroupRead            (System_File_permission_UserRead >> 3)
+#define System_File_permission_GroupWrite           (System_File_permission_UserWrite >> 3)
+#define System_File_permission_GroupReadWrite       (System_File_permission_GroupRead | System_File_permission_GroupWrite)
+#define System_File_permission_GroupExecute         (System_File_permission_UserExecute >> 3)
+#define System_File_permission_GroupEverything      (System_File_permission_GroupRead | System_File_permission_GroupWrite | System_File_permission_GroupExecute)
+#define System_File_permission_EverybodyRead        (System_File_permission_GroupRead >> 3)
+#define System_File_permission_EverybodyWrite       (System_File_permission_GroupWrite >> 3)
+#define System_File_permission_EverybodyReadWrite   (System_File_permission_EverybodyRead | System_File_permission_EverybodyWrite)
+#define System_File_permission_EverybodyExecute     (System_File_permission_GroupExecute >> 3)
+#define System_File_permission_EverybodyEverything  (System_File_permission_EverybodyRead | System_File_permission_EverybodyWrite | System_File_permission_EverybodyExecute)
+
+
+typedef System_intptr  enum_System_File_special;
+
+#define System_File_special_STDIN   0
+#define System_File_special_STDOUT  1
+#define System_File_special_STDERR  2
+#define System_File_special_CurrentWorkingDirectory  -100
+
+
+/* class System_File */
+
+#define struct_System_File  struct class_System_File
+
+typedef __fixed struct_System_File {
+	struct_System_Object  base;
+
+    System_intptr filePtr;
+
+    System_size position;
+
+}  * System_File;
+
+__export struct_System_Type  System_FileType;
+
+typedef System_File  __delegate(System_File_init)(System_File that);
+typedef System_void  __delegate(System_File_free)(System_File that);
+typedef System_void  __delegate(System_File_write)(System_File that, System_size count, System_string8 value);
+typedef System_void  __delegate(System_File_sync)(System_File that);
+typedef System_size  __delegate(System_File_read)(System_File that, System_size count, System_string8 value);
+typedef System_void  __delegate(System_File_seek)(System_File that, System_ssize offset, enum_System_origin origin);
+typedef System_intptr  __delegate(System_File_get_Position)(System_File that);
+typedef System_void  __delegate(System_File_set_Position)(System_File that, System_size value);
+
+#define System_File_new  System_File_new__00
+
+__export System_File  System_File_new();
+__export System_File  System_File_open(System_string8 filename, enum_System_File_mode flags);
+__export System_File  base_System_File_init(System_File that);
+__export System_void  base_System_File_free(System_File that);
+__export System_void  base_System_File_write(System_File that, System_size count, System_string8 value);
+__export System_void  base_System_File_sync(System_File that);
+__export System_void  base_System_File_seek(System_File that, System_ssize offset, enum_System_origin origin);
+__export System_size  base_System_File_read(System_File that, System_size count, System_string8 value);
+__export System_intptr  base_System_File_get_Position(System_File that);
+__export System_void  base_System_File_set_Position(System_File that, System_size value);
+
+#define System_File_free(o)  ((function_System_File_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
+#define System_File_init(o)  ((function_System_File_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
+#define System_File_write(o,...)  ((function_System_File_write)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write))(o, __VA_ARGS__)
+#define System_File_sync(o)  ((function_System_File_sync)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_sync))(o)
+#define System_File_read(o,...)  ((function_System_File_read)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_read))(o, __VA_ARGS__)
+#define System_File_seek(o,...)  ((function_System_File_seek)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_seek))(o, __VA_ARGS__)
+#define System_File_get_Position(o)  ((function_System_File_get_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_get_Position))(o)
+#define System_File_set_Position(o,...)  ((function_System_File_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
+
+#define inline_System_File_new()  (base_System_File_init(inline_System_Object_allocClass(System_File)))
+
+#if !defined(have_System_internal)
+#undef  System_File_new
+#define System_File_new  inline_System_File_new
+#endif
+
+#if defined(using_System)
+#define enum_File_mode  enum_System_File_mode
+#define __File_mode_readOnly  System_File_mode_readOnly
+#define __File_mode_writeOnly  System_File_mode_writeOnly
+#define __File_mode_readWrite  System_File_mode_readWrite
+#define __File_mode_create  System_File_mode_create
+#define __File_mode_append  System_File_mode_append
+#define __File_mode_exclusive  System_File_mode_exclusive
+#define __File_mode_direct  System_File_mode_direct
+#define __File_mode_Directory  System_File_mode_Directory
+#define __File_mode_closeOnExecute  System_File_mode_closeOnExecute
+#define __File_mode_syncd  System_File_mode_syncd
+
+#define enum_File_special  enum_System_File_special
+#define __File_special_STDIN  System_File_special_STDIN
+#define __File_special_STDOUT  System_File_special_STDOUT
+#define __File_special_STDERR  System_File_special_STDERR
+
+#define struct_File  struct_System_File
+#define __File  System_File
+#define __FileType  System_FileType
+
+#define __File_free  System_File_free
+#define __File_init  System_File_init
+#define __File_new  System_File_new
+#define __File_open  System_File_open
+#define __File_read  System_File_read
+#define __File_write  System_File_write
+#define __File_seek  System_File_seek
+#define __File_get_Position  System_File_get_Position
+#define __File_set_Position  System_File_set_Position
+#define __File_sync  System_File_sync
+
+#define base_File_free  base_System_File_free
+#define base_File_init  base_System_File_init
+#define base_File_read  base_System_File_read
+#define base_File_write  base_System_File_write
+#define base_File_seek  base_System_File_seek
+#define base_File_get_Position  base_System_File_get_Position
+#define base_File_set_Position  base_System_File_set_Position
+#define base_File_sync  base_System_File_sync
+#endif
+
+
+#endif
