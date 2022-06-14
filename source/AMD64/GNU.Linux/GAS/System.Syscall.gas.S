@@ -1,10 +1,10 @@
-/* Gemeinfrei. Public Domain. */
+# Gemeinfrei. Public Domain.
 
-#include <min/linux/x86_64/System.gas.h>
+.include "GAS.H"
 
 .text
 
-__function(System_Syscall_call00)
+function System_Syscall_call00
     movq  %rdi, %rax    /* enum_System_Syscall_command */
     syscall
     sub   $8, %rsp      /* push */
@@ -12,9 +12,9 @@ __function(System_Syscall_call00)
     cmpq  $-4095, %rax
     jae   System_Syscall_failed
     jmp   System_Syscall_good
-__end_function(System_Syscall_call00)
+end_function System_Syscall_call00
 
-__function(System_Syscall_call01)
+function System_Syscall_call01
     movq  %rdi, %rax    /* enum_System_Syscall_command */
     movq  %rsi, %rdi    /* arg1 */
     syscall
@@ -23,9 +23,9 @@ __function(System_Syscall_call01)
     cmpq  $-4095, %rax
     jae   System_Syscall_failed
     jmp   System_Syscall_good
-__end_function(System_Syscall_call01)
+end_function System_Syscall_call01
 
-__function(System_Syscall_call02)
+function System_Syscall_call02
     movq  %rdi, %rax    /* enum_System_Syscall_command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
@@ -35,9 +35,9 @@ __function(System_Syscall_call02)
     cmpq  $-4095, %rax
     jae   System_Syscall_failed
     jmp   System_Syscall_good
-__end_function(System_Syscall_call02)
+end_function System_Syscall_call02
 
-__function(System_Syscall_call03)
+function System_Syscall_call03
     movq  %rdi, %rax    /* enum_System_Syscall_command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
@@ -48,9 +48,9 @@ __function(System_Syscall_call03)
     cmpq  $-4095, %rax
     jae   System_Syscall_failed
     jmp   System_Syscall_good
-__end_function(System_Syscall_call03)
+end_function System_Syscall_call03
 
-__function(System_Syscall_call04)
+function System_Syscall_call04
     movq  %rdi, %rax    /* enum_System_Syscall_command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
@@ -62,9 +62,9 @@ __function(System_Syscall_call04)
     cmpq  $-4095, %rax
     jae   System_Syscall_failed
     jmp   System_Syscall_good
-__end_function(System_Syscall_call04)
+end_function System_Syscall_call04
 
-__function(System_Syscall_call05)
+function System_Syscall_call05
     movq  %rdi, %rax    /* enum_System_Syscall_command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
@@ -77,9 +77,9 @@ __function(System_Syscall_call05)
     cmpq  $-4095, %rax
     jae   System_Syscall_failed
     jmp   System_Syscall_good
-__end_function(System_Syscall_call05)
+end_function System_Syscall_call05
 
-__function(System_Syscall_call06)
+function System_Syscall_call06
     movq  %rdi, %rax    /* enum_System_Syscall_command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
@@ -93,21 +93,21 @@ __function(System_Syscall_call06)
     cmpq  $-4095, %rax
     jae   System_Syscall_failed
     jmp   System_Syscall_good
-__end_function(System_Syscall_call06)
+end_function System_Syscall_call06
 
-__hidden_function(System_Syscall_good)
+hidden_function System_Syscall_good
     movq  $0, %rdi
-    __call(System_Syscall_error)
+    call_function System_Syscall_error
     movq  (%rsp), %rax  /* pop */
     add   $8, %rsp
     ret
-__end_function(System_Syscall_good)
+end_function System_Syscall_good
 
-__hidden_function(System_Syscall_failed)
+hidden_function System_Syscall_failed
     negq  %rax
     movq  %rax, %rdi
-    __call(System_Syscall_error)
+    call_function System_Syscall_error
     movq  $0, %rax      /* return 0 */
     add   $8, %rsp
     ret
-__end_function(System_Syscall_failed)
+end_function System_Syscall_failed

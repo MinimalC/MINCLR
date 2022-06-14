@@ -2,12 +2,12 @@
 #include <min/System.h>
 
 #if defined(have_AMD64)
-literal_string8  sharedObjectName = "/lib/x86_64-linux-gnu/libc.so.6";
+struct_string8  sharedObjectName = "/lib/x86_64-linux-gnu/libc.so.6";
 #elif defined(have_ARM)
-literal_string8  sharedObjectName = "/lib/arm-linux-gnueabihf/libc.so.6";
+struct_string8  sharedObjectName = "/lib/arm-linux-gnueabihf/libc.so.6";
 #endif
 
-literal_string8  symbolName = "malloc";
+struct_string8  symbolName = "malloc";
 
 __main(test47_System_Assembly, args) {
 

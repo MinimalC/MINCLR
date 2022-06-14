@@ -109,10 +109,11 @@ struct_System_Type  System_SyscallType = { .base = { .Type = __typeof(System_Typ
 
 void System_Syscall_error(const System_error erreur) {
 
-    // if (!erreur) return;
+    if (!erreur) return;
 
-    struct_System_SystemException exception = stack_System_SystemException(erreur);
-    System_Exception_throw((System_Exception)&exception);
+    System_SystemException exception = inline_System_SystemException_new();
+    exception->error = erreur;
+    System_Exception_throw((System_Exception)exception);
 }
 
 void  System_Syscall_terminate(System_size code)  {

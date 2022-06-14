@@ -4,6 +4,16 @@
 #if !defined(code_System_Console)
 #define code_System_Console
 
+/* OLD: */
+void System_assert4(const __string8 assertion, const __string8 fileName, const __uint32 line, const __string8 functionName) {
+    __Console_printLine("Assert: File %s:%i  function %s: %s", fileName, line, functionName, assertion);
+    System_Console_terminate(0);
+}
+void System_debug5(const __string8 assertion, const __string8 fileName, const __uint32 line, const __string8 functionName, const __string8 message) {
+    __Console_printLine("Debug: File %s:%i  function %s: %s: %s", fileName, line, functionName, assertion, message);
+}
+/* NEW: */
+
 struct_System_String  STRING_System_Console = const_System_String("System.Console");
 
 struct_System_Type  System_ConsoleType = { .base = stack_System_Object(System_Type),
@@ -44,6 +54,21 @@ void System_Console_terminate(const __size code)  {
 
     System_Syscall_terminate(code);
 }
+
+
+void  System_Console_write(__string8 format) {
+// You have Console_write("This is a typical {0:str}, there are {1:dec} and {2:int}.", "\n", "printf", 1, 2)
+
+    __size i = 0, length = __string8_get_Length(format);
+
+    __char8  scratch[513] = { };
+    for (i = 0; i < sizeof(scratch); ++i) *(scratch + i) = 0;
+
+    __string8_copyTo(format, scratch);
+
+    __Syscall_write(__File_special_STDOUT, scratch, sizeof(scratch) - 1);
+}
+
 
 void System_Console_print(__string8 format, ...) {
     __assert(format)

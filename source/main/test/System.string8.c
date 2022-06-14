@@ -1,10 +1,10 @@
 #define using_System
 #include <min/System.h>
 
-literal_string8  prefix  = "main_";
-literal_string8  command  = "./home/test01_System_string8";
-literal_string8  final_name  = "main_test01_System_string8";
-literal_string8  empty  = "";
+struct_string8  prefix  = "main_";
+struct_string8  command  = "./home/test01_System_string8";
+struct_string8  final_name  = "main_test01_System_string8";
+struct_string8  empty  = "";
 
 __main(test01_System_string8, args){
 

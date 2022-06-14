@@ -1,7 +1,7 @@
 #define using_System
 #include <min/System.h>
 
-literal_string8  STRING8_Hallo = "Hallo";
+struct_string8  STRING8_Hallo = "Hallo";
 
 __main(test05_System_ListT, args) {
     __size i = 0, length = 128, good = 0, good1 = 0, good2 = 0;

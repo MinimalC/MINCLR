@@ -27,7 +27,7 @@ __string8 System_enum_getName(__Type type, __intptr value) {
 
 /*# System_Type #*/
 
-literal_System_string8 STRING8_System_Type = "System.Type";
+struct_System_string8 STRING8_System_Type = "System.Type";
 
 struct_System_String STRING_System_Type = const_System_String(STRING8_System_Type);
 

@@ -14,7 +14,7 @@ struct_System_Type  System_string8Type = { .base = stack_System_Object(System_Ty
     .name = &STRING_System_string8
 };
 
-literal_System_string8  System_string8_Empty = "";
+struct_System_string8  System_string8_Empty = "";
 
 __size  System_string8_indexOf(__string8 that, __uint8 character){
     __size i = 0, len = __string8_get_Length(that);

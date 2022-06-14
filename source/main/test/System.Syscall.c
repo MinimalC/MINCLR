@@ -1,8 +1,8 @@
 #define using_System
 #include <min/System.h>
 
-literal_string8 isRight = " is right\n";
-literal_string8 isWrong = " is wrong\n";
+struct_string8 isRight = " is right\n";
+struct_string8 isWrong = " is wrong\n";
 
 __intptr Beispiel(__intptr a, __intptr b, __intptr c, __intptr d, __intptr e, __intptr f, __intptr g) {
 

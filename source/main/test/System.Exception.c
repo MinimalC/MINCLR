@@ -1,8 +1,8 @@
 #define using_System
 #include <min/System.h>
 
-literal_string8  HALLOtxt = "./.FileNotFound";
-/* literal_string8  HALLOtxt = "./.test.txt"; */
+struct_string8  HALLOtxt = "./.FileNotFound";
+/* struct_string8  HALLOtxt = "./.test.txt"; */
 
 __main(test41_System_Exception, args) {
 

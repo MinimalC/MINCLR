@@ -2,7 +2,7 @@
 #define using_Crypto
 #include <min/System.h>
 
-literal_string8  HalloWelt = "HelloWorld";
+struct_string8  HalloWelt = "HelloWorld";
 __uint64 SipHash48_HalloWelt = 0x1648223A11BB3707;
 
 __main(test21_Crypto_SipHash, args) {

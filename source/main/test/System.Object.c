@@ -2,7 +2,7 @@
 #include <min/System.h>
 /* #include "../../crypto_blake2b.h" */
 
-literal_string8  string8_System_Object = "System.Object";
+struct_string8  string8_System_Object = "System.Object";
 
 __main(test02_System_Object, args) {
 

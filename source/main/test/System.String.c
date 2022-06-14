@@ -1,7 +1,7 @@
 #define using_System
 #include <min/System.h>
 
-literal_System_string8  string8_welt = "World";
+struct_System_string8  string8_welt = "World";
 
 struct_System_String welt = const_System_String__UTF8(string8_welt);
 
