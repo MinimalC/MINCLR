@@ -56,17 +56,47 @@ void System_Console_terminate(const __size code)  {
 }
 
 
-void  System_Console_write(__string8 format) {
+void  System_Console_write0(__string8 string) {
+    __Syscall_write(__File_special_STDOUT, string, __string8_get_Length(string));
+}
+
+void  System_Console_writeEnd__arguments(__string8 format, __char8 end, __arguments args) {
+
 // You have Console_write("This is a typical {0:str}, there are {1:dec} and {2:int}.", "\n", "printf", 1, 2)
 
-    __size i = 0, length = __string8_get_Length(format);
+    __char8  scratch[519] = { };
+    for (__size i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
 
-    __char8  scratch[513] = { };
-    for (i = 0; i < sizeof(scratch); ++i) *(scratch + i) = 0;
+    // just don't write everything else
 
-    __string8_copyTo(format, scratch);
+    __size format_length = __string8_get_Length(format);
+    if (format_length > 512) {
+        // Console_warning
+        format_length = 512;
+        scratch[512] = '.';
+        scratch[513] = '.';
+        scratch[514] = '.';
+    }
 
-    __Syscall_write(__File_special_STDOUT, scratch, sizeof(scratch) - 1);
+    __string8_copySubstringTo(format, format_length, scratch);
+
+    if (end) scratch[format_length++] = end;
+
+    __Syscall_write(__File_special_STDOUT, scratch, format_length);
+}
+
+void  System_Console_write(__string8 format, ...) {
+    __arguments args;
+    __arguments_start(args, format);
+    System_Console_writeEnd__arguments(format, 0x00, args);
+    __arguments_end(args);
+}
+
+void  System_Console_writeLine(__string8 format, ...) {
+    __arguments args;
+    __arguments_start(args, format);
+    System_Console_writeEnd__arguments(format, '\n', args);
+    __arguments_end(args);
 }
 
 

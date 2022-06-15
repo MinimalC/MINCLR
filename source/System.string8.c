@@ -41,11 +41,12 @@ __size  System_string8_get_Length(__string8 that) {
 }
 
 void  System_string8_copyTo(__string8 src, __string8 dest) {
-    while ( ( *dest++ = *src++ ) ) ;
+    __size count = __string8_get_Length(src);
+    while ( count && ( *dest++ = *src++ ) ) --count;
 }
 
 void  System_string8_copySubstringTo(__string8 src, __size count, __string8 dest) {
-    while ( (count > 0) && ( *dest++ = *src++ ) ) --count;
+    while ( count && ( *dest++ = *src++ ) ) --count;
 }
 
 __string8  System_string8_clone(__string8 that) {

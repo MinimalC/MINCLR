@@ -35,8 +35,6 @@ typedef System_void  __delegate(System_Array_copyTo)(System_Array that, System_A
 typedef System_void  __delegate(System_Array_resize)(System_Array that, System_size length);
 typedef System_IEnumerator  __delegate(System_Array_getEnumerator)(System_Array that);
 
-#define System_Array_new  System_Array_new__00
-
 __export System_Array  System_Array_new(System_size length);
 __export System_Array  base_System_Array_init(System_Array that, System_size length);
 __export System_void  base_System_Array_free(System_Array that);
@@ -57,11 +55,6 @@ __export System_IEnumerator  base_System_Array_getEnumerator(System_Array that);
 #define System_Array_getEnumerator(o)  ((function_System_Array_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
 
 #define inline_System_Array_new(__length)  (base_System_Array_init(inline_System_Object_allocClass(System_Array), __length))
-
-#if !defined(have_System_internal)
-#undef  System_Array_new
-#define System_Array_new  inline_System_Array_new
-#endif
 
 #if defined(using_System)
 #define struct_Array  struct class_System_Array

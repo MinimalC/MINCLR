@@ -2,6 +2,9 @@
 #warning "System.stddef.h not included"
 #include "System.stddef.h"
 #endif
+#if !defined(have_System_char8)
+#include "System.char8.h"
+#endif
 #if !defined(have_System_string8)
 #define have_System_string8
 

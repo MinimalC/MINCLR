@@ -11,12 +11,12 @@ __export System_void  System_Console_sync();
 __export System_void  System_Console_exit(const System_size code) __noreturn;
 __export System_void  System_Console_terminate(const System_size code) __noreturn;
 
-__export System_void  System_Console_write(System_string8 format);
-__export System_void  System_Console_write1(System_string8 format, System_var arg0);
-__export System_void  System_Console_write2(System_string8 format, System_var arg0, System_var arg1);
-__export System_void  System_Console_write3(System_string8 format, System_var arg0, System_var arg1, System_var arg2);
-__export System_void  System_Console_writeEnd3(System_string8 format, String_string8 end, System_var arg0, System_var arg1, System_var arg2);
-__export System_void  System_Console_writeLine(System_string8 format);
+__export System_void  System_Console_write0(System_string8 string);
+__export System_void  System_Console_write(System_string8 format, ...);
+__export System_void  System_Console_writeLineEmpty();
+__export System_void  System_Console_writeLine0(System_string8 string);
+__export System_void  System_Console_writeLine(System_string8 format, ...);
+__export System_void  System_Console_writeEnd__arguments(System_string8 format, System_char8 end, System_arguments args);
 
 __export System_void  System_Console_print(System_string8 format, ...);
 __export System_void  System_Console_printByte(System_uint8 byte);
