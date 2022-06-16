@@ -57,11 +57,11 @@ System_void  System_uint8_tostring8base10__stack(System_uint8 that, System_char8
     for (System_size i = 0; i < System_uint8_string8base10Length_DEFAULT - 1; ++i) {
         *(string - i) = '0' + *(decimal_string - i);
     }
-    string = array;
+    /*string = array;
     for (System_size l = 0; l < System_uint8_string8base10Length_DEFAULT - 2; ++l) {
         if (*(string + l) != '0') break;
         *(string + l) = ' ';
-    }
+    }*/
 }
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -123,11 +123,11 @@ System_void  System_uint16_tostring8base10__stack(System_uint16 that, System_cha
     for (System_size i = 0; i < System_uint16_string8base10Length_DEFAULT - 1; ++i) {
         *(string - i) = '0' + *(decimal_string - i);
     }
-    string = array;
+    /*string = array;
     for (System_size l = 0; l < System_uint16_string8base10Length_DEFAULT - 2; ++l) {
         if (*(string + l) != '0') break;
         *(string + l) = ' ';
-    }
+    }*/
 }
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -189,11 +189,11 @@ System_void  System_uint32_tostring8base10__stack(System_uint32 that, System_cha
     for (System_size i = 0; i < System_uint32_string8base10Length_DEFAULT - 1; ++i) {
         *(string - i) = '0' + *(decimal_string - i);
     }
-    string = array;
+    /*string = array;
     for (System_size l = 0; l < System_uint32_string8base10Length_DEFAULT - 2; ++l) {
         if (*(string + l) != '0') break;
         *(string + l) = ' ';
-    }
+    }*/
 }
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -255,11 +255,11 @@ System_void  System_uint64_tostring8base10__stack(System_uint64 that, System_cha
     for (System_size i = 0; i < System_uint64_string8base10Length_DEFAULT - 1; ++i) {
         *(string - i) = '0' + *(decimal_string - i);
     }
-    string = array;
+    /*string = array;
     for (System_size l = 0; l < System_uint64_string8base10Length_DEFAULT - 2; ++l) {
         if (*(string + l) != '0') break;
         *(string + l) = ' ';
-    }
+    }*/
 }
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -337,14 +337,14 @@ System_void  System_int8_tostring8base10__stack(System_int8 that, System_char8 a
     for (System_size i = 0; i < System_int8_string8base10Length_DEFAULT - 2; ++i) {
         *(string - i) = '0' + *(decimal_string - i);
     }
-    string = array;
-    System_boolean isNegative = that < 0;
-    if (isNegative) *(string) = '-';
-    else *(string) = ' ';
+    //System_boolean isNegative = that < 0;
+    if (that < 0) *(array) = '-';
+    //else *(array) = ' ';
+    /*string = array;
     for (System_size l = 0; l < System_int8_string8base10Length_DEFAULT - 3; ++l) {
         if (*(string + l) != '0') break;
         *(string + l) = ' ';
-    }
+    }*/
 }
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -422,14 +422,14 @@ System_void  System_int16_tostring8base10__stack(System_int16 that, System_char8
     for (System_size i = 0; i < System_int16_string8base10Length_DEFAULT - 2; ++i) {
         *(string - i) = '0' + *(decimal_string - i);
     }
-    string = array;
-    System_boolean isNegative = that < 0;
-    if (isNegative) *(string) = '-';
-    else *(string) = ' ';
+    //System_boolean isNegative = that < 0;
+    if (that < 0) *(array) = '-';
+    //else *(array) = ' ';
+    /*string = array;
     for (System_size l = 0; l < System_int16_string8base10Length_DEFAULT - 3; ++l) {
         if (*(string + l) != '0') break;
         *(string + l) = ' ';
-    }
+    }*/
 }
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -507,14 +507,14 @@ System_void  System_int32_tostring8base10__stack(System_int32 that, System_char8
     for (System_size i = 0; i < System_int32_string8base10Length_DEFAULT - 2; ++i) {
         *(string - i) = '0' + *(decimal_string - i);
     }
-    string = array;
-    System_boolean isNegative = that < 0;
-    if (isNegative) *(string) = '-';
-    else *(string) = ' ';
+    //System_boolean isNegative = that < 0;
+    if (that < 0) *(array) = '-';
+    //else *(array) = ' ';
+    /*string = array;
     for (System_size l = 0; l < System_int32_string8base10Length_DEFAULT - 3; ++l) {
         if (*(string + l) != '0') break;
         *(string + l) = ' ';
-    }
+    }*/
 }
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -592,13 +592,13 @@ System_void  System_int64_tostring8base10__stack(System_int64 that, System_char8
     for (System_size i = 0; i < System_int64_string8base10Length_DEFAULT - 2; ++i) {
         *(string - i) = '0' + *(decimal_string - i);
     }
-    string = array;
-    System_boolean isNegative = that < 0;
-    if (isNegative) *(string) = '-';
-    else *(string) = ' ';
+    //System_boolean isNegative = that < 0;
+    if (that < 0) *(array) = '-';
+    //else *(array) = ' ';
+    /*string = array;
     for (System_size l = 0; l < System_int64_string8base10Length_DEFAULT - 3; ++l) {
         if (*(string + l) != '0') break;
         *(string + l) = ' ';
-    }
+    }*/
 }
 #endif

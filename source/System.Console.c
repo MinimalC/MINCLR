@@ -60,42 +60,44 @@ void  System_Console_write0(__string8 string) {
     __Syscall_write(__File_special_STDOUT, string, __string8_get_Length(string));
 }
 
-void  System_Console_writeEnd__arguments(__string8 format, __char8 end, __arguments args) {
+void  System_Console_writeSuffix__arguments(__string8 format, __char8 suffix, __arguments args) {
+    __size argc = __argument(args, __size);
+    if (argc > 16) { argc = 0; /* TODO: Console_warning */ }
 
 // You have Console_write("This is a typical {0:str}, there are {1:dec} and {2:int}.", "\n", "printf", 1, 2)
 
-    __char8  scratch[519] = { };
-    for (__size i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
+    __size i;
+    __char8  message[519] = { }; // __string8 m = message;
+    __char8  scratch[100] = { };
+    for (i = 0; i < sizeof(message); ++i) message[i] = 0;
+    for (i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
 
     // just don't write everything else
 
     __size format_length = __string8_get_Length(format);
-    if (format_length > 512) {
-        // Console_warning
-        format_length = 512;
-        scratch[512] = '.';
-        scratch[513] = '.';
-        scratch[514] = '.';
-    }
+    if (format_length > 512) { format_length = 512; /* TODO: Console_warning */ }
+    __string8_copySubstringTo(format, format_length++, message);
 
-    __string8_copySubstringTo(format, format_length, scratch);
+    System_uint64_tostring8base10__stack(argc, scratch);
+    __string8_copyToAt(scratch, message, format_length);
+    format_length += System_uint64_string8base10Length_DEFAULT;
 
-    if (end) scratch[format_length++] = end;
+    if (suffix) message[format_length++] = suffix;
 
-    __Syscall_write(__File_special_STDOUT, scratch, format_length);
+    __Syscall_write(__File_special_STDOUT, message, format_length);
 }
 
 void  System_Console_write(__string8 format, ...) {
     __arguments args;
     __arguments_start(args, format);
-    System_Console_writeEnd__arguments(format, 0x00, args);
+    System_Console_writeSuffix__arguments(format, 0x00, args);
     __arguments_end(args);
 }
 
 void  System_Console_writeLine(__string8 format, ...) {
     __arguments args;
     __arguments_start(args, format);
-    System_Console_writeEnd__arguments(format, '\n', args);
+    System_Console_writeSuffix__arguments(format, '\n', args);
     __arguments_end(args);
 }
 

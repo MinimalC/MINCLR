@@ -40,12 +40,30 @@ __size  System_string8_get_Length(__string8 that) {
     return i;
 }
 
+/* __size  System_string8_get_Length__max(__string8 that, __size count) {
+    __size i = 0;
+    while (count && that[i]) { ++i; --count; }
+    return i;
+} */
+
+
 void  System_string8_copyTo(__string8 src, __string8 dest) {
     __size count = __string8_get_Length(src);
     while ( count && ( *dest++ = *src++ ) ) --count;
 }
 
+void  System_string8_copyToAt(__string8 src, __string8 dest, __size at) {
+    __size count = __string8_get_Length(src);
+    if (at) dest += at;
+    while ( count && ( *dest++ = *src++ ) ) --count;
+}
+
 void  System_string8_copySubstringTo(__string8 src, __size count, __string8 dest) {
+    while ( count && ( *dest++ = *src++ ) ) --count;
+}
+
+void  System_string8_copySubstringToAt(__string8 src, __size count, __string8 dest, __size at) {
+    if (at) dest += at;
     while ( count && ( *dest++ = *src++ ) ) --count;
 }
 
