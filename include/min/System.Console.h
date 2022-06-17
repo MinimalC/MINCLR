@@ -16,7 +16,7 @@ __export System_void  System_Console_write(System_string8 format, ...);
 __export System_void  System_Console_writeLineEmpty();
 __export System_void  System_Console_writeLine0(System_string8 string);
 __export System_void  System_Console_writeLine(System_string8 format, ...);
-__export System_void  System_Console_writeSuffix__arguments(__string8 format, __char8 suffix, __arguments args);
+__export System_void  System_Console_writeSuffix__arguments(System_string8 format, System_char8 suffix, System_arguments args);
 
 __export System_void  System_Console_print(System_string8 format, ...);
 __export System_void  System_Console_printByte(System_uint8 byte);

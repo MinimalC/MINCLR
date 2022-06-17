@@ -21,6 +21,9 @@ __export System_boolean  System_string8_equals(System_string8 that, System_strin
 __export System_size  System_string8_compareSubstring(System_string8 that, System_string8 other, System_size count);
 __export System_boolean  System_string8_equalsSubstring(System_string8 that, System_string8 other, System_size count);
 __export System_boolean  System_string8_isNullOrEmpty(System_string8 that);
+//__export System_boolean  System_string8_startsWith(System_string8 that, String_string8 other);
+
+__export System_uint16  System_string8_touint16base10(System_string8 that);
 
 #define inline_System_string8_equals(chars0, chars1)  (0 == System_string8_compare(chars0, chars1))
 #define inline_System_string8_equalsSubstring(chars0, chars1, n)  (0 == System_string8_compareSubstring(chars0, chars1, n))

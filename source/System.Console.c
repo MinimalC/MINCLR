@@ -60,14 +60,16 @@ void  System_Console_write0(__string8 string) {
     __Syscall_write(__File_special_STDOUT, string, __string8_get_Length(string));
 }
 
-void  System_Console_writeSuffix__arguments(__string8 format, __char8 suffix, __arguments args) {
-    __size argc = __argument(args, __size);
-    if (argc > 16) { argc = 0; /* TODO: Console_warning */ }
+struct_string8 WARNING = "WARNING! ";
 
-// You have Console_write("This is a typical {0:str}, there are {1:dec} and {2:int}.", "\n", "printf", 1, 2)
+void  System_Console_writeSuffix__arguments(__string8 format, __char8 suffix, __arguments args) {
+    __size argc = __argument(args, __size); /* this is expecting a size as first argument or null */
+    if (argc > 16) { argc = 0;
+        __Syscall_write(__File_special_STDOUT, WARNING, sizeof(WARNING)); /* TODO: Console_warning */
+    }
 
     __size i;
-    __char8  message[519] = { }; // __string8 m = message;
+    __char8  message[519] = { }; __string8 m = message;
     __char8  scratch[100] = { };
     for (i = 0; i < sizeof(message); ++i) message[i] = 0;
     for (i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
@@ -75,11 +77,110 @@ void  System_Console_writeSuffix__arguments(__string8 format, __char8 suffix, __
     // just don't write everything else
 
     __size format_length = __string8_get_Length(format);
-    if (format_length > 512) { format_length = 512; /* TODO: Console_warning */ }
-    __string8_copySubstringTo(format, format_length++, message);
+    if (format_length > 512) { format_length = 512;
+        __Syscall_write(__File_special_STDOUT, WARNING, sizeof(WARNING)); /* TODO: Console_warning */
+    }
 
+    __size message_position = 0, n = 0, begin, end, argi, speci;
+    do {
+        __string8_copySubstringToAt(format, format_length, message, message_position);
+
+        /* Reading up to the begin'ning { and the end'ing } */
+        begin = 0; end = 0; argi = 0;
+        for (n = 0; n < format_length; ++n) {
+            if (message[n] != '{') continue;
+            if (n > 0 && message[n - 1] == '\\') continue;
+            begin = n;
+            for (++n; n < format_length; ++n) {
+                if (message[n] != '}') continue;
+                end = n;
+                break;
+            }
+            break;
+        }
+        if (begin) {
+            if (!end) {
+                __Syscall_write(__File_special_STDOUT, WARNING, sizeof(WARNING)); /* TODO: Console_warning */
+            }
+
+            m = message + begin + 1;
+            argi = System_string8_touint16base10(m);
+
+            /* Reading up to the begin'ning : and obj str char int bool bin oct dec hex float double */
+            n = begin + 2; begin = 0; end = 0; speci = 0;
+            for (; n < format_length; ++n) {
+                if (message[n] != ':') continue;
+                begin = n;
+                for (++n; n < format_length; ++n) {
+                    if (__char8_isAlpha(message[n])) continue;
+                    end = n;
+                    break;
+                }
+                break;
+            }
+            if (begin) {
+                if (!end) {
+                    __Syscall_write(__File_special_STDOUT, WARNING, sizeof(WARNING)); /* TODO: Console_warning */
+                }
+
+                m = message + begin + 1;
+                if (__string8_compareSubstring(m, "object", sizeof("object")) >= 3) {
+
+                    __string8_copyToAt("object", message, ++format_length);
+                    format_length += sizeof("object");
+                }
+                else if (__string8_compareSubstring(m, "string", sizeof("string")) >= 3) {
+
+                    __string8_copyToAt("string", message, ++format_length);
+                    format_length += sizeof("string");
+                }
+                else if (__string8_compareSubstring(m, "character", sizeof("character")) >= 4) {
+
+                    __string8_copyToAt("character", message, ++format_length);
+                    format_length += sizeof("character");
+                }
+                else if (__string8_compareSubstring(m, "integer", sizeof("integer")) >= 3) {
+
+                    __string8_copyToAt("integer", message, ++format_length);
+                    format_length += sizeof("integer");
+                }
+                else if (__string8_compareSubstring(m, "boolean", sizeof("boolean")) >= 4) {
+
+                    __string8_copyToAt("boolean", message, ++format_length);
+                    format_length += sizeof("boolean");
+                }
+                else if (__string8_compareSubstring(m, "binary", sizeof("binary")) >= 3) {
+
+                    __string8_copyToAt("binary", message, ++format_length);
+                    format_length += sizeof("binary");
+                }
+                else if (__string8_compareSubstring(m, "octal", sizeof("octal")) >= 3) {
+
+                    __string8_copyToAt("octal", message, ++format_length);
+                    format_length += sizeof("octal");
+                }
+                else if (__string8_compareSubstring(m, "decimal", sizeof("decimal")) >= 3) {
+
+                    __string8_copyToAt("decimal", message, ++format_length);
+                    format_length += sizeof("decimal");
+                }
+                else if (__string8_compareSubstring(m, "hexadecimal", sizeof("hexadecimal")) >= 3) {
+
+                    __string8_copyToAt("hexadecimal", message, ++format_length);
+                    format_length += sizeof("hexadecimal");
+                }
+                else {
+                    __Syscall_write(__File_special_STDOUT, WARNING, sizeof(WARNING)); /* TODO: Console_warning */
+                }
+            }
+        }
+
+
+    } while (0);
+
+    /* DEBUG: Write argc */
     System_uint64_tostring8base10__stack(argc, scratch);
-    __string8_copyToAt(scratch, message, format_length);
+    __string8_copyToAt(scratch, message, ++format_length);
     format_length += System_uint64_string8base10Length_DEFAULT;
 
     if (suffix) message[format_length++] = suffix;

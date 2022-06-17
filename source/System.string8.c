@@ -75,31 +75,47 @@ __string8  System_string8_clone(__string8 that) {
     return dest;
 }
 
-__size  System_string8_compare(__string8 that, __string8 other){
+__size  System_string8_compare(__string8 that, __string8 other) {
+    __size count = 0;
     while ( ( *that ) && ( *that == *other ) ) {
-        ++that; ++other;
+        ++that; ++other; ++count;
     }
-    return ( *that - *other );
+    return count;
 }
 
 __bool  System_string8_equals(__string8 that, __string8 other) {
-    return 0 == __string8_compare(that, other);
+    __size length = __string8_get_Length(other);
+    return length == __string8_compare(that, other);
 }
 
-__size  System_string8_compareSubstring(__string8 that, __string8 other, __size count) {
-    while ( *that && count && ( *that == *other ) ) {
-        ++that; ++other; --count;
+__size  System_string8_compareSubstring(__string8 that, __string8 other, __size length) {
+    __size count = 0;
+    while ( *that && length && ( *that == *other ) ) {
+        ++that; ++other; --length; ++count;
     }
-    if ( 0 == count ) return 0;
-    return ( *that - *other );
+    return count;
 }
 
-__bool  System_string8_equalsSubstring(__string8 that, __string8 other, __size count) {
-    return 0 == __string8_compareSubstring(that, other, count);
+__bool  System_string8_equalsSubstring(__string8 that, __string8 other, __size length) {
+    return length == __string8_compareSubstring(that, other, length);
 }
 
 __bool  System_string8_isNullOrEmpty(__string8 that) {
     return !that || that[0] == '\0';
+}
+
+__uint16  System_string8_touint16base10(__string8 that) {
+
+    __uint16 reture = 0;
+    if (!__char8_isNumber(that[0])) return reture;
+
+    __size count = 1, n = 0;
+    while (count < 3 && __char8_isNumber(that[count])) ++count;
+    if (count == 3) { reture += (that[n++] - 0x30) * (100); --count; }
+    if (count == 2) { reture += (that[n++] - 0x30) * (10); --count; }
+    if (count == 1) { reture += (that[n++] - 0x30); --count; }
+
+    return reture;
 }
 
 #endif
