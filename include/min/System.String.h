@@ -9,9 +9,6 @@
 
 /* static class System_String */
 
-__export struct_System_Type  System_string8Type;
-__export struct_System_Type  System_string16Type;
-__export struct_System_Type  System_string32Type;
 __export struct_System_Type  System_StringType;
 
 /* class System.String */

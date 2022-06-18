@@ -19,7 +19,7 @@ System_StreamWriter  base_System_StreamWriter_init(System_StreamWriter that, Sys
 
 System_void  base_System_StreamWriter_write(System_StreamWriter that, System_string8 format, System_Array objects) {
 
-    System_Console_printLine("%u", objects->length);
+
 }
 
 void  base_System_StreamWriter_free(System_StreamWriter that) {

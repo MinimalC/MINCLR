@@ -110,7 +110,9 @@ __uint16  System_string8_touint16base10(__string8 that) {
     if (!__char8_isNumber(that[0])) return reture;
 
     __size count = 1, n = 0;
-    while (count < 3 && __char8_isNumber(that[count])) ++count;
+    while (count < 5 && __char8_isNumber(that[count])) ++count;
+    if (count == 5) { reture += (that[n++] - 0x30) * (10000); --count; }
+    if (count == 4) { reture += (that[n++] - 0x30) * (1000); --count; }
     if (count == 3) { reture += (that[n++] - 0x30) * (100); --count; }
     if (count == 2) { reture += (that[n++] - 0x30) * (10); --count; }
     if (count == 1) { reture += (that[n++] - 0x30); --count; }

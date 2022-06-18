@@ -1,6 +1,6 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_string8)
-#include "System.string8.h"
+#if !defined(have_System_stddef)
+#include "System.stddef.h"
 #endif
 #if !defined(have_System_assert)
 #define have_System_assert

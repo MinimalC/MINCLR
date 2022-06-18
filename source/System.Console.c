@@ -106,6 +106,11 @@ void  System_Console_writeSuffix__arguments(__string8 format, __char8 suffix, __
             m = message + begin + 1;
             argi = System_string8_touint16base10(m);
 
+            /* DEBUG: Write argi */
+            System_uint16_tostring8base10__stack(argi, scratch);
+            __string8_copyToAt(scratch, message, ++format_length);
+            format_length += System_uint16_string8base10Length_DEFAULT;
+
             /* Reading up to the begin'ning : and obj str char int bool bin oct dec hex float double */
             n = begin + 2; begin = 0; end = 0; speci = 0;
             for (; n < format_length; ++n) {

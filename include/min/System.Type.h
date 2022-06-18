@@ -11,16 +11,12 @@
 #if !defined(have_System_assert)
 #include "System.assert.h"
 #endif
-#if !defined(have_System_string8)
-#include "System.string8.h"
-#endif
 #if !defined(have_System_value)
 #include "System.value.h"
 #endif
 #if !defined(have_System_arguments)
 #include "System.arguments.h"
 #endif
-
 #if !defined(have_System_Type)
 #define have_System_Type
 
@@ -284,10 +280,6 @@ __export struct_System_Type  System_booleanType;
 #define __booleanType  System_booleanType
 #endif
 
-#include "System.values.auto.h"
-
-#include "System.decimal.h"
-
 /* class Types */
 
 /* __export struct_System_Type  namespace_System; */
@@ -331,15 +323,20 @@ __export struct_System_Type  System_Type_FieldInfoArrayType;
 #define __Type_FieldInfoArrayType  System_Type_FieldInfoArrayType
 #endif
 
+#include "System.values.auto.h"
+
+
 #include "System.Object.h"
+
+#include "System.string8.h"
+#include "System.String.h"
+
+#include "System.Exception.h"
+
 
 #include "System.IEnumerable.h"
 
 #include "System.ICollection.h"
-
-#include "System.Exception.h"
-
-#include "System.String.h"
 
 #include "System.valueArrays.auto.h"
 
@@ -348,9 +345,6 @@ __export struct_System_Type  System_Type_FieldInfoArrayType;
 
 #include "System.Arrays.auto.h"
 
-#include "System.Memory.h"
-
-#include "System.Console.h"
 
 __export System_string8  System_enum_getName(System_Type type, System_intptr value);
 
