@@ -7,7 +7,7 @@
 #define have_System_File
 
 
-typedef System_intptr  enum_System_File_mode;
+typedef System_intptr  System_File_mode;
 
 #define System_File_mode_readOnly                 00
 #define System_File_mode_writeOnly                01
@@ -31,7 +31,7 @@ typedef System_intptr  enum_System_File_mode;
 #define System_File_mode_temporary        (020000000 | System_File_mode_Directory)
 
 
-typedef System_intptr  enum_System_File_permission;
+typedef System_intptr  System_File_permission;
 
 #define System_File_permission_UserRead             0400
 #define System_File_permission_UserWrite            0200
@@ -50,12 +50,12 @@ typedef System_intptr  enum_System_File_permission;
 #define System_File_permission_EverybodyEverything  (System_File_permission_EverybodyRead | System_File_permission_EverybodyWrite | System_File_permission_EverybodyExecute)
 
 
-typedef System_intptr  enum_System_File_special;
+typedef System_var  System_File_special;
 
-#define System_File_special_STDIN   0
-#define System_File_special_STDOUT  1
-#define System_File_special_STDERR  2
-#define System_File_special_CurrentWorkingDirectory  -100
+#define System_File_special_STDIN   ((System_var)0)
+#define System_File_special_STDOUT  ((System_var)1)
+#define System_File_special_STDERR  ((System_var)2)
+#define System_File_special_CurrentWorkingDirectory  ((System_var)-100)
 
 
 /* class System_File */
@@ -65,7 +65,7 @@ typedef System_intptr  enum_System_File_special;
 typedef __fixed struct_System_File {
 	struct_System_Object  base;
 
-    System_intptr filePtr;
+    System_var filePtr;
 
     System_size position;
 
@@ -78,19 +78,17 @@ typedef System_void  __delegate(System_File_free)(System_File that);
 typedef System_void  __delegate(System_File_write)(System_File that, System_size count, System_string8 value);
 typedef System_void  __delegate(System_File_sync)(System_File that);
 typedef System_size  __delegate(System_File_read)(System_File that, System_size count, System_string8 value);
-typedef System_void  __delegate(System_File_seek)(System_File that, System_ssize offset, enum_System_origin origin);
+typedef System_void  __delegate(System_File_seek)(System_File that, System_ssize offset, System_origin origin);
 typedef System_intptr  __delegate(System_File_get_Position)(System_File that);
 typedef System_void  __delegate(System_File_set_Position)(System_File that, System_size value);
 
-#define System_File_new  System_File_new__00
-
 __export System_File  System_File_new();
-__export System_File  System_File_open(System_string8 filename, enum_System_File_mode flags);
+__export System_File  System_File_open(System_string8 filename, System_File_mode flags);
 __export System_File  base_System_File_init(System_File that);
 __export System_void  base_System_File_free(System_File that);
 __export System_void  base_System_File_write(System_File that, System_size count, System_string8 value);
 __export System_void  base_System_File_sync(System_File that);
-__export System_void  base_System_File_seek(System_File that, System_ssize offset, enum_System_origin origin);
+__export System_void  base_System_File_seek(System_File that, System_ssize offset, System_origin origin);
 __export System_size  base_System_File_read(System_File that, System_size count, System_string8 value);
 __export System_intptr  base_System_File_get_Position(System_File that);
 __export System_void  base_System_File_set_Position(System_File that, System_size value);
@@ -106,13 +104,8 @@ __export System_void  base_System_File_set_Position(System_File that, System_siz
 
 #define inline_System_File_new()  (base_System_File_init(inline_System_Object_allocClass(System_File)))
 
-#if !defined(have_System_internal)
-#undef  System_File_new
-#define System_File_new  inline_System_File_new
-#endif
-
 #if defined(using_System)
-#define enum_File_mode  enum_System_File_mode
+#define __File_mode  System_File_mode
 #define __File_mode_readOnly  System_File_mode_readOnly
 #define __File_mode_writeOnly  System_File_mode_writeOnly
 #define __File_mode_readWrite  System_File_mode_readWrite
@@ -124,7 +117,7 @@ __export System_void  base_System_File_set_Position(System_File that, System_siz
 #define __File_mode_closeOnExecute  System_File_mode_closeOnExecute
 #define __File_mode_syncd  System_File_mode_syncd
 
-#define enum_File_special  enum_System_File_special
+#define __File_special  System_File_special
 #define __File_special_STDIN  System_File_special_STDIN
 #define __File_special_STDOUT  System_File_special_STDOUT
 #define __File_special_STDERR  System_File_special_STDERR

@@ -7,8 +7,6 @@
 
 /*# System_Syscall_command #*/
 
-struct_System_String  STRING_System_Syscall_command = const_System_String("System.Syscall.command");
-
 struct_System_Type_FieldInfo  System_Syscall_commandTypeFields[] = {
 #if defined(have_Linux)
 
@@ -31,7 +29,7 @@ struct_System_Type_FieldInfo  System_Syscall_commandTypeFields[] = {
 };
 
 struct_System_Type  System_Syscall_commandType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_Syscall_command,
+    .name = "System.Syscall.command",
     .size = sizeof(System_Syscall_command),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
         .value = &System_Syscall_commandTypeFields, .length = __sizeof_array(&System_Syscall_commandTypeFields),
@@ -44,14 +42,12 @@ struct_System_Type  System_Syscall_commandType = { .base = { .Type = __typeof(Sy
 
 /*# System_error #*/
 
-struct_System_String  STRING_System_error = const_System_String("System.error");
-
 struct_System_Type_FieldInfo  System_errorTypeFields[] = {
 #include <min/System.error.generic.asm.h>
 };
 
 struct_System_Type  System_errorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_error,
+    .name = "System.error",
     .size = sizeof(System_error),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
         .value = &System_errorTypeFields, .length = __sizeof_array(&System_errorTypeFields),
@@ -79,15 +75,13 @@ System_SystemException  base_System_SystemException_init(System_SystemException 
     base_System_Object_free((System_Object)that);
 } */
 
-struct_System_String  STRING_System_SystemException = const_System_String("System.SystemException");
-
 struct_System_Type_FunctionInfo  System_SystemExceptionTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_SystemException_init },
 /*    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_SystemException_free }, */
 };
 
 struct_System_Type  System_SystemExceptionType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_SystemException,
+    .name = "System.SystemException",
     .size = sizeof(struct_System_SystemException),
     .baseType = __typeof(System_Exception),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
@@ -101,10 +95,8 @@ struct_System_Type  System_SystemExceptionType = { .base = { .Type = __typeof(Sy
 
 /*# System_Syscall #*/
 
-struct_System_String  STRING_System_Syscall = const_System_String("System.Syscall");
-
 struct_System_Type  System_SyscallType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_Syscall,
+    .name = "System.Syscall",
 };
 
 void System_Syscall_error(const System_error erreur) {
@@ -123,36 +115,36 @@ void  System_Syscall_terminate(System_size code)  {
 }
 
 
-System_intptr  System_Syscall_open(System_string8 fileName, System_intptr flags, System_intptr mode) {
-    return System_Syscall_call03(System_Syscall_command_open, (System_intptr)fileName, flags, mode);
+System_var  System_Syscall_open(System_string8 fileName, System_intptr flags, System_intptr mode) {
+    return (System_var)System_Syscall_call03(System_Syscall_command_open, (System_intptr)fileName, flags, mode);
 }
 
-System_intptr  System_Syscall_openat(System_intptr directoryPtr, System_string8 fileName, System_intptr flags, System_intptr mode) {
-    return System_Syscall_call04(System_Syscall_command_openat, directoryPtr, (System_intptr)fileName, flags, mode);
+System_var  System_Syscall_openat(System_var directoryPtr, System_string8 fileName, System_intptr flags, System_intptr mode) {
+    return (System_var)System_Syscall_call04(System_Syscall_command_openat, (System_intptr)directoryPtr, (System_intptr)fileName, flags, mode);
 }
 
-System_size  System_Syscall_read(System_intptr filePtr, const void  * buf, System_size count) {
-    return System_Syscall_call03(System_Syscall_command_read, filePtr, (System_intptr)buf, count);
+System_size  System_Syscall_read(System_var filePtr, const void  * buf, System_size count) {
+    return System_Syscall_call03(System_Syscall_command_read, (System_intptr)filePtr, (System_intptr)buf, count);
 }
 
-System_size  System_Syscall_write(System_intptr filePtr, const void  * buf, System_size count) {
-    return System_Syscall_call03(System_Syscall_command_write, filePtr, (System_intptr)buf, count);
+System_size  System_Syscall_write(System_var filePtr, const void  * buf, System_size count) {
+    return System_Syscall_call03(System_Syscall_command_write, (System_intptr)filePtr, (System_intptr)buf, count);
 }
 
-System_size  System_Syscall_lseek(System_intptr filePtr, System_size offset, System_intptr whence) {
-    return System_Syscall_call03(System_Syscall_command_lseek, filePtr, offset, whence);
+System_size  System_Syscall_lseek(System_var filePtr, System_size offset, System_intptr whence) {
+    return System_Syscall_call03(System_Syscall_command_lseek, (System_intptr)filePtr, offset, whence);
 }
 
-void  System_Syscall_fsync(System_intptr filePtr) {
-    (void)System_Syscall_call01(System_Syscall_command_fsync, filePtr);
+void  System_Syscall_fsync(System_var filePtr) {
+    (void)System_Syscall_call01(System_Syscall_command_fsync, (System_intptr)filePtr);
 }
 
-void  System_Syscall_close(System_intptr filePtr) {
-    (void)System_Syscall_call01(System_Syscall_command_close, filePtr);
+void  System_Syscall_close(System_var filePtr) {
+    (void)System_Syscall_call01(System_Syscall_command_close, (System_intptr)filePtr);
 }
 
-void  System_Syscall_fstatat(System_intptr directoryPtr, const System_string8 pathName, struct_System_Syscall_stat  * that, System_intptr flags) {
-    (void)System_Syscall_call04(System_Syscall_command_fstatat, directoryPtr, (System_intptr)pathName, (System_intptr)that, flags);
+void  System_Syscall_fstatat(System_var directoryPtr, const System_string8 pathName, struct_System_Syscall_stat  * that, System_intptr flags) {
+    (void)System_Syscall_call04(System_Syscall_command_fstatat, (System_intptr)directoryPtr, (System_intptr)pathName, (System_intptr)that, flags);
 }
 
 

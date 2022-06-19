@@ -1,6 +1,40 @@
 #if !defined(have_System)
 #include "System.internal.h"
 #endif
+#if !defined(code_System_char8)
+#define code_System_char8
+/*# System_char8 #*/
+System_boolean  System_char8_isNumber(System_char8 that) {
+    return (that >= 0x30 && that <= 0x39);
+}
+System_boolean  System_char8_isUpper(System_char8 that) {
+    return (that >= 0x41 && that <= 0x5A);
+}
+System_boolean  System_char8_isLower(System_char8 that) {
+    return (that >= 0x61 && that <= 0x7A);
+}
+System_boolean  System_char8_isAlpha(System_char8 that) {
+    return System_char8_isUpper(that) || System_char8_isLower(that);
+}
+System_boolean  System_char8_isAlphaNumeric(System_char8 that) {
+    return System_char8_isAlpha(that) || System_char8_isNumber(that);
+}
+System_boolean  System_char8_isHexNumber(System_char8 that) {
+    return (that >= 0x30 && that <= 0x39) || (that >= 0x41 && that <= 0x46) || (that >= 0x61 && that <= 0x66);
+}
+System_boolean  System_char8_isWhiteSpace(System_char8 that) {
+    return that == 0x20 || that == 0x0c || that == 0x0a || that == 0x0d || that == 0x09 || that == 0x0b;
+}
+System_boolean  System_char8_isControl(System_char8 that) {
+    return (that >= 0x00 && that <= 0x1F) || that == 0x7F;
+}
+System_boolean  System_char8_isPunctuation(System_char8 that) {
+    return (that >= 0x21 && that <= 0x2F) || (that >= 0x3A && that <= 0x40) || (that >= 0x5B && that <= 0x60) || (that >= 0x7B && that <= 0x7E);
+}
+System_boolean  System_char8_isPrintable(System_char8 that) {
+    return System_char8_isAlphaNumeric(that) || System_char8_isPunctuation(that);
+}
+#endif
 #if !defined(code_System_string8)
 #define code_System_string8
 
@@ -8,10 +42,8 @@
 
 /* static class System.string8 */
 
-struct_System_String  STRING_System_string8 = const_System_String("System.string8");
-
 struct_System_Type  System_string8Type = { .base = stack_System_Object(System_Type),
-    .name = &STRING_System_string8
+    .name = "System.string8"
 };
 
 struct_System_string8  System_string8_Empty = "";
@@ -103,6 +135,141 @@ __bool  System_string8_equalsSubstring(__string8 that, __string8 other, __size l
 __bool  System_string8_isNullOrEmpty(__string8 that) {
     return !that || that[0] == '\0';
 }
+
+
+struct_string8 WARNING = "WARNING! ";
+
+void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix, __IStream stream, __arguments args) {
+    __size argc = __argument(args, __size); /* this is expecting a size as first argument or null */
+    if (argc > 16) { argc = 0;
+        base_System_File_write((System_File)stream, sizeof(WARNING), WARNING);
+    }
+
+    __size i;
+    __char8  message[519] = { }; __string8 m = message;
+    __char8  scratch[100] = { };
+    for (i = 0; i < sizeof(message); ++i) message[i] = 0;
+    for (i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
+
+    // just don't write everything else
+
+    __size format_length = __string8_get_Length(format);
+    if (format_length > 512) { format_length = 512;
+        base_System_File_write((System_File)stream, sizeof(WARNING), WARNING);
+    }
+
+    __size message_position = 0, n = 0, begin, end, argi, speci;
+    do {
+        __string8_copySubstringToAt(format, format_length, message, message_position);
+
+        /* Reading up to the begin'ning { and the end'ing } */
+        begin = 0; end = 0; argi = 0;
+        for (n = 0; n < format_length; ++n) {
+            if (message[n] != '{') continue;
+            if (n > 0 && message[n - 1] == '\\') continue;
+            begin = n;
+            for (++n; n < format_length; ++n) {
+                if (message[n] != '}') continue;
+                end = n;
+                break;
+            }
+            break;
+        }
+        if (begin) {
+            if (!end) {
+                base_System_File_write((System_File)stream, sizeof(WARNING), WARNING);
+            }
+
+            m = message + begin + 1;
+            argi = System_string8_touint16base10(m);
+
+            /* DEBUG: Write argi */
+            System_uint16_tostring8base10__stack(argi, scratch);
+            __string8_copyToAt(scratch, message, ++format_length);
+            format_length += System_uint16_string8base10Length_DEFAULT;
+
+            /* Reading up to the begin'ning : and obj str char int bool bin oct dec hex float double */
+            n = begin + 2; begin = 0; end = 0; speci = 0;
+            for (; n < format_length; ++n) {
+                if (message[n] != ':') continue;
+                begin = n;
+                for (++n; n < format_length; ++n) {
+                    if (__char8_isAlpha(message[n])) continue;
+                    end = n;
+                    break;
+                }
+                break;
+            }
+            if (begin) {
+                if (!end) {
+                    base_System_File_write((System_File)stream, sizeof(WARNING), WARNING); /* TODO: Console_warning */
+                }
+
+                m = message + begin + 1;
+                if (__string8_compareSubstring(m, "object", sizeof("object")) >= 3) {
+
+                    __string8_copyToAt("object", message, ++format_length);
+                    format_length += sizeof("object");
+                }
+                else if (__string8_compareSubstring(m, "string", sizeof("string")) >= 3) {
+
+                    __string8_copyToAt("string", message, ++format_length);
+                    format_length += sizeof("string");
+                }
+                else if (__string8_compareSubstring(m, "character", sizeof("character")) >= 4) {
+
+                    __string8_copyToAt("character", message, ++format_length);
+                    format_length += sizeof("character");
+                }
+                else if (__string8_compareSubstring(m, "integer", sizeof("integer")) >= 3) {
+
+                    __string8_copyToAt("integer", message, ++format_length);
+                    format_length += sizeof("integer");
+                }
+                else if (__string8_compareSubstring(m, "boolean", sizeof("boolean")) >= 4) {
+
+                    __string8_copyToAt("boolean", message, ++format_length);
+                    format_length += sizeof("boolean");
+                }
+                else if (__string8_compareSubstring(m, "binary", sizeof("binary")) >= 3) {
+
+                    __string8_copyToAt("binary", message, ++format_length);
+                    format_length += sizeof("binary");
+                }
+                else if (__string8_compareSubstring(m, "octal", sizeof("octal")) >= 3) {
+
+                    __string8_copyToAt("octal", message, ++format_length);
+                    format_length += sizeof("octal");
+                }
+                else if (__string8_compareSubstring(m, "decimal", sizeof("decimal")) >= 3) {
+
+                    __string8_copyToAt("decimal", message, ++format_length);
+                    format_length += sizeof("decimal");
+                }
+                else if (__string8_compareSubstring(m, "hexadecimal", sizeof("hexadecimal")) >= 3) {
+
+                    __string8_copyToAt("hexadecimal", message, ++format_length);
+                    format_length += sizeof("hexadecimal");
+                }
+                else {
+                    base_System_File_write((System_File)stream, sizeof(WARNING), WARNING); /* TODO: Console_warning */
+                }
+            }
+        }
+
+
+    } while (0);
+
+    /* DEBUG: Write argc */
+    System_uint64_tostring8base10__stack(argc, scratch);
+    __string8_copyToAt(scratch, message, ++format_length);
+    format_length += System_uint64_string8base10Length_DEFAULT;
+
+    if (suffix) message[format_length++] = suffix;
+
+    base_System_File_write((System_File)stream, format_length, message);
+}
+
 
 __uint16  System_string8_touint16base10(__string8 that) {
 

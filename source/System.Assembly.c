@@ -10,7 +10,7 @@ System_Assembly  System_Assembly_new() {
     return inline_System_Assembly_new();
 }
 
-__Assembly  System_Assembly_open(const __string8  fileName, enum_System_AssemblyBinding  flags)
+__Assembly  System_Assembly_open(const __string8  fileName, System_AssemblyBinding  flags)
 {
     ISO_Library assemblyPtr = ISO_dlopen(fileName, (__int32)flags);
     if (!assemblyPtr) return __null; /* TODO: throw FileNotFound */

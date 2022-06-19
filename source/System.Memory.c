@@ -6,10 +6,8 @@
 
 /*# System_Memory #*/
 
-struct_System_String  STRING_System_Memory = const_System_String("System.Memory");
-
 struct_System_Type  System_MemoryType = { .base = stack_System_Object(System_Type),
-	.name = &STRING_System_Memory,
+	.name = "System.Memory",
 };
 
 void  * System_Memory_alloc(__size length) {

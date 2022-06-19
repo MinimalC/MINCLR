@@ -51,6 +51,7 @@ __export System_size  System_string8_compareSubstring(System_string8 that, Syste
 __export System_boolean  System_string8_equalsSubstring(System_string8 that, System_string8 other, System_size count);
 __export System_boolean  System_string8_isNullOrEmpty(System_string8 that);
 //__export System_boolean  System_string8_startsWith(System_string8 that, String_string8 other);
+__export System_void  System_string8_formatSuffixTo__arguments(System_string8 that, System_char8 suffix, System_IStream stream, System_arguments args);
 
 __export System_uint16  System_string8_touint16base10(System_string8 that);
 

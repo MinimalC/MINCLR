@@ -862,10 +862,8 @@ System_void  System_decimal_tostring8__stack(System_decimal  * that, System_char
     }
 }
 
-struct_System_String  STRING_System_decimal = const_System_String("System.decimal");
-
 struct_System_Type  System_decimalType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_decimal,
+    .name = "System.decimal",
     .size = sizeof(System_decimal),
 };
 

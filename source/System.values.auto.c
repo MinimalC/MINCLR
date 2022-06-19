@@ -7,8 +7,7 @@
 #if !defined(code_auto_System_uint8)
 #define code_auto_System_uint8
 /*# System_uint8 #*/
-struct_System_String  STRING_System_uint8 = const_System_String("System.uint8");
-struct_System_Type  System_uint8Type  = { .base = stack_System_Object(System_Type), .name = &STRING_System_uint8, .size = sizeof(System_uint8) };
+struct_System_Type  System_uint8Type  = { .base = stack_System_Object(System_Type), .name = "System.uint8", .size = sizeof(System_uint8) };
 System_size  System_uint8_string8base2Length = System_uint8_string8base2Length_DEFAULT;
 System_size  System_uint8_string8base4Length = System_uint8_string8base4Length_DEFAULT;
 System_size  System_uint8_string8base8Length = System_uint8_string8base8Length_DEFAULT;
@@ -73,8 +72,7 @@ System_void  System_uint8_tostring8base10__stack(System_uint8 that, System_char8
 #if !defined(code_auto_System_uint16)
 #define code_auto_System_uint16
 /*# System_uint16 #*/
-struct_System_String  STRING_System_uint16 = const_System_String("System.uint16");
-struct_System_Type  System_uint16Type  = { .base = stack_System_Object(System_Type), .name = &STRING_System_uint16, .size = sizeof(System_uint16) };
+struct_System_Type  System_uint16Type  = { .base = stack_System_Object(System_Type), .name = "System.uint16", .size = sizeof(System_uint16) };
 System_size  System_uint16_string8base2Length = System_uint16_string8base2Length_DEFAULT;
 System_size  System_uint16_string8base4Length = System_uint16_string8base4Length_DEFAULT;
 System_size  System_uint16_string8base8Length = System_uint16_string8base8Length_DEFAULT;
@@ -139,8 +137,7 @@ System_void  System_uint16_tostring8base10__stack(System_uint16 that, System_cha
 #if !defined(code_auto_System_uint32)
 #define code_auto_System_uint32
 /*# System_uint32 #*/
-struct_System_String  STRING_System_uint32 = const_System_String("System.uint32");
-struct_System_Type  System_uint32Type  = { .base = stack_System_Object(System_Type), .name = &STRING_System_uint32, .size = sizeof(System_uint32) };
+struct_System_Type  System_uint32Type  = { .base = stack_System_Object(System_Type), .name = "System.uint32", .size = sizeof(System_uint32) };
 System_size  System_uint32_string8base2Length = System_uint32_string8base2Length_DEFAULT;
 System_size  System_uint32_string8base4Length = System_uint32_string8base4Length_DEFAULT;
 System_size  System_uint32_string8base8Length = System_uint32_string8base8Length_DEFAULT;
@@ -205,8 +202,7 @@ System_void  System_uint32_tostring8base10__stack(System_uint32 that, System_cha
 #if !defined(code_auto_System_uint64)
 #define code_auto_System_uint64
 /*# System_uint64 #*/
-struct_System_String  STRING_System_uint64 = const_System_String("System.uint64");
-struct_System_Type  System_uint64Type  = { .base = stack_System_Object(System_Type), .name = &STRING_System_uint64, .size = sizeof(System_uint64) };
+struct_System_Type  System_uint64Type  = { .base = stack_System_Object(System_Type), .name = "System.uint64", .size = sizeof(System_uint64) };
 System_size  System_uint64_string8base2Length = System_uint64_string8base2Length_DEFAULT;
 System_size  System_uint64_string8base4Length = System_uint64_string8base4Length_DEFAULT;
 System_size  System_uint64_string8base8Length = System_uint64_string8base8Length_DEFAULT;
@@ -271,8 +267,7 @@ System_void  System_uint64_tostring8base10__stack(System_uint64 that, System_cha
 #if !defined(code_auto_System_int8)
 #define code_auto_System_int8
 /*# System_int8 #*/
-struct_System_String  STRING_System_int8 = const_System_String("System.int8");
-struct_System_Type  System_int8Type  = { .base = stack_System_Object(System_Type), .name = &STRING_System_int8, .size = sizeof(System_int8) };
+struct_System_Type  System_int8Type  = { .base = stack_System_Object(System_Type), .name = "System.int8", .size = sizeof(System_int8) };
 System_size  System_int8_string8base2Length = System_int8_string8base2Length_DEFAULT;
 System_size  System_int8_string8base4Length = System_int8_string8base4Length_DEFAULT;
 System_size  System_int8_string8base8Length = System_int8_string8base8Length_DEFAULT;
@@ -356,8 +351,7 @@ System_void  System_int8_tostring8base10__stack(System_int8 that, System_char8 a
 #if !defined(code_auto_System_int16)
 #define code_auto_System_int16
 /*# System_int16 #*/
-struct_System_String  STRING_System_int16 = const_System_String("System.int16");
-struct_System_Type  System_int16Type  = { .base = stack_System_Object(System_Type), .name = &STRING_System_int16, .size = sizeof(System_int16) };
+struct_System_Type  System_int16Type  = { .base = stack_System_Object(System_Type), .name = "System.int16", .size = sizeof(System_int16) };
 System_size  System_int16_string8base2Length = System_int16_string8base2Length_DEFAULT;
 System_size  System_int16_string8base4Length = System_int16_string8base4Length_DEFAULT;
 System_size  System_int16_string8base8Length = System_int16_string8base8Length_DEFAULT;
@@ -441,8 +435,7 @@ System_void  System_int16_tostring8base10__stack(System_int16 that, System_char8
 #if !defined(code_auto_System_int32)
 #define code_auto_System_int32
 /*# System_int32 #*/
-struct_System_String  STRING_System_int32 = const_System_String("System.int32");
-struct_System_Type  System_int32Type  = { .base = stack_System_Object(System_Type), .name = &STRING_System_int32, .size = sizeof(System_int32) };
+struct_System_Type  System_int32Type  = { .base = stack_System_Object(System_Type), .name = "System.int32", .size = sizeof(System_int32) };
 System_size  System_int32_string8base2Length = System_int32_string8base2Length_DEFAULT;
 System_size  System_int32_string8base4Length = System_int32_string8base4Length_DEFAULT;
 System_size  System_int32_string8base8Length = System_int32_string8base8Length_DEFAULT;
@@ -526,8 +519,7 @@ System_void  System_int32_tostring8base10__stack(System_int32 that, System_char8
 #if !defined(code_auto_System_int64)
 #define code_auto_System_int64
 /*# System_int64 #*/
-struct_System_String  STRING_System_int64 = const_System_String("System.int64");
-struct_System_Type  System_int64Type  = { .base = stack_System_Object(System_Type), .name = &STRING_System_int64, .size = sizeof(System_int64) };
+struct_System_Type  System_int64Type  = { .base = stack_System_Object(System_Type), .name = "System.int64", .size = sizeof(System_int64) };
 System_size  System_int64_string8base2Length = System_int64_string8base2Length_DEFAULT;
 System_size  System_int64_string8base4Length = System_int64_string8base4Length_DEFAULT;
 System_size  System_int64_string8base8Length = System_int64_string8base8Length_DEFAULT;

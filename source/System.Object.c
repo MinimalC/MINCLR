@@ -113,7 +113,7 @@ __Type  System_Object_get_Type(__Object that) {
 System_boolean  System_Object_isType(System_Object that, System_Type type) {
     __assert(type)
     if (!that) return __false;
-    return System_Type_isAssignableFrom(System_Object_get_Type(that), type);
+    return System_Type_isInstanceOf(System_Object_get_Type(that), type);
 }
 
 System_Object  System_Object_asType(System_Object that, System_Type type) {
@@ -133,8 +133,6 @@ System_boolean System_Object_referenceEquals(System_Object that, System_Object o
     return that == other;
 }
 
-struct_System_String  STRING_System_Object = const_System_String("System.Object");
-
 struct_System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_Object_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Object_free },
@@ -142,7 +140,7 @@ struct_System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {
 };
 
 struct_System_Type  System_ObjectType = { .base = { .Type = __typeof(System_Type) },
-	.name = &STRING_System_Object,
+	.name = "System.Object",
 	.size = sizeof(struct_System_Object),
 	.baseType = __null, /* this is System_Object */
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),

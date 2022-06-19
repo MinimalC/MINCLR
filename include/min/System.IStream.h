@@ -6,13 +6,13 @@
 #if !defined(have_System_IStream)
 #define have_System_IStream
 
-typedef System_intptr  enum_System_origin;
+typedef System_intptr  System_origin;
 #define System_origin_Begin  0
 #define System_origin_Current  1
 #define System_origin_End  2
 
 #if defined(using_System)
-#define enum_origin  enum_System_origin
+#define __origin  System_origin
 #define __origin_Begin  System_origin_Begin
 #define __origin_Current  System_origin_Current
 #define __origin_End  System_origin_End
@@ -22,19 +22,20 @@ typedef System_intptr  enum_System_origin;
 
 #define struct_System_IStream  struct class_System_IStream
 typedef __fixed struct_System_IStream { } * System_IStream;
+
 __export struct_System_Type  System_IStreamType;
 
 typedef System_void  __delegate(System_IStream_write)(System_IStream that, System_size count, System_string8 value);
 typedef System_void  __delegate(System_IStream_sync)(System_IStream that);
 typedef System_size  __delegate(System_IStream_read)(System_IStream that, System_size count, System_string8 value);
-typedef System_void  __delegate(System_IStream_seek)(System_IStream that, System_ssize offset, enum_System_origin origin);
+typedef System_void  __delegate(System_IStream_seek)(System_IStream that, System_ssize offset, System_origin origin);
 typedef System_intptr  __delegate(System_IStream_get_Position)(System_IStream that);
 typedef System_void  __delegate(System_IStream_set_Position)(System_IStream that, System_size value);
 
 __export System_void  base_System_IStream_write(System_IStream that, System_size count, System_string8 value);
 __export System_void  base_System_IStream_sync(System_IStream that);
 __export System_size  base_System_IStream_read(System_IStream that, System_size count, System_string8 value);
-__export System_void  base_System_IStream_seek(System_IStream that, System_ssize offset, enum_System_origin origin);
+__export System_void  base_System_IStream_seek(System_IStream that, System_ssize offset, System_origin origin);
 __export System_intptr  base_System_IStream_get_Position(System_IStream that);
 __export System_void  base_System_IStream_set_Position(System_IStream that, System_size value);
 

@@ -7,6 +7,28 @@
 #include "System.Type.h" /* see System.Type.h */
 
 
+#include "System.IEnumerable.h"
+
+#include "System.ICollection.h"
+
+#include "System.IStream.h"
+
+
+#include "System.Object.h"
+
+#include "System.string8.h"
+#include "System.String.h"
+
+#include "System.Exception.h"
+
+
+#include "System.valueArrays.auto.h"
+
+#include "System.Array.h"
+#include "System.ArrayEnumerator.h"
+
+/* #include "System.Arrays.auto.h" */
+
 #include "System.Memory.h"
 
 #include "System.decimal.h"
@@ -15,8 +37,6 @@
 
 #include "Crypto.SipHash48.h"
 
-
-#include "System.IStream.h"
 
 #include "System.StreamWriter.h"
 

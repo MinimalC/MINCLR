@@ -20,14 +20,12 @@ __export struct_System_Type  System_StreamWriterType;
 
 typedef System_StreamWriter __delegate(System_StreamWriter_init)(System_StreamWriter that, System_IStream stream);
 typedef System_void __delegate(System_StreamWriter_free)(System_StreamWriter that);
-typedef System_void __delegate(System_StreamWriter_write)(System_StreamWriter that, System_string8 format, System_Array objects);
-
-#define System_StreamWriter_new  System_StreamWriter_new__01
+typedef System_void __delegate(System_StreamWriter_write)(System_StreamWriter that, System_string8 format, ...);
 
 __export System_StreamWriter  System_StreamWriter_new(System_IStream stream);
 __export System_StreamWriter  base_System_StreamWriter_init(System_StreamWriter that, System_IStream stream);
 __export System_void  base_System_StreamWriter_free(System_StreamWriter that);
-__export System_void  base_System_StreamWriter_write(System_StreamWriter that, System_string8 format, System_Array objects);
+__export System_void  base_System_StreamWriter_write(System_StreamWriter that, System_string8 format, ...);
 
 #define System_StreamWriter_init(o,...)  ((function_System_StreamWriter_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_StreamWriter_init))(o, __VA_ARGS__)
 #define System_StreamWriter_free(o)  ((function_System_StreamWriter_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
@@ -35,10 +33,6 @@ __export System_void  base_System_StreamWriter_write(System_StreamWriter that, S
 
 #define inline_System_StreamWriter_new(stream)  (base_System_StreamWriter_init(inline_System_Object_allocClass(System_StreamWriter), stream))
 
-#if !defined(have_System_internal)
-#undef  System_StreamWriter_new
-#define System_StreamWriter_new  inline_System_StreamWriter_new
-#endif
 #if defined(using_System)
 #define struct_StreamWriter  struct_System_StreamWriter
 #define __StreamWriter  System_StreamWriter

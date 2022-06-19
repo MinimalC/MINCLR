@@ -18,7 +18,7 @@ __export System_string8  System_Assembly_error();
 #endif
 
 
-typedef System_int32  enum_System_AssemblyBinding;
+typedef System_int32  System_AssemblyBinding;
 /*#if defined(__x86_64__) */
 
 /* Lazy function call binding. */
@@ -48,7 +48,7 @@ typedef System_int32  enum_System_AssemblyBinding;
 #define System_AssemblyBinding_NoFree	0x1000
 
 #if defined(using_System)
-#define enum_AssemblyBinding  enum_System_AssemblyBinding
+#define __AssemblyBinding  System_AssemblyBinding
 #define __AssemblyBinding_Lazy  System_AssemblyBinding_Lazy
 #define __AssemblyBinding_Now  System_AssemblyBinding_Now
 #define __AssemblyBinding_BindingMask  System_AssemblyBinding_BindingMask
@@ -75,7 +75,7 @@ __export struct_System_Type  System_AssemblyType;
 #define System_Assembly_new  System_Assembly_new__00
 
 __export System_Assembly  System_Assembly_new();
-__export System_Assembly  System_Assembly_open(const System_string8  fileName, enum_System_AssemblyBinding  flags);
+__export System_Assembly  System_Assembly_open(const System_string8  fileName, System_AssemblyBinding  flags);
 __export void  * System_Assembly_find(System_Assembly that, const System_string8 name);
 __export void  * System_Assembly_findGlobal(const System_string8 name);
 

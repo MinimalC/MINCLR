@@ -39,8 +39,6 @@ System_uint64 base_System_String_getSipHash(System_String that) {
     return Crypto_SipHash48_final(&sipHash48);
 }
 
-struct_System_String  STRING_System_String = const_System_String("System.String");
-
 struct_System_Type_FunctionInfo  System_StringTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_String_free },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_String_init, .value = base_System_String_init },
@@ -48,7 +46,7 @@ struct_System_Type_FunctionInfo  System_StringTypeFunctions[] = {
 };
 
 struct_System_Type  System_StringType = { .base = stack_System_Object(System_Type),
-    .name = &STRING_System_String,
+    .name = "System.String",
     .size = sizeof(struct_System_String),
     .baseType = __typeof(System_Object),
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),

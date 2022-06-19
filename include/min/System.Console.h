@@ -7,6 +7,10 @@
 
 __export struct_System_Type  System_ConsoleType;
 
+__export struct_System_File  System_Console_StdIn;
+__export struct_System_File  System_Console_StdOut;
+__export struct_System_File  System_Console_StdErr;
+
 __export System_void  System_Console_sync();
 __export System_void  System_Console_exit(const System_size code) __noreturn;
 __export System_void  System_Console_terminate(const System_size code) __noreturn;

@@ -76,13 +76,13 @@ __export System_void  System_Syscall_error(System_error error);
 
 __export System_void  System_Syscall_terminate(System_size code)  __noreturn;
 
-__export System_intptr  System_Syscall_open(System_string8 fileName, System_intptr flags, System_intptr mode);
-__export System_intptr  System_Syscall_openat(System_intptr directoryPtr, System_string8 fileName, System_intptr flags, System_intptr mode);
-__export System_size  System_Syscall_read(System_intptr filePtr, const void  * buf, System_size count);
-__export System_size  System_Syscall_write(System_intptr filePtr, const void  * buf, System_size count);
-__export System_size  System_Syscall_lseek(System_intptr filePtr, System_size offset, System_intptr whence);
-__export System_void  System_Syscall_fsync(System_intptr filePtr);
-__export System_void  System_Syscall_close(System_intptr filePtr);
+__export System_var  System_Syscall_open(System_string8 fileName, System_intptr flags, System_intptr mode);
+__export System_var  System_Syscall_openat(System_var directoryPtr, System_string8 fileName, System_intptr flags, System_intptr mode);
+__export System_size  System_Syscall_read(System_var filePtr, const void  * buf, System_size count);
+__export System_size  System_Syscall_write(System_var filePtr, const void  * buf, System_size count);
+__export System_size  System_Syscall_lseek(System_var filePtr, System_size offset, System_intptr whence);
+__export System_void  System_Syscall_fsync(System_var filePtr);
+__export System_void  System_Syscall_close(System_var filePtr);
 
 
 #define struct_System_Syscall_stat_timestamp  struct System_Syscall_stat_timestamp
@@ -114,7 +114,7 @@ struct_System_Syscall_stat {
 
 };
 
-__export System_void  System_Syscall_fstatat(System_intptr directoryPtr, const System_string8 pathName, struct_System_Syscall_stat  * that, System_intptr flags);
+__export System_void  System_Syscall_fstatat(System_var directoryPtr, const System_string8 pathName, struct_System_Syscall_stat  * that, System_intptr flags);
 
 __export struct_System_Type  System_SyscallType;
 

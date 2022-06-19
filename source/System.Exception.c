@@ -47,8 +47,6 @@ System_Exception  base_System_Exception_init(System_Exception that, System_strin
     base_System_Object_free((System_Object)that);
 } */
 
-struct_System_String  STRING_System_Exception = const_System_String("System.Exception");
-
 struct_System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_Exception_init },
 /*    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Exception_free }, */
@@ -56,7 +54,7 @@ struct_System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {
 
 struct_System_Type  System_ExceptionType = {
     .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_Exception,
+    .name = "System.Exception",
     .size = sizeof(struct_System_Exception),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),

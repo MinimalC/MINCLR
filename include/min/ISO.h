@@ -60,7 +60,7 @@ __import ISO_File  ISO_stderr;
 
 /* ISO_f*lose */
 
-typedef System_int32  enum_ISO_seekorigin;
+typedef System_int32  ISO_seekorigin;
 #define ISO_SEEK_BEGIN  0
 #define ISO_SEEK_CURRENT  1
 #define ISO_SEEK_END  2
@@ -78,7 +78,7 @@ __import System_int32  ISO_fclose(ISO_File file);
 __import System_size  ISO_fwrite(const void  * value, System_size size, System_size n, ISO_File file);
 __import void  ISO_fflush(ISO_File file);
 __import System_size  ISO_fread(void  * value, System_size size, System_size n, ISO_File file);
-__import void  ISO_fseek(ISO_File file, System_size offset, enum_ISO_seekorigin whence);
+__import void  ISO_fseek(ISO_File file, System_size offset, ISO_seekorigin whence);
 __import System_size  ISO_ftell(ISO_File file);
 
 

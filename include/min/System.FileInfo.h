@@ -7,7 +7,7 @@
 #define have_System_FileInfo
 
 
-typedef System_uint32  enum_System_FileInfo_type;
+typedef System_uint32  System_FileInfo_type;
 
 #define System_FileInfo_type_Regular            0100000
 #define System_FileInfo_type_Directory          0040000

@@ -100,8 +100,6 @@ System_IEnumerator base_System_Array_getEnumerator(System_Array that) {
     return (System_IEnumerator)inline_System_ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_System_Array = const_System_String("System.Array");
-
 struct_System_Type_FunctionInfo System_ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Array_free },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Array_init, .value = base_System_Array_init },
@@ -119,9 +117,9 @@ struct_System_Type_InterfaceInfo System_ArrayTypeInterfaces[] = {
 
 struct_System_Type  System_ArrayType = {
     .base = stack_System_Object(System_Type),
-	.name = &STRING_System_Array,
+	.name = "System.Array",
 	.size = sizeof(struct_System_Array),
-	.baseType = &System_ArrayType,
+	.baseType = &System_ObjectType,
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = __sizeof_array(&System_ArrayTypeFunctions), .value = &System_ArrayTypeFunctions,
     },

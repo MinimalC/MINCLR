@@ -43,6 +43,7 @@ enum /* noname */ { System_null } ;
 #define __asm /* ? */
 /* #define __const  __declspec((const)) */
 #define __deprecated(msg)  __declspec(deprecated(msg))
+#define __used  /* ? */
 #define __noreturn  __declspec(noreturn)
 #define __nothrow  __declspec(nothrow)
 /* #define __thread  __declspec(thread) */
@@ -57,6 +58,7 @@ enum /* noname */ { System_null } ;
 #define __asm(name)  __asm__(name)
 /* #define __const  __attribute__ ((__const__)) */
 #define __deprecated(msg)  __attribute__((__deprecated__(msg)))
+#define __used  __attribute__((used))
 #define __noreturn  __attribute__((__noreturn__))
 #define __nothrow  __attribute__((__nothrow__))
 /* #define __thread  _Thread_local */
@@ -94,13 +96,8 @@ enum /* noname */ { System_null } ;
 #define __fixed  const
 #endif
 
-/* Example: unused(name) is to tell the compiler (void)name */
 #define __unused(name)  (void)(name);
 
-/* C enum's are used to be (signed) int. Do instead:
-:typedef unsigned int  enum_System_encoding;
-:define System_encoding_utf8  0xEFBBBF
-*/
 #define __enum(name)  __ff(enum,name)
 
 

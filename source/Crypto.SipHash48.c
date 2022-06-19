@@ -112,15 +112,13 @@ System_void  base_Crypto_SipHash48_free(Crypto_SipHash48 that) {
 #endif
 }
 
-struct_System_String  STRING_Crypto_SipHash48 = const_System_String("Crypto.SipHash48");
-
 struct_System_Type_FunctionInfo  Crypto_SipHash48TypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_Crypto_SipHash48_init },
 };
 
 struct_System_Type  Crypto_SipHash48Type = {
 	.base = { .Type = __typeof(System_Type) },
-	.name = &STRING_Crypto_SipHash48,
+	.name = "Crypto.SipHash48",
 	.size = sizeof(struct_Crypto_SipHash48),
 	.baseType = &System_ObjectType,
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),

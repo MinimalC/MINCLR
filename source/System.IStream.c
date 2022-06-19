@@ -12,16 +12,14 @@ System_void  base_System_IStream_sync(__IStream that) {  }
 
 System_size  base_System_IStream_read(__IStream that, __size count, __string8 value) { return 0; }
 
-System_void  base_System_IStream_seek(__IStream that, __ssize offset, enum_origin origin) { }
+System_void  base_System_IStream_seek(__IStream that, __ssize offset, __origin origin) { }
 
 System_size  base_System_IStream_get_Position(__IStream that) { return 0; }
 
 System_void  base_System_IStream_set_Position(__IStream that, __size value) { }
 
-struct_System_String  STRING_System_IStream = const_System_String("System.IStream");
-
 struct_System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_write, .value = base_System_IStream_write },
+    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_IStream_write", .function = base_System_IStream_write, .value = base_System_IStream_write },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = base_System_IStream_sync },
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = base_System_IStream_read },
     [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = base_System_IStream_seek },
@@ -30,7 +28,7 @@ struct_System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
 };
 
 struct_System_Type  System_IStreamType = { .base = stack_System_Object(System_Type),
-	.name = &STRING_System_IStream,
+	.name = "System.IStream",
     .size = sizeof(struct_System_IStream),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = __sizeof_array(System_IStreamTypeFunctions), .value = &System_IStreamTypeFunctions
