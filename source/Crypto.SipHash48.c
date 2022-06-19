@@ -122,7 +122,7 @@ struct_System_Type  Crypto_SipHash48Type = {
 	.size = sizeof(struct_Crypto_SipHash48),
 	.baseType = &System_ObjectType,
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&Crypto_SipHash48TypeFunctions), .value = &Crypto_SipHash48TypeFunctions
+        .length = __sizeof_array(Crypto_SipHash48TypeFunctions), .value = &Crypto_SipHash48TypeFunctions
     },
 };
 

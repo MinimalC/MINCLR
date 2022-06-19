@@ -51,8 +51,6 @@ System_boolean  base_System_ListEnumerator_moveNext(System_ListEnumerator that) 
     return __false;
 }
 
-struct_System_String  STRING_System_ListEnumerator = const_System_String("System.ListEnumerator");
-
 struct_System_Type_FunctionInfo  System_ListEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ListEnumerator_init, .value = base_System_ListEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_ListEnumerator_free },
@@ -61,11 +59,11 @@ struct_System_Type_FunctionInfo  System_ListEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  System_ListEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_ListEnumerator,
+    .name = "System.ListEnumerator",
     .size = sizeof(struct_System_ListEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_ListEnumeratorTypeFunctions), .value = &System_ListEnumeratorTypeFunctions
+        .length = __sizeof_array(System_ListEnumeratorTypeFunctions), .value = &System_ListEnumeratorTypeFunctions
     },
 };
 

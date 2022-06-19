@@ -58,7 +58,7 @@ struct_System_Type  System_ExceptionType = {
     .size = sizeof(struct_System_Exception),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_ExceptionTypeFunctions), .value = &System_ExceptionTypeFunctions
+        .length = __sizeof_array(System_ExceptionTypeFunctions), .value = &System_ExceptionTypeFunctions
     },
 };
 

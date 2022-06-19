@@ -50,8 +50,6 @@ System_boolean  base_System_ArrayEnumerator_moveNext(System_ArrayEnumerator that
     return __false;
 }
 
-struct_System_String  STRING_System_ArrayEnumerator = const_System_String("System.ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  System_ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ArrayEnumerator_init, .value = base_System_ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_ArrayEnumerator_free },
@@ -61,11 +59,11 @@ struct_System_Type_FunctionInfo  System_ArrayEnumeratorTypeFunctions[] = {
 
 struct_System_Type  System_ArrayEnumeratorType = {
     .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_ArrayEnumerator,
+    .name = "System.ArrayEnumerator",
     .size = sizeof(struct_System_ArrayEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_ArrayEnumeratorTypeFunctions), .value = &System_ArrayEnumeratorTypeFunctions
+        .length = __sizeof_array(System_ArrayEnumeratorTypeFunctions), .value = &System_ArrayEnumeratorTypeFunctions
     },
 };
 

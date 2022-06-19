@@ -90,10 +90,10 @@ struct_System_Type  System_FileType = {
     .size = sizeof(struct_System_File),
 	.baseType = &System_ObjectType,
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_FileTypeFunctions), .value = &System_FileTypeFunctions
+        .length = __sizeof_array(System_FileTypeFunctions), .value = &System_FileTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_FileTypeInterfaces), .value = &System_FileTypeInterfaces
+        .length = __sizeof_array(System_FileTypeInterfaces), .value = &System_FileTypeInterfaces
     },
 };
 

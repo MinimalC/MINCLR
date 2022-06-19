@@ -39,7 +39,7 @@ struct_System_Type  System_StreamWriterType = { .base = { .Type = __typeof(Syste
     .size = sizeof(struct_System_StreamWriter),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_StreamWriterTypeFunctions), .value = &System_StreamWriterTypeFunctions
+        .length = __sizeof_array(System_StreamWriterTypeFunctions), .value = &System_StreamWriterTypeFunctions
     },
 };
 #endif

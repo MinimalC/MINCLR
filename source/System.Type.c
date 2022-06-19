@@ -92,11 +92,10 @@ System_var System_Type_getMethod(System_Type  that, System_var fun) {
     System_assert(fun)
 
     System_size f, len;
-    struct_System_Type_FunctionInfo info0;
-    // TODO this doesn't work as expected
+    System_Type_FunctionInfo info0;
     for (f = 0; f < that->functions.length; ++f) {
-        info0 =  __array(that->functions.value)[f];
-        if (info0.function == fun) return info0.value;
+        info0 = &__array(that->functions.value)[f];
+        if (info0->function == fun) return info0->value;
     }
 
     if (that->baseType) return System_Type_getMethod(that->baseType, fun);

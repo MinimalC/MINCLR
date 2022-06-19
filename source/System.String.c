@@ -50,7 +50,7 @@ struct_System_Type  System_StringType = { .base = stack_System_Object(System_Typ
     .size = sizeof(struct_System_String),
     .baseType = __typeof(System_Object),
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_StringTypeFunctions), .value = &System_StringTypeFunctions
+        .length = __sizeof_array(System_StringTypeFunctions), .value = &System_StringTypeFunctions
     },
 };
 

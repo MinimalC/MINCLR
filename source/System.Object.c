@@ -144,7 +144,7 @@ struct_System_Type  System_ObjectType = { .base = { .Type = __typeof(System_Type
 	.size = sizeof(struct_System_Object),
 	.baseType = __null, /* this is System_Object */
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_ObjectTypeFunctions), .value = &System_ObjectTypeFunctions
+        .length = __sizeof_array(System_ObjectTypeFunctions), .value = &System_ObjectTypeFunctions
     },
 };
 

@@ -46,8 +46,6 @@ System_FileInfo  base_System_FileInfo_init(System_FileInfo that) {
     base_System_Object_free((System_Object)that);
 } */
 
-struct_System_String  STRING_System_FileInfo = const_System_String("System.FileInfo");
-
 struct_System_Type_FunctionInfo  System_FileInfoTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_FileInfo_init },
 /*    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_FileInfo_free }, */
@@ -55,11 +53,11 @@ struct_System_Type_FunctionInfo  System_FileInfoTypeFunctions[] = {
 
 struct_System_Type  System_FileInfoType = {
     .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_FileInfo,
+    .name = "System.FileInfo",
     .size = sizeof(struct_System_FileInfo),
     .baseType = &System_ObjectType,
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_FileInfoTypeFunctions), .value = &System_FileInfoTypeFunctions
+        .length = __sizeof_array(System_FileInfoTypeFunctions), .value = &System_FileInfoTypeFunctions
     },
 };
 

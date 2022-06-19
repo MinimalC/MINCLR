@@ -81,8 +81,6 @@ System_void  base_System_List_add(System_List that, System_Object object) {
     ++that->length;
 }
 
-struct_System_String  STRING_System_List = const_System_String("System.List");
-
 struct_System_Type_FunctionInfo  System_ListTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_List_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_List_free },
@@ -100,14 +98,14 @@ struct_System_Type_InterfaceInfo  System_ListTypeInterfaces[] = {
 };
 
 struct_System_Type  System_ListType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_List,
+    .name = "System.List",
     .size = sizeof(struct_System_List),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_ListTypeFunctions), .value = &System_ListTypeFunctions
+        .length = __sizeof_array(System_ListTypeFunctions), .value = &System_ListTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_ListTypeInterfaces), .value = &System_ListTypeInterfaces
+        .length = __sizeof_array(System_ListTypeInterfaces), .value = &System_ListTypeInterfaces
     },
 };
 

@@ -53,8 +53,6 @@ System_IEnumerator  base_System_uint8Array_getEnumerator(System_uint8Array that)
     return (System_IEnumerator)inline_System_uint8ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_System_uint8Array = const_System_String("System.uint8Array");
-
 struct_System_Type_FunctionInfo  System_uint8ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_uint8Array_init, .value = base_System_uint8Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_uint8Array_free },
@@ -70,14 +68,14 @@ struct_System_Type_InterfaceInfo  System_uint8ArrayTypeInterfaces[] = {
 };
 
 struct_System_Type  System_uint8ArrayType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_uint8Array,
+    .name = "System.uint8Array",
     .size = sizeof(struct_System_uint8Array),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_uint8ArrayTypeFunctions), .value = &System_uint8ArrayTypeFunctions
+        .length = __sizeof_array(System_uint8ArrayTypeFunctions), .value = &System_uint8ArrayTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_uint8ArrayTypeInterfaces), .value = &System_uint8ArrayTypeInterfaces
+        .length = __sizeof_array(System_uint8ArrayTypeInterfaces), .value = &System_uint8ArrayTypeInterfaces
     },
 };
 
@@ -136,8 +134,6 @@ System_boolean  base_System_uint8ArrayEnumerator_moveNext(System_uint8ArrayEnume
     return System_false;
 }
 
-struct_System_String  STRING_System_uint8ArrayEnumerator = const_System_String("System.uint8ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  System_uint8ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_uint8ArrayEnumerator_init, .value = base_System_uint8ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_uint8ArrayEnumerator_free },
@@ -146,11 +142,11 @@ struct_System_Type_FunctionInfo  System_uint8ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  System_uint8ArrayEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_uint8ArrayEnumerator,
+    .name = "System.uint8ArrayEnumerator",
     .size = sizeof(struct_System_uint8ArrayEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_uint8ArrayEnumeratorTypeFunctions), .value = &System_uint8ArrayEnumeratorTypeFunctions
+        .length = __sizeof_array(System_uint8ArrayEnumeratorTypeFunctions), .value = &System_uint8ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -210,8 +206,6 @@ System_IEnumerator  base_System_uint16Array_getEnumerator(System_uint16Array tha
     return (System_IEnumerator)inline_System_uint16ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_System_uint16Array = const_System_String("System.uint16Array");
-
 struct_System_Type_FunctionInfo  System_uint16ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_uint16Array_init, .value = base_System_uint16Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_uint16Array_free },
@@ -227,14 +221,14 @@ struct_System_Type_InterfaceInfo  System_uint16ArrayTypeInterfaces[] = {
 };
 
 struct_System_Type  System_uint16ArrayType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_uint16Array,
+    .name = "System.uint16Array",
     .size = sizeof(struct_System_uint16Array),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_uint16ArrayTypeFunctions), .value = &System_uint16ArrayTypeFunctions
+        .length = __sizeof_array(System_uint16ArrayTypeFunctions), .value = &System_uint16ArrayTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_uint16ArrayTypeInterfaces), .value = &System_uint16ArrayTypeInterfaces
+        .length = __sizeof_array(System_uint16ArrayTypeInterfaces), .value = &System_uint16ArrayTypeInterfaces
     },
 };
 
@@ -293,8 +287,6 @@ System_boolean  base_System_uint16ArrayEnumerator_moveNext(System_uint16ArrayEnu
     return System_false;
 }
 
-struct_System_String  STRING_System_uint16ArrayEnumerator = const_System_String("System.uint16ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  System_uint16ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_uint16ArrayEnumerator_init, .value = base_System_uint16ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_uint16ArrayEnumerator_free },
@@ -303,11 +295,11 @@ struct_System_Type_FunctionInfo  System_uint16ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  System_uint16ArrayEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_uint16ArrayEnumerator,
+    .name = "System.uint16ArrayEnumerator",
     .size = sizeof(struct_System_uint16ArrayEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_uint16ArrayEnumeratorTypeFunctions), .value = &System_uint16ArrayEnumeratorTypeFunctions
+        .length = __sizeof_array(System_uint16ArrayEnumeratorTypeFunctions), .value = &System_uint16ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -367,8 +359,6 @@ System_IEnumerator  base_System_uint32Array_getEnumerator(System_uint32Array tha
     return (System_IEnumerator)inline_System_uint32ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_System_uint32Array = const_System_String("System.uint32Array");
-
 struct_System_Type_FunctionInfo  System_uint32ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_uint32Array_init, .value = base_System_uint32Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_uint32Array_free },
@@ -384,14 +374,14 @@ struct_System_Type_InterfaceInfo  System_uint32ArrayTypeInterfaces[] = {
 };
 
 struct_System_Type  System_uint32ArrayType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_uint32Array,
+    .name = "System.uint32Array",
     .size = sizeof(struct_System_uint32Array),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_uint32ArrayTypeFunctions), .value = &System_uint32ArrayTypeFunctions
+        .length = __sizeof_array(System_uint32ArrayTypeFunctions), .value = &System_uint32ArrayTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_uint32ArrayTypeInterfaces), .value = &System_uint32ArrayTypeInterfaces
+        .length = __sizeof_array(System_uint32ArrayTypeInterfaces), .value = &System_uint32ArrayTypeInterfaces
     },
 };
 
@@ -450,8 +440,6 @@ System_boolean  base_System_uint32ArrayEnumerator_moveNext(System_uint32ArrayEnu
     return System_false;
 }
 
-struct_System_String  STRING_System_uint32ArrayEnumerator = const_System_String("System.uint32ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  System_uint32ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_uint32ArrayEnumerator_init, .value = base_System_uint32ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_uint32ArrayEnumerator_free },
@@ -460,11 +448,11 @@ struct_System_Type_FunctionInfo  System_uint32ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  System_uint32ArrayEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_uint32ArrayEnumerator,
+    .name = "System.uint32ArrayEnumerator",
     .size = sizeof(struct_System_uint32ArrayEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_uint32ArrayEnumeratorTypeFunctions), .value = &System_uint32ArrayEnumeratorTypeFunctions
+        .length = __sizeof_array(System_uint32ArrayEnumeratorTypeFunctions), .value = &System_uint32ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -524,8 +512,6 @@ System_IEnumerator  base_System_uint64Array_getEnumerator(System_uint64Array tha
     return (System_IEnumerator)inline_System_uint64ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_System_uint64Array = const_System_String("System.uint64Array");
-
 struct_System_Type_FunctionInfo  System_uint64ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_uint64Array_init, .value = base_System_uint64Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_uint64Array_free },
@@ -541,14 +527,14 @@ struct_System_Type_InterfaceInfo  System_uint64ArrayTypeInterfaces[] = {
 };
 
 struct_System_Type  System_uint64ArrayType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_uint64Array,
+    .name = "System.uint64Array",
     .size = sizeof(struct_System_uint64Array),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_uint64ArrayTypeFunctions), .value = &System_uint64ArrayTypeFunctions
+        .length = __sizeof_array(System_uint64ArrayTypeFunctions), .value = &System_uint64ArrayTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_uint64ArrayTypeInterfaces), .value = &System_uint64ArrayTypeInterfaces
+        .length = __sizeof_array(System_uint64ArrayTypeInterfaces), .value = &System_uint64ArrayTypeInterfaces
     },
 };
 
@@ -607,8 +593,6 @@ System_boolean  base_System_uint64ArrayEnumerator_moveNext(System_uint64ArrayEnu
     return System_false;
 }
 
-struct_System_String  STRING_System_uint64ArrayEnumerator = const_System_String("System.uint64ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  System_uint64ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_uint64ArrayEnumerator_init, .value = base_System_uint64ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_uint64ArrayEnumerator_free },
@@ -617,11 +601,11 @@ struct_System_Type_FunctionInfo  System_uint64ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  System_uint64ArrayEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_uint64ArrayEnumerator,
+    .name = "System.uint64ArrayEnumerator",
     .size = sizeof(struct_System_uint64ArrayEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_uint64ArrayEnumeratorTypeFunctions), .value = &System_uint64ArrayEnumeratorTypeFunctions
+        .length = __sizeof_array(System_uint64ArrayEnumeratorTypeFunctions), .value = &System_uint64ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -681,8 +665,6 @@ System_IEnumerator  base_System_int8Array_getEnumerator(System_int8Array that) {
     return (System_IEnumerator)inline_System_int8ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_System_int8Array = const_System_String("System.int8Array");
-
 struct_System_Type_FunctionInfo  System_int8ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_int8Array_init, .value = base_System_int8Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_int8Array_free },
@@ -698,14 +680,14 @@ struct_System_Type_InterfaceInfo  System_int8ArrayTypeInterfaces[] = {
 };
 
 struct_System_Type  System_int8ArrayType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_int8Array,
+    .name = "System.int8Array",
     .size = sizeof(struct_System_int8Array),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_int8ArrayTypeFunctions), .value = &System_int8ArrayTypeFunctions
+        .length = __sizeof_array(System_int8ArrayTypeFunctions), .value = &System_int8ArrayTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_int8ArrayTypeInterfaces), .value = &System_int8ArrayTypeInterfaces
+        .length = __sizeof_array(System_int8ArrayTypeInterfaces), .value = &System_int8ArrayTypeInterfaces
     },
 };
 
@@ -764,8 +746,6 @@ System_boolean  base_System_int8ArrayEnumerator_moveNext(System_int8ArrayEnumera
     return System_false;
 }
 
-struct_System_String  STRING_System_int8ArrayEnumerator = const_System_String("System.int8ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  System_int8ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_int8ArrayEnumerator_init, .value = base_System_int8ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_int8ArrayEnumerator_free },
@@ -774,11 +754,11 @@ struct_System_Type_FunctionInfo  System_int8ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  System_int8ArrayEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_int8ArrayEnumerator,
+    .name = "System.int8ArrayEnumerator",
     .size = sizeof(struct_System_int8ArrayEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_int8ArrayEnumeratorTypeFunctions), .value = &System_int8ArrayEnumeratorTypeFunctions
+        .length = __sizeof_array(System_int8ArrayEnumeratorTypeFunctions), .value = &System_int8ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -838,8 +818,6 @@ System_IEnumerator  base_System_int16Array_getEnumerator(System_int16Array that)
     return (System_IEnumerator)inline_System_int16ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_System_int16Array = const_System_String("System.int16Array");
-
 struct_System_Type_FunctionInfo  System_int16ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_int16Array_init, .value = base_System_int16Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_int16Array_free },
@@ -855,14 +833,14 @@ struct_System_Type_InterfaceInfo  System_int16ArrayTypeInterfaces[] = {
 };
 
 struct_System_Type  System_int16ArrayType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_int16Array,
+    .name = "System.int16Array",
     .size = sizeof(struct_System_int16Array),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_int16ArrayTypeFunctions), .value = &System_int16ArrayTypeFunctions
+        .length = __sizeof_array(System_int16ArrayTypeFunctions), .value = &System_int16ArrayTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_int16ArrayTypeInterfaces), .value = &System_int16ArrayTypeInterfaces
+        .length = __sizeof_array(System_int16ArrayTypeInterfaces), .value = &System_int16ArrayTypeInterfaces
     },
 };
 
@@ -921,8 +899,6 @@ System_boolean  base_System_int16ArrayEnumerator_moveNext(System_int16ArrayEnume
     return System_false;
 }
 
-struct_System_String  STRING_System_int16ArrayEnumerator = const_System_String("System.int16ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  System_int16ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_int16ArrayEnumerator_init, .value = base_System_int16ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_int16ArrayEnumerator_free },
@@ -931,11 +907,11 @@ struct_System_Type_FunctionInfo  System_int16ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  System_int16ArrayEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_int16ArrayEnumerator,
+    .name = "System.int16ArrayEnumerator",
     .size = sizeof(struct_System_int16ArrayEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_int16ArrayEnumeratorTypeFunctions), .value = &System_int16ArrayEnumeratorTypeFunctions
+        .length = __sizeof_array(System_int16ArrayEnumeratorTypeFunctions), .value = &System_int16ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -995,8 +971,6 @@ System_IEnumerator  base_System_int32Array_getEnumerator(System_int32Array that)
     return (System_IEnumerator)inline_System_int32ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_System_int32Array = const_System_String("System.int32Array");
-
 struct_System_Type_FunctionInfo  System_int32ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_int32Array_init, .value = base_System_int32Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_int32Array_free },
@@ -1012,14 +986,14 @@ struct_System_Type_InterfaceInfo  System_int32ArrayTypeInterfaces[] = {
 };
 
 struct_System_Type  System_int32ArrayType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_int32Array,
+    .name = "System.int32Array",
     .size = sizeof(struct_System_int32Array),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_int32ArrayTypeFunctions), .value = &System_int32ArrayTypeFunctions
+        .length = __sizeof_array(System_int32ArrayTypeFunctions), .value = &System_int32ArrayTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_int32ArrayTypeInterfaces), .value = &System_int32ArrayTypeInterfaces
+        .length = __sizeof_array(System_int32ArrayTypeInterfaces), .value = &System_int32ArrayTypeInterfaces
     },
 };
 
@@ -1078,8 +1052,6 @@ System_boolean  base_System_int32ArrayEnumerator_moveNext(System_int32ArrayEnume
     return System_false;
 }
 
-struct_System_String  STRING_System_int32ArrayEnumerator = const_System_String("System.int32ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  System_int32ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_int32ArrayEnumerator_init, .value = base_System_int32ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_int32ArrayEnumerator_free },
@@ -1088,11 +1060,11 @@ struct_System_Type_FunctionInfo  System_int32ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  System_int32ArrayEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_int32ArrayEnumerator,
+    .name = "System.int32ArrayEnumerator",
     .size = sizeof(struct_System_int32ArrayEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_int32ArrayEnumeratorTypeFunctions), .value = &System_int32ArrayEnumeratorTypeFunctions
+        .length = __sizeof_array(System_int32ArrayEnumeratorTypeFunctions), .value = &System_int32ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -1152,8 +1124,6 @@ System_IEnumerator  base_System_int64Array_getEnumerator(System_int64Array that)
     return (System_IEnumerator)inline_System_int64ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_System_int64Array = const_System_String("System.int64Array");
-
 struct_System_Type_FunctionInfo  System_int64ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_int64Array_init, .value = base_System_int64Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_int64Array_free },
@@ -1169,14 +1139,14 @@ struct_System_Type_InterfaceInfo  System_int64ArrayTypeInterfaces[] = {
 };
 
 struct_System_Type  System_int64ArrayType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_int64Array,
+    .name = "System.int64Array",
     .size = sizeof(struct_System_int64Array),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_int64ArrayTypeFunctions), .value = &System_int64ArrayTypeFunctions
+        .length = __sizeof_array(System_int64ArrayTypeFunctions), .value = &System_int64ArrayTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_int64ArrayTypeInterfaces), .value = &System_int64ArrayTypeInterfaces
+        .length = __sizeof_array(System_int64ArrayTypeInterfaces), .value = &System_int64ArrayTypeInterfaces
     },
 };
 
@@ -1235,8 +1205,6 @@ System_boolean  base_System_int64ArrayEnumerator_moveNext(System_int64ArrayEnume
     return System_false;
 }
 
-struct_System_String  STRING_System_int64ArrayEnumerator = const_System_String("System.int64ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  System_int64ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_int64ArrayEnumerator_init, .value = base_System_int64ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_int64ArrayEnumerator_free },
@@ -1245,168 +1213,11 @@ struct_System_Type_FunctionInfo  System_int64ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  System_int64ArrayEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_int64ArrayEnumerator,
+    .name = "System.int64ArrayEnumerator",
     .size = sizeof(struct_System_int64ArrayEnumerator),
     .baseType = __typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_int64ArrayEnumeratorTypeFunctions), .value = &System_int64ArrayEnumeratorTypeFunctions
-    },
-};
-
-#endif
-/* Gemeinfrei. Public Domain. */
-/* AUTOGEN */
-#if !defined(have_System_Type)
-#warning "System.Type.h not included"
-#include <min/System.Type.h>
-#endif
-#if !defined(code_auto_System_string8Array)
-#define code_auto_System_string8Array
-
-/*# System_string8Array #*/
-
-System_string8Array  System_string8Array_new(System_size length) {
-    return inline_System_string8Array_new(length);
-}
-
-System_string8Array base_System_string8Array_init(System_string8Array that, System_size length) {
-    base_System_Object_init((System_Object)that);
-
-    that->length = length;
-
-    System_size element_size = sizeof(System_string8);
-    System_string8 (* array)[] =  System_Memory_alloc(length * element_size);
-    that->value = array;
-
-    return that;
-}
-
-void  base_System_string8Array_free(System_string8Array that) {
-    System_Memory_free((void **)&that->value);
-
-    base_System_Object_free((System_Object)that);
-}
-
-System_size  base_System_string8Array_get_Length(System_string8Array that) {
-    return that->length;
-}
-
-System_string8  base_System_string8Array_get_index(System_string8Array that, System_size index) {
-    return __array(that->value)[index];
-}
-
-void  base_System_string8Array_set_index(System_string8Array that, System_size index, System_string8 value) {
-    __array(that->value)[index] = value;
-}
-
-void  base_System_string8Array_resize(System_string8Array that, System_size length) {
-    System_size element_size = sizeof(System_string8);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
-    that->length = length;
-}
-
-System_IEnumerator  base_System_string8Array_getEnumerator(System_string8Array that) {
-    return (System_IEnumerator)inline_System_string8ArrayEnumerator_new(that);
-}
-
-struct_System_String  STRING_System_string8Array = const_System_String("System.string8Array");
-
-struct_System_Type_FunctionInfo  System_string8ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_string8Array_init, .value = base_System_string8Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_string8Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_string8Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_string8Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_string8Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_string8Array_resize, .value = base_System_string8Array_resize },
-};
-
-struct_System_Type_InterfaceInfo  System_string8ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
-};
-
-struct_System_Type  System_string8ArrayType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_string8Array,
-    .size = sizeof(struct_System_string8Array),
-    .baseType = __typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_string8ArrayTypeFunctions), .value = &System_string8ArrayTypeFunctions
-    },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_string8ArrayTypeInterfaces), .value = &System_string8ArrayTypeInterfaces
-    },
-};
-
-#endif
-/* Gemeinfrei. Public Domain. */
-/* AUTOGEN */
-#if !defined(have_System_Type)
-#warning "System.Type.h not included"
-#include <min/System.Type.h>
-#endif
-#if !defined(code_auto_System_string8ArrayEnumerator)
-#define code_auto_System_string8ArrayEnumerator
-
-/*# System_string8ArrayEnumerator #*/
-
-System_string8ArrayEnumerator  System_string8ArrayEnumerator_new(System_string8Array array) {
-    return inline_System_string8ArrayEnumerator_new(array);
-}
-
-System_string8ArrayEnumerator  base_System_string8ArrayEnumerator_init(System_string8ArrayEnumerator that, System_string8Array array) {
-    base_System_Object_init((System_Object)that);
-
-    if (!array) __throw_terminate(inline_System_Exception_new("ArgumentNullException_new: array is null"));
-
-    that->array = (System_string8Array)System_Object_addReference((System_Object)array);
-    that->index = -1;
-
-    return that;
-}
-
-System_void  base_System_string8ArrayEnumerator_free(System_string8ArrayEnumerator that) {
-
-    inline_System_Object_freeClass(&that->array);
-    that->index = -2;
-
-    base_System_Object_free((System_Object)that);
-}
-
-System_string8  base_System_string8ArrayEnumerator_get_current(System_string8ArrayEnumerator that) {
-
-    if (that->index == -2) __throw_terminate(inline_System_Exception_new("InvalidOperationException_new: Enumerator already free"));
-    if (that->index == -1) __throw_return(inline_System_Exception_new("InvalidOperationException_new: Index Out of Range. No items to enumerate"));
-
-    return System_string8Array_get_index(that->array, that->index);
-}
-
-System_boolean  base_System_string8ArrayEnumerator_moveNext(System_string8ArrayEnumerator that) {
-
-    if (that->index == -2) __throw_terminate(inline_System_Exception_new("InvalidOperationException_new: Enumerator already free"));
-
-    System_size new_index = ++(that->index);
-    if (new_index < that->array->length) {
-        that->index = new_index;
-        return System_true;
-    }
-    return System_false;
-}
-
-struct_System_String  STRING_System_string8ArrayEnumerator = const_System_String("System.string8ArrayEnumerator");
-
-struct_System_Type_FunctionInfo  System_string8ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_string8ArrayEnumerator_init, .value = base_System_string8ArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_string8ArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_string8ArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_string8ArrayEnumerator_moveNext },
-};
-
-struct_System_Type  System_string8ArrayEnumeratorType = { .base = { .Type = __typeof(System_Type) },
-    .name = &STRING_System_string8ArrayEnumerator,
-    .size = sizeof(struct_System_string8ArrayEnumerator),
-    .baseType = __typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_string8ArrayEnumeratorTypeFunctions), .value = &System_string8ArrayEnumeratorTypeFunctions
+        .length = __sizeof_array(System_int64ArrayEnumeratorTypeFunctions), .value = &System_int64ArrayEnumeratorTypeFunctions
     },
 };
 

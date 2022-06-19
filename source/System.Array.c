@@ -121,10 +121,10 @@ struct_System_Type  System_ArrayType = {
 	.size = sizeof(struct_System_Array),
 	.baseType = &System_ObjectType,
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_ArrayTypeFunctions), .value = &System_ArrayTypeFunctions,
+        .length = __sizeof_array(System_ArrayTypeFunctions), .value = &System_ArrayTypeFunctions,
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&System_ArrayTypeInterfaces), .value = &System_ArrayTypeInterfaces,
+        .length = __sizeof_array(System_ArrayTypeInterfaces), .value = &System_ArrayTypeInterfaces,
     },
 };
 

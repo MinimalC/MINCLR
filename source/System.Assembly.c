@@ -63,7 +63,7 @@ struct_System_Type  System_AssemblyType = {
 	.size = sizeof(struct_System_Assembly),
 	.baseType = &System_ObjectType,
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_AssemblyTypeFunctions), .value = &System_AssemblyTypeFunctions
+        .length = __sizeof_array(System_AssemblyTypeFunctions), .value = &System_AssemblyTypeFunctions
     },
 };
 

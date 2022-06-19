@@ -32,7 +32,7 @@ struct_System_Type  System_Syscall_commandType = { .base = { .Type = __typeof(Sy
     .name = "System.Syscall.command",
     .size = sizeof(System_Syscall_command),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
-        .value = &System_Syscall_commandTypeFields, .length = __sizeof_array(&System_Syscall_commandTypeFields),
+        .value = &System_Syscall_commandTypeFields, .length = __sizeof_array(System_Syscall_commandTypeFields),
     },
 };
 
@@ -50,7 +50,7 @@ struct_System_Type  System_errorType = { .base = { .Type = __typeof(System_Type)
     .name = "System.error",
     .size = sizeof(System_error),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
-        .value = &System_errorTypeFields, .length = __sizeof_array(&System_errorTypeFields),
+        .value = &System_errorTypeFields, .length = __sizeof_array(System_errorTypeFields),
     },
 };
 
@@ -70,14 +70,8 @@ System_SystemException  base_System_SystemException_init(System_SystemException 
     return that;
 }
 
-/* void  base_System_SystemException_free(System_SystemException that) {
-
-    base_System_Object_free((System_Object)that);
-} */
-
 struct_System_Type_FunctionInfo  System_SystemExceptionTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_SystemException_init },
-/*    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_SystemException_free }, */
 };
 
 struct_System_Type  System_SystemExceptionType = { .base = { .Type = __typeof(System_Type) },
@@ -85,7 +79,7 @@ struct_System_Type  System_SystemExceptionType = { .base = { .Type = __typeof(Sy
     .size = sizeof(struct_System_SystemException),
     .baseType = __typeof(System_Exception),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&System_SystemExceptionTypeFunctions), .value = &System_SystemExceptionTypeFunctions
+        .length = __sizeof_array(System_SystemExceptionTypeFunctions), .value = &System_SystemExceptionTypeFunctions
     },
 };
 
