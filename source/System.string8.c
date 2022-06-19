@@ -142,7 +142,7 @@ struct_string8 WARNING = "WARNING! ";
 void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix, __IStream stream, __arguments args) {
     __size argc = __argument(args, __size); /* this is expecting a size as first argument or null */
     if (argc > 16) { argc = 0;
-        base_System_File_write((System_File)stream, sizeof(WARNING), WARNING);
+        System_IStream_write(stream, sizeof(WARNING), WARNING);
     }
 
     __size i;
@@ -155,7 +155,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
 
     __size format_length = __string8_get_Length(format);
     if (format_length > 512) { format_length = 512;
-        base_System_File_write((System_File)stream, sizeof(WARNING), WARNING);
+        System_IStream_write(stream, sizeof(WARNING), WARNING);
     }
 
     __size message_position = 0, n = 0, begin, end, argi, speci;
@@ -177,7 +177,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
         }
         if (begin) {
             if (!end) {
-                base_System_File_write((System_File)stream, sizeof(WARNING), WARNING);
+                System_IStream_write(stream, sizeof(WARNING), WARNING);
             }
 
             m = message + begin + 1;
@@ -202,7 +202,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
             }
             if (begin) {
                 if (!end) {
-                    base_System_File_write((System_File)stream, sizeof(WARNING), WARNING); /* TODO: Console_warning */
+                    System_IStream_write(stream, sizeof(WARNING), WARNING); /* TODO: Console_warning */
                 }
 
                 m = message + begin + 1;
@@ -252,7 +252,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
                     format_length += sizeof("hexadecimal");
                 }
                 else {
-                    base_System_File_write((System_File)stream, sizeof(WARNING), WARNING); /* TODO: Console_warning */
+                    System_IStream_write(stream, sizeof(WARNING), WARNING); /* TODO: Console_warning */
                 }
             }
         }
@@ -267,7 +267,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
 
     if (suffix) message[format_length++] = suffix;
 
-    base_System_File_write((System_File)stream, format_length, message);
+    System_IStream_write(stream, format_length, message);
 }
 
 

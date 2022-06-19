@@ -67,7 +67,7 @@ void System_Console_terminate(const __size code)  {
 }
 
 void  System_Console_write0(__string8 string) {
-    base_System_File_write(&System_Console_StdOut, __string8_get_Length(string), string);
+    System_File_write(&System_Console_StdOut, __string8_get_Length(string), string);
 }
 
 void  System_Console_write(__string8 format, ...) {
