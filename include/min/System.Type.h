@@ -234,8 +234,7 @@ __export System_var System_Type_getMethod(System_Type  that, System_var function
 
 // __private inline __artificial System_var inline_System_Type_getMethod(System_Type  that, System_var function) {
 
-// __export System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other);
-__export System_boolean  System_Type_isInstanceOf(System_Type  that, System_Type  other);
+__export System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other);
 
 #if defined(using_System)
 #define __Type_getMethod  System_Type_getMethod

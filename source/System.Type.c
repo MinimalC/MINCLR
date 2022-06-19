@@ -91,11 +91,10 @@ System_var System_Type_getMethod(System_Type  that, System_var fun) {
     System_assert(that)
     System_assert(fun)
 
-    System_size f, len;
-    System_Type_FunctionInfo info0;
-    for (f = 0; f < that->functions.length; ++f) {
-        info0 = &__array(that->functions.value)[f];
-        if (info0->function == fun) return info0->value;
+    System_Type_FunctionInfo info;
+    for (System_size f = 0; f < that->functions.length; ++f) {
+        info = &__array(that->functions.value)[f];
+        if (fun == info->function) return info->value;
     }
 
     if (that->baseType) return System_Type_getMethod(that->baseType, fun);
@@ -103,13 +102,19 @@ System_var System_Type_getMethod(System_Type  that, System_var fun) {
     __throw_terminate(inline_System_Exception_new("NotImplementedException_new: Method not found"));
 }
 
-System_boolean  System_Type_isInstanceOf(System_Type  that, System_Type  other) {
+System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other) {
+    __assert(that)
     __assert(other)
 
-    System_Type other_type = other;
-    while (other_type) {
-        if (that == other_type) return __true;
-        other_type = other->baseType;
+    System_Type they = that;
+    System_Type_InterfaceInfo info;
+    while (they) {
+        if (other == they) return __true;
+        for (System_size f = 0; f < they->interfaces.length; ++f) {
+            info = &__array(they->interfaces.value)[f];
+            if (other == info->interfaceType) return __true;
+        }
+        they = they->baseType;
     }
     return __false;
 }

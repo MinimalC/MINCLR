@@ -13,8 +13,8 @@ __export System_Object  System_Object_new();
 __export System_Object  System_Object_allocClass(System_Type type);
 __export System_void  System_Object_freeClass(System_Object  * that);
 __export System_Type  System_Object_get_Type(System_Object that);
-__export System_boolean  System_Object_isType(System_Object that, System_Type type);
-__export System_Object  System_Object_asType(System_Object that, System_Type type);
+__export System_boolean  System_Object_isInstanceOf(System_Object that, System_Type type);
+__export System_Object  System_Object_asInstanceOf(System_Object that, System_Type type);
 __export System_boolean  System_Object_referenceEquals(System_Object that, System_Object other);
 __export System_Object  System_Object_addReference(System_Object that);
 
@@ -22,8 +22,8 @@ __export System_Object  System_Object_addReference(System_Object that);
 #define inline_System_Object_allocClass(T)  ((T)System_Object_allocClass(__typeof(T)))
 #define inline_System_Object_freeClass(T)  ((System_void)System_Object_freeClass((System_Object *)T))
 #define inline_System_Object_get_Type(that)  ((System_Object)that)->Type
-#define inline_System_Object_isType(o,T)  (System_Object_isType((System_Object)o,__typeof(T)))
-#define inline_System_Object_asType(o,T)  ((T)System_Object_asType((System_Object)o,__typeof(T)))
+#define inline_System_Object_isInstanceOf(o,T)  (System_Object_isInstanceOf((System_Object)o,__typeof(T)))
+#define inline_System_Object_asInstanceOf(o,T)  ((T)System_Object_asInstanceOf((System_Object)o,__typeof(T)))
 #define inline_System_Object_referenceEquals(THAT,OTHER)  (THAT == OTHER)
 
 #if defined(using_System)
@@ -37,8 +37,8 @@ __export System_Object  System_Object_addReference(System_Object that);
 #define __Object_allocClass  System_Object_allocClass
 #define __Object_freeClass  System_Object_freeClass
 #define __Object_get_Type  System_Object_get_Type
-#define __Object_isType  System_Object_isType
-#define __Object_asType  System_Object_asType
+#define __Object_isInstanceOf  System_Object_isInstanceOf
+#define __Object_asInstanceOf  System_Object_asInstanceOf
 #define __Object_referenceEquals  System_Object_referenceEquals
 
 #define inline_Object_new  inline_System_Object_new
@@ -51,8 +51,8 @@ __export System_Object  System_Object_addReference(System_Object that);
 
 #define __Object_addReference  System_Object_addReference
 
-#define __is  inline_Object_isType
-#define __as  inline_Object_asType
+#define __is  inline_Object_isInstanceOf
+#define __as  inline_Object_asInstanceOf
 #endif
 
 

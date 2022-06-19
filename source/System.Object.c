@@ -110,15 +110,16 @@ __Type  System_Object_get_Type(__Object that) {
     return that->Type;
 }
 
-System_boolean  System_Object_isType(System_Object that, System_Type type) {
+System_boolean  System_Object_isInstanceOf(System_Object that, System_Type type) {
+    __assert(that)
     __assert(type)
-    if (!that) return __false;
-    return System_Type_isInstanceOf(System_Object_get_Type(that), type);
+    return System_Type_isAssignableFrom(System_Object_get_Type(that), type);
 }
 
-System_Object  System_Object_asType(System_Object that, System_Type type) {
-    if (!that) return __null;
-    return System_Object_isType(that, type) ? that : __null;
+System_Object  System_Object_asInstanceOf(System_Object that, System_Type type) {
+    __assert(that)
+    __assert(type)
+    return System_Object_isInstanceOf(that, type) ? that : __null;
 }
 
 System_uint64 base_System_Object_getSipHash(System_Object that) {
