@@ -2,8 +2,7 @@
 #define Generic_T0  System_uint8
 /* GENERIC */
 #if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#include "System.internal.h"
 #endif
 #if !defined(code_auto_Generic_T0)
 #define code_auto_Generic_T0

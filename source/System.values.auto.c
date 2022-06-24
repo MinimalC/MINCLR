@@ -1,8 +1,7 @@
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#include "System.internal.h"
 #endif
 #if !defined(code_auto_System_uint8)
 #define code_auto_System_uint8
@@ -137,8 +136,7 @@ System_size  System_uint8_tostring8base10__stack(System_uint8 that, System_char8
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#include "System.internal.h"
 #endif
 #if !defined(code_auto_System_uint16)
 #define code_auto_System_uint16
@@ -273,8 +271,7 @@ System_size  System_uint16_tostring8base10__stack(System_uint16 that, System_cha
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#include "System.internal.h"
 #endif
 #if !defined(code_auto_System_uint32)
 #define code_auto_System_uint32
@@ -409,8 +406,7 @@ System_size  System_uint32_tostring8base10__stack(System_uint32 that, System_cha
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#include "System.internal.h"
 #endif
 #if !defined(code_auto_System_uint64)
 #define code_auto_System_uint64
@@ -545,8 +541,7 @@ System_size  System_uint64_tostring8base10__stack(System_uint64 that, System_cha
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#include "System.internal.h"
 #endif
 #if !defined(code_auto_System_int8)
 #define code_auto_System_int8
@@ -701,8 +696,7 @@ System_size  System_int8_tostring8base10__stack(System_int8 that, System_char8 a
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#include "System.internal.h"
 #endif
 #if !defined(code_auto_System_int16)
 #define code_auto_System_int16
@@ -857,8 +851,7 @@ System_size  System_int16_tostring8base10__stack(System_int16 that, System_char8
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#include "System.internal.h"
 #endif
 #if !defined(code_auto_System_int32)
 #define code_auto_System_int32
@@ -1013,8 +1006,7 @@ System_size  System_int32_tostring8base10__stack(System_int32 that, System_char8
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#include "System.internal.h"
 #endif
 #if !defined(code_auto_System_int64)
 #define code_auto_System_int64

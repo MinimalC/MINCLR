@@ -14,15 +14,19 @@
 #include "System.IStream.h"
 
 
-#include "System.Object.h"
+#include "System.values.auto.h"
+
+#include "System.decimal.h"
 
 #include "System.string8.h"
+
+
+#include "System.Object.h"
+
 #include "System.String.h"
 
 #include "System.Exception.h"
 
-
-#include "System.valueArrays.auto.h"
 
 #include "System.Array.h"
 #include "System.ArrayEnumerator.h"
@@ -31,14 +35,12 @@
 
 #include "System.Memory.h"
 
-#include "System.decimal.h"
-
 #include "System.Math.h"
 
 #include "Crypto.SipHash48.h"
 
 
-#include "System.StreamWriter.h"
+/* #include "System.StreamWriter.h" */
 
 #include "System.Syscall.h"
 
@@ -49,12 +51,14 @@
 #include "System.Console.h"
 
 
+#include "System.valueArrays.auto.h"
+
 #include "System.List.h"
 #include "System.ListEnumerator.h"
 
 #include "System.Dictionary.h"
 
-#include "System.Directory.h"
+/* #include "System.Directory.h" */
 
 
 #include "System.Assembly.h"

@@ -218,9 +218,6 @@ __export struct_System_Type  System_booleanType;
 #define __booleanType  System_booleanType
 #endif
 
-#include "System.values.auto.h"
-
-
 __export System_string8  System_enum_getName(System_Type type, System_intptr value);
 
 #define inline_System_enum_getName(__CLASS, __VALUE)  System_enum_getName(__typeof(__CLASS), (System_intptr)(__VALUE))

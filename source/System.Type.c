@@ -44,12 +44,7 @@ struct_System_Type  System_sizeType     = { .base = stack_System_Object(System_T
 struct_System_Type  System_ssizeType    = { .base = stack_System_Object(System_Type), .name = "System.ssize",   .size = sizeof(System_ssize) };
 struct_System_Type  System_intptrType   = { .base = stack_System_Object(System_Type), .name = "System.intptr",  .size = sizeof(System_intptr) };
 struct_System_Type  System_sintptrType  = { .base = stack_System_Object(System_Type), .name = "System.sintptr", .size = sizeof(System_sintptr) };
-
 struct_System_Type  System_booleanType  = { .base = stack_System_Object(System_Type), .name = "System.boolean", .size = sizeof(System_boolean) };
-
-#include "System.values.auto.c"
-
-#include "System.decimal.c"
 
 struct_System_Type  System_Type_FunctionInfoType = { .base = stack_System_Object(System_Type),
 	.name = "System.Type.FunctionInfo",

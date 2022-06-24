@@ -284,19 +284,24 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
                 }
 
                 if (__string8_compareSubstring(begin1, "object", sizeof("object") - 1) >= 3) {
-
+                    /* DEBUG */
                     __string8_copyToAt("object", message, message_length);
                     message_length += sizeof("object") - 1;
+                }
+                else if (__string8_compareSubstring(begin1, "character", sizeof("character") - 1) >= 4) {
+                    /* DEBUG */
+                    __string8_copyToAt("character", message, message_length);
+                    message_length += sizeof("character") - 1;
                 }
                 else if (__string8_compareSubstring(begin1, "string", sizeof("string") - 1) >= 3) {
 
                     __string8_copyToAt((__string8)argv[argi], message, message_length);
                     message_length += __string8_get_Length(argv[argi]);
                 }
-                else if (__string8_compareSubstring(begin1, "character", sizeof("character") - 1) >= 4) {
-
-                    __string8_copyToAt("character", message, message_length);
-                    message_length += sizeof("character") - 1;
+                else if (__string8_compareSubstring(begin1, "decimal", sizeof("decimal") - 1) >= 3) {
+                    /* DEBUG */
+                    __string8_copyToAt("decimal", message, message_length);
+                    message_length += sizeof("decimal") - 1;
                 }
                 else if (__string8_compareSubstring(begin1, "boolean", sizeof("boolean") - 1) >= 4) {
 
