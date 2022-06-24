@@ -1,5 +1,12 @@
-#if !defined(have_System)
+/* Gemeinfrei. Public Domain. */
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_File)
+#include <min/System.File.h>
+#endif
+#if !defined(have_System_Syscall)
+#include <min/System.Syscall.h>
 #endif
 #if !defined(code_System_File)
 #define code_System_File

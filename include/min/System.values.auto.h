@@ -1,8 +1,10 @@
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_decimal)
+#include "System.decimal.h"
 #endif
 #if !defined(have_auto_System_uint8)
 #define have_auto_System_uint8
@@ -30,9 +32,11 @@ __export System_size  System_uint8_tostring8base10__stack(System_uint8 that, Sys
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_decimal)
+#include "System.decimal.h"
 #endif
 #if !defined(have_auto_System_uint16)
 #define have_auto_System_uint16
@@ -60,9 +64,11 @@ __export System_size  System_uint16_tostring8base10__stack(System_uint16 that, S
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_decimal)
+#include "System.decimal.h"
 #endif
 #if !defined(have_auto_System_uint32)
 #define have_auto_System_uint32
@@ -90,9 +96,11 @@ __export System_size  System_uint32_tostring8base10__stack(System_uint32 that, S
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_decimal)
+#include "System.decimal.h"
 #endif
 #if !defined(have_auto_System_uint64)
 #define have_auto_System_uint64
@@ -120,9 +128,11 @@ __export System_size  System_uint64_tostring8base10__stack(System_uint64 that, S
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_decimal)
+#include "System.decimal.h"
 #endif
 #if !defined(have_auto_System_int8)
 #define have_auto_System_int8
@@ -150,9 +160,11 @@ __export System_size  System_int8_tostring8base10__stack(System_int8 that, Syste
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_decimal)
+#include "System.decimal.h"
 #endif
 #if !defined(have_auto_System_int16)
 #define have_auto_System_int16
@@ -180,9 +192,11 @@ __export System_size  System_int16_tostring8base10__stack(System_int16 that, Sys
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_decimal)
+#include "System.decimal.h"
 #endif
 #if !defined(have_auto_System_int32)
 #define have_auto_System_int32
@@ -210,9 +224,11 @@ __export System_size  System_int32_tostring8base10__stack(System_int32 that, Sys
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_decimal)
+#include "System.decimal.h"
 #endif
 #if !defined(have_auto_System_int64)
 #define have_auto_System_int64

@@ -1,5 +1,9 @@
-#if !defined(have_System)
+/* Gemeinfrei. Public Domain. */
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_IEnumerable)
+#include <min/System.IEnumerable.h>
 #endif
 #if !defined(code_System_IEnumerable)
 #define code_System_IEnumerable

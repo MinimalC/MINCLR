@@ -1,5 +1,9 @@
-#if !defined(have_System)
+/* Gemeinfrei. Public Domain. */
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_Crypto_SipHash48)
+#include <min/Crypto.SipHash48.h>
 #endif
 #if !defined(code_Crypto_SipHash48)
 #define code_Crypto_SipHash48

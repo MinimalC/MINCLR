@@ -1,6 +1,9 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System)
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_Syscall)
+#include <min/System.Syscall.h>
 #endif
 #if !defined(code_System_Syscall_command)
 #define code_System_Syscall_command

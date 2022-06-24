@@ -1,5 +1,17 @@
-#if !defined(have_System)
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_Console)
+#include <min/System.Console.h>
+#endif
+#if !defined(have_System_Syscall)
+#include <min/System.Syscall.h>
+#endif
+#if !defined(have_System_string8)
+#include <min/System.string8.h>
+#endif
+#if !defined(have_ISO)
+#include <min/ISO.h>
 #endif
 #if !defined(code_System_Console)
 #define code_System_Console
@@ -100,15 +112,6 @@ void System_Console_printByte(__uint8 byte) {
     ISO_putc(byte, ISO_stdout);
 }
 
-void System_Console_printString(__String format, ...) {
-    if (!format || !format->value) return;
-
-    __arguments args;
-    __arguments_start(args, (void *)format);
-    ISO_vfprintf(ISO_stdout, format->value, args);
-    __arguments_end(args);
-}
-
 #define __hexdump_Columns  32
 
 void System_Console_printHex(const __uint32 length, const void  * value) {
@@ -144,7 +147,7 @@ void System_Console_printHex(const __uint32 length, const void  * value) {
                 {
                     __Console_printByte(' ');
                 }
-                else if(System_uint8_isPrintable(memory[j])) /* printable char */
+                else if(System_char8_isPrintable(memory[j])) /* printable char */
                 {
                     __Console_printByte(0xFF & (memory[j]));
                 }
@@ -156,12 +159,6 @@ void System_Console_printHex(const __uint32 length, const void  * value) {
             __Console_printByte('\n');
         }
     }
-}
-
-void System_Console_printHexString(__String hexString) {
-    if (!hexString || !hexString->length || !hexString->value) return;
-
-    System_Console_printHex(hexString->length, hexString->value);
 }
 
 void System_Console_printLineEmpty() {
@@ -179,14 +176,5 @@ void System_Console_printLine(__string8 format, ...) {
     System_Console_printLineEmpty();
 }
 
-void System_Console_printStringLine(__String format, ...) {
-    __arguments args;
-
-    __arguments_start(args, (void *)format);
-    System_Console_printString(format, args);
-    __arguments_end(args);
-
-    System_Console_printLineEmpty();
-}
 
 #endif

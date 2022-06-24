@@ -1,5 +1,8 @@
-#if !defined(have_System)
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_Type)
+#include <min/System.Type.h>
 #endif
 #if !defined(System_Windows__C)
 #define System_Windows__C

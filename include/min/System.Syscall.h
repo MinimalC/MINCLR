@@ -1,7 +1,9 @@
 /* Gemeinfrei. Public Domain. */
 #if !defined(have_System_Type)
-#warning "System.Type.h not included"
 #include "System.Type.h"
+#endif
+#if !defined(have_System_Exception)
+#include "System.Exception.h"
 #endif
 #if !defined(have_System_error)
 #include "System.error.h"

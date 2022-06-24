@@ -1,5 +1,15 @@
-#if !defined(have_System)
+/* Gemeinfrei. Public Domain. */
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_Object)
+#include <min/System.Type.h>
+#endif
+#if !defined(have_System_Memory)
+#include <min/System.Memory.h>
+#endif
+#if !defined(have_Crypto_SipHash48)
+#include <min/Crypto.SipHash48.h>
 #endif
 #if !defined(code_System_Object)
 #define code_System_Object

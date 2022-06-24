@@ -1,5 +1,8 @@
-#if !defined(have_System)
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_Array)
+#include <min/System.Array.h>
 #endif
 #if !defined(code_System_Array)
 #define code_System_Array

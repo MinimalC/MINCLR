@@ -1,6 +1,8 @@
 #if !defined(have_System_Type)
-#warning "System.Type.h not included"
 #include "System.Type.h"
+#endif
+#if !defined(have_System_File)
+#include "System.File.h"
 #endif
 #if !defined(have_System_Console)
 #define have_System_Console
@@ -27,9 +29,6 @@ __export System_void  System_Console_printByte(System_uint8 byte);
 __export System_void  System_Console_printHex(const System_uint32 length, const void  * hex);
 __export System_void  System_Console_printLine(System_string8 format, ...);
 __export System_void  System_Console_printLineEmpty();
-__export System_void  System_Console_printString(System_String format, ...);
-__export System_void  System_Console_printHexString(System_String hexString);
-__export System_void  System_Console_printStringLine(System_String format, ...);
 
 #if defined(using_System)
 #define __ConsoleType  System_ConsoleType
@@ -41,9 +40,6 @@ __export System_void  System_Console_printStringLine(System_String format, ...);
 #define __Console_printHex  System_Console_printHex
 #define __Console_printLine  System_Console_printLine
 #define __Console_printLineEmpty  System_Console_printLineEmpty
-#define __Console_printString  System_Console_printString
-#define __Console_printHexString  System_Console_printHexString
-#define __Console_printStringLine  System_Console_printStringLine
 #endif
 
 #endif

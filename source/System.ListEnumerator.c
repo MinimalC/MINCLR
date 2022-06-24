@@ -1,7 +1,9 @@
 /* Gemeinfrei. Public Domain. */
-
-#if !defined(have_System_Type)
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_ListEnumerator)
+#include <min/System.ListEnumerator.h>
 #endif
 #if !defined(code_System_ListEnumerator)
 #define code_System_ListEnumerator

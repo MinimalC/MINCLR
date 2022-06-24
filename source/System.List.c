@@ -1,6 +1,9 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System)
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_List)
+#include <min/System.List.h>
 #endif
 #if !defined(code_System_List)
 #define code_System_List

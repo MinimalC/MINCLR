@@ -1,6 +1,9 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System)
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_StreamWriter)
+#include <min/System.StreamWriter.h>
 #endif
 #if !defined(code_auto_System_StreamWriter)
 #define code_auto_System_StreamWriter

@@ -1,5 +1,9 @@
-#if !defined(have_System)
+/* Gemeinfrei. Public Domain. */
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_IStream)
+#include <min/System.IStream.h>
 #endif
 #if !defined(code_System_IStream)
 #define code_System_IStream

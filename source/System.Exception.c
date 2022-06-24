@@ -1,6 +1,12 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System)
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_Exception)
+#include <min/System.Exception.h>
+#endif
+#if !defined(have_System_Console)
+#include <min/System.Console.h>
 #endif
 #if !defined(code_System_Exception)
 #define code_System_Exception

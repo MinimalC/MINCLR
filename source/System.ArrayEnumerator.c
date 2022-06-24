@@ -1,6 +1,9 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System)
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_ArrayEnumerator)
+#include <min/System.ArrayEnumerator.h>
 #endif
 #if !defined(code_System_ArrayEnumerator)
 #define code_System_ArrayEnumerator

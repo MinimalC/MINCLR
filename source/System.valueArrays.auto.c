@@ -1,8 +1,10 @@
 /* Gemeinfrei. Public Domain. */
-/* AUTOGEN */
-#if !defined(have_System_Type)
-#warning "System.Type.h not included"
-#include <min/System.Type.h>
+
+#if !defined(have_System_internal)
+#include "System.internal.h"
+#endif
+#if !defined(have_System_uint8Array)
+#include <min/System.valueArrays.auto.h>
 #endif
 #if !defined(code_auto_System_uint8Array)
 #define code_auto_System_uint8Array

@@ -1,5 +1,15 @@
-#if !defined(have_System)
+/* Gemeinfrei. Public Domain. */
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_string8)
+#include <min/System.string8.h>
+#endif
+#if !defined(have_System_Memory)
+#include <min/System.Memory.h>
+#endif
+#if !defined(have_System_int64)
+#include <min/System.values.auto.h>
 #endif
 #if !defined(code_System_char8)
 #define code_System_char8

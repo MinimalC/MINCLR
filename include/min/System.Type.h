@@ -26,36 +26,7 @@
 
 typedef __fixed struct_System_Type  * System_Type;
 
-/* static struct System.Object.bitConfig */
-
-#define struct_System_Object_bitConfig  struct System_Object_bitConfig
-
-struct_System_Object_bitConfig {
-
-    System_uint8  isAllocated; // : 1;
-
-    System_uint8  isValueAllocated; // : 1;
-
-    System_uint16  __padding_0;
-};
-
-/* static class System.Object */
-
-#define struct_System_Object  struct class_System_Object
-
-typedef __fixed struct_System_Object {
-
-    System_Type  Type;
-
-    struct_System_Object_bitConfig  bitConfig;
-
-    System_uint32  refCount;
-
-    System_size  hashCode;
-
-}  * System_Object;
-
-#define stack_System_Object(T)  (struct_System_Object){ .Type = __typeof(T), }
+#include "System.Object.h"
 
 /* static class System.Type.FunctionInfo */
 

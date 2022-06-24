@@ -1,6 +1,5 @@
-#if !defined(have_System)
-#warning "System.h not included"
-#include "System.h"
+#if !defined(have_System_Type)
+#include "System.Type.h"
 #endif
 #if !defined(have_System_Assembly)
 #define have_System_Assembly

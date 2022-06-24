@@ -1,8 +1,10 @@
 /* Gemeinfrei. Public Domain. */
-/* AUTOGEN */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <min/System.h>
+
+#if !defined(have_System_internal)
+#include "System.internal.h"
+#endif
+#if !defined(have_System_Dictionary)
+#include <min/System.Dictionary.h>
 #endif
 #if !defined(code_auto_System_Dictionary)
 #define code_auto_System_Dictionary

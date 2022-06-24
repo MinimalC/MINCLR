@@ -1,9 +1,11 @@
 /* Gemeinfrei. Public Domain. */
 #define Generic_T0  System_uint8
 /* GENERIC */
-#if !defined(have_System)
-#warning "System.h not included"
-#include <meta/System.h>
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_decimal)
+#include "System.decimal.h"
 #endif
 #if !defined(have_auto_Generic_T0)
 #define have_auto_Generic_T0

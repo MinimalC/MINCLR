@@ -1,7 +1,9 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System)
-#warning "System.h not included"
-#include "System.h"
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
+#if !defined(have_System_Array)
+#include "System.Array.h"
 #endif
 #if !defined(have_System_ArrayEnumerator)
 #define have_System_ArrayEnumerator

@@ -1,5 +1,14 @@
-#if !defined(have_System)
+/* Gemeinfrei. Public Domain. */
+#if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_Memory)
+#include <min/System.Memory.h>
+#endif
+/* WARNING: DEBUG: TODO */
+#if !defined(have_ISO)
+#define using_ISO
+#include <min/ISO.h>
 #endif
 #if !defined(code_System_Memory)
 #define code_System_Memory
