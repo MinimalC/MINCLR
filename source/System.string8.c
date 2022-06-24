@@ -142,12 +142,17 @@ struct_string8 WARNING = "WARNING! ";
 void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix, __IStream stream, __arguments args) {
     __size argc = __argument(args, __size); /* this is expecting a size as first argument or null */
     if (argc > 16) { argc = 0;
-        System_IStream_write(stream, sizeof(WARNING), WARNING);
+        WARNING[8] = '0';
+        System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+    }
+    __var argv[16] = { 0 };
+    __size i;
+    for (i = 0; i < argc; ++i) {
+        argv[i] = __argument(args, __var);
     }
 
-    __size i;
-    __char8  message[519] = { }; __string8 m = message;
-    __char8  scratch[100] = { };
+    __char8  message[519] = { 0 };
+    __char8  scratch[100] = { 0 };
     for (i = 0; i < sizeof(message); ++i) message[i] = 0;
     for (i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
 
@@ -155,119 +160,375 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
 
     __size format_length = __string8_get_Length(format);
     if (format_length > 512) { format_length = 512;
-        System_IStream_write(stream, sizeof(WARNING), WARNING);
+        WARNING[8] = '1';
+        System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
     }
 
-    __size message_position = 0, n = 0, begin, end, argi, speci;
-    do {
-        __string8_copySubstringToAt(format, format_length, message, message_position);
+    __string8 f = format;
+    __string8 m = message;
+    __size message_length = 0, argi, argsize, target, numbers;
+    while (1) {
+        if (format_length == 0) break;
 
-        /* Reading up to the begin'ning { and the end'ing } */
-        begin = 0; end = 0; argi = 0;
-        for (n = 0; n < format_length; ++n) {
-            if (message[n] != '{') continue;
-            if (n > 0 && message[n - 1] == '\\') continue;
-            begin = n;
-            for (++n; n < format_length; ++n) {
-                if (message[n] != '}') continue;
-                end = n;
+        __string8_copySubstringToAt(format, format_length, message, message_length);
+        if (format_length <= 4) {
+            message_length += format_length;
+            break;
+        }
+
+        /* Read { to } */
+        __string8 begin0 = 0, end0 = 0;
+        for (; f < (format + format_length); ++f) {
+            if (*f != '{') continue;
+            if (f > format && *(f - 1) == '\\') continue;
+            begin0 = f;
+            for (; f < (format + format_length); ++f) {
+                if (*f != '}') continue;
+                end0 = f;
                 break;
             }
             break;
         }
-        if (begin) {
-            if (!end) {
-                System_IStream_write(stream, sizeof(WARNING), WARNING);
-            }
+        if (!begin0) {
+            message_length += format_length;
+            break;
+        }
+        if (!end0) {
+            WARNING[8] = '2';
+            System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+        }
+        message_length += (begin0 - format);
 
-            m = message + begin + 1;
-            argi = System_string8_touint16base10(m);
+        argi = System_string8_touint16base10(begin0 + 1);
 
-            /* DEBUG: Write argi */
-            System_uint16_tostring8base10__stack(argi, scratch);
-            __string8_copyToAt(scratch, message, ++format_length);
-            format_length += System_uint16_string8base10Length_DEFAULT;
+        /* DEBUG
+        System_uint16_tostring8base10__stack(argi, scratch);
+        __string8_copyToAt(scratch, message, message_length);
+        message_length += System_uint16_string8base10Length_DEFAULT; */
 
-            /* Reading up to the begin'ning : and obj str char int bool bin oct dec hex float double */
-            n = begin + 2; begin = 0; end = 0; speci = 0;
-            for (; n < format_length; ++n) {
-                if (message[n] != ':') continue;
-                begin = n;
-                for (++n; n < format_length; ++n) {
-                    if (__char8_isAlpha(message[n])) continue;
-                    end = n;
-                    break;
+        if (argi >= argc) {
+            WARNING[8] = '3';
+            System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+        }
+        else {
+
+            /* Read :obj :str :bool :char :int :uint :decimal :float :double */
+            /* Also read 8, 16, 24, 32, 48, 64 */
+            __string8 begin1 = 0, begin2 = 0, end1 = 0, end2 = 0; argsize = 0;
+            for (f = begin0 + 2; f < (format + format_length); ++f) {
+                if (*f != ':') continue;
+                for (begin1 = ++f; f < (format + format_length); ++f) {
+                    if (!__char8_isAlpha(*f)) break;
+                    end1 = f;
                 }
+                if (!end1) { begin1 = 0; break; }
+                for (begin2 = f; f < (format + format_length); ++f) {
+                    if (!__char8_isNumber(*f)) break;
+                    end2 = f;
+                }
+                if (!end2) begin2 = 0;
                 break;
             }
-            if (begin) {
-                if (!end) {
-                    System_IStream_write(stream, sizeof(WARNING), WARNING); /* TODO: Console_warning */
+            /* Read :bin :oct :dec :hex */
+            __string8 begin3 = 0, end3 = 0; target = 10;
+            if (!end2 && end1) end2 = end1;
+            if (end2) {
+                for (f = end2 + 1; f < (format + format_length); ++f) {
+                    if (*f != ':') continue;
+                    for (begin3 = ++f; f < (format + format_length); ++f) {
+                        if (!__char8_isAlpha(*f)) break;
+                        end3 = f;
+                    }
+                    if (!end3) begin3 = 0;
+                    break;
+                }
+                if (begin3) {
+                    if (__string8_compareSubstring(begin3, "binary", sizeof("binary") - 1) >= 3) {
+                        target = 2;
+                        /* DEBUG
+                        __string8_copyToAt(":binary", message, message_length);
+                        message_length += sizeof(":binary") - 1; */
+                    }
+                    else if (__string8_compareSubstring(begin3, "octal", sizeof("octal") - 1) >= 3) {
+                        target = 8;
+                        /* DEBUG
+                        __string8_copyToAt(":octal", message, message_length);
+                        message_length += sizeof(":octal") - 1; */
+                    }
+                    else if (__string8_compareSubstring(begin3, "decimal", sizeof("decimal") - 1) >= 3) {
+                        target = 10;
+                        /* DEBUG
+                        __string8_copyToAt(":decimal", message, message_length);
+                        message_length += sizeof(":decimal") - 1; */
+                    }
+                    else if (__string8_compareSubstring(begin3, "hexadecimal", sizeof("hexadecimal") - 1) >= 3) {
+                        target = 16;
+                        /* DEBUG
+                        __string8_copyToAt(":hexadecimal", message, message_length);
+                        message_length += sizeof(":hexadecimal") - 1; */
+                    }
+                }
+            }
+            if (!begin1) {
+                WARNING[8] = '4';
+                System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
+            }
+            else {
+                if (begin2) {
+                    argsize = System_string8_touint16base10(begin2);
+
+                    /* DEBUG: Write argsize
+                    System_uint16_tostring8base10__stack(argsize, scratch);
+                    __string8_copyToAt(scratch, message, message_length);
+                    message_length += System_uint16_string8base10Length_DEFAULT; */
                 }
 
-                m = message + begin + 1;
-                if (__string8_compareSubstring(m, "object", sizeof("object")) >= 3) {
+                if (__string8_compareSubstring(begin1, "object", sizeof("object") - 1) >= 3) {
 
-                    __string8_copyToAt("object", message, ++format_length);
-                    format_length += sizeof("object");
+                    __string8_copyToAt("object", message, message_length);
+                    message_length += sizeof("object") - 1;
                 }
-                else if (__string8_compareSubstring(m, "string", sizeof("string")) >= 3) {
+                else if (__string8_compareSubstring(begin1, "string", sizeof("string") - 1) >= 3) {
 
-                    __string8_copyToAt("string", message, ++format_length);
-                    format_length += sizeof("string");
+                    __string8_copyToAt((__string8)argv[argi], message, message_length);
+                    message_length += __string8_get_Length(argv[argi]);
                 }
-                else if (__string8_compareSubstring(m, "character", sizeof("character")) >= 4) {
+                else if (__string8_compareSubstring(begin1, "character", sizeof("character") - 1) >= 4) {
 
-                    __string8_copyToAt("character", message, ++format_length);
-                    format_length += sizeof("character");
+                    __string8_copyToAt("character", message, message_length);
+                    message_length += sizeof("character") - 1;
                 }
-                else if (__string8_compareSubstring(m, "integer", sizeof("integer")) >= 3) {
+                else if (__string8_compareSubstring(begin1, "boolean", sizeof("boolean") - 1) >= 4) {
 
-                    __string8_copyToAt("integer", message, ++format_length);
-                    format_length += sizeof("integer");
+                    if (argv[argi]) {
+                        __string8_copyToAt("true", message, message_length);
+                        message_length += sizeof("true") - 1;
+                    }
+                    else {
+                        __string8_copyToAt("false", message, message_length);
+                        message_length += sizeof("false") - 1;
+                    }
                 }
-                else if (__string8_compareSubstring(m, "boolean", sizeof("boolean")) >= 4) {
+                else if (__string8_compareSubstring(begin1, "integer", sizeof("integer") - 1) >= 3) {
 
-                    __string8_copyToAt("boolean", message, ++format_length);
-                    format_length += sizeof("boolean");
+                    if (!argsize) argsize = 64; /* TODO: System_wordSize */
+                    else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
+                        WARNING[8] = '5';
+                        System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
+                        argsize = 64;
+                    }
+                    if (argsize == 64) {
+                        if (target == 16) {
+                            numbers = System_int64_tostring8base16__stack((__int64)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 10) {
+                            numbers = System_int64_tostring8base10__stack((__int64)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 8) {
+                            numbers = System_int64_tostring8base8__stack((__int64)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 2) {
+                            numbers = System_int64_tostring8base2__stack((__int64)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                    }
+                    else if (argsize == 32) {
+                        if (target == 16) {
+                            numbers = System_int32_tostring8base16__stack((__int32)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 10) {
+                            numbers = System_int32_tostring8base10__stack((__int32)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 8) {
+                            numbers = System_int32_tostring8base8__stack((__int32)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 2) {
+                            numbers = System_int32_tostring8base2__stack((__int32)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                    }
+                    else if (argsize == 16) {
+                        if (target == 16) {
+                            numbers = System_int16_tostring8base16__stack((__int16)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 10) {
+                            numbers = System_int16_tostring8base10__stack((__int16)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 8) {
+                            numbers = System_int16_tostring8base8__stack((__int16)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 2) {
+                            numbers = System_int16_tostring8base2__stack((__int16)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                    }
+                    else if (argsize == 8) {
+                        if (target == 16) {
+                            numbers = System_int8_tostring8base16__stack((__int8)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 10) {
+                            numbers = System_int8_tostring8base10__stack((__int8)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 8) {
+                            numbers = System_int8_tostring8base8__stack((__int8)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 2) {
+                            numbers = System_int8_tostring8base2__stack((__int8)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                    }
                 }
-                else if (__string8_compareSubstring(m, "binary", sizeof("binary")) >= 3) {
-
-                    __string8_copyToAt("binary", message, ++format_length);
-                    format_length += sizeof("binary");
-                }
-                else if (__string8_compareSubstring(m, "octal", sizeof("octal")) >= 3) {
-
-                    __string8_copyToAt("octal", message, ++format_length);
-                    format_length += sizeof("octal");
-                }
-                else if (__string8_compareSubstring(m, "decimal", sizeof("decimal")) >= 3) {
-
-                    __string8_copyToAt("decimal", message, ++format_length);
-                    format_length += sizeof("decimal");
-                }
-                else if (__string8_compareSubstring(m, "hexadecimal", sizeof("hexadecimal")) >= 3) {
-
-                    __string8_copyToAt("hexadecimal", message, ++format_length);
-                    format_length += sizeof("hexadecimal");
+                else if (__string8_compareSubstring(begin1, "uinteger", sizeof("uinteger") - 1) >= 4
+                      || __string8_equalsSubstring(begin1, "unsigned", sizeof("unsigned") - 1))
+                {
+                    if (!argsize) argsize = 64; /* TODO: System_wordSize */
+                    else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
+                        WARNING[8] = '6';
+                        System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
+                        argsize = 64;
+                    }
+                    if (argsize == 64) {
+                        if (target == 16) {
+                            numbers = System_uint64_tostring8base16__stack((__uint64)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 10) {
+                            numbers = System_uint64_tostring8base10__stack((__uint64)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 8) {
+                            numbers = System_uint64_tostring8base8__stack((__uint64)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 2) {
+                            numbers = System_uint64_tostring8base2__stack((__uint64)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                    }
+                    else if (argsize == 32) {
+                        if (target == 16) {
+                            numbers = System_uint32_tostring8base16__stack((__uint32)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 10) {
+                            numbers = System_uint32_tostring8base10__stack((__uint32)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 8) {
+                            numbers = System_uint32_tostring8base8__stack((__uint32)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 2) {
+                            numbers = System_uint32_tostring8base2__stack((__uint32)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                    }
+                    else if (argsize == 16) {
+                        if (target == 16) {
+                            numbers = System_uint16_tostring8base16__stack((__uint16)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 10) {
+                            numbers = System_uint16_tostring8base10__stack((__uint16)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 8) {
+                            numbers = System_uint16_tostring8base8__stack((__uint16)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 2) {
+                            numbers = System_uint16_tostring8base2__stack((__uint16)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                    }
+                    else if (argsize == 8) {
+                        if (target == 16) {
+                            numbers = System_uint8_tostring8base16__stack((__uint8)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 10) {
+                            numbers = System_uint8_tostring8base10__stack((__uint8)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 8) {
+                            numbers = System_uint8_tostring8base8__stack((__uint8)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                        else if (target == 2) {
+                            numbers = System_uint8_tostring8base2__stack((__uint8)(__size)argv[argi], scratch);
+                            __string8_copyToAt(scratch, message, message_length);
+                            message_length += numbers;
+                        }
+                    }
                 }
                 else {
-                    System_IStream_write(stream, sizeof(WARNING), WARNING); /* TODO: Console_warning */
+                    WARNING[8] = '7';
+                    System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
                 }
+
             }
         }
 
+        if (end0) {
+            format_length -= (end0 - format) + 1;
+            f = format = end0 + 1;
+            continue;
+        }
 
-    } while (0);
+        break;
+    }
 
-    /* DEBUG: Write argc */
+    /* DEBUG: Write argc
     System_uint64_tostring8base10__stack(argc, scratch);
-    __string8_copyToAt(scratch, message, ++format_length);
-    format_length += System_uint64_string8base10Length_DEFAULT;
+    __string8_copyToAt(scratch, message, message_length);
+    message_length += System_uint64_string8base10Length_DEFAULT; */
 
-    if (suffix) message[format_length++] = suffix;
+    if (suffix) message[message_length++] = (suffix == 0x01 ? 0x00 : suffix);
 
-    System_IStream_write(stream, format_length, message);
+    System_IStream_write(stream, message_length, message);
 }
 
 

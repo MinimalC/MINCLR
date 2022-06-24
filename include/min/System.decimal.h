@@ -6,13 +6,13 @@
 #if !defined(have_System_decimal)
 #define have_System_decimal
 
-#define System_decimal_Capacity_DEFAULT  129
+#define System_decimal_Capacity_DEFAULT  128
 __export const System_size  System_decimal_Capacity;
 
 #define System_decimal  struct s_System_decimal
 System_decimal {
     System_int8  precision;
-    System_uint8  value[System_decimal_Capacity_DEFAULT];
+    System_uint8  value[System_decimal_Capacity_DEFAULT + 1];
 };
 
 #define stack_System_decimal()  { }
@@ -28,7 +28,7 @@ __export System_void  System_decimal_init__int8(System_decimal  * that, System_i
 __export System_void  System_decimal_init__int16(System_decimal  * that, System_int16 int16);
 __export System_void  System_decimal_init__int32(System_decimal  * that, System_int32 int32);
 __export System_void  System_decimal_init__int64(System_decimal  * that, System_int64 int64);
-__export System_void  System_decimal_tostring8__stack(System_decimal  * that, System_char8 array[System_decimal_Capacity_DEFAULT]);
+__export System_void  System_decimal_tostring8__stack(System_decimal  * that, System_char8 array[System_decimal_Capacity_DEFAULT + 1]);
 __export System_void  System_decimal_set_Precision(System_decimal  * that, System_int8 precision);
 __export System_int8  System_decimal_get_Precision(System_decimal  * that);
 

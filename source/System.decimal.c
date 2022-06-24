@@ -8,8 +8,8 @@
 /*# System_decimal #*/
 
 System_void  System_decimal_carryOver(System_decimal  * that, System_uint8 digits) {
-    /* if digits > System_decimal_Capacity_DEFAULT - 3 { throw Exception } */
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 2;
+    /* if digits > System_decimal_Capacity_DEFAULT - 2 { throw Exception } */
+    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
     for (System_size i = 0; i < digits; ++i) {
         while (*(string - i) > 9) {
             *(string - i - 1) += 1;
@@ -19,7 +19,7 @@ System_void  System_decimal_carryOver(System_decimal  * that, System_uint8 digit
 }
 
 System_void  System_decimal_init__uint8(System_decimal  * that, System_uint8 uint8) {
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 2;
+    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
     if (uint8 & 1) {
         *(string - 0) += 1;
     }
@@ -55,7 +55,7 @@ System_void  System_decimal_init__uint8(System_decimal  * that, System_uint8 uin
 System_void  System_decimal_init__uint16(System_decimal  * that, System_uint16 uint16) {
     System_decimal_init__uint8(that, (System_uint8)uint16);
 
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 2;
+    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
     if (uint16 & 256) {
         *(string - 2) += 2;
         *(string - 1) += 5;
@@ -110,7 +110,7 @@ System_void  System_decimal_init__uint16(System_decimal  * that, System_uint16 u
 System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 uint32) {
     System_decimal_init__uint16(that, (System_uint16)uint32);
 
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 2;
+    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
     if (uint32 & 65536) {
         *(string - 4) += 6;
         *(string - 3) += 5;
@@ -271,7 +271,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
 System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 uint64) {
     System_decimal_init__uint32(that, (System_uint32)uint64);
 
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 2;
+    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
 
     if (uint64 & 4294967296) {
         *(string - 9) += 4;
@@ -848,15 +848,15 @@ System_void  System_decimal_init__int64(System_decimal  * that, System_int64 int
     System_decimal_init__uint64(that, uint64);
 }
 
-System_void  System_decimal_tostring8__stack(System_decimal  * that, System_char8 array[System_decimal_Capacity_DEFAULT]) {
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 2;
-    System_string8 array_string = array + System_decimal_Capacity_DEFAULT - 2;
+System_void  System_decimal_tostring8__stack(System_decimal  * that, System_char8 array[System_decimal_Capacity_DEFAULT + 1]) {
+    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
+    System_string8 array_string = array + System_decimal_Capacity_DEFAULT - 1;
 
-    for (System_size i = 0; i < System_decimal_Capacity_DEFAULT - 1; ++i) {
+    for (System_size i = 0; i < System_decimal_Capacity_DEFAULT; ++i) {
         *(array_string - i) = '0' + *(string - i);
     }
     array_string = array;
-    for (System_size l = 0; l < System_decimal_Capacity_DEFAULT - 2; ++l) {
+    for (System_size l = 0; l < System_decimal_Capacity_DEFAULT - 1; ++l) {
         if (*(array_string + l) != '0') break;
         *(array_string + l) = ' ';
     }

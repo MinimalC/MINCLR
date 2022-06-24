@@ -1,0 +1,93 @@
+/* Gemeinfrei. Public Domain. */
+#if !defined(T)
+#error "Usage: See make.GenericT.awk"
+#define Generic_T0  System_Object
+#define Generic_T0Array  System_Array
+#define struct_Generic_T0Array  struct_System_Array
+#define Generic_T0ArrayType  System_ArrayType
+#endif
+/* FileName Generic.T0Array */
+/* seeAlso valueArrayEnumeratorT */
+/* GENERIC */
+#if !defined(have_System_Type)
+#warning "System.Type.h not included"
+#include <meta/System.Type.h>
+#endif
+#if !defined(code_auto_Generic_T0Array)
+#define code_auto_Generic_T0Array
+
+/*# Generic_T0Array #*/
+
+Generic_T0Array  Generic_T0Array_new(System_size length) {
+    return inline_Generic_T0Array_new(length);
+}
+
+Generic_T0Array base_Generic_T0Array_init(Generic_T0Array that, System_size length) {
+    base_System_Object_init((System_Object)that);
+
+    that->length = length;
+
+    System_size element_size = sizeof(Generic_T0);
+    Generic_T0 (* array)[] =  System_Memory_alloc(length * element_size);
+    that->value = array;
+
+    return that;
+}
+
+void  base_Generic_T0Array_free(Generic_T0Array that) {
+    System_Memory_free((void **)&that->value);
+
+    base_System_Object_free((System_Object)that);
+}
+
+System_size  base_Generic_T0Array_get_Length(Generic_T0Array that) {
+    return that->length;
+}
+
+Generic_T0  base_Generic_T0Array_get_index(Generic_T0Array that, System_size index) {
+    return __array(that->value)[index];
+}
+
+void  base_Generic_T0Array_set_index(Generic_T0Array that, System_size index, Generic_T0 value) {
+    __array(that->value)[index] = value;
+}
+
+void  base_Generic_T0Array_resize(Generic_T0Array that, System_size length) {
+    System_size element_size = sizeof(Generic_T0);
+    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    that->length = length;
+}
+
+System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array that) {
+    return (System_IEnumerator)inline_Generic_T0ArrayEnumerator_new(that);
+}
+
+struct_System_String  STRING_Generic_T0Array = const_System_String("Generic.T0Array");
+
+struct_System_Type_FunctionInfo  Generic_T0ArrayTypeFunctions[] = {
+    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0Array_init, .value = base_Generic_T0Array_init },
+    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_Generic_T0Array_free },
+    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_Generic_T0Array_get_Length },
+    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_Generic_T0Array_get_index },
+    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_Generic_T0Array_set_index },
+    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0Array_resize, .value = base_Generic_T0Array_resize },
+};
+
+struct_System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
+    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
+    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+};
+
+struct_System_Type  Generic_T0ArrayType = { .base = { .Type = __typeof(System_Type) },
+    .name = &STRING_Generic_T0Array,
+    .size = sizeof(struct_Generic_T0Array),
+    .baseType = __typeof(System_Object),
+    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+        .length = __sizeof_array(&Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions
+    },
+    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+        .length = __sizeof_array(&Generic_T0ArrayTypeInterfaces), .value = &Generic_T0ArrayTypeInterfaces
+    },
+};
+
+#endif
