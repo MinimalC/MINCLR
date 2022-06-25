@@ -58,8 +58,8 @@ FALSE:
 	return __false;
 }
 
-struct_string text_n = " n";
-struct_string text_P = " P";
+struct_string8 text_n = " n";
+struct_string8 text_P = " P";
 
 int main(int argc, char *argv[]) {
 /* System_main(Eratosthenes,args) { */

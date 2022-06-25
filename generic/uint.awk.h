@@ -52,6 +52,7 @@ __export System_size  Generic_T0_tostring8base4__stack(Generic_T0 that, System_c
 __export System_size  Generic_T0_tostring8base8__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base8Length_DEFAULT + 1]);
 __export System_size  Generic_T0_tostring8base16__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base16Length_DEFAULT + 1]);
 __export System_size  Generic_T0_tostring8base10__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base10Length_DEFAULT + 1]);
+__export Generic_T0  Generic_T0_parsebase10(System_string8 that);
 #define inline_Generic_T0_isPrintable(byte)  (byte > 0x1F && byte < 0x7F) || (byte > 0x9F && byte != 0xAD)
 #if defined(using_Generic)
 #define __T0Type  Generic_T0Type

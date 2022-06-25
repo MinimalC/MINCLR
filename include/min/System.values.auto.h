@@ -24,6 +24,7 @@ __export System_size  System_uint8_tostring8base4__stack(System_uint8 that, Syst
 __export System_size  System_uint8_tostring8base8__stack(System_uint8 that, System_char8 array[System_uint8_string8base8Length_DEFAULT + 1]);
 __export System_size  System_uint8_tostring8base16__stack(System_uint8 that, System_char8 array[System_uint8_string8base16Length_DEFAULT + 1]);
 __export System_size  System_uint8_tostring8base10__stack(System_uint8 that, System_char8 array[System_uint8_string8base10Length_DEFAULT + 1]);
+__export System_uint8  System_uint8_parsebase10(System_string8 that);
 #define inline_System_uint8_isPrintable(byte)  (byte > 0x1F && byte < 0x7F) || (byte > 0x9F && byte != 0xAD)
 #if defined(using_System)
 #define __uint8Type  System_uint8Type
@@ -56,6 +57,7 @@ __export System_size  System_uint16_tostring8base4__stack(System_uint16 that, Sy
 __export System_size  System_uint16_tostring8base8__stack(System_uint16 that, System_char8 array[System_uint16_string8base8Length_DEFAULT + 1]);
 __export System_size  System_uint16_tostring8base16__stack(System_uint16 that, System_char8 array[System_uint16_string8base16Length_DEFAULT + 1]);
 __export System_size  System_uint16_tostring8base10__stack(System_uint16 that, System_char8 array[System_uint16_string8base10Length_DEFAULT + 1]);
+__export System_uint16  System_uint16_parsebase10(System_string8 that);
 #define inline_System_uint16_isPrintable(byte)  (byte > 0x1F && byte < 0x7F) || (byte > 0x9F && byte != 0xAD)
 #if defined(using_System)
 #define __uint16Type  System_uint16Type
@@ -88,6 +90,7 @@ __export System_size  System_uint32_tostring8base4__stack(System_uint32 that, Sy
 __export System_size  System_uint32_tostring8base8__stack(System_uint32 that, System_char8 array[System_uint32_string8base8Length_DEFAULT + 1]);
 __export System_size  System_uint32_tostring8base16__stack(System_uint32 that, System_char8 array[System_uint32_string8base16Length_DEFAULT + 1]);
 __export System_size  System_uint32_tostring8base10__stack(System_uint32 that, System_char8 array[System_uint32_string8base10Length_DEFAULT + 1]);
+__export System_uint32  System_uint32_parsebase10(System_string8 that);
 #define inline_System_uint32_isPrintable(byte)  (byte > 0x1F && byte < 0x7F) || (byte > 0x9F && byte != 0xAD)
 #if defined(using_System)
 #define __uint32Type  System_uint32Type
@@ -120,6 +123,7 @@ __export System_size  System_uint64_tostring8base4__stack(System_uint64 that, Sy
 __export System_size  System_uint64_tostring8base8__stack(System_uint64 that, System_char8 array[System_uint64_string8base8Length_DEFAULT + 1]);
 __export System_size  System_uint64_tostring8base16__stack(System_uint64 that, System_char8 array[System_uint64_string8base16Length_DEFAULT + 1]);
 __export System_size  System_uint64_tostring8base10__stack(System_uint64 that, System_char8 array[System_uint64_string8base10Length_DEFAULT + 1]);
+__export System_uint64  System_uint64_parsebase10(System_string8 that);
 #define inline_System_uint64_isPrintable(byte)  (byte > 0x1F && byte < 0x7F) || (byte > 0x9F && byte != 0xAD)
 #if defined(using_System)
 #define __uint64Type  System_uint64Type

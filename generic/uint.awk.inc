@@ -5,6 +5,9 @@
 #if !defined(have_System_internal)
 #include "System.internal.h"
 #endif
+#if !defined(have_System_char8)
+#include <min/System.string8.h>
+#endif
 #if !defined(have_auto_Generic_T0)
 #include <min/System.values.auto.h>
 #endif
@@ -135,6 +138,52 @@ System_size  Generic_T0_tostring8base10__stack(Generic_T0 that, System_char8 arr
     }
     *(array + Generic_T0_string8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+Generic_T0  Generic_T0_parsebase10(System_string8 that) {
+
+    Generic_T0 reture = 0;
+    if (!__char8_isNumber(that[0])) return reture;
+
+    __size count = 1, n = 0;
+    while (count < 5 && __char8_isNumber(that[count])) ++count;
+##if Type == "uint64"
+    if (count == 20){ reture += (that[n++] - 0x30) * (0x8AC7230489E80000); --count; }
+    if (count == 19){ reture += (that[n++] - 0x30) * (1000000000000000000); --count; }
+    if (count == 18){ reture += (that[n++] - 0x30) * (100000000000000000); --count; }
+    if (count == 17){ reture += (that[n++] - 0x30) * (10000000000000000); --count; }
+    if (count == 16){ reture += (that[n++] - 0x30) * (1000000000000000); --count; }
+    if (count == 15){ reture += (that[n++] - 0x30) * (100000000000000); --count; }
+    if (count == 14){ reture += (that[n++] - 0x30) * (10000000000000); --count; }
+    if (count == 13){ reture += (that[n++] - 0x30) * (1000000000000); --count; }
+    if (count == 12){ reture += (that[n++] - 0x30) * (100000000000); --count; }
+    if (count == 11){ reture += (that[n++] - 0x30) * (10000000000); --count; }
+    if (count == 10){ reture += (that[n++] - 0x30) * (1000000000); --count; }
+    if (count == 9) { reture += (that[n++] - 0x30) * (100000000); --count; }
+    if (count == 8) { reture += (that[n++] - 0x30) * (10000000); --count; }
+    if (count == 7) { reture += (that[n++] - 0x30) * (1000000); --count; }
+    if (count == 6) { reture += (that[n++] - 0x30) * (100000); --count; }
+    if (count == 5) { reture += (that[n++] - 0x30) * (10000); --count; }
+    if (count == 4) { reture += (that[n++] - 0x30) * (1000); --count; }
+##endif
+##if Type == "uint32"
+    if (count == 10){ reture += (that[n++] - 0x30) * (1000000000); --count; }
+    if (count == 9) { reture += (that[n++] - 0x30) * (100000000); --count; }
+    if (count == 8) { reture += (that[n++] - 0x30) * (10000000); --count; }
+    if (count == 7) { reture += (that[n++] - 0x30) * (1000000); --count; }
+    if (count == 6) { reture += (that[n++] - 0x30) * (100000); --count; }
+    if (count == 5) { reture += (that[n++] - 0x30) * (10000); --count; }
+    if (count == 4) { reture += (that[n++] - 0x30) * (1000); --count; }
+##endif
+##if Type == "uint16"
+    if (count == 5) { reture += (that[n++] - 0x30) * (10000); --count; }
+    if (count == 4) { reture += (that[n++] - 0x30) * (1000); --count; }
+##endif
+    if (count == 3) { reture += (that[n++] - 0x30) * (100); --count; }
+    if (count == 2) { reture += (that[n++] - 0x30) * (10); --count; }
+    if (count == 1) { reture += (that[n++] - 0x30); --count; }
+
+    return reture;
 }
 
 #endif

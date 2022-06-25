@@ -210,7 +210,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
         }
         message_length += (begin0 - format);
 
-        argi = System_string8_touint16base10(begin0 + 1);
+        argi = System_uint16_parsebase10(begin0 + 1);
 
         /* DEBUG
         System_uint16_tostring8base10__stack(argi, scratch);
@@ -285,7 +285,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
             }
             else {
                 if (begin2) {
-                    argsize = System_string8_touint16base10(begin2);
+                    argsize = System_uint16_parsebase10(begin2);
 
                     /* DEBUG: Write argsize
                     System_uint16_tostring8base10__stack(argsize, scratch);
@@ -544,23 +544,6 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
     if (suffix) message[message_length++] = (suffix == 0x01 ? 0x00 : suffix);
 
     System_IStream_write(stream, message_length, message);
-}
-
-
-__uint16  System_string8_touint16base10(__string8 that) {
-
-    __uint16 reture = 0;
-    if (!__char8_isNumber(that[0])) return reture;
-
-    __size count = 1, n = 0;
-    while (count < 5 && __char8_isNumber(that[count])) ++count;
-    if (count == 5) { reture += (that[n++] - 0x30) * (10000); --count; }
-    if (count == 4) { reture += (that[n++] - 0x30) * (1000); --count; }
-    if (count == 3) { reture += (that[n++] - 0x30) * (100); --count; }
-    if (count == 2) { reture += (that[n++] - 0x30) * (10); --count; }
-    if (count == 1) { reture += (that[n++] - 0x30); --count; }
-
-    return reture;
 }
 
 #endif

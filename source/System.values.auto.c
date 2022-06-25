@@ -4,6 +4,9 @@
 #if !defined(have_System_internal)
 #include "System.internal.h"
 #endif
+#if !defined(have_System_char8)
+#include <min/System.string8.h>
+#endif
 #if !defined(have_auto_System_uint8)
 #include <min/System.values.auto.h>
 #endif
@@ -136,12 +139,29 @@ System_size  System_uint8_tostring8base10__stack(System_uint8 that, System_char8
     return numbers;
 }
 
+System_uint8  System_uint8_parsebase10(System_string8 that) {
+
+    System_uint8 reture = 0;
+    if (!__char8_isNumber(that[0])) return reture;
+
+    __size count = 1, n = 0;
+    while (count < 5 && __char8_isNumber(that[count])) ++count;
+    if (count == 3) { reture += (that[n++] - 0x30) * (100); --count; }
+    if (count == 2) { reture += (that[n++] - 0x30) * (10); --count; }
+    if (count == 1) { reture += (that[n++] - 0x30); --count; }
+
+    return reture;
+}
+
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
 #if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_char8)
+#include <min/System.string8.h>
 #endif
 #if !defined(have_auto_System_uint16)
 #include <min/System.values.auto.h>
@@ -275,12 +295,31 @@ System_size  System_uint16_tostring8base10__stack(System_uint16 that, System_cha
     return numbers;
 }
 
+System_uint16  System_uint16_parsebase10(System_string8 that) {
+
+    System_uint16 reture = 0;
+    if (!__char8_isNumber(that[0])) return reture;
+
+    __size count = 1, n = 0;
+    while (count < 5 && __char8_isNumber(that[count])) ++count;
+    if (count == 5) { reture += (that[n++] - 0x30) * (10000); --count; }
+    if (count == 4) { reture += (that[n++] - 0x30) * (1000); --count; }
+    if (count == 3) { reture += (that[n++] - 0x30) * (100); --count; }
+    if (count == 2) { reture += (that[n++] - 0x30) * (10); --count; }
+    if (count == 1) { reture += (that[n++] - 0x30); --count; }
+
+    return reture;
+}
+
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
 #if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_char8)
+#include <min/System.string8.h>
 #endif
 #if !defined(have_auto_System_uint32)
 #include <min/System.values.auto.h>
@@ -414,12 +453,36 @@ System_size  System_uint32_tostring8base10__stack(System_uint32 that, System_cha
     return numbers;
 }
 
+System_uint32  System_uint32_parsebase10(System_string8 that) {
+
+    System_uint32 reture = 0;
+    if (!__char8_isNumber(that[0])) return reture;
+
+    __size count = 1, n = 0;
+    while (count < 5 && __char8_isNumber(that[count])) ++count;
+    if (count == 10){ reture += (that[n++] - 0x30) * (1000000000); --count; }
+    if (count == 9) { reture += (that[n++] - 0x30) * (100000000); --count; }
+    if (count == 8) { reture += (that[n++] - 0x30) * (10000000); --count; }
+    if (count == 7) { reture += (that[n++] - 0x30) * (1000000); --count; }
+    if (count == 6) { reture += (that[n++] - 0x30) * (100000); --count; }
+    if (count == 5) { reture += (that[n++] - 0x30) * (10000); --count; }
+    if (count == 4) { reture += (that[n++] - 0x30) * (1000); --count; }
+    if (count == 3) { reture += (that[n++] - 0x30) * (100); --count; }
+    if (count == 2) { reture += (that[n++] - 0x30) * (10); --count; }
+    if (count == 1) { reture += (that[n++] - 0x30); --count; }
+
+    return reture;
+}
+
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
 #if !defined(have_System_internal)
 #include "System.internal.h"
+#endif
+#if !defined(have_System_char8)
+#include <min/System.string8.h>
 #endif
 #if !defined(have_auto_System_uint64)
 #include <min/System.values.auto.h>
@@ -551,6 +614,37 @@ System_size  System_uint64_tostring8base10__stack(System_uint64 that, System_cha
     }
     *(array + System_uint64_string8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_uint64  System_uint64_parsebase10(System_string8 that) {
+
+    System_uint64 reture = 0;
+    if (!__char8_isNumber(that[0])) return reture;
+
+    __size count = 1, n = 0;
+    while (count < 5 && __char8_isNumber(that[count])) ++count;
+    if (count == 20){ reture += (that[n++] - 0x30) * (0x8AC7230489E80000); --count; }
+    if (count == 19){ reture += (that[n++] - 0x30) * (1000000000000000000); --count; }
+    if (count == 18){ reture += (that[n++] - 0x30) * (100000000000000000); --count; }
+    if (count == 17){ reture += (that[n++] - 0x30) * (10000000000000000); --count; }
+    if (count == 16){ reture += (that[n++] - 0x30) * (1000000000000000); --count; }
+    if (count == 15){ reture += (that[n++] - 0x30) * (100000000000000); --count; }
+    if (count == 14){ reture += (that[n++] - 0x30) * (10000000000000); --count; }
+    if (count == 13){ reture += (that[n++] - 0x30) * (1000000000000); --count; }
+    if (count == 12){ reture += (that[n++] - 0x30) * (100000000000); --count; }
+    if (count == 11){ reture += (that[n++] - 0x30) * (10000000000); --count; }
+    if (count == 10){ reture += (that[n++] - 0x30) * (1000000000); --count; }
+    if (count == 9) { reture += (that[n++] - 0x30) * (100000000); --count; }
+    if (count == 8) { reture += (that[n++] - 0x30) * (10000000); --count; }
+    if (count == 7) { reture += (that[n++] - 0x30) * (1000000); --count; }
+    if (count == 6) { reture += (that[n++] - 0x30) * (100000); --count; }
+    if (count == 5) { reture += (that[n++] - 0x30) * (10000); --count; }
+    if (count == 4) { reture += (that[n++] - 0x30) * (1000); --count; }
+    if (count == 3) { reture += (that[n++] - 0x30) * (100); --count; }
+    if (count == 2) { reture += (that[n++] - 0x30) * (10); --count; }
+    if (count == 1) { reture += (that[n++] - 0x30); --count; }
+
+    return reture;
 }
 
 #endif

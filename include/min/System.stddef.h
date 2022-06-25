@@ -298,6 +298,7 @@ typedef char  System_char8,  * System_string8,  struct_System_string8[];
 
 __export System_char8  System_string8_Empty[1];
 
+
 #if defined(__CHAR16_TYPE__)
 typedef __CHAR16_TYPE__  System_char16;
 #endif
@@ -307,33 +308,12 @@ typedef __CHAR32_TYPE__  System_char32;
 #endif
 
 #if defined(using_System)
-#define struct_string8  struct_System_string8
-#define __string8  System_string8
-#define __string8_Empty  System_string8_Empty
 #define __char8  System_char8
+#define __string8  System_string8
+#define struct_string8  struct_System_string8
+#define __string8_Empty  System_string8_Empty
 #define __char16  System_char16
 #define __char32  System_char32
-#endif
-
-
-#if !defined(__UNICODE)
-#define __UNICODE  8
-#endif
-
-/* #if __UNICODE == 32 */
-/* #if __UNICODE == 16 */
-#if __UNICODE == 8
-#define System_char  System_char8
-#define System_string  System_string8
-#define literal_System_string  struct_System_string8
-#define System_string_Empty  System_string8_Empty
-#endif
-
-#if defined(using_System)
-#define __char  System_char
-#define __string  System_string
-#define struct_string  literal_System_string
-#define __string_Empty  System_string_Empty
 #endif
 
 #endif

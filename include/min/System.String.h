@@ -74,40 +74,33 @@ typedef __fixed struct_System_String {
 
 	System_encoding  codepage;
 
-	System_string  value;
+	System_string8  value;
+
+/*  System_string16  value16;
+
+	System_string32  value32; */
 
 }  * System_String;
 
-#define const_System_String__UTF8(s)  { .base = stack_System_Object(System_String),\
-    .codepage = System_encoding_UTF8, .length = (sizeof(s) - 1), .value = (System_string8)(s), }
 
-#define const_System_String__UTF16(s)  { .base = stack_System_Object(System_String),\
-    .codepage = System_encoding_UTF16, .length = (sizeof(s) - 1), .value = (System_string16)(s), }
-
-#define const_System_String__UTF32(s)  { .base = stack_System_Object(System_String),\
-    .codepage = System_encoding_UTF32, .length = (sizeof(s) - 1), .value = (System_string32)(s), }
-
-#define stack_System_String__UTF8  (struct_System_String)const_System_String__UTF8
-
-#define stack_System_String__UTF16  (struct_System_String)const_System_String__UTF16
-
-#define stack_System_String__UTF32  (struct_System_String)const_System_String__UTF32
 
 #if __UNICODE == 32
+#define const_System_String(s)  { .base = stack_System_Object(System_String),\
+    .codepage = System_encoding_UTF32, .length = (sizeof(s) - 1), .value32 = (System_string32)(s), }
 #define System_encoding_DEFAULT	System_encoding_UTF32
-#define const_System_String  const_System_String__UTF32
-#define stack_System_String  stack_System_String__UTF32
 
 #elif __UNICODE == 16
+#define const_System_String(s)  { .base = stack_System_Object(System_String),\
+    .codepage = System_encoding_UTF16, .length = (sizeof(s) - 1), .value16 = (System_string16)(s), }
 #define System_encoding_DEFAULT	System_encoding_UTF16
-#define const_System_String  const_System_String__UTF16
-#define stack_System_String  stack_System_String__UTF16
 
 #else /* if __UNICODE == 8 */
+#define const_System_String(s)  { .base = stack_System_Object(System_String),\
+    .codepage = System_encoding_UTF8, .length = (sizeof(s) - 1), .value = (System_string8)(s), }
 #define System_encoding_DEFAULT	System_encoding_UTF8
-#define const_System_String  const_System_String__UTF8
-#define stack_System_String  stack_System_String__UTF8
 #endif
+
+#define stack_System_String  (struct_System_String)const_System_String
 
 /* static class System_String */
 
