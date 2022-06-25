@@ -109,45 +109,30 @@ void  System_Console_write__char8(__char8 character) {
 }
 
 
-void System_Console_print(__string8 format, ...) {
-    __assert(format)
-
-    __arguments args;
-    __arguments_start(args, (void *)format);
-    ISO_vfprintf(ISO_stdout, format, args);
-    __arguments_end(args);
-}
-
-void System_Console_printByte(__uint8 byte) {
-    __assert(byte)
-
-    ISO_putc(byte, ISO_stdout);
-}
-
 #define __hexdump_Columns  32
 
-void System_Console_printHex(const __uint32 length, const void  * value) {
+void System_Console_writeHex(__size length, void  * value) {
     if (length == 0 || !value) return;
 
     __uint8  * memory = (__uint8  *)value;
-    __uint32 i, j;
+    __size i, j;
 
     for (i = 0; i < length + ((length % __hexdump_Columns) ? (__hexdump_Columns - length % __hexdump_Columns) : 0); i++)
     {
         /* print offset */
         if(i % __hexdump_Columns == 0)
         {
-            __Console_print("0x%08x: ", i);
+            __Console_write("0x{0:uint64:hex}: ", 1, i); // TODO: precision 8 on amd64, 4 on arm
         }
 
         /* print hex data */
         if(i < length)
         {
-            __Console_print("%02x ", 0xFF & (memory[i]));
+            __Console_write("{0:uint8:hex} ", 1, 0xFF & (memory[i])); // TODO: precision 2
         }
         else /* end of block, just aligning for ASCII dump */
         {
-            __Console_print("   ");
+            __Console_write__string8("   ");
         }
 
         /* print ASCII dump */
@@ -157,36 +142,20 @@ void System_Console_printHex(const __uint32 length, const void  * value) {
             {
                 if(j >= length) /* end of block, not really printing */
                 {
-                    __Console_printByte(' ');
+                    __Console_write__char8(' ');
                 }
                 else if(System_char8_isPrintable(memory[j])) /* printable char */
                 {
-                    __Console_printByte(0xFF & (memory[j]));
+                    __Console_write__char8(0xFF & (memory[j]));
                 }
                 else /* other char */
                 {
-                    __Console_printByte('.');
+                    __Console_write__char8('.');
                 }
             }
-            __Console_printByte('\n');
+            __Console_write__char8('\n');
         }
     }
 }
-
-void System_Console_printLineEmpty() {
-    ISO_fprintf(ISO_stdout, "\n");
-}
-
-void System_Console_printLine(__string8 format, ...) {
-    __assert(format)
-
-    __arguments args;
-    __arguments_start(args, (void *)format);
-    ISO_vfprintf(ISO_stdout, format, args);
-    __arguments_end(args);
-
-    System_Console_printLineEmpty();
-}
-
 
 #endif

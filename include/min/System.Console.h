@@ -24,12 +24,8 @@ __export System_void  System_Console_writeLine__string8(System_string8 string);
 __export System_void  System_Console_writeLine(System_string8 format, ...);
 __export System_void  System_Console_write__char8(System_char8 character);
 __export System_void  System_Console_writeSuffix__arguments(System_string8 format, System_char8 suffix, System_arguments args);
+__export System_void  System_Console_writeHex(System_size length, System_var value);
 
-__export System_void  System_Console_print(System_string8 format, ...);
-__export System_void  System_Console_printByte(System_uint8 byte);
-__export System_void  System_Console_printHex(const System_uint32 length, const void  * hex);
-__export System_void  System_Console_printLine(System_string8 format, ...);
-__export System_void  System_Console_printLineEmpty();
 
 #if defined(using_System)
 #define __ConsoleType  System_ConsoleType
@@ -42,12 +38,7 @@ __export System_void  System_Console_printLineEmpty();
 #define __Console_writeLine__string8  System_Console_writeLine__string8
 #define __Console_writeLine  System_Console_writeLine
 #define __Console_write__char8  System_Console_write__char8
-
-#define __Console_print  System_Console_print
-#define __Console_printByte  System_Console_printByte
-#define __Console_printHex  System_Console_printHex
-#define __Console_printLine  System_Console_printLine
-#define __Console_printLineEmpty  System_Console_printLineEmpty
+#define __Console_writeSuffix__arguments  System_Console_writeSuffix__arguments
+#define __Console_writeHex  System_Console_writeHex
 #endif
-
 #endif

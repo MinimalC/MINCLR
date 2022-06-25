@@ -148,12 +148,12 @@ __bool  System_string8_isNullOrEmpty(__string8 that) {
 
 
 struct_string8 INFO = "INFO ";
-struct_string8 WARNING = "WARNING! ";
+struct_string8 WARNING = "WARNING  ";
 
 void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix, __IStream stream, __arguments args) {
     __size argc = !args ? 0 : __argument(args, __size); /* this is expecting a size as first argument or null */
     if (argc > 16) { argc = 0;
-        WARNING[8] = '0';
+        WARNING[7] = '0';
         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
     }
     __var argv[16] = { 0 };
@@ -171,7 +171,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
 
     __size format_length = __string8_get_Length(format);
     if (format_length > 65530) { format_length = 65530;
-        WARNING[8] = '1';
+        WARNING[7] = '1';
         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
     }
 
@@ -205,7 +205,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
             break;
         }
         if (!end0) {
-            WARNING[8] = '2';
+            WARNING[7] = '2';
             System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
         }
         message_length += (begin0 - format);
@@ -218,7 +218,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
         message_length += System_uint16_string8base10Length_DEFAULT; */
 
         if (argi >= argc) {
-            WARNING[8] = '3';
+            WARNING[7] = '3';
             System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
         }
         else {
@@ -280,7 +280,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
                 }
             }
             if (!begin1) {
-                WARNING[8] = '4';
+                WARNING[7] = '4';
                 System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
             }
             else {
@@ -328,7 +328,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
 
                     if (!argsize) argsize = 64; /* TODO: System_wordSize */
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
-                        WARNING[8] = '5';
+                        WARNING[7] = '5';
                         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
                         argsize = 64;
                     }
@@ -426,7 +426,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
                 {
                     if (!argsize) argsize = 64; /* TODO: System_wordSize */
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
-                        WARNING[8] = '6';
+                        WARNING[7] = '6';
                         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
                         argsize = 64;
                     }
@@ -520,7 +520,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
                     }
                 }
                 else {
-                    WARNING[8] = '7';
+                    WARNING[7] = '7';
                     System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
                 }
 
