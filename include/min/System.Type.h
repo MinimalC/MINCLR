@@ -11,9 +11,6 @@
 #if !defined(have_System_assert)
 #include "System.assert.h"
 #endif
-#if !defined(have_System_value)
-#include "System.value.h"
-#endif
 #if !defined(have_System_arguments)
 #include "System.arguments.h"
 #endif
