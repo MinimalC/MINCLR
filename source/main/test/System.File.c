@@ -19,9 +19,9 @@ __main(test42_System_File, args) {
     __size position = __File_get_Position(file);
 
     if (position == 5)
-        __Console_printLine("Position %u is correct", position);
-    else        
-        __Console_printLine("Position %u is NOT correct", position);
+        __Console_writeLine("Position {0:uint} is correct", 1, position);
+    else
+        __Console_writeLine("Position {0:uint} is NOT correct", 1, position);
 
 
 	/* Test03: set Position */
@@ -34,10 +34,10 @@ __main(test42_System_File, args) {
     __size count =  __File_read(file, 5, text);
 
     if (count == 5 && __string8_equals(HALLO, text))
-        __Console_printLine("%s is correct, %u bytes read", text, count);
+        __Console_writeLine("{0:string} is correct, {1:uint} bytes read", 2, text, count);
     else
-        __Console_printLine("%s is NOT correct, %u bytes read", text, count);
-    
+        __Console_writeLine("{0:string} is NOT correct, {1:uint} bytes read", 2, text, count);
+
 
 	/* Test02: Close the File */
     __Object_freeClass(&file);

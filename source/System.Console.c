@@ -18,11 +18,11 @@
 
 /* OLD: */
 void System_assert4(const __string8 assertion, const __string8 fileName, const __uint32 line, const __string8 functionName) {
-    __Console_printLine("Assert: File %s:%i  function %s: %s", fileName, line, functionName, assertion);
+    __Console_writeLine("Assert: File {0:string}:{1:int}  function {2:string}: {3:string}", 4, fileName, line, functionName, assertion);
     System_Console_terminate(0);
 }
 void System_debug5(const __string8 assertion, const __string8 fileName, const __uint32 line, const __string8 functionName, const __string8 message) {
-    __Console_printLine("Debug: File %s:%i  function %s: %s: %s", fileName, line, functionName, assertion, message);
+    __Console_writeLine("Debug: File {0:string}:{1:int}  function {2:string}: {3:string}: {4:string}", 5, fileName, line, functionName, assertion, message);
 }
 /* NEW: */
 
@@ -63,14 +63,14 @@ void System_Console_terminate(const __size code)  {
         System_Exception_set_current(__null);
 
         if (inline_System_Object_get_Type(exception))
-            __Console_print("%s", exception->base.Type->name);
+            __Console_write("{0:string}", 1, exception->base.Type->name);
         else
-            __Console_print("System.Exception");
+            __Console_write__string8("System.Exception");
 
         if (exception->message)
-            __Console_print(": %s", exception->message);
+            __Console_write(": {0:string}", 1, exception->message);
 
-        __Console_printLineEmpty();
+        __Console_writeLineEmpty();
 
         inline_Object_freeClass(&exception);
     }
@@ -78,15 +78,23 @@ void System_Console_terminate(const __size code)  {
     System_Syscall_terminate(code);
 }
 
-void  System_Console_write0(__string8 string) {
+void  System_Console_write__string8(__string8 string) {
     System_File_write(&System_Console_StdOut, __string8_get_Length(string), string);
 }
 
 void  System_Console_write(__string8 format, ...) {
     __arguments args;
     __arguments_start(args, format);
-    System_string8_formatSuffixTo__arguments(format, 0, (System_IStream)&System_Console_StdOut, args);
+    System_string8_formatSuffixTo__arguments(format, __null, (System_IStream)&System_Console_StdOut, args);
     __arguments_end(args);
+}
+
+void  System_Console_writeLineEmpty() {
+    System_string8_formatSuffixTo__arguments(__string8_Empty, '\n', (System_IStream)&System_Console_StdOut, __null);
+}
+
+void  System_Console_writeLine__string8(__string8 string) {
+    System_string8_formatSuffixTo__arguments(string, '\n', (System_IStream)&System_Console_StdOut, __null);
 }
 
 void  System_Console_writeLine(__string8 format, ...) {
@@ -94,6 +102,10 @@ void  System_Console_writeLine(__string8 format, ...) {
     __arguments_start(args, format);
     System_string8_formatSuffixTo__arguments(format, '\n', (System_IStream)&System_Console_StdOut, args);
     __arguments_end(args);
+}
+
+void  System_Console_write__char8(__char8 character) {
+    System_string8_formatSuffixTo__arguments("", character, (System_IStream)&System_Console_StdOut, __null);
 }
 
 

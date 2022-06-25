@@ -17,11 +17,12 @@ __export System_void  System_Console_sync();
 __export System_void  System_Console_exit(const System_size code) __noreturn;
 __export System_void  System_Console_terminate(const System_size code) __noreturn;
 
-__export System_void  System_Console_write0(System_string8 string);
+__export System_void  System_Console_write__string8(System_string8 string);
 __export System_void  System_Console_write(System_string8 format, ...);
 __export System_void  System_Console_writeLineEmpty();
-__export System_void  System_Console_writeLine0(System_string8 string);
+__export System_void  System_Console_writeLine__string8(System_string8 string);
 __export System_void  System_Console_writeLine(System_string8 format, ...);
+__export System_void  System_Console_write__char8(System_char8 character);
 __export System_void  System_Console_writeSuffix__arguments(System_string8 format, System_char8 suffix, System_arguments args);
 
 __export System_void  System_Console_print(System_string8 format, ...);
@@ -35,6 +36,13 @@ __export System_void  System_Console_printLineEmpty();
 #define __Console_sync  System_Console_sync
 #define __Console_exit  System_Console_exit
 #define __Console_terminate  System_Console_terminate
+#define __Console_write__string8  System_Console_write__string8
+#define __Console_write  System_Console_write
+#define __Console_writeLineEmpty  System_Console_writeLineEmpty
+#define __Console_writeLine__string8  System_Console_writeLine__string8
+#define __Console_writeLine  System_Console_writeLine
+#define __Console_write__char8  System_Console_write__char8
+
 #define __Console_print  System_Console_print
 #define __Console_printByte  System_Console_printByte
 #define __Console_printHex  System_Console_printHex

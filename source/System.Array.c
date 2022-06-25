@@ -48,11 +48,12 @@ System_void  base_System_Array_free(System_Array that) {
 
 #if __DEBUG == DEBUG_System_Object
             if (start_null > 0) {
-                if (start_null == i - 1) __Console_print("__%s_free: [%u] is null\n", type->name->value, start_null);
-                else __Console_print("__%s_free: [%u..%u] are null\n", type->name->value, start_null, i - 1);
+                if (start_null == i - 1)
+                     __Console_writeLine("__{0:string}_free: [{1:uint}] is null", 2, type->name->value, start_null);
+                else __Console_writeLine("__{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name->value, start_null, i - 1);
                 start_null = 0;
             }
-            /* __Console_print("__%s_free: [%u]: %s_free\n", type->name->value, i, object->Type->name->value); */
+            /* __Console_writeLine("__{0:string}_free: [{1:uint}]: {2:string}_free", 3, type->name->value, i, object->Type->name->value); */
 #endif
 
             __Object_freeClass(&object);
@@ -66,8 +67,8 @@ System_void  base_System_Array_free(System_Array that) {
 
 #if __DEBUG == DEBUG_System_Object
     if (start_null > 0) {
-        if (start_null == i - 1) __Console_print("__%s_free: [%u] is null\n", type->name->value, start_null);
-        else __Console_print("__%s_free: [%u..%u] are null\n", type->name->value, start_null, i - 1);
+        if (start_null == i - 1) __Console_writeLine("__{0:string}_free: [{1:uint}] is null", 2, type->name->value, start_null);
+        else __Console_writeLine("__{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name->value, start_null, i - 1);
         start_null = 0;
     }
 #endif

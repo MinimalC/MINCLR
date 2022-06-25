@@ -37,7 +37,7 @@ __File  System_File_open(__string8 filename, __File_mode flags) {
         System_File_mode_noControllingTerminal | flags,
         System_File_permission_UserReadWrite | System_File_permission_GroupReadWrite | System_File_permission_EverybodyRead);
 
-    /* DEBUG __Console_printLine("ERROR: System_File_open, flags: %X", flags); */
+    /* DEBUG __Console_writeLine("ERROR: System_File_open, flags: {0:uint:hex}", 1, flags); */
     if (!filePtr) return __null;
 
     __File that = System_File_new();

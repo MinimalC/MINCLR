@@ -13,9 +13,9 @@ __main(test00_System_Memory, args) {
     /* Test: Memory_alloc */
     __uint8 *bytes = __Memory_alloc(Test00_size);
     if (!bytes)
-        __Console_printLine("Test01: ERROR: System_Memory_alloc");
+        __Console_writeLine__string8("Test01: ERROR: System_Memory_alloc");
     else
-        __Console_printLine("Test01: SUCCESS: System_Memory_alloc");
+        __Console_writeLine__string8("Test01: SUCCESS: System_Memory_alloc");
 
 
     /* Test: Memory_set */
@@ -26,30 +26,30 @@ __main(test00_System_Memory, args) {
 
     /* Test: Memory_compare and Memory_equals  */
     if (0 != __Memory_compare(bytes, Test00_Check, Test00_size))
-        __Console_printLine("Test02: ERROR: System_Memory_compare");
+        __Console_writeLine__string8("Test02: ERROR: System_Memory_compare");
     else
-        __Console_printLine("Test02: SUCCESS: System_Memory_compare");
+        __Console_writeLine__string8("Test02: SUCCESS: System_Memory_compare");
 
     if (!__Memory_equals(bytes, Test00_Check, Test00_size))
-        __Console_printLine("Test03: ERROR: System_Memory_equals");
+        __Console_writeLine__string8("Test03: ERROR: System_Memory_equals");
     else
-        __Console_printLine("Test03: SUCCESS: System_Memory_equals");
+        __Console_writeLine__string8("Test03: SUCCESS: System_Memory_equals");
 
 
     /* Test: Memory_indexOf */
     __size indexOf2 = __Memory_indexOf(bytes, 0x03, Test00_size);
     if (indexOf2 != 3)
-        __Console_printLine("Test04: ERROR: System_Memory_indexOf");
+        __Console_writeLine__string8("Test04: ERROR: System_Memory_indexOf");
     else
-        __Console_printLine("Test04: SUCCESS: System_Memory_indexOf");
+        __Console_writeLine__string8("Test04: SUCCESS: System_Memory_indexOf");
 
 
     /* Test: Memory_free */
     __Memory_free((void **)&bytes);
     if (bytes)
-        __Console_printLine("Test05: ERROR: System_Memory_free");
+        __Console_writeLine__string8("Test05: ERROR: System_Memory_free");
     else
-        __Console_printLine("Test05: SUCCESS: System_Memory_free");
+        __Console_writeLine__string8("Test05: SUCCESS: System_Memory_free");
 
 
     return __true;

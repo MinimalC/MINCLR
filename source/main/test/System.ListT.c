@@ -12,7 +12,7 @@ __main(test05_System_ListT, args) {
         __List_add(objects, object);
         __Object_freeClass(&object);
         ++good;
-    }    
+    }
     good1 = 0;
     inline_System_foreach(System_Object,object1, objects, {
         if (object1) ++good1;
@@ -21,8 +21,9 @@ __main(test05_System_ListT, args) {
     stack_System_foreach(System_Object,object2, System_List,objects, {
        if (object2) ++good2;
     })
-    if (objects && good == 128 && good1 == 128 && good2 == 128) __Console_printLine("Test10: SUCCESS: __List_new(%u)", i);
-    else __Console_printLine("Test10: ERROR: __List_new(%u)", i);
+    if (objects && good == 128 && good1 == 128 && good2 == 128)
+         __Console_writeLine("Test10: SUCCESS: __List_new({0:uint})", 1, i);
+    else __Console_writeLine("Test10: ERROR: __List_new({0:uint})", 1, i);
     __Object_freeClass(&objects);
 
     return __true;

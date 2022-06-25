@@ -25,7 +25,7 @@ System_Object  System_Object_allocClass(System_Type type) {
 	__size size = type->size;
 
 #if __DEBUG == DEBUG_System_Object
-	__Console_printLine("System_Object_allocClass %s: .size: %u", type->name->value, size);
+	__Console_writeLine("System_Object_allocClass {0:string}: .size: {1:uint}", 2, type->name->value, size);
 #endif
 
 	System_Object that = __Memory_alloc(size);
@@ -46,7 +46,7 @@ void  System_Object_freeClass(System_Object * thatPtr) {
 	if (0 == that->refCount) {
         /* this is stack aligned */
 #if __DEBUG == DEBUG_System_Object
-	__Console_print("__%s_freeClass: .size: %iB ... static\n", type->name->value, type->size);
+	__Console_writeLine("__{0:string}_freeClass: .size: {1:int}B ... static", 2, type->name->value, type->size);
 #endif
 		goto return_free;
 	}
@@ -64,9 +64,9 @@ void  System_Object_freeClass(System_Object * thatPtr) {
 	if (that->bitConfig.isAllocated) {
 #if __DEBUG == DEBUG_System_Object
 		if (that->bitConfig.isValueAllocated)
-			__Console_print("__%s_freeClass: .size: %iB, .bitConfig.isAllocated, .bitConfig.isValueAllocated\n", type->name->value, type->size);
+			__Console_writeLine("__{0:string}_freeClass: .size: {1:int}B, .bitConfig.isAllocated, .bitConfig.isValueAllocated", 2, type->name->value, type->size);
 		else
-			__Console_print("__%s_freeClass: .size: %iB, .bitConfig.isAllocated\n", type->name->value, type->size);
+			__Console_writeLine("__{0:string}_freeClass: .size: {1:int}B, .bitConfig.isAllocated", 2, type->name->value, type->size);
 #endif
 
 		/* TODO: if MultiThreading, this should be done by System_GC */
@@ -76,9 +76,9 @@ void  System_Object_freeClass(System_Object * thatPtr) {
 #if __DEBUG == DEBUG_System_Object
 	else {
 		if (that->bitConfig.isValueAllocated)
-			__Console_print("__%s_freeClass: .size: %iB, .bitConfig.isValueAllocated\n", type->name->value, type->size);
+			__Console_writeLine("__{0:string}_freeClass: .size: {1:int}B, .bitConfig.isValueAllocated", 2, type->name->value, type->size);
 		else
-			__Console_print("__%s_freeClass: .size: %iB\n", type->name->value, type->size);
+			__Console_writeLine("__{0:string}_freeClass: .size: {1:int}B", 2, type->name->value, type->size);
 	}
 #endif
 
@@ -93,14 +93,14 @@ void  base_System_Object_free(__Object that) {
 	__unused(that)
 
 #if __DEBUG == DEBUG_System_Object
-	__Console_print("__%s_free\n", that->Type->name->value);
+	__Console_writeLine("__{0:string}_free", 1, that->Type->name->value);
 #endif
 }
 
 __Object  base_System_Object_init(__Object that) {
 
 #if __DEBUG == DEBUG_System_Object
-	__Console_print("__%s_init\n", that->Type->name->value);
+	__Console_writeLine("__{0:string}_init", 1, that->Type->name->value);
 #endif
 
     return that;

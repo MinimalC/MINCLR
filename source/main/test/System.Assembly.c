@@ -15,19 +15,19 @@ __main(test47_System_Assembly, args) {
     __Assembly assembly = __Assembly_open(sharedObjectName, __AssemblyBinding_Now);
 
     if (!assembly) {
-        __Console_printLine("Assembly NOT opened: %s", sharedObjectName);
+        __Console_writeLine("Assembly NOT opened: {0:string}", 1, sharedObjectName);
         return __false;
     }
-    __Console_printLine("Assembly opened: %s", assembly->fileName);
+    __Console_writeLine("Assembly opened: {0:string}", 1, assembly->fileName);
 
 
 	/* Test01: find a Symbol */
     void * symbolPtr = __Assembly_find(assembly, symbolName);
     if (!symbolPtr) {
-        __Console_printLine("Symbol NOT found: %s", symbolName);
+        __Console_writeLine("Symbol NOT found: {0:string}", 1, symbolName);
         return __false;
     }
-    __Console_printLine("Symbol found: %s at Address %u", symbolName, symbolPtr);
+    __Console_writeLine("Symbol found: {0:string} at Address {1:uint}", 2, symbolName, symbolPtr);
 
 
 	/* Test02: close the Assembly */

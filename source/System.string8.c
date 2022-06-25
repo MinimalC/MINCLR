@@ -147,10 +147,11 @@ __bool  System_string8_isNullOrEmpty(__string8 that) {
 }
 
 
+struct_string8 INFO = "INFO ";
 struct_string8 WARNING = "WARNING! ";
 
 void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix, __IStream stream, __arguments args) {
-    __size argc = __argument(args, __size); /* this is expecting a size as first argument or null */
+    __size argc = !args ? 0 : __argument(args, __size); /* this is expecting a size as first argument or null */
     if (argc > 16) { argc = 0;
         WARNING[8] = '0';
         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
@@ -161,7 +162,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
         argv[i] = __argument(args, __var);
     }
 
-    __char8  message[519] = { 0 };
+    __char8  message[65535] = { 0 };
     __char8  scratch[100] = { 0 };
     for (i = 0; i < sizeof(message); ++i) message[i] = 0;
     for (i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
@@ -169,7 +170,7 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
     // just don't write everything else
 
     __size format_length = __string8_get_Length(format);
-    if (format_length > 512) { format_length = 512;
+    if (format_length > 65530) { format_length = 65530;
         WARNING[8] = '1';
         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
     }
@@ -221,7 +222,6 @@ void  System_string8_formatSuffixTo__arguments(__string8 format, __char8 suffix,
             System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
         }
         else {
-
             /* Read :obj :str :bool :char :int :uint :decimal :float :double */
             /* Also read 8, 16, 24, 32, 48, 64 */
             __string8 begin1 = 0, begin2 = 0, end1 = 0, end2 = 0; argsize = 0;

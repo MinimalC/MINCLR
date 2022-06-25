@@ -24,8 +24,9 @@ __main(test04_System_ArrayT, args) {
     stack_System_foreach(System_uint8,uint82, System_uint8Array,uint8s, {
        if (uint82) ++good2;
     })
-    if (uint8s && good == 64 /* && good1 == 64 */ && good2 == 64) __Console_printLine("Test01: SUCCESS: __uint8Array_new(%u)", i);
-    else __Console_printLine("Test01: ERROR: __uint8Array_new(%u), %u failed", i, i - good);
+    if (uint8s && good == 64 /* && good1 == 64 */ && good2 == 64)
+         __Console_writeLine("Test01: SUCCESS: __uint8Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test01: ERROR: __uint8Array_new({0:uint), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&uint8s);
 
     __uint16Array uint16s = __uint16Array_new(64);
@@ -38,8 +39,9 @@ __main(test04_System_ArrayT, args) {
         if (uint16 != 1) continue;
         ++good;
     }
-    if (uint16s && good == i) __Console_printLine("Test02: SUCCESS: __uint16Array_new(%u)", i);
-    else __Console_printLine("Test02: ERROR: __uint16Array_new(%u), %u failed", i, i - good);
+    if (uint16s && good == i)
+         __Console_writeLine("Test02: SUCCESS: __uint16Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test02: ERROR: __uint16Array_new({0:uint}), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&uint16s);
 
     __uint32Array uint32s = __uint32Array_new(64);
@@ -52,8 +54,8 @@ __main(test04_System_ArrayT, args) {
         if (uint32 != 1) continue;
         ++good;
     }
-    if (uint32s && good == i) __Console_printLine("Test03: SUCCESS: __uint32Array_new(%u)", i);
-    else __Console_printLine("Test03: ERROR: __uint32Array_new(%u), %u failed", i, i - good);
+    if (uint32s && good == i) __Console_writeLine("Test03: SUCCESS: __uint32Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test03: ERROR: __uint32Array_new({0:uint}), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&uint32s);
 
     __uint64Array uint64s = __uint64Array_new(64);
@@ -66,8 +68,8 @@ __main(test04_System_ArrayT, args) {
         if (uint64 != 1) continue;
         ++good;
     }
-    if (uint64s && good == i) __Console_printLine("Test04: SUCCESS: __uint64Array_new(%u)", i);
-    else __Console_printLine("Test04: ERROR: __uint64Array_new(%u), %u failed", i, i - good);
+    if (uint64s && good == i) __Console_writeLine("Test04: SUCCESS: __uint64Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test04: ERROR: __uint64Array_new({0:uint}), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&uint64s);
 
     __int8Array int8s = __int8Array_new(64);
@@ -80,8 +82,8 @@ __main(test04_System_ArrayT, args) {
         if (int8 != -1) continue;
         ++good;
     }
-    if (int8s && good == i) __Console_printLine("Test05: SUCCESS: __int8Array_new(%u)", i);
-    else __Console_printLine("Test05: ERROR: __int8Array_new(%u), %u failed", i, i - good);
+    if (int8s && good == i) __Console_writeLine("Test05: SUCCESS: __int8Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test05: ERROR: __int8Array_new({0:uint}), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&int8s);
 
     __int16Array int16s = __int16Array_new(64);
@@ -94,8 +96,8 @@ __main(test04_System_ArrayT, args) {
         if (int16 != 1) continue;
         ++good;
     }
-    if (int16s && good == i) __Console_printLine("Test06: SUCCESS: __int16Array_new(%u)", i);
-    else __Console_printLine("Test06: ERROR: __int16Array_new(%u), %u failed", i, i - good);
+    if (int16s && good == i) __Console_writeLine("Test06: SUCCESS: __int16Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test06: ERROR: __int16Array_new({0:uint}), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&int16s);
 
     __int32Array int32s = __int32Array_new(64);
@@ -108,10 +110,10 @@ __main(test04_System_ArrayT, args) {
         if (int32 != 1) continue;
         ++good;
     }
-    if (int32s && good == i) __Console_printLine("Test07: SUCCESS: __int32Array_new(%u)", i);
-    else __Console_printLine("Test07: ERROR: __int32Array_new(%u), %u failed", i, i - good);
+    if (int32s && good == i) __Console_writeLine("Test07: SUCCESS: __int32Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test07: ERROR: __int32Array_new({0:uint}), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&int32s);
-    
+
     __int64Array int64s = __int64Array_new(64);
     length = __int64Array_get_Length(int64s);
     for (good = 0, i = 0; i < length; ++i) {
@@ -122,10 +124,10 @@ __main(test04_System_ArrayT, args) {
         if (int64 != 1) continue;
         ++good;
     }
-    if (int64s && good == i) __Console_printLine("Test08: SUCCESS: __int64Array_new(%u)", i);
-    else __Console_printLine("Test08: ERROR: __int64Array_new(%u), %u failed", i, i - good);
+    if (int64s && good == i) __Console_writeLine("Test08: SUCCESS: __int64Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test08: ERROR: __int64Array_new({0:uint}), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&int64s);
-    
+
     __string8Array string8s = __string8Array_new(64);
     length = __string8Array_get_Length(string8s);
     for (good = 0, i = 0; i < length; ++i) {
@@ -136,8 +138,8 @@ __main(test04_System_ArrayT, args) {
         if (!__string8_equals(string8, STRING8_Hallo)) continue;
         ++good;
     }
-    if (string8s && good == i) __Console_printLine("Test09: SUCCESS: __string8Array_new(%u)", i);
-    else __Console_printLine("Test09: ERROR: __string8Array_new(%u), %u failed", i, i - good);
+    if (string8s && good == i) __Console_writeLine("Test09: SUCCESS: __string8Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test09: ERROR: __string8Array_new({0:uint}), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&string8s);
 
     /* Test11: Use System_Object with for and __foreach */
@@ -161,8 +163,8 @@ __main(test04_System_ArrayT, args) {
     stack_System_foreach__(System_Object,object2, System_Array,Objects, {
        if (object2) ++good2;
     })
-    if (Objects && good == 64 && good1 == 64 && good2 == 64) __Console_printLine("Test10: SUCCESS: __Array_new(%u)", i);
-    else __Console_printLine("Test10: ERROR: __Array_new(%u), %u failed", i, i - good);
+    if (Objects && good == 64 && good1 == 64 && good2 == 64) __Console_writeLine("Test10: SUCCESS: __Array_new({0:uint})", 1, i);
+    else __Console_writeLine("Test10: ERROR: __Array_new({0:uint}), {1:uint} failed", 2, i, i - good);
     __Object_freeClass(&Objects);
 
     return __true;

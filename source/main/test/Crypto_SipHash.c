@@ -6,7 +6,7 @@ struct_string8  HalloWelt = "HelloWorld";
 __uint64 SipHash48_HalloWelt = 0x1648223A11BB3707;
 
 __main(test21_Crypto_SipHash, args) {
-    
+
     __uint64 hash_value;
 
     __string8 hash_sourcecode = HalloWelt;
@@ -24,34 +24,34 @@ __main(test21_Crypto_SipHash, args) {
         hash_value = __SipHash48_final(&sipHash48);
 
         if (!hash_value)
-            __Console_printLine("Test01: ERROR:        Crypto_SipHash48: 0x%llX", hash_value);
+            __Console_writeLine("Test01: ERROR:        Crypto_SipHash48: 0x{0:uint:hex}", 1, hash_value);
         else
-            __Console_printLine("Test01: SUCCESS:        Crypto_SipHash48: 0x%llX", hash_value);
+            __Console_writeLine("Test01: SUCCESS:        Crypto_SipHash48: 0x{0:uint:hex}", 1, hash_value);
 
     } else {
         __SipHash48_update(&sipHash48, hash_sourcecode, hash_sourcecode_length);
         __uint64 hash_value = __SipHash48_final(&sipHash48);
 
         if (!hash_value || hash_value != SipHash48_HalloWelt)
-            __Console_printLine("Test01: ERROR:         Crypto_SipHash48: 0x%llX", hash_value);
+            __Console_writeLine("Test01: ERROR:         Crypto_SipHash48: 0x{0:uint:hex}", 1, hash_value);
         else
-            __Console_printLine("Test01: SUCCESS:         Crypto_SipHash48: 0x%llX", hash_value);
+            __Console_writeLine("Test01: SUCCESS:         Crypto_SipHash48: 0x{0:uint:hex}", 1, hash_value);
     }
 
     __String object1 = __String_new(HalloWelt);
     hash_value = __String_getSipHash(object1);
     if (!hash_value || hash_value != SipHash48_HalloWelt)
-        __Console_printLine("Test02: ERROR: System_String_getSipHash: 0x%llX", hash_value);
+        __Console_writeLine("Test02: ERROR: System_String_getSipHash: 0x{0:uint:hex}", 1, hash_value);
     else
-        __Console_printLine("Test02: SUCCESS: System_String_getSipHash: 0x%llX", hash_value);
+        __Console_writeLine("Test02: SUCCESS: System_String_getSipHash: 0x{0:uint:hex}", 1, hash_value);
     __Object_freeClass(&object1);
 
     __Object object0 = __Object_new();
     hash_value = __Object_getSipHash(object0);
     if (!hash_value)
-        __Console_printLine("Test03: ERROR: System_Object_getSipHash: 0x%llX", hash_value);
+        __Console_writeLine("Test03: ERROR: System_Object_getSipHash: 0x{0:uint:hex}", 1, hash_value);
     else
-        __Console_printLine("Test03: SUCCESS: System_Object_getSipHash: 0x%llX", hash_value);
+        __Console_writeLine("Test03: SUCCESS: System_Object_getSipHash: 0x{0:uint:hex}", 1, hash_value);
     __Object_freeClass(&object0);
 
     return __true;
