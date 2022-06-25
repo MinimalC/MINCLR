@@ -9,7 +9,8 @@ __intptr Beispiel(__intptr a, __intptr b, __intptr c, __intptr d, __intptr e, __
     return a + b + c + d + e + f + g;
 }
 
-__main(test40_System_syscall, args) {
+//__main(test40_System_syscall, args) {
+int main(int argc, char * argv[]) {
 
     __intptr  k = Beispiel(2, 4, 8, 16, 32, 64, 128);
 
@@ -21,5 +22,5 @@ __main(test40_System_syscall, args) {
         __Syscall_write(__File_special_STDOUT, isWrong, __string8_get_Length(isWrong));
     }
 
-    return __true;    
+    return __true;
 }

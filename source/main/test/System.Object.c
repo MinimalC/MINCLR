@@ -4,7 +4,8 @@
 
 struct_string8  string8_System_Object = "System.Object";
 
-__main(test02_System_Object, args) {
+//__main(test02_System_Object, args) {
+int main(int argc, char * argv[]) {
 
     __Object object = __Object_new();
     if (!object)
@@ -14,7 +15,7 @@ __main(test02_System_Object, args) {
 
 
     __Type type = __Object_get_Type(object);
-    if (!type || !__string8_equals(string8_System_Object, type->name->value))
+    if (!type || !__string8_equals(string8_System_Object, type->name))
         __Console_writeLine__string8("Test02: ERROR: __Object_get_Type");
     else
         __Console_writeLine__string8("Test02: SUCCESS: __Object_get_Type");

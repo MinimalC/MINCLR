@@ -4,7 +4,8 @@
 __private __size  Test00_size = 8;
 __private __uint8  Test00_Check[] = "\x01\x01\x03\x01\x01\x01\x01\x01";
 
-__main(test00_System_Memory, args) {
+//__main(test00_System_Memory, args) {
+int main(int argc, char * argv[]) {
     // __uint8 *arg1; __size arg1size;
     /* if (argc == 1) is unnecessary: arg[0] is always the Application_Path, for example /home/user007/bin/MetaFrame */
     // if (argc > 2) { arg1 = argv[1]; arg1size = sizeof(argv[1]); }

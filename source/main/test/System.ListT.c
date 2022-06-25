@@ -3,7 +3,8 @@
 
 struct_string8  STRING8_Hallo = "Hallo";
 
-__main(test05_System_ListT, args) {
+//__main(test05_System_ListT, args) {
+int main(int argc, char * argv[]) {
     __size i = 0, length = 128, good = 0, good1 = 0, good2 = 0;
 
     __List objects = __List_new();

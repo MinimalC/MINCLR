@@ -4,7 +4,8 @@
 struct_string8  HALLO = "HaLLo";
 struct_string8  HALLOtxt = "./.test.txt";
 
-__main(test42_System_File, args) {
+//__main(test42_System_File, args) {
+int main(int argc, char * argv[]) {
 
 	/* Test00: Open a File */
     __File file = __File_open(HALLOtxt, System_File_mode_readWrite | System_File_mode_create | System_File_mode_truncate);

@@ -4,7 +4,8 @@
 struct_string8  HALLOtxt = "./.FileNotFound";
 /* struct_string8  HALLOtxt = "./.test.txt"; */
 
-__main(test41_System_Exception, args) {
+//__main(test41_System_Exception, args) {
+int main(int argc, char * argv[]) {
 
 	/* Test00: Open .FileNotFound */
     __File file = __File_open(HALLOtxt, System_File_mode_readOnly);

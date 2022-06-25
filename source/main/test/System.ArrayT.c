@@ -3,7 +3,8 @@
 
 struct_string8  STRING8_Hallo = "Hallo";
 
-__main(test04_System_ArrayT, args) {
+//__main(test04_System_ArrayT, args) {
+int main(int argc, char * argv[]) {
     __size i = 0, length = 0, good = 0, good1 = 0, good2 = 0;
 
     __uint8Array uint8s = __uint8Array_new(64);

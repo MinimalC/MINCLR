@@ -4,7 +4,8 @@
 struct_string8  HALLO = "HaLLo";
 struct_string8  HALLOtxt = "./.test.txt";
 
-__main(test43_System_FileInfo, args) {
+//__main(test43_System_FileInfo, args) {
+int main(int argc, char * argv[]) {
 
 	/* Test00: Create a FileInfo */
     __FileInfo fileInfo = __FileInfo_create(HALLOtxt);

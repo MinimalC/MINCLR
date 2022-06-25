@@ -9,7 +9,8 @@ struct_string8  sharedObjectName = "/lib/arm-linux-gnueabihf/libc.so.6";
 
 struct_string8  symbolName = "malloc";
 
-__main(test47_System_Assembly, args) {
+//__main(test47_System_Assembly, args) {
+int main(int argc, char * argv[]) {
 
 	/* Test00: open an Assembly */
     __Assembly assembly = __Assembly_open(sharedObjectName, __AssemblyBinding_Now);

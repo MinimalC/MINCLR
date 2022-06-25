@@ -3,7 +3,8 @@
 #define using_System
 #include <min/System.h>
 
-__main(test61_System_Math, args) {
+//__main(test61_System_Math, args) {
+int main(int argc, char * argv[]) {
 
 	__int8 a = 2, b = 3, c;
 

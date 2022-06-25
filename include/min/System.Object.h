@@ -11,11 +11,9 @@
 
 struct_System_Object_bitConfig {
 
-    System_uint8  isAllocated; // : 1;
+    unsigned  isAllocated : 1;
 
-    System_uint8  isValueAllocated; // : 1;
-
-    System_uint16  __padding_0;
+    unsigned  isValueAllocated : 1;
 };
 
 /* static class System.Object */

@@ -123,17 +123,6 @@ __export System_uint64  base_System_String_getSipHash(System_String that);
 
 #define inline_System_String_new(s)  (base_System_String_init(inline_System_Object_allocClass(System_String), s))
 
-
-#if __UNICODE == 32
-#define System_stringType  System_string32Type
-
-#elif __UNICODE == 16
-#define System_stringType  System_string16Type
-
-#else /* if __UNICODE == 8 */
-#define System_stringType  System_string8Type
-#endif
-
 #if defined(using_System)
 #define __byteOrder  System_byteOrder
 #define __byteOrder_LittleEndian  System_byteOrder_LittleEndian
@@ -146,19 +135,10 @@ __export System_uint64  base_System_String_getSipHash(System_String that);
 #define __encoding_UTF32  System_encoding_UTF32
 #define __encoding_DEFAULT  System_encoding_DEFAULT
 
-#define __string8Type  System_string8Type
-#define __string16Type  System_string16Type
-#define __string32Type  System_string32Type
-#define __stringType  System_stringType
-
 #define struct_String  struct_System_String
 #define stack_String  stack_System_String
 #define __String  System_String
 #define __StringType  System_StringType
-
-#define stack_String32  stack_System_String32
-#define stack_String16  stack_System_String16
-#define stack_String8  stack_System_String8
 
 #define function_String_init  function_System_String_init
 #define base_String_free  base_System_String_free
