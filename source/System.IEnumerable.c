@@ -19,8 +19,8 @@ struct_System_Type  System_IEnumeratorType = { .base = stack_System_Object(Syste
 
 /* TODO: throw NotImplementedException, this is interface */
 
-System_var  base_System_IEnumerator_get_current(System_IEnumerator that) { return __null; }
-System_boolean  base_System_IEnumerator_moveNext(System_IEnumerator that) { return __false; }
+System_var  base_System_IEnumerator_get_current(System_IEnumerator that) { return null; }
+System_boolean  base_System_IEnumerator_moveNext(System_IEnumerator that) { return false; }
 
 
 /*# System_IEnumerable #*/
@@ -33,6 +33,6 @@ struct_System_Type  System_IEnumerableType = { .base = stack_System_Object(Syste
 
 /* TODO: throw NotImplementedException, this is interface */
 
-System_IEnumerator  base_System_IEnumerable_getEnumerator(System_IEnumerable that) { return __null; }
+System_IEnumerator  base_System_IEnumerable_getEnumerator(System_IEnumerable that) { return null; }
 
 #endif

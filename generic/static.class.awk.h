@@ -14,10 +14,10 @@
 #if !defined(have_auto_Generic_T0)
 #define have_auto_Generic_T0
 
-__export struct_System_Type  Generic_T0Type;
+export struct_System_Type  Generic_T0Type;
 
 #if defined(using_Generic)
-#define __T0Type  Generic_T0Type
+#define T0Type  Generic_T0Type
 #endif
 
 #endif

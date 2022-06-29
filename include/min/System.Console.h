@@ -7,38 +7,37 @@
 #if !defined(have_System_Console)
 #define have_System_Console
 
-__export struct_System_Type  System_ConsoleType;
+export struct_System_Type  System_ConsoleType;
 
-__export struct_System_File  System_Console_StdIn;
-__export struct_System_File  System_Console_StdOut;
-__export struct_System_File  System_Console_StdErr;
+export struct_System_File  System_Console_StdIn;
+export struct_System_File  System_Console_StdOut;
+export struct_System_File  System_Console_StdErr;
 
-__export System_void  System_Console_sync();
-__export System_void  System_Console_exit(const System_size code) __noreturn;
-__export System_void  System_Console_terminate(const System_size code) __noreturn;
+export void  System_Console_exit(const System_size code) noreturn;
+export void  System_Console_terminate(const System_size code) noreturn;
 
-__export System_void  System_Console_write__string8(System_string8 string);
-__export System_void  System_Console_write(System_string8 format, ...);
-__export System_void  System_Console_writeLineEmpty();
-__export System_void  System_Console_writeLine__string8(System_string8 string);
-__export System_void  System_Console_writeLine(System_string8 format, ...);
-__export System_void  System_Console_write__char8(System_char8 character);
-__export System_void  System_Console_writeSuffix__arguments(System_string8 format, System_char8 suffix, System_arguments args);
-__export System_void  System_Console_writeHex(System_size length, System_var value);
-
+export void  System_Console_sync();
+export void  System_Console_write__string8(System_string8 string);
+export void  System_Console_write(System_string8 format, ...);
+export void  System_Console_writeLineEmpty();
+export void  System_Console_writeLine__string8(System_string8 string);
+export void  System_Console_writeLine(System_string8 format, ...);
+export void  System_Console_write__char8(System_char8 character);
+export void  System_Console_writeSuffix__arguments(System_string8 format, System_char8 suffix, System_arguments args);
+export void  System_Console_writeHex(System_size length, System_var value);
 
 #if defined(using_System)
-#define __ConsoleType  System_ConsoleType
-#define __Console_sync  System_Console_sync
-#define __Console_exit  System_Console_exit
-#define __Console_terminate  System_Console_terminate
-#define __Console_write__string8  System_Console_write__string8
-#define __Console_write  System_Console_write
-#define __Console_writeLineEmpty  System_Console_writeLineEmpty
-#define __Console_writeLine__string8  System_Console_writeLine__string8
-#define __Console_writeLine  System_Console_writeLine
-#define __Console_write__char8  System_Console_write__char8
-#define __Console_writeSuffix__arguments  System_Console_writeSuffix__arguments
-#define __Console_writeHex  System_Console_writeHex
+#define ConsoleType  System_ConsoleType
+#define Console_exit  System_Console_exit
+#define Console_terminate  System_Console_terminate
+#define Console_sync  System_Console_sync
+#define Console_write__string8  System_Console_write__string8
+#define Console_write  System_Console_write
+#define Console_writeLineEmpty  System_Console_writeLineEmpty
+#define Console_writeLine__string8  System_Console_writeLine__string8
+#define Console_writeLine  System_Console_writeLine
+#define Console_write__char8  System_Console_write__char8
+#define Console_writeSuffix__arguments  System_Console_writeSuffix__arguments
+#define Console_writeHex  System_Console_writeHex
 #endif
 #endif

@@ -64,7 +64,7 @@ typedef System_var  System_File_special;
 
 #define struct_System_File  struct class_System_File
 
-typedef __fixed struct_System_File {
+typedef fixed struct_System_File {
 	struct_System_Object  base;
 
     System_var filePtr;
@@ -73,27 +73,27 @@ typedef __fixed struct_System_File {
 
 }  * System_File;
 
-__export struct_System_Type  System_FileType;
+export struct_System_Type  System_FileType;
 
-typedef System_File  __delegate(System_File_init)(System_File that);
-typedef System_void  __delegate(System_File_free)(System_File that);
-typedef System_void  __delegate(System_File_write)(System_File that, System_size count, System_string8 value);
-typedef System_void  __delegate(System_File_sync)(System_File that);
-typedef System_size  __delegate(System_File_read)(System_File that, System_size count, System_string8 value);
-typedef System_void  __delegate(System_File_seek)(System_File that, System_ssize offset, System_origin origin);
-typedef System_intptr  __delegate(System_File_get_Position)(System_File that);
-typedef System_void  __delegate(System_File_set_Position)(System_File that, System_size value);
+typedef System_File  delegate(System_File_init)(System_File that);
+typedef void  delegate(System_File_free)(System_File that);
+typedef void  delegate(System_File_write)(System_File that, System_size count, System_string8 value);
+typedef void  delegate(System_File_sync)(System_File that);
+typedef System_size  delegate(System_File_read)(System_File that, System_size count, System_string8 value);
+typedef void  delegate(System_File_seek)(System_File that, System_ssize offset, System_origin origin);
+typedef System_intptr  delegate(System_File_get_Position)(System_File that);
+typedef void  delegate(System_File_set_Position)(System_File that, System_size value);
 
-__export System_File  System_File_new();
-__export System_File  System_File_open(System_string8 filename, System_File_mode flags);
-__export System_File  base_System_File_init(System_File that);
-__export System_void  base_System_File_free(System_File that);
-__export System_void  base_System_File_write(System_File that, System_size count, System_string8 value);
-__export System_void  base_System_File_sync(System_File that);
-__export System_void  base_System_File_seek(System_File that, System_ssize offset, System_origin origin);
-__export System_size  base_System_File_read(System_File that, System_size count, System_string8 value);
-__export System_intptr  base_System_File_get_Position(System_File that);
-__export System_void  base_System_File_set_Position(System_File that, System_size value);
+export System_File  System_File_new();
+export System_File  System_File_open(System_string8 filename, System_File_mode flags);
+export System_File  base_System_File_init(System_File that);
+export void  base_System_File_free(System_File that);
+export void  base_System_File_write(System_File that, System_size count, System_string8 value);
+export void  base_System_File_sync(System_File that);
+export void  base_System_File_seek(System_File that, System_ssize offset, System_origin origin);
+export System_size  base_System_File_read(System_File that, System_size count, System_string8 value);
+export System_intptr  base_System_File_get_Position(System_File that);
+export void  base_System_File_set_Position(System_File that, System_size value);
 
 #define System_File_free(o)  ((function_System_File_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_File_init(o)  ((function_System_File_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
@@ -107,37 +107,37 @@ __export System_void  base_System_File_set_Position(System_File that, System_siz
 #define inline_System_File_new()  (base_System_File_init(inline_System_Object_allocClass(System_File)))
 
 #if defined(using_System)
-#define __File_mode  System_File_mode
-#define __File_mode_readOnly  System_File_mode_readOnly
-#define __File_mode_writeOnly  System_File_mode_writeOnly
-#define __File_mode_readWrite  System_File_mode_readWrite
-#define __File_mode_create  System_File_mode_create
-#define __File_mode_append  System_File_mode_append
-#define __File_mode_exclusive  System_File_mode_exclusive
-#define __File_mode_direct  System_File_mode_direct
-#define __File_mode_Directory  System_File_mode_Directory
-#define __File_mode_closeOnExecute  System_File_mode_closeOnExecute
-#define __File_mode_syncd  System_File_mode_syncd
+#define File_mode  System_File_mode
+#define File_mode_readOnly  System_File_mode_readOnly
+#define File_mode_writeOnly  System_File_mode_writeOnly
+#define File_mode_readWrite  System_File_mode_readWrite
+#define File_mode_create  System_File_mode_create
+#define File_mode_append  System_File_mode_append
+#define File_mode_exclusive  System_File_mode_exclusive
+#define File_mode_direct  System_File_mode_direct
+#define File_mode_Directory  System_File_mode_Directory
+#define File_mode_closeOnExecute  System_File_mode_closeOnExecute
+#define File_mode_syncd  System_File_mode_syncd
 
-#define __File_special  System_File_special
-#define __File_special_STDIN  System_File_special_STDIN
-#define __File_special_STDOUT  System_File_special_STDOUT
-#define __File_special_STDERR  System_File_special_STDERR
+#define File_special  System_File_special
+#define File_special_STDIN  System_File_special_STDIN
+#define File_special_STDOUT  System_File_special_STDOUT
+#define File_special_STDERR  System_File_special_STDERR
 
 #define struct_File  struct_System_File
-#define __File  System_File
-#define __FileType  System_FileType
+#define File  System_File
+#define FileType  System_FileType
 
-#define __File_free  System_File_free
-#define __File_init  System_File_init
-#define __File_new  System_File_new
-#define __File_open  System_File_open
-#define __File_read  System_File_read
-#define __File_write  System_File_write
-#define __File_seek  System_File_seek
-#define __File_get_Position  System_File_get_Position
-#define __File_set_Position  System_File_set_Position
-#define __File_sync  System_File_sync
+#define File_free  System_File_free
+#define File_init  System_File_init
+#define File_new  System_File_new
+#define File_open  System_File_open
+#define File_read  System_File_read
+#define File_write  System_File_write
+#define File_seek  System_File_seek
+#define File_get_Position  System_File_get_Position
+#define File_set_Position  System_File_set_Position
+#define File_sync  System_File_sync
 
 #define base_File_free  base_System_File_free
 #define base_File_init  base_System_File_init

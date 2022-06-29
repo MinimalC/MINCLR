@@ -2,6 +2,9 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
+#if !defined(have_System_Syscall)
+#include "System.Syscall.h"
+#endif
 #if !defined(have_System_FileInfo)
 #define have_System_FileInfo
 
@@ -18,7 +21,7 @@ typedef System_uint32  System_FileInfo_type;
 
 
 #define struct_System_FileInfo  struct class_System_FileInfo
-typedef __fixed struct_System_FileInfo {
+typedef fixed struct_System_FileInfo {
     struct_System_Object base;
 
     System_string8 name;
@@ -26,6 +29,7 @@ typedef __fixed struct_System_FileInfo {
     System_uint64 deviceId;
     System_uint64 iNodeId;
     System_uint64 hardlinks;
+
     System_uint32 mode;
     System_uint32 userId;
     System_uint32 groupId;
@@ -40,43 +44,34 @@ typedef __fixed struct_System_FileInfo {
 
 }  * System_FileInfo;
 
+export struct_System_Type  System_FileInfoType;
+
 #define stack_System_FileInfo()  (struct_System_FileInfo){ .base = stack_System_Object(System_FileInfo), }
 
-__export struct_System_Type  System_FileInfoType;
+typedef System_FileInfo delegate(System_FileInfo_init)(System_FileInfo that, System_string8 fileName);
+typedef void delegate(System_FileInfo_free)(System_FileInfo that);
 
-
-typedef System_FileInfo __delegate(System_FileInfo_init)(System_FileInfo that);
-typedef System_void __delegate(System_FileInfo_free)(System_FileInfo that);
-
-#define System_FileInfo_new  System_FileInfo_new__00
-
-__export System_FileInfo  System_FileInfo_new();
-__export System_FileInfo  base_System_FileInfo_init(System_FileInfo that);
-/* __export System_void  base_System_FileInfo_free(System_FileInfo that); */
-__export System_FileInfo  System_FileInfo_create(System_string8 fileName);
+export System_FileInfo  System_FileInfo_new(System_string8 fileName);
+export System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_string8 fileName);
+/* export void  base_System_FileInfo_free(System_FileInfo that); */
 
 #define System_FileInfo_init(o)  ((function_System_FileInfo_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
 #define System_FileInfo_free(o)  ((function_System_FileInfo_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 
-#define inline_System_FileInfo_new()  (base_System_FileInfo_init(inline_System_Object_allocClass(System_FileInfo)))
-
-#if !defined(have_System_internal)
-#undef  System_FileInfo_new
-#define System_FileInfo_new  inline_System_FileInfo_new
-#endif
+#define inline_System_FileInfo_new(fileName)  (base_System_FileInfo_init(inline_System_Object_allocClass(System_FileInfo), fileName))
 
 #if defined(using_System)
 #define struct_FileInfo  struct_System_FileInfo
-#define __FileInfo  System_FileInfo
-#define __FileInfoType  System_FileInfoType
+#define FileInfo  System_FileInfo
+#define FileInfoType  System_FileInfoType
 #define function_FileInfo_init  function_System_FileInfo_init
 #define function_FileInfo_free  function_System_FileInfo_free
 #define base_FileInfo_init  base_System_FileInfo_init
 /* #define base_FileInfo_free  base_System_FileInfo_free */
-#define __FileInfo_new  System_FileInfo_new
-#define __FileInfo_init  System_FileInfo_init
-#define __FileInfo_free  System_FileInfo_free
-#define __FileInfo_create  System_FileInfo_create
+#define FileInfo_new  System_FileInfo_new
+#define FileInfo_init  System_FileInfo_init
+#define FileInfo_free  System_FileInfo_free
+#define FileInfo_create  System_FileInfo_create
 #endif
 
 #endif

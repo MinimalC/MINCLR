@@ -8,7 +8,7 @@
 #define DEBUG_System_string8_formatTo  3
 
 /* for developers */
-#define __DEBUG  DEBUG_System_string8_formatTo
+#define DEBUG  DEBUG_System_string8_formatTo
 
 /* #include <System.config.h>
 #if !defined(have_System_config)

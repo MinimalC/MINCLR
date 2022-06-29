@@ -26,7 +26,7 @@ System_List  base_System_List_init(System_List that) {
     return that;
 }
 
-System_void  base_System_List_free(System_List that) {
+void  base_System_List_free(System_List that) {
 
     inline_System_Object_freeClass(&that->hashes);
     inline_System_Object_freeClass(&that->items);
@@ -38,18 +38,18 @@ System_size  base_System_List_get_Length(System_List that) {
     return that->length;
 }
 
-System_Object  base_System_List_get_index(System_List that, __size index) {
-	__assert(that)
-	return __Array_get_index(that->items, index);
+System_Object  base_System_List_get_index(System_List that, size index) {
+	assert(that)
+	return Array_get_index(that->items, index);
 }
 
-void  base_System_List_set_index(System_List that, __size index, System_Object value) {
-	__assert(that)
+void  base_System_List_set_index(System_List that, size index, System_Object value) {
+	assert(that)
     if (value) {
-        if (base_System_List_contains(that, value)) __throw(inline_Exception_new("InvalidOperationException_new: System_List: System_Object already added"))
-        __uint64Array_set_index(that->hashes, index, __Object_getSipHash(value));
+        if (base_System_List_contains(that, value)) throw(inline_Exception_new("InvalidOperationException_new: System_List: System_Object already added"))
+        uint64Array_set_index(that->hashes, index, Object_getSipHash(value));
     }
-    __Array_set_index(that->items, index, value);
+    Array_set_index(that->items, index, value);
 }
 
 System_IEnumerator base_System_List_getEnumerator(System_List that) {
@@ -58,29 +58,29 @@ System_IEnumerator base_System_List_getEnumerator(System_List that) {
 
 System_boolean  base_System_List_contains(System_List that, System_Object object) {
 
-    __uint64 object_siphash = __Object_getSipHash(object);
+    uint64 object_siphash = Object_getSipHash(object);
 
-    for (__size i = 0; i < that->length; ++i) {
-        if (object_siphash == __uint64Array_get_index(that->hashes, i)) return __true;
+    for (size i = 0; i < that->length; ++i) {
+        if (object_siphash == uint64Array_get_index(that->hashes, i)) return true;
     }
-    return __false;
+    return false;
 }
 
-System_void  base_System_List_add(System_List that, System_Object object) {
-    __assert(object)
+void  base_System_List_add(System_List that, System_Object object) {
+    assert(object)
 
-    if (base_System_List_contains(that, object)) __throw(inline_Exception_new("InvalidOperationException_new: System.List: System_Object already added."))
+    if (base_System_List_contains(that, object)) throw(inline_Exception_new("InvalidOperationException_new: System.List: System_Object already added."))
 
-    __size new_i = that->length;
+    size new_i = that->length;
     if (new_i >= that->capacity) {
-        __size new_capacity = that->capacity * 2;
-        __uint64Array_resize(that->hashes, new_capacity);
-        __Array_resize(that->items, new_capacity);
+        size new_capacity = that->capacity * 2;
+        uint64Array_resize(that->hashes, new_capacity);
+        Array_resize(that->items, new_capacity);
         that->capacity = new_capacity;
     }
 
-    __uint64Array_set_index(that->hashes, new_i, __Object_getSipHash(object));
-    __Array_set_index(that->items, new_i, object);
+    uint64Array_set_index(that->hashes, new_i, Object_getSipHash(object));
+    Array_set_index(that->items, new_i, object);
     ++that->length;
 }
 
@@ -100,15 +100,15 @@ struct_System_Type_InterfaceInfo  System_ListTypeInterfaces[] = {
     [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
 };
 
-struct_System_Type  System_ListType = { .base = { .Type = __typeof(System_Type) },
+struct_System_Type  System_ListType = { .base = { .type = typeof(System_Type) },
     .name = "System.List",
     .size = sizeof(struct_System_List),
-    .baseType = __typeof(System_Object),
+    .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(System_ListTypeFunctions), .value = &System_ListTypeFunctions
+        .length = sizeof_array(System_ListTypeFunctions), .value = &System_ListTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(System_ListTypeInterfaces), .value = &System_ListTypeInterfaces
+        .length = sizeof_array(System_ListTypeInterfaces), .value = &System_ListTypeInterfaces
     },
 };
 

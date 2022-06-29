@@ -2,40 +2,40 @@
 #if !defined(have_System_asm)
 #define have_System_asm
 
-#if defined(__DEBUG)
-#if defined(__RELEASE)
-#warning __DEBUG was defined
-#undef __DEBUG
+#if defined(DEBUG)
+#if defined(RELEASE)
+#warning DEBUG was defined
+#undef DEBUG
 /* default */
-#define __DEBUG  0
+#define DEBUG  0
 #endif
 #else
-#define __DEBUG  0
+#define DEBUG  0
 #endif
 
 
-/* Compiler: __MSVCC */
+/* Compiler: MSVCC */
 #if defined(_MSC_VER)
-#define __MSVCC  _MSC_VER
+#define MSVCC
 #endif
 
-/* Compiler: __GNUCC */
+/* Compiler: GNUCC */
 #if defined(__GNUC__)
-#define __GNUCC  __GNUC__
+#define GNUCC
 #endif
 
-/* Compiler: __TinyCC */
+/* Compiler: TinyCC */
 #if defined(__TINYC__)
-#define __TinyCC  __TINYC__
+#define TinyCC
 #endif
 
 /* Platform: Windows */
 #if defined(_WIN32) || defined(__OS2__)
-#define have_Windows  _WIN32
-#define have_Windows32  _WIN32
+#define have_Windows
+#define have_Windows32
 #elif defined(_WIN64)
-#define have_Windows  _WIN64
-#define have_Windows64  _WIN64
+#define have_Windows
+#define have_Windows64
 #endif
 
 /* Platform: Apple
@@ -44,17 +44,17 @@
 /* Platform: Linux/Unix */
 #if defined(linux) || defined(__linux)
 #undef  linux
-#define have_Linux  __linux
+#define have_Linux
 #endif
 
 #if defined(unix) || defined(__unix)
 #undef  unix
-#define have_unix  __unix
+#define have_Unix
 #endif
 
 
 /* Architecture, on Unix: arm, x86_64 or else i386 */
-#if defined(have_Linux) || defined(have_unix)
+#if defined(have_Linux) || defined(have_Unix)
 
 #if defined(__arm__)
 #define have_ARM  1

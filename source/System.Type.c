@@ -13,19 +13,19 @@
 
 /*# System_enum #*/
 
-__string8 System_enum_getName(__Type type, __intptr value) {
-    __assert(type)
+string8 System_enum_getName(Type type, intptr value) {
+    assert(type)
 
-    for (__size i = 0; i < type->fields.length; ++i) {
+    for (size i = 0; i < type->fields.length; ++i) {
 
-        struct_System_Type_FieldInfo info = __array(type->fields.value)[i];
+        struct_System_Type_FieldInfo info = array(type->fields.value)[i];
 
         if (info.value == value) {
             return info.name;
         }
     }
 
-    return __string8_Empty;
+    return string8_Empty;
 }
 
 #endif
@@ -34,7 +34,7 @@ __string8 System_enum_getName(__Type type, __intptr value) {
 
 /*# System_Type #*/
 
-struct_System_Type  System_TypeType = { .base = { .Type = __typeof(System_Type) },
+struct_System_Type  System_TypeType = { .base = { .type = typeof(System_Type) },
     .name = "System.Type",
 	.size = sizeof(struct_System_Type),
 	.baseType = &System_ObjectType
@@ -43,9 +43,9 @@ struct_System_Type  System_TypeType = { .base = { .Type = __typeof(System_Type) 
 /* Literal Types */
 
 /* sizeof(void) is 1 */
-/* sizeof(void *) is sizeof(__size), sizeof(__intptr) */
+/* sizeof(void *) is sizeof(size), sizeof(intptr) */
 
-struct_System_Type  System_voidType     = { .base = stack_System_Object(System_Type), .name = "System.void",    .size = sizeof(void) };
+struct_System_Type  voidType     = { .base = stack_System_Object(System_Type), .name = "System.void",    .size = sizeof(void) };
 struct_System_Type  System_varType      = { .base = stack_System_Object(System_Type), .name = "System.var",     .size = sizeof(void *) };
 struct_System_Type  System_sizeType     = { .base = stack_System_Object(System_Type), .name = "System.size",    .size = sizeof(System_size) };
 struct_System_Type  System_ssizeType    = { .base = stack_System_Object(System_Type), .name = "System.ssize",   .size = sizeof(System_ssize) };
@@ -95,30 +95,30 @@ System_var System_Type_getMethod(System_Type  that, System_var fun) {
 
     System_Type_FunctionInfo info;
     for (System_size f = 0; f < that->functions.length; ++f) {
-        info = &__array(that->functions.value)[f];
+        info = &array(that->functions.value)[f];
         if (fun == info->function) return info->value;
     }
 
     if (that->baseType) return System_Type_getMethod(that->baseType, fun);
 
-    __throw_terminate(inline_System_Exception_new("NotImplementedException_new: Method not found"));
+    throw_terminate(inline_System_Exception_new("NotImplementedException_new: Method not found"));
 }
 
 System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other) {
-    __assert(that)
-    __assert(other)
+    assert(that)
+    assert(other)
 
     System_Type they = that;
     System_Type_InterfaceInfo info;
     while (they) {
-        if (other == they) return __true;
+        if (other == they) return true;
         for (System_size f = 0; f < they->interfaces.length; ++f) {
-            info = &__array(they->interfaces.value)[f];
-            if (other == info->interfaceType) return __true;
+            info = &array(they->interfaces.value)[f];
+            if (other == info->interfaceType) return true;
         }
         they = they->baseType;
     }
-    return __false;
+    return false;
 }
 
 #endif

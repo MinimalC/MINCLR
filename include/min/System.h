@@ -71,7 +71,7 @@
 /* #include "System.Socket.h" */
 
 
-#undef  __fixed
-#define __fixed  /* noconst */
+#undef  fixed
+#define fixed  /* noconst */
 
 #endif

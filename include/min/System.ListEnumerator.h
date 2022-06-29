@@ -11,7 +11,7 @@
 #define have_System_ListEnumerator
 
 #define struct_System_ListEnumerator  struct class_System_ListEnumerator
-typedef __fixed struct_System_ListEnumerator {
+typedef fixed struct_System_ListEnumerator {
     struct_System_Object base;
 
     System_List array;
@@ -20,22 +20,22 @@ typedef __fixed struct_System_ListEnumerator {
 
 }  * System_ListEnumerator;
 
-#define stack_System_ListEnumerator()  (struct_System_ListEnumerator){ .base = stack_System_Object(System_ListEnumerator), .array = __null, }
+#define stack_System_ListEnumerator()  (struct_System_ListEnumerator){ .base = stack_System_Object(System_ListEnumerator), .array = null, }
 
-__export struct_System_Type  System_ListEnumeratorType;
+export struct_System_Type  System_ListEnumeratorType;
 
-typedef System_void __delegate(System_ListEnumerator_free)(System_ListEnumerator that);
-typedef System_ListEnumerator __delegate(System_ListEnumerator_init)(System_ListEnumerator that, System_List array);
-typedef System_Object __delegate(System_ListEnumerator_get_current)(System_ListEnumerator that);
-typedef System_boolean __delegate(System_ListEnumerator_moveNext)(System_ListEnumerator that);
+typedef void delegate(System_ListEnumerator_free)(System_ListEnumerator that);
+typedef System_ListEnumerator delegate(System_ListEnumerator_init)(System_ListEnumerator that, System_List array);
+typedef System_Object delegate(System_ListEnumerator_get_current)(System_ListEnumerator that);
+typedef System_boolean delegate(System_ListEnumerator_moveNext)(System_ListEnumerator that);
 
 #define System_ListEnumerator_new  System_ListEnumerator_new__00
 
-__export System_ListEnumerator  System_ListEnumerator_new(System_List array);
-__export System_ListEnumerator  base_System_ListEnumerator_init(System_ListEnumerator that, System_List array);
-__export System_void  base_System_ListEnumerator_free(System_ListEnumerator that);
-__export System_Object  base_System_ListEnumerator_get_current(System_ListEnumerator that);
-__export System_boolean  base_System_ListEnumerator_moveNext(System_ListEnumerator that);
+export System_ListEnumerator  System_ListEnumerator_new(System_List array);
+export System_ListEnumerator  base_System_ListEnumerator_init(System_ListEnumerator that, System_List array);
+export void  base_System_ListEnumerator_free(System_ListEnumerator that);
+export System_Object  base_System_ListEnumerator_get_current(System_ListEnumerator that);
+export System_boolean  base_System_ListEnumerator_moveNext(System_ListEnumerator that);
 
 #define System_ListEnumerator_init(o,...)  ((function_System_ListEnumerator_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ListEnumerator_init))(o,__VA_ARGS__)
 #define System_ListEnumerator_free(o)  ((function_System_ListEnumerator_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
@@ -51,15 +51,15 @@ __export System_boolean  base_System_ListEnumerator_moveNext(System_ListEnumerat
 
 #if defined(using_System)
 #define struct_ListArrayEnumerator  struct_System_ListEnumerator
-#define __ListArrayEnumerator  System_ListEnumerator
-#define __ListArrayEnumeratorType  System_ListEnumeratorType
+#define ListArrayEnumerator  System_ListEnumerator
+#define ListArrayEnumeratorType  System_ListEnumeratorType
 #define function_ListArrayEnumerator_init  function_System_ListEnumerator_init
 #define function_ListArrayEnumerator_free  function_System_ListEnumerator_free
 #define base_ListArrayEnumerator_init  base_System_ListEnumerator_init
 #define base_ListArrayEnumerator_free  base_System_ListEnumerator_free
-#define __ListArrayEnumerator_new  System_ListEnumerator_new
-#define __ListArrayEnumerator_init  System_ListEnumerator_init
-#define __ListArrayEnumerator_free  System_ListEnumerator_free
+#define ListArrayEnumerator_new  System_ListEnumerator_new
+#define ListArrayEnumerator_init  System_ListEnumerator_init
+#define ListArrayEnumerator_free  System_ListEnumerator_free
 #endif
 
 

@@ -18,9 +18,9 @@ struct_System_Type  System_ICollectionType = { .base = stack_System_Object(Syste
 
 /* TODO: throw NotImplementedException, this is interface */
 
-System_var  base_System_ICollection_get_index(System_ICollection that) { return __null; }
-System_void  base_System_ICollection_set_index(System_ICollection that, System_var value) { }
+System_var  base_System_ICollection_get_index(System_ICollection that) { return null; }
+void  base_System_ICollection_set_index(System_ICollection that, System_var value) { }
 System_size  base_System_ICollection_get_Length(System_ICollection that) { return 0; }
-System_void  base_System_ICollection_copyTo(System_ICollection that, System_ICollection other, System_size offset) { }
+void  base_System_ICollection_copyTo(System_ICollection that, System_ICollection other, System_size offset) { }
 
 #endif

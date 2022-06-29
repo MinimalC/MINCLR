@@ -23,10 +23,10 @@ Generic_T0Array  Generic_T0Array_new(System_size length) {
 
 struct_System_String  STRING_Generic_T0Array = const_System_String("Generic.T0Array");
 
-struct_System_Type  Generic_T0ArrayType = { .base = { .Type = __typeof(System_Type) },
+struct_System_Type  Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
     .name = &STRING_Generic_T0Array,
     .size = sizeof(struct_Generic_T0Array),
-    .baseType = __typeof(System_Array),
+    .baseType = typeof(System_Array),
 };
 
 #endif

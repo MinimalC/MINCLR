@@ -10,17 +10,17 @@
 
 /*# System_IStream #*/
 
-System_void  base_System_IStream_write(__IStream that, __size count, __string8 value) { }
+void  base_System_IStream_write(IStream that, size count, string8 value) { }
 
-System_void  base_System_IStream_sync(__IStream that) {  }
+void  base_System_IStream_sync(IStream that) {  }
 
-System_size  base_System_IStream_read(__IStream that, __size count, __string8 value) { return 0; }
+System_size  base_System_IStream_read(IStream that, size count, string8 value) { return 0; }
 
-System_void  base_System_IStream_seek(__IStream that, __ssize offset, __origin origin) { }
+void  base_System_IStream_seek(IStream that, ssize offset, origin origin) { }
 
-System_size  base_System_IStream_get_Position(__IStream that) { return 0; }
+System_size  base_System_IStream_get_Position(IStream that) { return 0; }
 
-System_void  base_System_IStream_set_Position(__IStream that, __size value) { }
+void  base_System_IStream_set_Position(IStream that, size value) { }
 
 struct_System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_IStream_write", .function = base_System_IStream_write, .value = base_System_IStream_write },
@@ -35,7 +35,7 @@ struct_System_Type  System_IStreamType = { .base = stack_System_Object(System_Ty
 	.name = "System.IStream",
     .size = sizeof(struct_System_IStream),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(System_IStreamTypeFunctions), .value = &System_IStreamTypeFunctions
+        .length = sizeof_array(System_IStreamTypeFunctions), .value = &System_IStreamTypeFunctions
     },
 };
 

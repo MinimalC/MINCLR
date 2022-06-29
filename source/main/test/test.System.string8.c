@@ -6,44 +6,44 @@ struct_string8  command  = "./home/test01_System_string8";
 struct_string8  final_name  = "main_test01_System_string8";
 struct_string8  empty  = "";
 
-//__main(test01_System_string8, args){
+//main(test01_System_string8, args){
 int main(int argc, char * argv[]) {
 
-    if (!__string8_isNullOrEmpty(__null) || !__string8_isNullOrEmpty(empty) || __string8_isNullOrEmpty(prefix))
-        __Console_writeLine__string8("Test00: ERROR: __string8_isNullOrEmpty");
+    if (!string8_isNullOrEmpty(null) || !string8_isNullOrEmpty(empty) || string8_isNullOrEmpty(prefix))
+        Console_writeLine__string8("Test00: ERROR: string8_isNullOrEmpty");
     else
-        __Console_writeLine__string8("Test00: SUCCESS: __string8_isNullOrEmpty");
+        Console_writeLine__string8("Test00: SUCCESS: string8_isNullOrEmpty");
 
 
-    __size command_length = __string8_get_Length(command);
+    size command_length = string8_get_Length(command);
     if (command_length != 28)
-        __Console_writeLine__string8("Test01: ERROR: __string8_get_Length");
+        Console_writeLine__string8("Test01: ERROR: string8_get_Length");
     else
-        __Console_writeLine__string8("Test01: SUCCESS: __string8_get_Length");
+        Console_writeLine__string8("Test01: SUCCESS: string8_get_Length");
 
-    __size  command_i0 = __string8_indexOf(command, '/');
+    size  command_i0 = string8_indexOf(command, '/');
     if (command_i0 != 2)
-        __Console_writeLine("Test02: ERROR: __string8_indexOf: {0:uint}", 1, command_i0);
+        Console_writeLine("Test02: ERROR: string8_indexOf: {0:uint}", 1, command_i0);
     else
-        __Console_writeLine__string8("Test02: SUCCESS: __string8_indexOf");
+        Console_writeLine__string8("Test02: SUCCESS: string8_indexOf");
 
-    __size  command_i1 = __string8_lastIndexOf(command, '/');
+    size  command_i1 = string8_lastIndexOf(command, '/');
     if (command_i1 != 7)
-        __Console_writeLine__string8("Test03: ERROR: __string8_lastIndexOf");
+        Console_writeLine__string8("Test03: ERROR: string8_lastIndexOf");
     else
-        __Console_writeLine__string8("Test03: SUCCESS: __string8_lastIndexOf");
+        Console_writeLine__string8("Test03: SUCCESS: string8_lastIndexOf");
 
-    __size prefix_length = __string8_get_Length(prefix);
-    __string8  name  = __Memory_alloc(prefix_length + command_length + 1);
-    __string8_copySubstringTo(prefix, prefix_length, name);
-    __string8_copySubstringTo(command + command_i1, command_length, name + prefix_length);
+    size prefix_length = string8_get_Length(prefix);
+    string8  name  = Memory_alloc(prefix_length + command_length + 1);
+    string8_copySubstringTo(prefix, prefix_length, name);
+    string8_copySubstringTo(command + command_i1, command_length, name + prefix_length);
 
-    if (!__string8_equals(name, final_name))
-        __Console_writeLine__string8("Test04: ERROR: __string8_copySubstringTo");
+    if (!string8_equals(name, final_name))
+        Console_writeLine__string8("Test04: ERROR: string8_copySubstringTo");
     else
-        __Console_writeLine__string8("Test04: SUCCESS: __string8_copySubstringTo");
+        Console_writeLine__string8("Test04: SUCCESS: string8_copySubstringTo");
 
-    __Memory_free((void**)&name);
+    Memory_free((void**)&name);
 
-    return __true;
+    return true;
 }

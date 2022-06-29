@@ -8,7 +8,7 @@
 /* static class Crypto.SipHash48 */
 
 #define struct_Crypto_SipHash48  struct class_Crypto_SipHash48
-typedef __final __fixed struct_Crypto_SipHash48 {
+typedef final fixed struct_Crypto_SipHash48 {
     struct_System_Object  base;
 
     System_uint64  v0;
@@ -24,21 +24,21 @@ typedef __final __fixed struct_Crypto_SipHash48 {
     .v2 = 0x6c7967656e657261ULL ,\
     .v3 = 0x7465646279746573ULL ,}
 
-__export struct_System_Type  Crypto_SipHash48Type;
+export struct_System_Type  Crypto_SipHash48Type;
 
 #define Crypto_SipHash48_new  Crypto_SipHash48_new__00
 
-__export Crypto_SipHash48  Crypto_SipHash48_new();
-__export System_void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_var input, System_size length);
-__export System_uint64  Crypto_SipHash48_final(Crypto_SipHash48 that);
+export Crypto_SipHash48  Crypto_SipHash48_new();
+export void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_var input, System_size length);
+export System_uint64  Crypto_SipHash48_final(Crypto_SipHash48 that);
 
 /* final class Crypto.SipHash48 */
 
-typedef Crypto_SipHash48 __delegate(Crypto_SipHash48_init)(Crypto_SipHash48 that);
-typedef System_void __delegate(Crypto_SipHash48_free)(Crypto_SipHash48 that);
+typedef Crypto_SipHash48 delegate(Crypto_SipHash48_init)(Crypto_SipHash48 that);
+typedef void delegate(Crypto_SipHash48_free)(Crypto_SipHash48 that);
 
-__export Crypto_SipHash48  base_Crypto_SipHash48_init(Crypto_SipHash48 that);
-__export System_void  base_Crypto_SipHash48_free(Crypto_SipHash48 that);
+export Crypto_SipHash48  base_Crypto_SipHash48_init(Crypto_SipHash48 that);
+export void  base_Crypto_SipHash48_free(Crypto_SipHash48 that);
 
 #define Crypto_SipHash48_init  base_Crypto_SipHash48_init
 #define Crypto_SipHash48_free  base_Crypto_SipHash48_free
@@ -53,17 +53,17 @@ __export System_void  base_Crypto_SipHash48_free(Crypto_SipHash48 that);
 #if defined(using_Crypto)
 #define struct_SipHash48  struct_Crypto_SipHash48
 #define stack_SipHash48  stack_Crypto_SipHash48
-#define __SipHash48  Crypto_SipHash48
-#define __SipHash48Type  Crypto_SipHash48Type
+#define SipHash48  Crypto_SipHash48
+#define SipHash48Type  Crypto_SipHash48Type
 #define function_SipHash48_init  function_Crypto_SipHash48_init
 #define function_SipHash48_free  function_Crypto_SipHash48_free
 #define base_SipHash48_init  base_Crypto_SipHash48_init
 #define base_SipHash48_free  base_Crypto_SipHash48_free
-#define __SipHash48_update  Crypto_SipHash48_update
-#define __SipHash48_final  Crypto_SipHash48_final
-#define __SipHash48_new  Crypto_SipHash48_new
-#define __SipHash48_init  Crypto_SipHash48_init
-#define __SipHash48_free  Crypto_SipHash48_free
+#define SipHash48_update  Crypto_SipHash48_update
+#define SipHash48_final  Crypto_SipHash48_final
+#define SipHash48_new  Crypto_SipHash48_new
+#define SipHash48_init  Crypto_SipHash48_init
+#define SipHash48_free  Crypto_SipHash48_free
 #endif
 
 #endif

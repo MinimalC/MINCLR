@@ -4,11 +4,11 @@
 
 typedef System_intptr  System_error;
 
-__export struct_System_Type  System_errorType;
+export struct_System_Type  System_errorType;
 
 #if defined(using_System)
 #define error  System_error
-#define __errorType  System_errorType
+#define errorType  System_errorType
 #endif
 
 #include "System.error.generic.asm.h"

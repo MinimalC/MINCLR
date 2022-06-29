@@ -16,86 +16,86 @@ System_Array  System_Array_new(System_size length) {
 }
 
 System_Array  base_System_Array_init(System_Array that, System_size length) {
-	base_System_Object_init((__Object)that);
+	base_System_Object_init((Object)that);
 
     that->length = length;
 
-    __size element_size = sizeof(__var);
+    size element_size = sizeof(var);
 
-    that->value =  __Memory_alloc(length * element_size);
+    that->value =  Memory_alloc(length * element_size);
 
     return that;
 }
 
-System_void  base_System_Array_free(System_Array that) {
-	__assert(that)
+void  base_System_Array_free(System_Array that) {
+	assert(that)
 
-	__size length = that->length;
-    __size i;
+	size length = that->length;
+    size i;
 
-#if __DEBUG == DEBUG_System_Object
+#if DEBUG == DEBUG_System_Object
 	System_Type type = ((System_Object)that)->Type;
-    __size start_null = 0;
+    size start_null = 0;
 #endif
 
-    /* * TODO: __Array_get_index, __Array_set_index and __Array_hasValue */
+    /* * TODO: Array_get_index, Array_set_index and Array_hasValue */
     System_Object * array = (* that->value);
 
     for (i = 0; i < length; ++i) {
-        __Object object = *(array + i);
+        Object object = *(array + i);
 
         if (object) {
 
-#if __DEBUG == DEBUG_System_Object
+#if DEBUG == DEBUG_System_Object
             if (start_null > 0) {
                 if (start_null == i - 1)
-                     __Console_writeLine("__{0:string}_free: [{1:uint}] is null", 2, type->name->value, start_null);
-                else __Console_writeLine("__{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name->value, start_null, i - 1);
+                     Console_writeLine("{0:string}_free: [{1:uint}] is null", 2, type->name->value, start_null);
+                else Console_writeLine("{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name->value, start_null, i - 1);
                 start_null = 0;
             }
-            /* __Console_writeLine("__{0:string}_free: [{1:uint}]: {2:string}_free", 3, type->name->value, i, object->Type->name->value); */
+            /* Console_writeLine("{0:string}_free: [{1:uint}]: {2:string}_free", 3, type->name->value, i, object->Type->name->value); */
 #endif
 
-            __Object_freeClass(&object);
-            *(array + i) = __null;
+            Object_freeClass(&object);
+            *(array + i) = null;
         }
 
-#if __DEBUG == DEBUG_System_Object
+#if DEBUG == DEBUG_System_Object
 			else if (start_null == 0) start_null = i;
 #endif
     }
 
-#if __DEBUG == DEBUG_System_Object
+#if DEBUG == DEBUG_System_Object
     if (start_null > 0) {
-        if (start_null == i - 1) __Console_writeLine("__{0:string}_free: [{1:uint}] is null", 2, type->name->value, start_null);
-        else __Console_writeLine("__{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name->value, start_null, i - 1);
+        if (start_null == i - 1) Console_writeLine("{0:string}_free: [{1:uint}] is null", 2, type->name->value, start_null);
+        else Console_writeLine("{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name->value, start_null, i - 1);
         start_null = 0;
     }
 #endif
 
-    __Memory_free((void **)&that->value);
+    Memory_free((void **)&that->value);
 
-	base_System_Object_free((__Object)that);
+	base_System_Object_free((Object)that);
 }
 
 System_size  base_System_Array_get_Length(System_Array that) {
     return that->length;
 }
 
-System_Object  base_System_Array_get_index(System_Array that, __size index) {
-	__assert(that)
-	return __array(that->value)[index];
+System_Object  base_System_Array_get_index(System_Array that, size index) {
+	assert(that)
+	return array(that->value)[index];
 }
 
-void  base_System_Array_set_index(System_Array that, __size index, System_Object value) {
-	__assert(that)
-    System_Object item = __array(that->value)[index];
-    if (item) __Object_freeClass(&item);
-	__array(that->value)[index] = !value ? __null : __Object_addReference(value);
+void  base_System_Array_set_index(System_Array that, size index, System_Object value) {
+	assert(that)
+    System_Object item = array(that->value)[index];
+    if (item) Object_freeClass(&item);
+	array(that->value)[index] = !value ? null : Object_addReference(value);
 }
 
 void  base_System_Array_resize(System_Array that, System_size length) {
-    __size element_size = sizeof(__var);
+    size element_size = sizeof(var);
     System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
     that->length = length;
 }
@@ -125,10 +125,10 @@ struct_System_Type  System_ArrayType = {
 	.size = sizeof(struct_System_Array),
 	.baseType = &System_ObjectType,
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(System_ArrayTypeFunctions), .value = &System_ArrayTypeFunctions,
+        .length = sizeof_array(System_ArrayTypeFunctions), .value = &System_ArrayTypeFunctions,
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(System_ArrayTypeInterfaces), .value = &System_ArrayTypeInterfaces,
+        .length = sizeof_array(System_ArrayTypeInterfaces), .value = &System_ArrayTypeInterfaces,
     },
 };
 

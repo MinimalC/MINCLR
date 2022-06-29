@@ -8,10 +8,10 @@
 /* 2-Dimensional, Unique SipHash-Indexed ObjectList */
 
 #define System_List_Capacity_DEFAULT  64
-__export const System_size  System_List_Capacity;
+export const System_size  System_List_Capacity;
 
 #define struct_System_List  struct class_System_List
-typedef __fixed struct_System_List {
+typedef fixed struct_System_List {
     struct_System_Object base;
 
     System_size capacity;
@@ -26,28 +26,28 @@ typedef __fixed struct_System_List {
 
 #define stack_System_List()  (struct_System_List){ .base = stack_System_Object(System_List), }
 
-__export struct_System_Type  System_ListType;
+export struct_System_Type  System_ListType;
 
-typedef System_List __delegate(System_List_init)(System_List that);
-typedef System_void __delegate(System_List_free)(System_List that);
-typedef System_size  __delegate(System_List_get_Length)(System_List that);
-typedef System_Object  __delegate(System_List_get_index)(System_List that, System_size index);
-typedef System_void  __delegate(System_List_set_index)(System_List that, System_size index, System_Object value);
-typedef System_void __delegate(System_List_copyTo)(System_List that, System_List other, System_size offset);
-typedef System_boolean  __delegate(System_List_contains)(System_List that, System_Object object);
-typedef System_void __delegate(System_List_add)(System_List that, System_Object object);
+typedef System_List delegate(System_List_init)(System_List that);
+typedef void delegate(System_List_free)(System_List that);
+typedef System_size  delegate(System_List_get_Length)(System_List that);
+typedef System_Object  delegate(System_List_get_index)(System_List that, System_size index);
+typedef void  delegate(System_List_set_index)(System_List that, System_size index, System_Object value);
+typedef void delegate(System_List_copyTo)(System_List that, System_List other, System_size offset);
+typedef System_boolean  delegate(System_List_contains)(System_List that, System_Object object);
+typedef void delegate(System_List_add)(System_List that, System_Object object);
 
 #define System_List_new  System_List_new__00
 
-__export System_List  System_List_new();
-__export System_List  base_System_List_init(System_List that);
-__export System_void  base_System_List_free(System_List that);
-__export System_size  base_System_List_get_Length(System_List that);
-__export System_Object  base_System_List_get_index(System_List that, System_size index);
-__export System_void  base_System_List_set_index(System_List that, System_size index, System_Object value);
-__export System_void  base_System_List_copyTo(System_List that, System_List other, System_size offset);
-__export System_boolean  base_System_List_contains(System_List that, System_Object object);
-__export System_void  base_System_List_add(System_List that, System_Object object);
+export System_List  System_List_new();
+export System_List  base_System_List_init(System_List that);
+export void  base_System_List_free(System_List that);
+export System_size  base_System_List_get_Length(System_List that);
+export System_Object  base_System_List_get_index(System_List that, System_size index);
+export void  base_System_List_set_index(System_List that, System_size index, System_Object value);
+export void  base_System_List_copyTo(System_List that, System_List other, System_size offset);
+export System_boolean  base_System_List_contains(System_List that, System_Object object);
+export void  base_System_List_add(System_List that, System_Object object);
 
 #define System_List_init(o)  ((function_System_List_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
 #define System_List_free(o)  ((function_System_List_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
@@ -67,8 +67,8 @@ __export System_void  base_System_List_add(System_List that, System_Object objec
 
 #if defined(using_System)
 #define struct_List  struct_System_List
-#define __List  System_List
-#define __ListType  System_ListType
+#define List  System_List
+#define ListType  System_ListType
 
 #define function_List_init  function_System_List_init
 #define function_List_free  function_System_List_free
@@ -78,11 +78,11 @@ __export System_void  base_System_List_add(System_List that, System_Object objec
 #define base_List_free  base_System_List_free
 #define base_List_contains  base_System_List_contains
 #define base_List_add  base_System_List_add
-#define __List_new  System_List_new
-#define __List_init  System_List_init
-#define __List_free  System_List_free
-#define __List_contains  System_List_contains
-#define __List_add  System_List_add
+#define List_new  System_List_new
+#define List_init  System_List_init
+#define List_free  System_List_free
+#define List_contains  System_List_contains
+#define List_add  System_List_add
 #endif
 
 #endif

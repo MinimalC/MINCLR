@@ -10,7 +10,12 @@
 
 /*# System_decimal #*/
 
-System_void  System_decimal_carryOver(System_decimal  * that, System_uint8 digits) {
+struct_System_Type  System_decimalType = { .base = { .type = typeof(System_Type) },
+    .name = "System.decimal",
+    .size = sizeof(System_decimal),
+};
+
+void  System_decimal_carryOver(System_decimal  * that, System_uint8 digits) {
     /* if digits > System_decimal_Capacity_DEFAULT - 2 { throw Exception } */
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
     for (System_size i = 0; i < digits; ++i) {
@@ -21,33 +26,33 @@ System_void  System_decimal_carryOver(System_decimal  * that, System_uint8 digit
     }
 }
 
-System_void  System_decimal_init__uint8(System_decimal  * that, System_uint8 uint8) {
+void  System_decimal_init__uint8(System_decimal  * that, System_uint8 uinteger) {
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
-    if (uint8 & 1) {
+    if (uinteger & 1) {
         *(string - 0) += 1;
     }
-    if (uint8 & 2) {
+    if (uinteger & 2) {
         *(string - 0) += 2;
     }
-    if (uint8 & 4) {
+    if (uinteger & 4) {
         *(string - 0) += 4;
     }
-    if (uint8 & 8) {
+    if (uinteger & 8) {
         *(string - 0) += 8;
     }
-    if (uint8 & 16) {
+    if (uinteger & 16) {
         *(string - 1) += 1;
         *(string - 0) += 6;
     }
-    if (uint8 & 32) {
+    if (uinteger & 32) {
         *(string - 1) += 3;
         *(string - 0) += 2;
     }
-    if (uint8 & 64) {
+    if (uinteger & 64) {
         *(string - 1) += 6;
         *(string - 0) += 4;
     }
-    if (uint8 & 128) {
+    if (uinteger & 128) {
         *(string - 2) += 1;
         *(string - 1) += 2;
         *(string - 0) += 8;
@@ -55,52 +60,52 @@ System_void  System_decimal_init__uint8(System_decimal  * that, System_uint8 uin
     inline_System_decimal_carryOver(string,3)
 }
 
-System_void  System_decimal_init__uint16(System_decimal  * that, System_uint16 uint16) {
-    System_decimal_init__uint8(that, (System_uint8)uint16);
+void  System_decimal_init__uint16(System_decimal  * that, System_uint16 uinteger) {
+    System_decimal_init__uint8(that, (System_uint8)uinteger);
 
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
-    if (uint16 & 256) {
+    if (uinteger & 256) {
         *(string - 2) += 2;
         *(string - 1) += 5;
         *(string - 0) += 6;
     }
-    if (uint16 & 512) {
+    if (uinteger & 512) {
         *(string - 2) += 5;
         *(string - 1) += 1;
         *(string - 0) += 2;
     }
-    if (uint16 & 1024) {
+    if (uinteger & 1024) {
         *(string - 3) += 1;
         *(string - 2) += 0;
         *(string - 1) += 2;
         *(string - 0) += 4;
     }
-    if (uint16 & 2048) {
+    if (uinteger & 2048) {
         *(string - 3) += 2;
         *(string - 2) += 0;
         *(string - 1) += 4;
         *(string - 0) += 8;
     }
-    if (uint16 & 4096) {
+    if (uinteger & 4096) {
         *(string - 3) += 4;
         *(string - 2) += 0;
         *(string - 1) += 9;
         *(string - 0) += 6;
     }
-    if (uint16 & 8192) {
+    if (uinteger & 8192) {
         *(string - 3) += 8;
         *(string - 2) += 1;
         *(string - 1) += 9;
         *(string - 0) += 2;
     }
-    if (uint16 & 16384) {
+    if (uinteger & 16384) {
         *(string - 4) += 1;
         *(string - 3) += 6;
         *(string - 2) += 3;
         *(string - 1) += 8;
         *(string - 0) += 4;
     }
-    if (uint16 & 32768) {
+    if (uinteger & 32768) {
         *(string - 4) += 3;
         *(string - 3) += 2;
         *(string - 2) += 7;
@@ -110,18 +115,18 @@ System_void  System_decimal_init__uint16(System_decimal  * that, System_uint16 u
     inline_System_decimal_carryOver(string,5)
 }
 
-System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 uint32) {
-    System_decimal_init__uint16(that, (System_uint16)uint32);
+void  System_decimal_init__uint32(System_decimal  * that, System_uint32 uinteger) {
+    System_decimal_init__uint16(that, (System_uint16)uinteger);
 
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
-    if (uint32 & 65536) {
+    if (uinteger & 65536) {
         *(string - 4) += 6;
         *(string - 3) += 5;
         *(string - 2) += 5;
         *(string - 1) += 3;
         *(string - 0) += 6;
     }
-    if (uint32 & 131072) {
+    if (uinteger & 131072) {
         *(string - 5) += 1;
         *(string - 4) += 3;
         *(string - 3) += 1;
@@ -129,7 +134,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 7;
         *(string - 0) += 2;
     }
-    if (uint32 & 262144) {
+    if (uinteger & 262144) {
         *(string - 5) += 2;
         *(string - 4) += 6;
         *(string - 3) += 2;
@@ -137,7 +142,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 4;
         *(string - 0) += 4;
     }
-    if (uint32 & 524288) {
+    if (uinteger & 524288) {
         *(string - 5) += 5;
         *(string - 4) += 2;
         *(string - 3) += 4;
@@ -145,7 +150,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 8;
         *(string - 0) += 8;
     }
-    if (uint32 & 1048576) {
+    if (uinteger & 1048576) {
         *(string - 6) += 1;
         *(string - 5) += 0;
         *(string - 4) += 4;
@@ -154,7 +159,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 7;
         *(string - 0) += 6;
     }
-    if (uint32 & 2097152) {
+    if (uinteger & 2097152) {
         *(string - 6) += 2;
         *(string - 5) += 0;
         *(string - 4) += 9;
@@ -163,7 +168,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 5;
         *(string - 0) += 2;
     }
-    if (uint32 & 4194304) {
+    if (uinteger & 4194304) {
         *(string - 6) += 4;
         *(string - 5) += 1;
         *(string - 4) += 9;
@@ -172,7 +177,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 0;
         *(string - 0) += 4;
     }
-    if (uint32 & 8388608) {
+    if (uinteger & 8388608) {
         *(string - 6) += 8;
         *(string - 5) += 3;
         *(string - 4) += 8;
@@ -181,7 +186,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 0;
         *(string - 0) += 8;
     }
-    if (uint32 & 16777216) {
+    if (uinteger & 16777216) {
         *(string - 7) += 1;
         *(string - 6) += 6;
         *(string - 5) += 7;
@@ -191,7 +196,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 1;
         *(string - 0) += 6;
     }
-    if (uint32 & 33554432) {
+    if (uinteger & 33554432) {
         *(string - 7) += 3;
         *(string - 6) += 3;
         *(string - 5) += 5;
@@ -201,7 +206,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 3;
         *(string - 0) += 2;
     }
-    if (uint32 & 67108864) {
+    if (uinteger & 67108864) {
         *(string - 7) += 6;
         *(string - 6) += 7;
         *(string - 5) += 1;
@@ -211,7 +216,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 6;
         *(string - 0) += 4;
     }
-    if (uint32 & 134217728) {
+    if (uinteger & 134217728) {
         *(string - 8) += 1;
         *(string - 7) += 3;
         *(string - 6) += 4;
@@ -222,7 +227,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 2;
         *(string - 0) += 8;
     }
-    if (uint32 & 268435456) {
+    if (uinteger & 268435456) {
         *(string - 8) += 2;
         *(string - 7) += 6;
         *(string - 6) += 8;
@@ -233,7 +238,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 5;
         *(string - 0) += 6;
     }
-    if (uint32 & 536870912) {
+    if (uinteger & 536870912) {
         *(string - 8) += 5;
         *(string - 7) += 3;
         *(string - 6) += 6;
@@ -244,7 +249,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 1;
         *(string - 0) += 2;
     }
-    if (uint32 & 1073741824) {
+    if (uinteger & 1073741824) {
         *(string - 9) += 1;
         *(string - 8) += 0;
         *(string - 7) += 7;
@@ -256,7 +261,7 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
         *(string - 1) += 2;
         *(string - 0) += 4;
     }
-    if (uint32 & 2147483648) {
+    if (uinteger & 2147483648) {
         *(string - 9) += 2;
         *(string - 8) += 1;
         *(string - 7) += 4;
@@ -271,12 +276,12 @@ System_void  System_decimal_init__uint32(System_decimal  * that, System_uint32 u
     inline_System_decimal_carryOver(string,10)
 }
 
-System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 uint64) {
-    System_decimal_init__uint32(that, (System_uint32)uint64);
+void  System_decimal_init__uint64(System_decimal  * that, System_uint64 uinteger) {
+    System_decimal_init__uint32(that, (System_uint32)uinteger);
 
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
 
-    if (uint64 & 4294967296) {
+    if (uinteger & 4294967296) {
         *(string - 9) += 4;
         *(string - 8) += 2;
         *(string - 7) += 9;
@@ -288,7 +293,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 9;
         *(string - 0) += 6;
     }
-    if (uint64 & 8589934592) {
+    if (uinteger & 8589934592) {
         *(string - 9) += 8;
         *(string - 8) += 5;
         *(string - 7) += 8;
@@ -300,7 +305,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 9;
         *(string - 0) += 2;
     }
-    if (uint64 & 17179869184) {
+    if (uinteger & 17179869184) {
         *(string - 10) += 1;
         *(string - 9) += 7;
         *(string - 8) += 1;
@@ -313,7 +318,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 8;
         *(string - 0) += 4;
     }
-    if (uint64 & 34359738368) {
+    if (uinteger & 34359738368) {
         *(string - 10) += 3;
         *(string - 9) += 4;
         *(string - 8) += 3;
@@ -326,7 +331,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 6;
         *(string - 0) += 8;
     }
-    if (uint64 & 68719476736) {
+    if (uinteger & 68719476736) {
         *(string - 10) += 6;
         *(string - 9) += 8;
         *(string - 8) += 7;
@@ -339,7 +344,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 3;
         *(string - 0) += 6;
     }
-    if (uint64 & 137438953472) {
+    if (uinteger & 137438953472) {
         *(string - 11) += 1;
         *(string - 10) += 3;
         *(string - 9) += 7;
@@ -353,7 +358,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 7;
         *(string - 0) += 2;
     }
-    if (uint64 & 274877906944) {
+    if (uinteger & 274877906944) {
         *(string - 11) += 2;
         *(string - 10) += 7;
         *(string - 9) += 4;
@@ -367,7 +372,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 4;
         *(string - 0) += 4;
     }
-    if (uint64 & 0x8000000000) {
+    if (uinteger & 0x8000000000) {
         *(string - 11) += 5;
         *(string - 10) += 4;
         *(string - 9) += 9;
@@ -381,7 +386,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 8;
         *(string - 0) += 8;
     }
-    if (uint64 & 0x10000000000) {
+    if (uinteger & 0x10000000000) {
         *(string - 12) += 1;
         *(string - 11) += 0;
         *(string - 10) += 9;
@@ -396,7 +401,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 7;
         *(string - 0) += 6;
     }
-    if (uint64 & 0x20000000000) {
+    if (uinteger & 0x20000000000) {
         *(string - 12) += 2;
         *(string - 11) += 1;
         *(string - 10) += 9;
@@ -411,7 +416,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 5;
         *(string - 0) += 2;
     }
-    if (uint64 & 0x40000000000) {
+    if (uinteger & 0x40000000000) {
         *(string - 12) += 4;
         *(string - 11) += 3;
         *(string - 10) += 9;
@@ -426,7 +431,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 0;
         *(string - 0) += 4;
     }
-    if (uint64 & 0x80000000000) {
+    if (uinteger & 0x80000000000) {
         *(string - 12) += 8;
         *(string - 11) += 7;
         *(string - 10) += 9;
@@ -441,7 +446,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 0;
         *(string - 0) += 8;
     }
-    if (uint64 & 0x100000000000) {
+    if (uinteger & 0x100000000000) {
         *(string - 13) += 1;
         *(string - 12) += 7;
         *(string - 11) += 5;
@@ -457,7 +462,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 1;
         *(string - 0) += 6;
     }
-    if (uint64 & 0x200000000000) {
+    if (uinteger & 0x200000000000) {
         *(string - 13) += 3;
         *(string - 12) += 5;
         *(string - 11) += 1;
@@ -473,7 +478,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 3;
         *(string - 0) += 2;
     }
-    if (uint64 & 0x400000000000) {
+    if (uinteger & 0x400000000000) {
         *(string - 13) += 7;
         *(string - 12) += 0;
         *(string - 11) += 3;
@@ -489,7 +494,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 6;
         *(string - 0) += 4;
     }
-    if (uint64 & 0x800000000000) {
+    if (uinteger & 0x800000000000) {
         *(string - 14) += 1;
         *(string - 13) += 4;
         *(string - 12) += 0;
@@ -506,7 +511,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 2;
         *(string - 0) += 8;
     }
-    if (uint64 & 0x1000000000000) {
+    if (uinteger & 0x1000000000000) {
         *(string - 14) += 2;
         *(string - 13) += 8;
         *(string - 12) += 1;
@@ -523,7 +528,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 5;
         *(string - 0) += 6;
     }
-    if (uint64 & 0x2000000000000) {
+    if (uinteger & 0x2000000000000) {
         *(string - 14) += 5;
         *(string - 13) += 6;
         *(string - 12) += 2;
@@ -540,7 +545,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 1;
         *(string - 0) += 2;
     }
-    if (uint64 & 0x4000000000000) {
+    if (uinteger & 0x4000000000000) {
         *(string - 15) += 1;
         *(string - 14) += 1;
         *(string - 13) += 2;
@@ -558,7 +563,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 2;
         *(string - 0) += 4;
     }
-    if (uint64 & 0x8000000000000) {
+    if (uinteger & 0x8000000000000) {
         *(string - 15) += 2;
         *(string - 14) += 2;
         *(string - 13) += 5;
@@ -576,7 +581,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 4;
         *(string - 0) += 8;
     }
-    if (uint64 & 0x10000000000000) {
+    if (uinteger & 0x10000000000000) {
         *(string - 15) += 4;
         *(string - 14) += 5;
         *(string - 13) += 0;
@@ -594,7 +599,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 9;
         *(string - 0) += 6;
     }
-    if (uint64 & 0x20000000000000) {
+    if (uinteger & 0x20000000000000) {
         *(string - 15) += 9;
         *(string - 14) += 0;
         *(string - 13) += 0;
@@ -612,7 +617,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 9;
         *(string - 0) += 2;
     }
-    if (uint64 & 0x40000000000000) {
+    if (uinteger & 0x40000000000000) {
         *(string - 16) += 1;
         *(string - 15) += 8;
         *(string - 14) += 0;
@@ -631,7 +636,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 8;
         *(string - 0) += 4;
     }
-    if (uint64 & 0x80000000000000) {
+    if (uinteger & 0x80000000000000) {
         *(string - 16) += 3;
         *(string - 15) += 6;
         *(string - 14) += 0;
@@ -650,7 +655,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 6;
         *(string - 0) += 8;
     }
-    if (uint64 & 0x100000000000000) {
+    if (uinteger & 0x100000000000000) {
         *(string - 16) += 7;
         *(string - 15) += 2;
         *(string - 14) += 0;
@@ -669,7 +674,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 3;
         *(string - 0) += 6;
     }
-    if (uint64 & 0x200000000000000) {
+    if (uinteger & 0x200000000000000) {
         *(string - 17) += 1;
         *(string - 16) += 4;
         *(string - 15) += 4;
@@ -689,7 +694,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 7;
         *(string - 0) += 2;
     }
-    if (uint64 & 0x400000000000000) {
+    if (uinteger & 0x400000000000000) {
         *(string - 17) += 2;
         *(string - 16) += 8;
         *(string - 15) += 8;
@@ -709,7 +714,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 4;
         *(string - 0) += 4;
     }
-    if (uint64 & 0x800000000000000) {
+    if (uinteger & 0x800000000000000) {
         *(string - 17) += 5;
         *(string - 16) += 7;
         *(string - 15) += 6;
@@ -729,7 +734,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 8;
         *(string - 0) += 8;
     }
-    if (uint64 & 0x1000000000000000) {
+    if (uinteger & 0x1000000000000000) {
         *(string - 18) += 1;
         *(string - 17) += 1;
         *(string - 16) += 5;
@@ -750,7 +755,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 7;
         *(string - 0) += 6;
     }
-    if (uint64 & 0x2000000000000000) {
+    if (uinteger & 0x2000000000000000) {
         *(string - 18) += 2;
         *(string - 17) += 3;
         *(string - 16) += 0;
@@ -771,7 +776,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 5;
         *(string - 0) += 2;
     }
-    if (uint64 & 0x4000000000000000) {
+    if (uinteger & 0x4000000000000000) {
         *(string - 18) += 4;
         *(string - 17) += 6;
         *(string - 16) += 1;
@@ -792,7 +797,7 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
         *(string - 1) += 0;
         *(string - 0) += 4;
     }
-    if (uint64 & 0x8000000000000000) {
+    if (uinteger & 0x8000000000000000) {
         *(string - 18) += 9;
         *(string - 17) += 2;
         *(string - 16) += 2;
@@ -816,42 +821,42 @@ System_void  System_decimal_init__uint64(System_decimal  * that, System_uint64 u
     inline_System_decimal_carryOver(string,19)
 }
 
-System_void  System_decimal_set_Precision(System_decimal  * that, System_int8 precision) {
+void  System_decimal_set_Precision(System_decimal  * that, System_int8 precision) {
     that->precision = precision;
 }
 System_int8  System_decimal_get_Precision(System_decimal  * that) {
     return that->precision;
 }
 
-System_void  System_decimal_init__int8(System_decimal  * that, System_int8 int8) {
+void  System_decimal_init__int8(System_decimal  * that, System_int8 int8) {
     System_boolean isNegative = int8 < 0;
     if (isNegative) System_decimal_set_Precision(that, -1);
-    System_uint8 uint8 = isNegative ? ~int8 + 1 : int8;
-    System_decimal_init__uint8(that, uint8);
+    System_uint8 uinteger = isNegative ? ~int8 + 1 : int8;
+    System_decimal_init__uint8(that, uinteger);
 }
 
-System_void  System_decimal_init__int16(System_decimal  * that, System_int16 int16) {
+void  System_decimal_init__int16(System_decimal  * that, System_int16 int16) {
     System_boolean isNegative = int16 < 0;
     if (isNegative) System_decimal_set_Precision(that, -1);
-    System_uint16 uint16 = isNegative ? ~int16 + 1 : int16;
-    System_decimal_init__uint16(that, uint16);
+    System_uint16 uinteger = isNegative ? ~int16 + 1 : int16;
+    System_decimal_init__uint16(that, uinteger);
 }
 
-System_void  System_decimal_init__int32(System_decimal  * that, System_int32 int32) {
+void  System_decimal_init__int32(System_decimal  * that, System_int32 int32) {
     System_boolean isNegative = int32 < 0;
     if (isNegative) System_decimal_set_Precision(that, -1);
-    System_uint32 uint32 = isNegative ? ~int32 + 1 : int32;
-    System_decimal_init__uint32(that, uint32);
+    System_uint32 uinteger = isNegative ? ~int32 + 1 : int32;
+    System_decimal_init__uint32(that, uinteger);
 }
 
-System_void  System_decimal_init__int64(System_decimal  * that, System_int64 int64) {
+void  System_decimal_init__int64(System_decimal  * that, System_int64 int64) {
     System_boolean isNegative = int64 < 0;
     if (isNegative) System_decimal_set_Precision(that, -1);
-    System_uint64 uint64 = isNegative ? ~int64 + 1 : int64;
-    System_decimal_init__uint64(that, uint64);
+    System_uint64 uinteger = isNegative ? ~int64 + 1 : int64;
+    System_decimal_init__uint64(that, uinteger);
 }
 
-System_void  System_decimal_tostring8__stack(System_decimal  * that, System_char8 array[System_decimal_Capacity_DEFAULT + 1]) {
+void  System_decimal_tostring8__stack(System_decimal  * that, System_char8 array[System_decimal_Capacity_DEFAULT + 1]) {
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
     System_string8 array_string = array + System_decimal_Capacity_DEFAULT - 1;
 
@@ -864,10 +869,5 @@ System_void  System_decimal_tostring8__stack(System_decimal  * that, System_char
         *(array_string + l) = ' ';
     }
 }
-
-struct_System_Type  System_decimalType = { .base = { .Type = __typeof(System_Type) },
-    .name = "System.decimal",
-    .size = sizeof(System_decimal),
-};
 
 #endif

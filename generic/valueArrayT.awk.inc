@@ -45,11 +45,11 @@ System_size  base_Generic_T0Array_get_Length(Generic_T0Array that) {
 }
 
 Generic_T0  base_Generic_T0Array_get_index(Generic_T0Array that, System_size index) {
-    return __array(that->value)[index];
+    return array(that->value)[index];
 }
 
 void  base_Generic_T0Array_set_index(Generic_T0Array that, System_size index, Generic_T0 value) {
-    __array(that->value)[index] = value;
+    array(that->value)[index] = value;
 }
 
 void  base_Generic_T0Array_resize(Generic_T0Array that, System_size length) {
@@ -78,15 +78,15 @@ struct_System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
     [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
 };
 
-struct_System_Type  Generic_T0ArrayType = { .base = { .Type = __typeof(System_Type) },
+struct_System_Type  Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
     .name = &STRING_Generic_T0Array,
     .size = sizeof(struct_Generic_T0Array),
-    .baseType = __typeof(System_Object),
+    .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions
+        .length = sizeof_array(&Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions
     },
     .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
-        .length = __sizeof_array(&Generic_T0ArrayTypeInterfaces), .value = &Generic_T0ArrayTypeInterfaces
+        .length = sizeof_array(&Generic_T0ArrayTypeInterfaces), .value = &Generic_T0ArrayTypeInterfaces
     },
 };
 

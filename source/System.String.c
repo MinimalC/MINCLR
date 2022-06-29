@@ -16,20 +16,20 @@ System_String  System_String_new(System_string8 string) {
 
 /* class System_String */
 
-void base_System_String_free(__String that) {
-    __assert(that)
+void base_System_String_free(String that) {
+    assert(that)
 
     if (that->value && that->base.bitConfig.isValueAllocated) {
-        __Memory_free((void **)&(that->value));
+        Memory_free((void **)&(that->value));
     }
 
-    base_System_Object_free((__Object)that);
+    base_System_Object_free((Object)that);
 }
 
-__String  base_System_String_init(__String that, __string8 string) {
-    base_System_Object_init((__Object)that);
+String  base_System_String_init(String that, string8 string) {
+    base_System_Object_init((Object)that);
 
-    /* that->base.bitConfig.isValueAllocated = __true; */
+    /* that->base.bitConfig.isValueAllocated = true; */
     that->codepage = System_encoding_DEFAULT;
     that->length = System_string8_get_Length(string);
     that->value = string;
@@ -52,9 +52,9 @@ struct_System_Type_FunctionInfo  System_StringTypeFunctions[] = {
 struct_System_Type  System_StringType = { .base = stack_System_Object(System_Type),
     .name = "System.String",
     .size = sizeof(struct_System_String),
-    .baseType = __typeof(System_Object),
+    .baseType = typeof(System_Object),
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(System_StringTypeFunctions), .value = &System_StringTypeFunctions
+        .length = sizeof_array(System_StringTypeFunctions), .value = &System_StringTypeFunctions
     },
 };
 

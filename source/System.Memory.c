@@ -19,17 +19,94 @@ struct_System_Type  System_MemoryType = { .base = stack_System_Object(System_Typ
 	.name = "System.Memory",
 };
 
-void  * System_Memory_alloc(__size length) {
+size System_Memory_indexOf(var ptr, char8 needle, size count) {
+    assert(count)
+
+    size i = 0;
+    char8 *ptrBytes = (char8 *)ptr;
+    do {
+        ++i;
+        if (*ptrBytes == needle) return i;
+        if (--count == 0) break;
+        ++ptrBytes;
+    } while (true);
+
+    return 0;
+}
+
+void System_Memory_zero(var dest, size n) {
+    assert(n)
+
+    char8 *destBytes = (char8 *)dest;
+    do {
+        *destBytes = 0x00;
+        if (--n == 0) break;
+        ++destBytes;
+    } while (true);
+}
+
+void System_Memory_copy(var src, size n, var dest) {
+    char8 *destBytes = (char8 *)dest;
+    char8 *srcBytes = (char8 *)src;
+    while (n--) *destBytes++ = *srcBytes++;
+}
+
+void System_Memory_move(var src, size n, var dest) {
+    char8 *destBytes = (char8 *)dest;
+    char8 *srcBytes = (char8 *)src;
+    if ( srcBytes < destBytes ) {
+        destBytes += n;
+        srcBytes += n;
+        while (n--) *destBytes-- = *srcBytes--;
+    }
+    else
+        while (n--) *destBytes++ = *srcBytes++;
+}
+
+void System_Memory_set(var dest, char8 src, size length) {
+    assert(length)
+
+    char8 *destBytes = (char8 *)dest;
+    do {
+        *destBytes = src;
+        if (--length == 0) break;
+        ++destBytes;
+    } while (true);
+}
+
+size System_Memory_compare(var ptr0, var ptr1, size length) {
+    assert(length)
+
+    size count = 0;
+    char8 *ptr0Bytes = (char8 *)ptr0;
+    char8 *ptr1Bytes = (char8 *)ptr1;
+    do {
+        if (*ptr0Bytes != *ptr1Bytes) return count;
+        ++count;
+        if (--length == 0) break;
+        ++ptr0Bytes;
+        ++ptr1Bytes;
+    } while (true);
+
+    return count;
+}
+
+bool System_Memory_equals(var ptr0, var ptr1, size length) {
+    return (length == System_Memory_compare(ptr0, ptr1, length));
+}
+
+
+void  * System_Memory_alloc(size length) {
 
     void *thatPtr = ISO_malloc(length);
-    __uint8 *that = (__uint8 *)thatPtr;
+    uint8 *that = (uint8 *)thatPtr;
     System_Memory_set(that, 0x00, length);
     return thatPtr;
 }
 
-void  System_Memory_realloc(void  ** that, __size oldLength, __size newLength) {
+void  System_Memory_realloc(void  ** that, size oldLength, size newLength) {
 
-    __uint8  * that1 = (__uint8 *)ISO_realloc(*that, newLength);
+    uint8  * that1 = (uint8 *)ISO_realloc(*that, newLength);
     if (newLength > oldLength) {
         System_Memory_set(that1 + oldLength, 0x00, newLength - oldLength);
     }
@@ -40,96 +117,16 @@ void  System_Memory_realloc(void  ** that, __size oldLength, __size newLength) {
 }
 
 void System_Memory_freeStruct(void *that) {
-    __assert(that)
+    assert(that)
     ISO_free(that);
 }
 
 void System_Memory_free(void **thatPtr) {
-    __assert(thatPtr)
+    assert(thatPtr)
     void *that = *thatPtr;
-    __assert(that)
+    assert(that)
     System_Memory_freeStruct(that);
-    *thatPtr = __null;
-}
-
-
-__size System_Memory_indexOf(const void *ptr, __byte needle, __size count) {
-    __assert(count > 0)
-
-    __size i = 0;
-    __byte *ptrBytes = (__byte *)ptr;
-    do {
-        if (*ptrBytes == needle) return i + 1;
-        ++i;
-        if (--count == 0) break;
-        ++ptrBytes;
-    } while (__true);
-
-    return 0;
-}
-
-void *System_Memory_zero(void *dest, __size n) {
-    __assert(n > 0)
-
-    __byte *destBytes = (__byte *)dest;
-    do {
-        *destBytes = 0x00;
-        if (--n == 0) break;
-        ++destBytes;
-    } while (__true);
-
-    return dest;
-}
-
-void *System_Memory_copy(const void *src, __size n, void *dest) {
-    __byte *destBytes = (__byte *)dest;
-    const __byte *srcBytes = (__byte *)src;
-    while (n--) *destBytes++ = *srcBytes++;
-    return dest;
-}
-
-void *System_Memory_move(const void *src, __size n, void *dest) {
-    __byte *destBytes = (__byte *)dest;
-    const __byte *srcBytes = (__byte *)src;
-    if ( srcBytes < destBytes )
-        for (destBytes += n, srcBytes += n; n--; )
-            *--destBytes = *--srcBytes;
-    else
-        while (n--) *destBytes++ = *srcBytes++;
-    return dest;
-}
-
-void *System_Memory_set(void *dest, __byte src, __size n) {
-    __assert(n > 0)
-
-    __byte *destBytes = (__byte *)dest;
-    do {
-        *destBytes = src;
-        if (--n == 0) break;
-        ++destBytes;
-    } while (__true);
-
-    return dest;
-}
-
-__int System_Memory_compare(const void *ptr0, const void *ptr1, __size count) {
-    __assert(count > 0)
-
-    __byte *ptr0Bytes = (__byte *)ptr0;
-    __byte *ptr1Bytes = (__byte *)ptr1;
-    do {
-        if (*ptr0Bytes < *ptr1Bytes) return -1;
-        if (*ptr0Bytes > *ptr1Bytes) return 1;
-        if (--count == 0) break;
-        ++ptr0Bytes;
-        ++ptr1Bytes;
-    } while (__true);
-
-    return 0;
-}
-
-__bool System_Memory_equals(const void *ptr0, const void *ptr1, __size count) {
-    return (0 == System_Memory_compare(ptr0, ptr1, count));
+    *thatPtr = null;
 }
 
 #endif

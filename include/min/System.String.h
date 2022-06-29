@@ -5,7 +5,7 @@
 #if !defined(have_System_String)
 #define have_System_String
 
-typedef unsigned int  System_byteOrder;
+typedef unsigned  System_byteOrder;
 #define System_byteOrder_LittleEndian  0xFFFFFEFE
 #define System_byteOrder_BigEndian     0xFEFEFFFF
 /* #define System_byteOrder_PDPEndian  0xFFFEFFFE (?) */
@@ -41,7 +41,7 @@ extern const uint32_t System_byteOrder_check;
 	new:
 	UTF64LE: FF FF FF FF  FE FE FE FE
 	UTF64BE: FE FE FE FE  FF FF FF FF */
-typedef System_uint64  System_encoding;
+typedef System_uint32  System_encoding;
 #define System_encoding_UTF8     0x0000000000EFBBBF
 #define System_encoding_UTF16LE  0x000000000000FFFE
 #define System_encoding_UTF16BE  0x000000000000FEFF
@@ -67,7 +67,7 @@ typedef System_uint64  System_encoding;
 /* static class System.String */
 
 #define struct_System_String  struct class_System_String
-typedef __fixed struct_System_String {
+typedef fixed struct_System_String {
 	struct_System_Object  base;
 
 	System_size  length;
@@ -84,17 +84,17 @@ typedef __fixed struct_System_String {
 
 
 
-#if __UNICODE == 32
+#if UNICODE == 32
 #define const_System_String(s)  { .base = stack_System_Object(System_String),\
     .codepage = System_encoding_UTF32, .length = (sizeof(s) - 1), .value32 = (System_string32)(s), }
 #define System_encoding_DEFAULT	System_encoding_UTF32
 
-#elif __UNICODE == 16
+#elif UNICODE == 16
 #define const_System_String(s)  { .base = stack_System_Object(System_String),\
     .codepage = System_encoding_UTF16, .length = (sizeof(s) - 1), .value16 = (System_string16)(s), }
 #define System_encoding_DEFAULT	System_encoding_UTF16
 
-#else /* if __UNICODE == 8 */
+#else /* if UNICODE == 8 */
 #define const_System_String(s)  { .base = stack_System_Object(System_String),\
     .codepage = System_encoding_UTF8, .length = (sizeof(s) - 1), .value = (System_string8)(s), }
 #define System_encoding_DEFAULT	System_encoding_UTF8
@@ -104,18 +104,18 @@ typedef __fixed struct_System_String {
 
 /* static class System_String */
 
-__export struct_System_Type  System_StringType;
+export struct_System_Type  System_StringType;
 
 /* class System.String */
 
-typedef System_String __delegate(System_String_init)(System_String, System_string8);
-typedef System_void __delegate(System_String_free)(System_String that);
-typedef System_uint64 __delegate(System_String_getSipHash)(System_String that);
+typedef System_String delegate(System_String_init)(System_String, System_string8);
+typedef void delegate(System_String_free)(System_String that);
+typedef System_uint64 delegate(System_String_getSipHash)(System_String that);
 
-__export System_String  System_String_new(System_string8);
-__export System_String  base_System_String_init(System_String, System_string8);
-__export System_void  base_System_String_free(System_String);
-__export System_uint64  base_System_String_getSipHash(System_String that);
+export System_String  System_String_new(System_string8);
+export System_String  base_System_String_init(System_String, System_string8);
+export void  base_System_String_free(System_String);
+export System_uint64  base_System_String_getSipHash(System_String that);
 
 #define System_String_init(o,...)  ((function_System_String_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_String_init))(o, __VA_ARGS__)
 #define System_String_free(o)  ((function_System_String_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
@@ -124,30 +124,30 @@ __export System_uint64  base_System_String_getSipHash(System_String that);
 #define inline_System_String_new(s)  (base_System_String_init(inline_System_Object_allocClass(System_String), s))
 
 #if defined(using_System)
-#define __byteOrder  System_byteOrder
-#define __byteOrder_LittleEndian  System_byteOrder_LittleEndian
-#define __byteOrder_BigEndian  System_byteOrder_BigEndian
-#define __byteOrder_NATIVE  System_byteOrder_NATIVE
+#define byteOrder  System_byteOrder
+#define byteOrder_LittleEndian  System_byteOrder_LittleEndian
+#define byteOrder_BigEndian  System_byteOrder_BigEndian
+#define byteOrder_NATIVE  System_byteOrder_NATIVE
 
-#define __encoding  System_encoding
-#define __encoding_UTF8  System_encoding_UTF8
-#define __encoding_UTF16  System_encoding_UTF16
-#define __encoding_UTF32  System_encoding_UTF32
-#define __encoding_DEFAULT  System_encoding_DEFAULT
+#define encoding  System_encoding
+#define encoding_UTF8  System_encoding_UTF8
+#define encoding_UTF16  System_encoding_UTF16
+#define encoding_UTF32  System_encoding_UTF32
+#define encoding_DEFAULT  System_encoding_DEFAULT
 
 #define struct_String  struct_System_String
 #define stack_String  stack_System_String
-#define __String  System_String
-#define __StringType  System_StringType
+#define String  System_String
+#define StringType  System_StringType
 
 #define function_String_init  function_System_String_init
 #define base_String_free  base_System_String_free
 #define base_String_init  base_System_String_init
 #define base_String_getSipHash  base_System_String_getSipHash
-#define __String_new  System_String_new
-#define __String_init  System_String_init
-#define __String_free  System_String_free
-#define __String_getSipHash  System_String_getSipHash
+#define String_new  System_String_new
+#define String_init  System_String_init
+#define String_free  System_String_free
+#define String_getSipHash  System_String_getSipHash
 #endif
 
 #endif

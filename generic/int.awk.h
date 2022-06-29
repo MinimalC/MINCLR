@@ -10,7 +10,7 @@
 #if !defined(have_auto_Generic_T0)
 #define have_auto_Generic_T0
 
-__export struct_System_Type  Generic_T0Type;
+export struct_System_Type  Generic_T0Type;
 
 ##if Type == "int64"
 ##set b2L = 64
@@ -46,15 +46,15 @@ __export struct_System_Type  Generic_T0Type;
 #define Generic_T0_string8base16Length_DEFAULT  #(b16L + 1)
 #define Generic_T0_string8base10Length_DEFAULT  #(b10L + 1)
 
-__export System_boolean  Generic_T0_isPrintable(Generic_T0 that);
-__export System_size  Generic_T0_tostring8base2__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base2Length_DEFAULT + 1]);
-__export System_size  Generic_T0_tostring8base4__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base4Length_DEFAULT + 1]);
-__export System_size  Generic_T0_tostring8base8__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base8Length_DEFAULT + 1]);
-__export System_size  Generic_T0_tostring8base16__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base16Length_DEFAULT + 1]);
-__export System_size  Generic_T0_tostring8base10__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base10Length_DEFAULT + 1]);;
+export System_boolean  Generic_T0_isPrintable(Generic_T0 that);
+export System_size  Generic_T0_tostring8base2__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base2Length_DEFAULT + 1]);
+export System_size  Generic_T0_tostring8base4__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base4Length_DEFAULT + 1]);
+export System_size  Generic_T0_tostring8base8__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base8Length_DEFAULT + 1]);
+export System_size  Generic_T0_tostring8base16__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base16Length_DEFAULT + 1]);
+export System_size  Generic_T0_tostring8base10__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base10Length_DEFAULT + 1]);;
 #define inline_Generic_T0_isPrintable(byte)  (byte > 0x1F && byte < 0x7F) || (byte > 0x9F && byte != 0xAD)
 #if defined(using_Generic)
-#define __T0Type  Generic_T0Type
-#define __T0_isPrintable  Generic_T0_isPrintable
+#define T0Type  Generic_T0Type
+#define T0_isPrintable  Generic_T0_isPrintable
 #endif
 #endif

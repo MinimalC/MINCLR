@@ -17,7 +17,7 @@
 
 struct_System_String  STRING_Generic_T0 = const_System_String("Generic.T0");
 
-struct_System_Type  Generic_T0Type = { .base = { .Type = __typeof(System_Type) },
+struct_System_Type  Generic_T0Type = { .base = { .type = typeof(System_Type) },
     .name = &STRING_Generic_T0,
     .size = sizeof(struct_Generic_T0),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
@@ -42,7 +42,7 @@ Generic1_T1  base_Generic1_T1_init(Generic1_T1 that, Generic_T0 value) {
     return that;
 }
 
-System_void  base_Generic1_T1_free(Generic1_T1 that) {
+void  base_Generic1_T1_free(Generic1_T1 that) {
 
     base_System_Object_free((System_Object)that);
 }
@@ -54,12 +54,12 @@ struct_System_Type_FunctionInfo  Generic1_T1TypeFunctions[] = {
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_Generic1_T1_free },
 };
 
-struct_System_Type  Generic1_T1Type = { .base = { .Type = __typeof(System_Type) },
+struct_System_Type  Generic1_T1Type = { .base = { .type = typeof(System_Type) },
     .name = &STRING_Generic1_T1,
     .size = sizeof(struct_Generic1_T1),
-    .baseType = __typeof(System_Object),
+    .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = __sizeof_array(&Generic1_T1TypeFunctions), .value = &Generic1_T1TypeFunctions
+        .length = sizeof_array(&Generic1_T1TypeFunctions), .value = &Generic1_T1TypeFunctions
     },
 };
 

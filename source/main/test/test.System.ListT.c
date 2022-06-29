@@ -3,15 +3,15 @@
 
 struct_string8  STRING8_Hallo = "Hallo";
 
-//__main(test05_System_ListT, args) {
+//main(test05_System_ListT, args) {
 int main(int argc, char * argv[]) {
-    __size i = 0, length = 128, good = 0, good1 = 0, good2 = 0;
+    size i = 0, length = 128, good = 0, good1 = 0, good2 = 0;
 
-    __List objects = __List_new();
+    List objects = List_new();
     for (good = 0, i = 0; i < length; ++i) {
-        __Object object = __Object_new();
-        __List_add(objects, object);
-        __Object_freeClass(&object);
+        Object object = Object_new();
+        List_add(objects, object);
+        Object_freeClass(&object);
         ++good;
     }
     good1 = 0;
@@ -23,9 +23,9 @@ int main(int argc, char * argv[]) {
        if (object2) ++good2;
     })
     if (objects && good == 128 && good1 == 128 && good2 == 128)
-         __Console_writeLine("Test10: SUCCESS: __List_new({0:uint})", 1, i);
-    else __Console_writeLine("Test10: ERROR: __List_new({0:uint})", 1, i);
-    __Object_freeClass(&objects);
+         Console_writeLine("Test10: SUCCESS: List_new({0:uint})", 1, i);
+    else Console_writeLine("Test10: ERROR: List_new({0:uint})", 1, i);
+    Object_freeClass(&objects);
 
-    return __true;
+    return true;
 }

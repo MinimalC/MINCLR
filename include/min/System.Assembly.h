@@ -9,11 +9,11 @@
 
 #define System_Assembly_next  ((void *) -1l)
 
-/* __export void System_Assembly_close(void  * that); */
-__export System_string8  System_Assembly_error();
+/* export void System_Assembly_close(void  * that); */
+export System_string8  System_Assembly_error();
 
 #if defined(using_System)
-#define __Assembly_error  System_Assembly_error
+#define Assembly_error  System_Assembly_error
 #endif
 
 
@@ -47,21 +47,21 @@ typedef System_int32  System_AssemblyBinding;
 #define System_AssemblyBinding_NoFree	0x1000
 
 #if defined(using_System)
-#define __AssemblyBinding  System_AssemblyBinding
-#define __AssemblyBinding_Lazy  System_AssemblyBinding_Lazy
-#define __AssemblyBinding_Now  System_AssemblyBinding_Now
-#define __AssemblyBinding_BindingMask  System_AssemblyBinding_BindingMask
-#define __AssemblyBinding_NoLoad  System_AssemblyBinding_NoLoad
-#define __AssemblyBinding_DeepBind  System_AssemblyBinding_DeepBind
-#define __AssemblyBinding_Global  System_AssemblyBinding_Global
-#define __AssemblyBinding_Local  System_AssemblyBinding_Local
-#define __AssemblyBinding_NoFree  System_AssemblyBinding_NoFree
+#define AssemblyBinding  System_AssemblyBinding
+#define AssemblyBinding_Lazy  System_AssemblyBinding_Lazy
+#define AssemblyBinding_Now  System_AssemblyBinding_Now
+#define AssemblyBinding_BindingMask  System_AssemblyBinding_BindingMask
+#define AssemblyBinding_NoLoad  System_AssemblyBinding_NoLoad
+#define AssemblyBinding_DeepBind  System_AssemblyBinding_DeepBind
+#define AssemblyBinding_Global  System_AssemblyBinding_Global
+#define AssemblyBinding_Local  System_AssemblyBinding_Local
+#define AssemblyBinding_NoFree  System_AssemblyBinding_NoFree
 #endif
 
 /* static class System.Assembly */
 
 #define struct_System_Assembly  struct class_System_Assembly
-typedef __fixed struct_System_Assembly {
+typedef fixed struct_System_Assembly {
     struct_System_Object base;
 
     void  * assemblyPtr;
@@ -69,14 +69,14 @@ typedef __fixed struct_System_Assembly {
 
 }  * System_Assembly;
 
-__export struct_System_Type  System_AssemblyType;
+export struct_System_Type  System_AssemblyType;
 
 #define System_Assembly_new  System_Assembly_new__00
 
-__export System_Assembly  System_Assembly_new();
-__export System_Assembly  System_Assembly_open(const System_string8  fileName, System_AssemblyBinding  flags);
-__export void  * System_Assembly_find(System_Assembly that, const System_string8 name);
-__export void  * System_Assembly_findGlobal(const System_string8 name);
+export System_Assembly  System_Assembly_new();
+export System_Assembly  System_Assembly_open(const System_string8  fileName, System_AssemblyBinding  flags);
+export void  * System_Assembly_find(System_Assembly that, const System_string8 name);
+export void  * System_Assembly_findGlobal(const System_string8 name);
 
 #define inline_System_Assembly_new()  (base_System_Assembly_init(inline_System_Object_allocClass(System_Assembly)))
 
@@ -87,24 +87,24 @@ __export void  * System_Assembly_findGlobal(const System_string8 name);
 
 #if defined(using_System)
 #define struct_Assembly  struct_System_Assembly
-#define __Assembly  System_Assembly
-#define __AssemblyType  System_AssemblyType
-#define __Assembly_new  System_Assembly_new
-#define __Assembly_open  System_Assembly_open
-#define __Assembly_find  System_Assembly_find
+#define Assembly  System_Assembly
+#define AssemblyType  System_AssemblyType
+#define Assembly_new  System_Assembly_new
+#define Assembly_open  System_Assembly_open
+#define Assembly_find  System_Assembly_find
 #endif
 
 /* class System.Assembly */
 
-__export void  base_System_Assembly_free(System_Assembly that);
-__export System_Assembly  base_System_Assembly_init(System_Assembly that);
+export void  base_System_Assembly_free(System_Assembly that);
+export System_Assembly  base_System_Assembly_init(System_Assembly that);
 
 #define System_Assembly_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_Assembly_init(o)  ((function_System_Object_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
 
 #if defined(using_System)
-#define __Assembly_free  System_Assembly_free
-#define __Assembly_init  System_Assembly_init
+#define Assembly_free  System_Assembly_free
+#define Assembly_init  System_Assembly_init
 #endif
 
 #endif

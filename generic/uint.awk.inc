@@ -143,10 +143,10 @@ System_size  Generic_T0_tostring8base10__stack(Generic_T0 that, System_char8 arr
 Generic_T0  Generic_T0_parsebase10(System_string8 that) {
 
     Generic_T0 reture = 0;
-    if (!__char8_isNumber(that[0])) return reture;
+    if (!char8_isNumber(that[0])) return reture;
 
-    __size count = 1, n = 0;
-    while (count < 5 && __char8_isNumber(that[count])) ++count;
+    size count = 1, n = 0;
+    while (count < 5 && char8_isNumber(that[count])) ++count;
 ##if Type == "uint64"
     if (count == 20){ reture += (that[n++] - 0x30) * (0x8AC7230489E80000); --count; }
     if (count == 19){ reture += (that[n++] - 0x30) * (1000000000000000000); --count; }

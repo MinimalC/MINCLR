@@ -16,7 +16,7 @@
 
 struct_System_String  STRING_Generic_T0 = const_System_String("Generic.T0");
 
-struct_System_Type  Generic_T0Type = { .base = { .Type = __typeof(System_Type), }, .name = &STRING_Generic_T0, };
+struct_System_Type  Generic_T0Type = { .base = { .type = typeof(System_Type), }, .name = &STRING_Generic_T0, };
 
 #endif
 

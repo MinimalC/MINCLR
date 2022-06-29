@@ -1,21 +1,18 @@
-/* #include <math.h>
-#include <stdio.h> */
-
 #define using_System
 #include <min/System.h>
 
-const __size sizeof_knownPrimes = 0x7FFFFFU;
+const size sizeof_knownPrimes = 0x7FFFFFU;
 
-__private __uint64 * knownPrimes;
-__private __uint64 * knownPrimes_hoch2;
+internal uint64 * knownPrimes;
+internal uint64 * knownPrimes_hoch2;
 
-__private __size knownPrimesL = 0U;
+internal size knownPrimesL = 0U;
 
-__bool Eratosthenes_IsPrime(__uint64 n, __uint64 * minimalquotient, __uint64 * quotient) {
+bool Eratosthenes_IsPrime(uint64 n, uint64 * minimalquotient, uint64 * quotient) {
 
-	__uint64 primeI = 2, primeN = 3, primeN_hoch2 = 9, quotient1 = 0, remainder = 0;
+	uint64 primeI = 2, primeN = 3, primeN_hoch2 = 9, quotient1 = 0, remainder = 0;
 
-    /* __uint64 div2 = System_Math_divideRemain(n, 2, &remainder); */
+    /* uint64 div2 = System_Math_divideRemain(n, 2, &remainder); */
 
 	while (0U < ++primeI) {
 		/* now primeI => [ 3 ] == 5 */
@@ -25,9 +22,9 @@ __bool Eratosthenes_IsPrime(__uint64 n, __uint64 * minimalquotient, __uint64 * q
 			primeN_hoch2 = knownPrimes_hoch2[primeI];
 		}
 		else {
-			__Console_writeLine__string8("SUPER !");
-            __Console_sync();
-			__Console_exit(1);
+			Console_writeLine__string8("SUPER !");
+            Console_sync();
+			Console_exit(1);
 		}
 
 		if (n == primeN) {
@@ -52,10 +49,10 @@ __bool Eratosthenes_IsPrime(__uint64 n, __uint64 * minimalquotient, __uint64 * q
 	}
 
     *minimalquotient = 1;
-    return __true;
+    return true;
 
 FALSE:
-	return __false;
+	return false;
 }
 
 struct_string8 text_n = " n";
@@ -64,21 +61,21 @@ struct_string8 text_P = " P";
 int main(int argc, char *argv[]) {
 /* System_main(Eratosthenes,args) { */
 
-	knownPrimes = (__uint64 *)__Memory_alloc(sizeof(__uint64) * sizeof_knownPrimes);
-	knownPrimes_hoch2 = (__uint64 *)__Memory_alloc(sizeof(__uint64) * sizeof_knownPrimes);
+	knownPrimes = (uint64 *)Memory_alloc(sizeof(uint64) * sizeof_knownPrimes);
+	knownPrimes_hoch2 = (uint64 *)Memory_alloc(sizeof(uint64) * sizeof_knownPrimes);
 
 	knownPrimes[1] = 2U; knownPrimes_hoch2[1] = 4U;
 	knownPrimes[2] = 3U; knownPrimes_hoch2[2] = 9U;
 	knownPrimes[3] = 5U; knownPrimes_hoch2[3] = 25U;
 	knownPrimesL = 4U;
 
-    __char8 nP[] = "n                    P                     \n";
-    __char8 decimal[System_uint64_string8base10Length_DEFAULT - 1] = { };
+    System_char8 nP[] = "n                    P                     \n";
+    System_char8 decimol[System_uint64_string8base10Length_DEFAULT - 1] = { };
 
-	__uint64 n = 5U;
-	__uint64 minimalquotient = 0, quotient = 0; /* knownPrimesL_remainder = 0; */
+	uint64 n = 5U;
+	uint64 minimalquotient = 0, quotient = 0; /* knownPrimesL_remainder = 0; */
 
-    __size numbers;
+    size numbers;
 
 	while (n > 3U) {
 
@@ -93,23 +90,23 @@ int main(int argc, char *argv[]) {
 			}
             else knownPrimesL++;
 			/* else {
-    			__Console_writeLine__string8("SUPER !");
-                __Console_sync();
+    			Console_writeLine__string8("SUPER !");
+                Console_sync();
 				goto FALSE;
 			} */
 
-            numbers = System_uint64_tostring8base10__stack(knownPrimesL, decimal);
-            System_string8_copySubstringTo(decimal, numbers, (nP + 1));
+            numbers = System_uint64_tostring8base10__stack(knownPrimesL, decimol);
+            System_string8_copySubstringTo(decimol, numbers, (nP + 1));
 
-            numbers = System_uint64_tostring8base10__stack(n, decimal);
-            System_string8_copySubstringTo(decimal, numbers, (nP + 22));
+            numbers = System_uint64_tostring8base10__stack(n, decimol);
+            System_string8_copySubstringTo(decimol, numbers, (nP + 22));
 
-            __Syscall_write(__File_special_STDOUT, nP, sizeof(nP) - 1);
-            // __Console_write__string8(nP);
+            Syscall_write(File_special_STDOUT, nP, sizeof(nP) - 1);
+            // Console_write__string8(nP);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {
-            __Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);
-            __Console_sync();
+            Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);
+            Console_sync();
         } */
 
 		n += 4U;
@@ -123,34 +120,34 @@ int main(int argc, char *argv[]) {
 			}
             else knownPrimesL++;
 			/* else {
-    			__Console_writeLine__string8("SUPER !");
-                __Console_sync();
+    			Console_writeLine__string8("SUPER !");
+                Console_sync();
 				goto FALSE;
 			} */
 
-            numbers = System_uint64_tostring8base10__stack(knownPrimesL, decimal);
-            System_string8_copySubstringTo(decimal, numbers, (nP + 1));
+            numbers = System_uint64_tostring8base10__stack(knownPrimesL, decimol);
+            System_string8_copySubstringTo(decimol, numbers, (nP + 1));
 
-            numbers = System_uint64_tostring8base10__stack(n, decimal);
-            System_string8_copySubstringTo(decimal, numbers, (nP + 22));
+            numbers = System_uint64_tostring8base10__stack(n, decimol);
+            System_string8_copySubstringTo(decimol, numbers, (nP + 22));
 
-            __Syscall_write(__File_special_STDOUT, nP, sizeof(nP) - 1);
-            // __Console_write__string8(nP);
+            Syscall_write(File_special_STDOUT, nP, sizeof(nP) - 1);
+            // Console_write__string8(nP);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {
-            __Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);
-            __Console_sync();
+            Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);
+            Console_sync();
         } */
 	}
 
-    __Memory_freeStruct(knownPrimes);
-    __Memory_freeStruct(knownPrimes_hoch2);
+    Memory_freeStruct(knownPrimes);
+    Memory_freeStruct(knownPrimes_hoch2);
 
-	return __true;
+	return true;
 
 FALSE:
-    __Memory_freeStruct(knownPrimes);
-    __Memory_freeStruct(knownPrimes_hoch2);
+    Memory_freeStruct(knownPrimes);
+    Memory_freeStruct(knownPrimes_hoch2);
 
-    return __false;
+    return false;
 }
