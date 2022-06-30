@@ -90,6 +90,12 @@ struct_System_Type  System_Type_FieldInfoArrayType = { .base = stack_System_Obje
 };
 
 System_var System_Type_getMethod(System_Type  that, System_var fun) {
+    System_var reture = System_Type_trygetMethod(that, fun);
+    if (!reture) throw_terminate(inline_System_Exception_new("NotImplementedException_new: Method not found"));
+    return reture;
+}
+
+System_var System_Type_trygetMethod(System_Type  that, System_var fun) {
     System_assert(that)
     System_assert(fun)
 
@@ -99,9 +105,9 @@ System_var System_Type_getMethod(System_Type  that, System_var fun) {
         if (fun == info->function) return info->value;
     }
 
-    if (that->baseType) return System_Type_getMethod(that->baseType, fun);
+    if (that->baseType) return System_Type_trygetMethod(that->baseType, fun);
 
-    throw_terminate(inline_System_Exception_new("NotImplementedException_new: Method not found"));
+    return null;
 }
 
 System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other) {

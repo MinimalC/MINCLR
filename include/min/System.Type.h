@@ -198,6 +198,7 @@ export System_string8  System_enum_getName(System_Type type, System_intptr value
 #endif
 
 export System_var System_Type_getMethod(System_Type  that, System_var function);
+export System_var System_Type_trygetMethod(System_Type  that, System_var function);
 
 // internal inline artificial System_var inline_System_Type_getMethod(System_Type  that, System_var function) {
 
@@ -205,5 +206,6 @@ export System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Ty
 
 #if defined(using_System)
 #define Type_getMethod  System_Type_getMethod
+#define Type_trygetMethod  System_Type_trygetMethod
 #endif
 #endif
