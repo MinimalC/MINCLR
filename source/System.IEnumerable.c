@@ -8,16 +8,11 @@
 #if !defined(code_System_IEnumerable)
 #define code_System_IEnumerable
 
-
 /*# System_IEnumerator #*/
 
-struct_System_String  STRING_System_IEnumerator = const_System_String("System.IEnumerator");
-
 struct_System_Type  System_IEnumeratorType = { .base = stack_System_Object(System_Type),
-	.name = &STRING_System_IEnumerator,
+	.name = "System.IEnumerator",
 };
-
-/* TODO: throw NotImplementedException, this is interface */
 
 System_var  base_System_IEnumerator_get_current(System_IEnumerator that) { return null; }
 System_boolean  base_System_IEnumerator_moveNext(System_IEnumerator that) { return false; }
@@ -25,13 +20,9 @@ System_boolean  base_System_IEnumerator_moveNext(System_IEnumerator that) { retu
 
 /*# System_IEnumerable #*/
 
-struct_System_String  STRING_System_IEnumerable = const_System_String("System.IEnumerable");
-
 struct_System_Type  System_IEnumerableType = { .base = stack_System_Object(System_Type),
-	.name = &STRING_System_IEnumerable,
+	.name = "System.IEnumerable",
 };
-
-/* TODO: throw NotImplementedException, this is interface */
 
 System_IEnumerator  base_System_IEnumerable_getEnumerator(System_IEnumerable that) { return null; }
 

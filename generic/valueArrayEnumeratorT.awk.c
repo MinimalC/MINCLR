@@ -9,12 +9,11 @@
 #endif
 /* FileName Generic.T0ArrayEnumerator */
 /* GENERIC */
-#if !defined(have_System_Type)
-#warning "System.Type.h not included"
-#include <meta/System.Type.h>
+#if !defined(have_Generic_T0ArrayEnumerator)
+#include <min/Generic.T0ArrayEnumerator.h>
 #endif
-#if !defined(code_auto_Generic_T0ArrayEnumerator)
-#define code_auto_Generic_T0ArrayEnumerator
+#if !defined(code_Generic_T0ArrayEnumerator)
+#define code_Generic_T0ArrayEnumerator
 
 /*# Generic_T0ArrayEnumerator #*/
 
@@ -61,8 +60,6 @@ System_boolean  base_Generic_T0ArrayEnumerator_moveNext(Generic_T0ArrayEnumerato
     return System_false;
 }
 
-struct_System_String  STRING_Generic_T0ArrayEnumerator = const_System_String("Generic.T0ArrayEnumerator");
-
 struct_System_Type_FunctionInfo  Generic_T0ArrayEnumeratorTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0ArrayEnumerator_init, .value = base_Generic_T0ArrayEnumerator_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_Generic_T0ArrayEnumerator_free },
@@ -71,7 +68,7 @@ struct_System_Type_FunctionInfo  Generic_T0ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct_System_Type  Generic_T0ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
-    .name = &STRING_Generic_T0ArrayEnumerator,
+    .name = "Generic.T0ArrayEnumerator",
     .size = sizeof(struct_Generic_T0ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),

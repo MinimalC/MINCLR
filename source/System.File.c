@@ -77,14 +77,14 @@ void  base_System_File_sync(File that) {
 }
 
 struct_System_Type_FunctionInfo  System_FileTypeFunctions[] = {
-    /* [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_File_init }, */
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_File_free },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_write", .function = base_System_IStream_write, .value = base_System_File_write },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = base_System_File_sync },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = base_System_File_read },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = base_System_File_seek },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_get_Position, .value = base_System_File_get_Position },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = base_System_File_set_Position },
+    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_File_init },
+    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_File_free },
+    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_write", .function = base_System_IStream_write, .value = base_System_File_write },
+    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = base_System_File_sync },
+    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = base_System_File_read },
+    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = base_System_File_seek },
+    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_get_Position, .value = base_System_File_get_Position },
+    [7] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = base_System_File_set_Position },
 };
 
 struct_System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {

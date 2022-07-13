@@ -12,7 +12,7 @@
 #define code_System_Exception
 
 struct_System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_Exception_init },
+    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Exception_init, .value = base_System_Exception_init },
 /*    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Exception_free }, */
 };
 
@@ -42,6 +42,7 @@ void  System_Exception_set_current(System_Exception that) {
 void  System_Exception_throw(System_Exception that) {
     assert(that)
 
+    // TODO: Memory_copyTo(that, sizeof(struct_System_Exception), &System_Exception_current)
     System_Exception_set_current(that);
 }
 

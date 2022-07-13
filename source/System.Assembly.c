@@ -38,7 +38,6 @@ void  * System_Assembly_find(Assembly that, const System_string8  name)
 
 
 Assembly  base_System_Assembly_init(Assembly that) {
-    if (!that) that = inline_Object_allocClass(Assembly);
 	base_System_Object_init((Object)that);
 
     return that;

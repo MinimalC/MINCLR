@@ -9,16 +9,11 @@
 /* FileName Generic.T0Array */
 /* seeAlso valueArrayEnumeratorT */
 /* GENERIC */
-#if !defined(have_System_Type)
-#warning "System.Type.h not included"
-#include "System.Type.h"
-#endif
-/* #if !defined(have_Generic_T0)
-#warning "Generic.T0.h not included"
+#if !defined(have_Generic_T0)
 #include "Generic.T0.h"
-#endif */
-#if !defined(have_auto_Generic_T0Array)
-#define have_auto_Generic_T0Array
+#endif
+#if !defined(have_Generic_T0Array)
+#define have_Generic_T0Array
 
 #define struct_Generic_T0Array  struct class_Generic_T0Array
 typedef fixed struct_Generic_T0Array {
@@ -30,12 +25,12 @@ typedef fixed struct_Generic_T0Array {
 
 }  * Generic_T0Array;
 
-#define stack_Generic_T0Array(LENGTH,...)  (struct_Generic_T0Array){ .base = { .base = stack_System_Object(Generic_T0Array), .length = LENGTH, .value = &(Generic_T0 []){ __VA_ARGS__ }, }, }
+#define stack_Generic_T0Array(LENGTH,...)  (struct_Generic_T0Array){ .base = { .base = stack_System_Object(Generic_T0Array), .length = LENGTH, }, }
 
 export struct_System_Type  Generic_T0ArrayType;
 
 typedef void delegate(Generic_T0Array_free)(Generic_T0Array that);
-typedef Generic_T0Array delegate(Generic_T0Array_init)(Generic_T0Array that);
+typedef Generic_T0Array delegate(Generic_T0Array_init)(Generic_T0Array that, System_size length);
 typedef System_size  delegate(Generic_T0Array_get_Length)(Generic_T0Array that);
 typedef Generic_T0  delegate(Generic_T0Array_get_index)(Generic_T0Array that, System_size index);
 typedef void  delegate(Generic_T0Array_set_index)(Generic_T0Array that, System_size index, Generic_T0 value);

@@ -97,7 +97,6 @@ struct_System_Type  System_SyscallType = { .base = { .type = typeof(System_Type)
 };
 
 void System_Syscall_error(const System_error erreur) {
-
     if (!erreur) return;
 
     System_SystemException exception = inline_System_SystemException_new();
@@ -144,5 +143,12 @@ void  System_Syscall_fstatat(System_var directoryPtr, const System_string8 pathN
     (void)System_Syscall_call04(System_Syscall_command_fstatat, (System_intptr)directoryPtr, (System_intptr)pathName, (System_intptr)that, flags);
 }
 
+System_var  System_Syscall_mmap(System_size length, System_intptr page, System_intptr map, System_var file, System_intptr offset) {
+    return (System_var)System_Syscall_call06(System_Syscall_command_mmap, /* initial address */ null, length, page, map, (System_intptr)file, offset);
+}
+
+void  System_Syscall_munmap(System_var address, System_size length) {
+    (void)System_Syscall_call02(System_Syscall_command_munmap, (System_intptr)address, length);
+}
 
 #endif

@@ -49,7 +49,7 @@ System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_string8 
 } */
 
 struct_System_Type_FunctionInfo  System_FileInfoTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_FileInfo_init },
+    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_FileInfo_init, .value = base_System_FileInfo_init },
 /*    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_FileInfo_free }, */
 };
 

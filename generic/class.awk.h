@@ -8,11 +8,10 @@
 #endif
 /*  GENERIC  */
 #if !defined(have_Generic)
-#warning "Generic.h not included"
 #include "Generic.h"
 #endif
-#if !defined(have_auto_Generic_T0)
-#define have_auto_Generic_T0
+#if !defined(have_Generic_T0)
+#define have_Generic_T0
 
 #define struct_Generic_T0  struct class_Generic_T0
 typedef fixed struct_Generic_T0 {
@@ -27,8 +26,6 @@ export struct_System_Type  Generic_T0Type;
 typedef Generic_T0 delegate(Generic_T0_init)(Generic_T0 that);
 typedef void delegate(Generic_T0_free)(Generic_T0 that);
 
-#define Generic_T0_new  Generic_T0_new__00
-
 export Generic_T0  Generic_T0_new();
 export Generic_T0  base_Generic_T0_init(Generic_T0 that);
 export void  base_Generic_T0_free(Generic_T0 that);
@@ -37,11 +34,6 @@ export void  base_Generic_T0_free(Generic_T0 that);
 #define Generic_T0_free(o)  ((function_Generic_T0_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 
 #define inline_Generic_T0_new()  (base_Generic_T0_init(inline_System_Object_allocClass(Generic_T0)))
-
-#if !defined(have_Generic_internal)
-#undef  Generic_T0_new
-#define Generic_T0_new  inline_Generic_T0_new
-#endif
 
 #if defined(using_Generic)
 #define struct_T0  struct_Generic_T0

@@ -56,6 +56,8 @@ export System_SystemException  base_System_SystemException_init(System_SystemExc
 #if !defined(have_System_Syscall)
 #define have_System_Syscall
 
+export struct_System_Type  System_SyscallType;
+
 import System_intptr  System_Syscall_call00(System_Syscall_command number);
 import System_intptr  System_Syscall_call01(System_Syscall_command number, System_intptr arg1);
 import System_intptr  System_Syscall_call02(System_Syscall_command number, System_intptr arg1, System_intptr arg2);
@@ -75,17 +77,7 @@ import System_intptr  System_Syscall_call06(System_Syscall_command number, Syste
 #endif
 
 export void  System_Syscall_error(System_error error);
-
 export void  System_Syscall_terminate(System_size code)  noreturn;
-
-export System_var  System_Syscall_open(System_string8 fileName, System_intptr flags, System_intptr mode);
-export System_var  System_Syscall_openat(System_var directoryPtr, System_string8 fileName, System_intptr flags, System_intptr mode);
-export System_size  System_Syscall_read(System_var filePtr, const void  * buf, System_size count);
-export System_size  System_Syscall_write(System_var filePtr, const void  * buf, System_size count);
-export System_size  System_Syscall_lseek(System_var filePtr, System_size offset, System_intptr whence);
-export void  System_Syscall_fsync(System_var filePtr);
-export void  System_Syscall_close(System_var filePtr);
-
 
 #define struct_System_Syscall_stat_timestamp  struct System_Syscall_stat_timestamp
 struct_System_Syscall_stat_timestamp {
@@ -116,9 +108,17 @@ struct_System_Syscall_stat {
 
 };
 
+export System_var  System_Syscall_open(System_string8 fileName, System_intptr flags, System_intptr mode);
+export System_var  System_Syscall_openat(System_var directoryPtr, System_string8 fileName, System_intptr flags, System_intptr mode);
+export System_size  System_Syscall_read(System_var filePtr, const void  * buf, System_size count);
+export System_size  System_Syscall_write(System_var filePtr, const void  * buf, System_size count);
+export System_size  System_Syscall_lseek(System_var filePtr, System_size offset, System_intptr whence);
+export void  System_Syscall_fsync(System_var filePtr);
+export void  System_Syscall_close(System_var filePtr);
 export void  System_Syscall_fstatat(System_var directoryPtr, const System_string8 pathName, struct_System_Syscall_stat  * that, System_intptr flags);
 
-export struct_System_Type  System_SyscallType;
+export System_var  System_Syscall_mmap(System_size length, System_intptr pageflags, System_intptr mapflags, System_var file, System_intptr offset);
+export void  System_Syscall_munmap(System_var address, System_size length);
 
 #if defined(using_System)
 #define SyscallType  System_SyscallType
@@ -131,6 +131,8 @@ export struct_System_Type  System_SyscallType;
 #define Syscall_lseek  System_Syscall_lseek
 #define Syscall_fsync  System_Syscall_fsync
 #define Syscall_close  System_Syscall_close
+#define Syscall_mmap  System_Syscall_mmap
+#define Syscall_munmap  System_Syscall_munmap
 #endif
 
 #endif

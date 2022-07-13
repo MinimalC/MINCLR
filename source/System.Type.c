@@ -45,7 +45,7 @@ struct_System_Type  System_TypeType = { .base = { .type = typeof(System_Type) },
 /* sizeof(void) is 1 */
 /* sizeof(void *) is sizeof(size), sizeof(intptr) */
 
-struct_System_Type  voidType     = { .base = stack_System_Object(System_Type), .name = "System.void",    .size = sizeof(void) };
+struct_System_Type  System_voidType     = { .base = stack_System_Object(System_Type), .name = "System.void",    .size = sizeof(void) };
 struct_System_Type  System_varType      = { .base = stack_System_Object(System_Type), .name = "System.var",     .size = sizeof(void *) };
 struct_System_Type  System_sizeType     = { .base = stack_System_Object(System_Type), .name = "System.size",    .size = sizeof(System_size) };
 struct_System_Type  System_ssizeType    = { .base = stack_System_Object(System_Type), .name = "System.ssize",   .size = sizeof(System_ssize) };

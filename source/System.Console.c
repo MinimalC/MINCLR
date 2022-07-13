@@ -100,12 +100,12 @@ void  System_Console_write__char8(char8 character) {
 
 
 void System_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
-    System_string8_formatLineTo("function {0:string}: {1:string}: {2:string}:{3:int}", (System_IStream)&System_Console_StdErr, 4, expression, functionName, fileName, line);
+    System_string8_formatLineTo("ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", (System_IStream)&System_Console_StdErr, 4, expression, functionName, fileName, line);
 }
 
 void System_Console_debug__format(const System_string8 expression, const System_string8 message, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
     /* TODO: Prepend __VA_ARGS__ ARGUMENTS, Append expression, message etc. */
-    System_string8_formatLineTo("function {0:string}: {1:string}: {2:string}: {3:string}:{4:int}", (System_IStream)&System_Console_StdErr, 5, expression, message, functionName, fileName, line);
+    System_string8_formatLineTo("DEBUG: {0:string}: {1:string} in function {2:string} in {3:string}:{4:int}", (System_IStream)&System_Console_StdErr, 5, expression, message, functionName, fileName, line);
 }
 
 

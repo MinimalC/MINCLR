@@ -47,25 +47,30 @@ enum /* noname */ { System_false, System_true } ;
 #endif*/
 
 
-#if defined(MSVCC) /*(?)*/
-#define public  extern __declspec(dllexport)
+#if defined(MSVCC)
 #define import  extern __declspec(dllimport)
-#define export  extern __declspec(dllimport)
+#if defined(have_System_internal)
+#define export  __declspec(dllexport)
+#else
+#define export  import
+#endif
 #define align(x)  __declspec(align(x))
-#define artificial /* ? */
-#define asm /* ? */
+#define artificial /* artificial */
+#define asm /* asm */
 /* #define const  __declspec((const)) */
 #define deprecated(msg)  __declspec(deprecated(msg))
-#define used  /* ? */
+#define used  /* used */
 #define noreturn  __declspec(noreturn)
 #define nothrow  __declspec(nothrow)
 /* #define thread  __declspec(thread) */
-#define warning(text)  /* ? */
 
 #else /* if GNUCC */
-#define public  __attribute__((visibility("default")))
 #define import  extern
-#define export  extern
+#if defined(have_System_internal)
+#define export  __attribute__((visibility("default")))
+#else
+#define export  import
+#endif
 #define align(x)  __attribute__((__aligned__(x)))
 #define artificial  __attribute__((__artificial__))
 #define asm  __asm__
@@ -75,17 +80,11 @@ enum /* noname */ { System_false, System_true } ;
 #define noreturn  __attribute__((__noreturn__))
 #define nothrow  __attribute__((__nothrow__))
 /* #define thread  _Thread_local */
-#define warning(text)  __attribute__((__warning__(text)))
-
 #endif
 
 
 #if !defined(noreturn)
 #define noreturn /* noreturn */
-#endif
-
-#if !defined(export)
-#define export /* export */
 #endif
 
 #define throws  /* throws */
@@ -143,9 +142,10 @@ enum /* noname */ { System_false, System_true } ;
 
 
 /* Example: typedef void delegate(System_Object_init)(System_Object that);
-   Use function(System_Object_init) */
+   Use function(System_Object_init), write base(System_Object_init) */
 #define delegate(name)  (* ff(function,name) )
 #define function(name)  ff(function,name)
+#define base(name)  ff(base,name)
 
 /* Don't define base(name)  ff(base,name)
 Do define base_MyProject_Product_init  base_MyProject_Product_init__02  instead. */

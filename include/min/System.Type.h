@@ -12,7 +12,7 @@
 #include "System.arguments.h"
 #endif
 #if defined(__cplusplus)
-#error "This doesn't work in C++. Use AWK and C !"
+#error "This doesn't work in C++, as this throws a compiler exception. Use AWK and C !"
 /*
 1. C++Exceptions are using setjmp, to jump the stack.
    In Minimal C, Exceptions just return, return 0 or terminate.
@@ -168,7 +168,7 @@ export struct_System_Type  System_Type_FieldInfoArrayType;
 
 /* literal Types */
 
-export struct_System_Type  voidType; /* sizeof(void) == 1  */
+export struct_System_Type  System_voidType; /* sizeof(void) == 1  */
 export struct_System_Type  System_varType;  /* sizeof(void *) on x86_64 is * 8 == 64bits  */
 
 export struct_System_Type  System_sizeType;

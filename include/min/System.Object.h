@@ -26,9 +26,9 @@ typedef fixed struct_System_Object {
 
     struct_System_Object_bitConfig  bitConfig;
 
-    System_uint32  refCount;
+    System_uint  refCount;
 
-    System_size  hashCode;
+    System_uint64  sipHash;
 
 } * System_Object;
 

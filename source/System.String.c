@@ -44,8 +44,8 @@ System_uint64 base_System_String_getSipHash(System_String that) {
 }
 
 struct_System_Type_FunctionInfo  System_StringTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_String_free },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_String_init, .value = base_System_String_init },
+    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_String_init, .value = base_System_String_init },
+    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_String_free },
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_getSipHash, .value = base_System_String_getSipHash },
 };
 

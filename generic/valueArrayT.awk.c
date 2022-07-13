@@ -9,12 +9,11 @@
 /* FileName Generic.T0Array */
 /* seeAlso valueArrayEnumeratorT */
 /* GENERIC */
-#if !defined(have_System_Type)
-#warning "System.Type.h not included"
-#include <meta/System.Type.h>
+#if !defined(have_Generic_T0Array)
+#include <min/Generic.T0Array.h>
 #endif
-#if !defined(code_auto_Generic_T0Array)
-#define code_auto_Generic_T0Array
+#if !defined(code_Generic_T0Array)
+#define code_Generic_T0Array
 
 /*# Generic_T0Array #*/
 
@@ -62,8 +61,6 @@ System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array that) {
     return (System_IEnumerator)inline_Generic_T0ArrayEnumerator_new(that);
 }
 
-struct_System_String  STRING_Generic_T0Array = const_System_String("Generic.T0Array");
-
 struct_System_Type_FunctionInfo  Generic_T0ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0Array_init, .value = base_Generic_T0Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_Generic_T0Array_free },
@@ -71,6 +68,7 @@ struct_System_Type_FunctionInfo  Generic_T0ArrayTypeFunctions[] = {
     [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_Generic_T0Array_get_index },
     [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_Generic_T0Array_set_index },
     [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0Array_resize, .value = base_Generic_T0Array_resize },
+    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_Generic_T0Array_getEnumerator },
 };
 
 struct_System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
@@ -79,7 +77,7 @@ struct_System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
 };
 
 struct_System_Type  Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
-    .name = &STRING_Generic_T0Array,
+    .name = "Generic.T0Array",
     .size = sizeof(struct_Generic_T0Array),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),

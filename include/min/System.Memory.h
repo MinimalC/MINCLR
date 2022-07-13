@@ -2,10 +2,18 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
+#if !defined(have_System_Memory_Arena)
+#include "System.Memory.Arena.h"
+#endif
+#if !defined(have_System_Memory_Header)
+#include "System.Memory.Header.h"
+#endif
 #if !defined(have_System_Memory)
 #define have_System_Memory
 
 export struct_System_Type  System_MemoryType;
+
+export struct_System_Memory_Arena System_Memory_ProcessArena;
 
 /* void *memset (void *s, int c, size_t n) */
 export void  System_Memory_set(System_var dest, System_char8 src, System_size n);
@@ -25,7 +33,12 @@ export System_size  System_Memory_compare(System_var var0, System_var var1, Syst
 export System_boolean  System_Memory_equals(System_var var0, System_var var1, System_size length);
 
 /* void * memchr ( const void * var, int value, size_t num ); */
-export System_size  System_Memory_indexOf(System_var var, System_char8 needle, System_size count);
+export System_size  System_Memory_indexof(System_var var, System_char8 needle, System_size count);
+
+export System_Object  System_Memory_allocClass(System_Type type);
+
+export void  System_Memory_freeClass(System_Object ref thatPtr);
+
 
 export void  * System_Memory_alloc(System_size length);
 
@@ -48,7 +61,7 @@ export void  System_Memory_free(void **thatPtr);
 #define Memory_move  System_Memory_move
 #define Memory_compare  System_Memory_compare
 #define Memory_equals  System_Memory_equals
-#define Memory_indexOf  System_Memory_indexOf
+#define Memory_indexof  System_Memory_indexof
 #define Memory_alloc  System_Memory_alloc
 #define Memory_realloc  System_Memory_realloc
 #define Memory_freeStruct  System_Memory_freeStruct
