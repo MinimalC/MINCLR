@@ -52,7 +52,7 @@ void System_Console_terminate(const size code)  {
         System_Object_addReference((System_Object)exception);
         System_Exception_set_current(null);
 
-        if (inline_System_Object_get_Type(exception))
+        if (exception->base.type)
             Console_write("{0:string}", 1, exception->base.type->name);
         else
             Console_write__string8("System.Exception");
@@ -62,7 +62,7 @@ void System_Console_terminate(const size code)  {
 
         Console_writeLineEmpty();
 
-        inline_Object_freeClass(&exception);
+        System_Memory_freeClass((System_Object ref)&exception);
     }
 
     System_Syscall_terminate(code);

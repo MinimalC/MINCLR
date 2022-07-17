@@ -10,14 +10,10 @@
 
 /*# System_ArrayEnumerator #*/
 
-System_ArrayEnumerator  System_ArrayEnumerator_new(System_Array array) {
-    return inline_System_ArrayEnumerator_new(array);
-}
-
 System_ArrayEnumerator  base_System_ArrayEnumerator_init(System_ArrayEnumerator that, System_Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(inline_System_Exception_new("ArgumentNullException_new: array is null"));
+    if (!array) throw_terminate(new_System_Exception("ArgumentNullException_new: array is null"));
 
     that->array = (System_Array)System_Object_addReference((System_Object)array);
     that->index = -1;
@@ -35,15 +31,15 @@ void  base_System_ArrayEnumerator_free(System_ArrayEnumerator that) {
 
 System_Object  base_System_ArrayEnumerator_get_current(System_ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(inline_System_Exception_new("InvalidOperationException_new: Enumerator already free"));
-    if (that->index == -1) throw_return(inline_System_Exception_new("InvalidOperationException_new: Index Out of Range. No items to enumerate"));
+    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException_new: Enumerator already free"));
+    if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException_new: Index Out of Range. No items to enumerate"));
 
     return System_Array_get_index(that->array, that->index);
 }
 
 System_boolean  base_System_ArrayEnumerator_moveNext(System_ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(inline_System_Exception_new("InvalidOperationException_new: Enumerator already free"));
+    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException_new: Enumerator already free"));
 
     System_size new_index = ++(that->index);
     if (new_index < that->array->length) {

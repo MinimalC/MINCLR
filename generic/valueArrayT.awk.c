@@ -3,7 +3,6 @@
 #error "Usage: See make.GenericT.awk"
 #define Generic_T0  System_Object
 #define Generic_T0Array  System_Array
-#define struct_Generic_T0Array  struct_System_Array
 #define Generic_T0ArrayType  System_ArrayType
 #endif
 /* FileName Generic.T0Array */
@@ -61,7 +60,7 @@ System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array that) {
     return (System_IEnumerator)inline_Generic_T0ArrayEnumerator_new(that);
 }
 
-struct_System_Type_FunctionInfo  Generic_T0ArrayTypeFunctions[] = {
+struct System_Type_FunctionInfo  Generic_T0ArrayTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0Array_init, .value = base_Generic_T0Array_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_Generic_T0Array_free },
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_Generic_T0Array_get_Length },
@@ -71,14 +70,14 @@ struct_System_Type_FunctionInfo  Generic_T0ArrayTypeFunctions[] = {
     [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_Generic_T0Array_getEnumerator },
 };
 
-struct_System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
+struct System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
     [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
     [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
 };
 
-struct_System_Type  Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
+struct System_Type  Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0Array",
-    .size = sizeof(struct_Generic_T0Array),
+    .size = sizeof(struct Generic_T0Array),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(&Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions

@@ -3,7 +3,6 @@
 #error "Usage: See make.GenericT.awk"
 #define Generic_T0  System_Object
 #define have_Generic_T0  have_System_Object
-#define class_Generic_T0  class_System_Object
 #define Generic_T0Type  System_ObjectType
 #endif
 /*  GENERIC  */
@@ -13,7 +12,7 @@
 #if !defined(have_Generic_T0)
 #define have_Generic_T0
 
-#define struct_Generic_T0  struct class_Generic_T0
+#define struct_Generic_T0  struct Generic_T0
 typedef fixed struct_Generic_T0 {
     struct_System_Object base;
 

@@ -66,7 +66,7 @@ typedef System_uint32  System_encoding;
 
 /* static class System.String */
 
-#define struct_System_String  struct class_System_String
+#define struct_System_String  struct System_String
 typedef fixed struct_System_String {
 	struct_System_Object  base;
 

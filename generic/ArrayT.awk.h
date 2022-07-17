@@ -19,7 +19,7 @@
 #if !defined(have_auto_Generic_T0Array)
 #define have_auto_Generic_T0Array
 
-#define struct_Generic_T0Array  struct class_Generic_T0Array
+#define struct_Generic_T0Array  struct Generic_T0Array
 typedef fixed struct_Generic_T0Array {
     struct_System_Array base;
 
@@ -50,7 +50,7 @@ export Generic_T0Array  Generic_T0Array_new(System_size length);
 #define inline_Generic_T0Array_new(LENGTH)  (base_Generic_T0Array_init(inline_System_Object_allocClass(Generic_T0Array), LENGTH))
 
 #if defined(using_Generic)
-#define struct_T0Array  struct class_Generic_T0Array
+#define struct_T0Array  struct Generic_T0Array
 #define stack_T0Array  stack_Generic_T0Array
 #define T0Array  Generic_T0Array
 #define T0ArrayType  Generic_T0ArrayType

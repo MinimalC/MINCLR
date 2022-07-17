@@ -11,10 +11,6 @@
 
 /* class System_Array */
 
-System_Array  System_Array_new(System_size length) {
-    return inline_System_Array_new(length);
-}
-
 System_Array  base_System_Array_init(System_Array that, System_size length) {
 	base_System_Object_init((Object)that);
 
@@ -101,7 +97,7 @@ void  base_System_Array_resize(System_Array that, System_size length) {
 }
 
 System_IEnumerator base_System_Array_getEnumerator(System_Array that) {
-    return (System_IEnumerator)inline_System_ArrayEnumerator_new(that);
+    return (System_IEnumerator)new_System_ArrayEnumerator(that);
 }
 
 struct_System_Type_FunctionInfo System_ArrayTypeFunctions[] = {

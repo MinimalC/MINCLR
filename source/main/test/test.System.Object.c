@@ -21,7 +21,7 @@ int main(int argc, char * argv[]) {
         Console_writeLine__string8("Test02: SUCCESS: Object_get_Type");
 
 
-    Object_freeClass(&object);
+    System_Memory_freeClass(&object);
     if (object)
         Console_writeLine__string8("Test03: ERROR: Object_freeClass");
     else

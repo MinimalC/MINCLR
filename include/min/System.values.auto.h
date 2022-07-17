@@ -6,8 +6,8 @@
 #if !defined(have_System_decimal)
 #include "System.decimal.h"
 #endif
-#if !defined(have_auto_System_uint8)
-#define have_auto_System_uint8
+#if !defined(have_System_uint8)
+#define have_System_uint8
 
 export struct_System_Type  System_uint8Type;
 
@@ -25,15 +25,15 @@ export System_size  System_uint8_tostring8base8__stack(System_uint8 that, System
 export System_size  System_uint8_tostring8base16__stack(System_uint8 that, System_char8 array[System_uint8_string8base16Length_DEFAULT + 1]);
 export System_size  System_uint8_tostring8base10__stack(System_uint8 that, System_char8 array[System_uint8_string8base10Length_DEFAULT + 1]);
 export System_uint8  System_uint8_parsebase10(System_string8 that);
-#define inline_System_uint8_isPrintable(BYTE)  (BYTE > 0x1F && BYTE < 0x7F) || (BYTE > 0x9F && BYTE != 0xAD)
+#define inline_System_uint8_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_System)
 #define uint8Type  System_uint8Type
 #define uint8_isPrintable  System_uint8_isPrintable
 #define uint8_tostring8base2__stack  System_uint8_tostring8base2__stack
 #define uint8_tostring8base4__stack  System_uint8_tostring8base4__stack
 #define uint8_tostring8base8__stack  System_uint8_tostring8base8__stack
-#define uint8_tostring8base10__stack  System_uint8_tostring8base10__stack
 #define uint8_tostring8base16__stack  System_uint8_tostring8base16__stack
+#define uint8_tostring8base10__stack  System_uint8_tostring8base10__stack
 #endif
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -44,8 +44,8 @@ export System_uint8  System_uint8_parsebase10(System_string8 that);
 #if !defined(have_System_decimal)
 #include "System.decimal.h"
 #endif
-#if !defined(have_auto_System_uint16)
-#define have_auto_System_uint16
+#if !defined(have_System_uint16)
+#define have_System_uint16
 
 export struct_System_Type  System_uint16Type;
 
@@ -63,15 +63,15 @@ export System_size  System_uint16_tostring8base8__stack(System_uint16 that, Syst
 export System_size  System_uint16_tostring8base16__stack(System_uint16 that, System_char8 array[System_uint16_string8base16Length_DEFAULT + 1]);
 export System_size  System_uint16_tostring8base10__stack(System_uint16 that, System_char8 array[System_uint16_string8base10Length_DEFAULT + 1]);
 export System_uint16  System_uint16_parsebase10(System_string8 that);
-#define inline_System_uint16_isPrintable(BYTE)  (BYTE > 0x1F && BYTE < 0x7F) || (BYTE > 0x9F && BYTE != 0xAD)
+#define inline_System_uint16_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_System)
 #define uint16Type  System_uint16Type
 #define uint16_isPrintable  System_uint16_isPrintable
 #define uint16_tostring8base2__stack  System_uint16_tostring8base2__stack
 #define uint16_tostring8base4__stack  System_uint16_tostring8base4__stack
 #define uint16_tostring8base8__stack  System_uint16_tostring8base8__stack
-#define uint16_tostring8base10__stack  System_uint16_tostring8base10__stack
 #define uint16_tostring8base16__stack  System_uint16_tostring8base16__stack
+#define uint16_tostring8base10__stack  System_uint16_tostring8base10__stack
 #endif
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -82,8 +82,8 @@ export System_uint16  System_uint16_parsebase10(System_string8 that);
 #if !defined(have_System_decimal)
 #include "System.decimal.h"
 #endif
-#if !defined(have_auto_System_uint32)
-#define have_auto_System_uint32
+#if !defined(have_System_uint32)
+#define have_System_uint32
 
 export struct_System_Type  System_uint32Type;
 
@@ -101,15 +101,15 @@ export System_size  System_uint32_tostring8base8__stack(System_uint32 that, Syst
 export System_size  System_uint32_tostring8base16__stack(System_uint32 that, System_char8 array[System_uint32_string8base16Length_DEFAULT + 1]);
 export System_size  System_uint32_tostring8base10__stack(System_uint32 that, System_char8 array[System_uint32_string8base10Length_DEFAULT + 1]);
 export System_uint32  System_uint32_parsebase10(System_string8 that);
-#define inline_System_uint32_isPrintable(BYTE)  (BYTE > 0x1F && BYTE < 0x7F) || (BYTE > 0x9F && BYTE != 0xAD)
+#define inline_System_uint32_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_System)
 #define uint32Type  System_uint32Type
 #define uint32_isPrintable  System_uint32_isPrintable
 #define uint32_tostring8base2__stack  System_uint32_tostring8base2__stack
 #define uint32_tostring8base4__stack  System_uint32_tostring8base4__stack
 #define uint32_tostring8base8__stack  System_uint32_tostring8base8__stack
-#define uint32_tostring8base10__stack  System_uint32_tostring8base10__stack
 #define uint32_tostring8base16__stack  System_uint32_tostring8base16__stack
+#define uint32_tostring8base10__stack  System_uint32_tostring8base10__stack
 #endif
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -120,8 +120,8 @@ export System_uint32  System_uint32_parsebase10(System_string8 that);
 #if !defined(have_System_decimal)
 #include "System.decimal.h"
 #endif
-#if !defined(have_auto_System_uint64)
-#define have_auto_System_uint64
+#if !defined(have_System_uint64)
+#define have_System_uint64
 
 export struct_System_Type  System_uint64Type;
 
@@ -139,15 +139,15 @@ export System_size  System_uint64_tostring8base8__stack(System_uint64 that, Syst
 export System_size  System_uint64_tostring8base16__stack(System_uint64 that, System_char8 array[System_uint64_string8base16Length_DEFAULT + 1]);
 export System_size  System_uint64_tostring8base10__stack(System_uint64 that, System_char8 array[System_uint64_string8base10Length_DEFAULT + 1]);
 export System_uint64  System_uint64_parsebase10(System_string8 that);
-#define inline_System_uint64_isPrintable(BYTE)  (BYTE > 0x1F && BYTE < 0x7F) || (BYTE > 0x9F && BYTE != 0xAD)
+#define inline_System_uint64_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_System)
 #define uint64Type  System_uint64Type
 #define uint64_isPrintable  System_uint64_isPrintable
 #define uint64_tostring8base2__stack  System_uint64_tostring8base2__stack
 #define uint64_tostring8base4__stack  System_uint64_tostring8base4__stack
 #define uint64_tostring8base8__stack  System_uint64_tostring8base8__stack
-#define uint64_tostring8base10__stack  System_uint64_tostring8base10__stack
 #define uint64_tostring8base16__stack  System_uint64_tostring8base16__stack
+#define uint64_tostring8base10__stack  System_uint64_tostring8base10__stack
 #endif
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -158,8 +158,8 @@ export System_uint64  System_uint64_parsebase10(System_string8 that);
 #if !defined(have_System_decimal)
 #include "System.decimal.h"
 #endif
-#if !defined(have_auto_System_int8)
-#define have_auto_System_int8
+#if !defined(have_System_int8)
+#define have_System_int8
 
 export struct_System_Type  System_int8Type;
 
@@ -176,15 +176,15 @@ export System_size  System_int8_tostring8base4__stack(System_int8 that, System_c
 export System_size  System_int8_tostring8base8__stack(System_int8 that, System_char8 array[System_int8_string8base8Length_DEFAULT + 1]);
 export System_size  System_int8_tostring8base16__stack(System_int8 that, System_char8 array[System_int8_string8base16Length_DEFAULT + 1]);
 export System_size  System_int8_tostring8base10__stack(System_int8 that, System_char8 array[System_int8_string8base10Length_DEFAULT + 1]);;
-#define inline_System_int8_isPrintable(BYTE)  (BYTE > 0x1F && BYTE < 0x7F) || (BYTE > 0x9F && BYTE != 0xAD)
+#define inline_System_int8_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_System)
 #define int8Type  System_int8Type
 #define int8_isPrintable  System_int8_isPrintable
 #define int8_tostring8base2__stack  System_int8_tostring8base2__stack
 #define int8_tostring8base4__stack  System_int8_tostring8base4__stack
 #define int8_tostring8base8__stack  System_int8_tostring8base8__stack
-#define int8_tostring8base10__stack  System_int8_tostring8base10__stack
 #define int8_tostring8base16__stack  System_int8_tostring8base16__stack
+#define int8_tostring8base10__stack  System_int8_tostring8base10__stack
 #endif
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -195,8 +195,8 @@ export System_size  System_int8_tostring8base10__stack(System_int8 that, System_
 #if !defined(have_System_decimal)
 #include "System.decimal.h"
 #endif
-#if !defined(have_auto_System_int16)
-#define have_auto_System_int16
+#if !defined(have_System_int16)
+#define have_System_int16
 
 export struct_System_Type  System_int16Type;
 
@@ -213,15 +213,15 @@ export System_size  System_int16_tostring8base4__stack(System_int16 that, System
 export System_size  System_int16_tostring8base8__stack(System_int16 that, System_char8 array[System_int16_string8base8Length_DEFAULT + 1]);
 export System_size  System_int16_tostring8base16__stack(System_int16 that, System_char8 array[System_int16_string8base16Length_DEFAULT + 1]);
 export System_size  System_int16_tostring8base10__stack(System_int16 that, System_char8 array[System_int16_string8base10Length_DEFAULT + 1]);;
-#define inline_System_int16_isPrintable(BYTE)  (BYTE > 0x1F && BYTE < 0x7F) || (BYTE > 0x9F && BYTE != 0xAD)
+#define inline_System_int16_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_System)
 #define int16Type  System_int16Type
 #define int16_isPrintable  System_int16_isPrintable
 #define int16_tostring8base2__stack  System_int16_tostring8base2__stack
 #define int16_tostring8base4__stack  System_int16_tostring8base4__stack
 #define int16_tostring8base8__stack  System_int16_tostring8base8__stack
-#define int16_tostring8base10__stack  System_int16_tostring8base10__stack
 #define int16_tostring8base16__stack  System_int16_tostring8base16__stack
+#define int16_tostring8base10__stack  System_int16_tostring8base10__stack
 #endif
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -232,8 +232,8 @@ export System_size  System_int16_tostring8base10__stack(System_int16 that, Syste
 #if !defined(have_System_decimal)
 #include "System.decimal.h"
 #endif
-#if !defined(have_auto_System_int32)
-#define have_auto_System_int32
+#if !defined(have_System_int32)
+#define have_System_int32
 
 export struct_System_Type  System_int32Type;
 
@@ -250,15 +250,15 @@ export System_size  System_int32_tostring8base4__stack(System_int32 that, System
 export System_size  System_int32_tostring8base8__stack(System_int32 that, System_char8 array[System_int32_string8base8Length_DEFAULT + 1]);
 export System_size  System_int32_tostring8base16__stack(System_int32 that, System_char8 array[System_int32_string8base16Length_DEFAULT + 1]);
 export System_size  System_int32_tostring8base10__stack(System_int32 that, System_char8 array[System_int32_string8base10Length_DEFAULT + 1]);;
-#define inline_System_int32_isPrintable(BYTE)  (BYTE > 0x1F && BYTE < 0x7F) || (BYTE > 0x9F && BYTE != 0xAD)
+#define inline_System_int32_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_System)
 #define int32Type  System_int32Type
 #define int32_isPrintable  System_int32_isPrintable
 #define int32_tostring8base2__stack  System_int32_tostring8base2__stack
 #define int32_tostring8base4__stack  System_int32_tostring8base4__stack
 #define int32_tostring8base8__stack  System_int32_tostring8base8__stack
-#define int32_tostring8base10__stack  System_int32_tostring8base10__stack
 #define int32_tostring8base16__stack  System_int32_tostring8base16__stack
+#define int32_tostring8base10__stack  System_int32_tostring8base10__stack
 #endif
 #endif
 /* Gemeinfrei. Public Domain. */
@@ -269,8 +269,8 @@ export System_size  System_int32_tostring8base10__stack(System_int32 that, Syste
 #if !defined(have_System_decimal)
 #include "System.decimal.h"
 #endif
-#if !defined(have_auto_System_int64)
-#define have_auto_System_int64
+#if !defined(have_System_int64)
+#define have_System_int64
 
 export struct_System_Type  System_int64Type;
 
@@ -287,14 +287,14 @@ export System_size  System_int64_tostring8base4__stack(System_int64 that, System
 export System_size  System_int64_tostring8base8__stack(System_int64 that, System_char8 array[System_int64_string8base8Length_DEFAULT + 1]);
 export System_size  System_int64_tostring8base16__stack(System_int64 that, System_char8 array[System_int64_string8base16Length_DEFAULT + 1]);
 export System_size  System_int64_tostring8base10__stack(System_int64 that, System_char8 array[System_int64_string8base10Length_DEFAULT + 1]);;
-#define inline_System_int64_isPrintable(BYTE)  (BYTE > 0x1F && BYTE < 0x7F) || (BYTE > 0x9F && BYTE != 0xAD)
+#define inline_System_int64_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_System)
 #define int64Type  System_int64Type
 #define int64_isPrintable  System_int64_isPrintable
 #define int64_tostring8base2__stack  System_int64_tostring8base2__stack
 #define int64_tostring8base4__stack  System_int64_tostring8base4__stack
 #define int64_tostring8base8__stack  System_int64_tostring8base8__stack
-#define int64_tostring8base10__stack  System_int64_tostring8base10__stack
 #define int64_tostring8base16__stack  System_int64_tostring8base16__stack
+#define int64_tostring8base10__stack  System_int64_tostring8base10__stack
 #endif
 #endif

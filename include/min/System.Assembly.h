@@ -60,7 +60,7 @@ typedef System_int32  System_AssemblyBinding;
 
 /* static class System.Assembly */
 
-#define struct_System_Assembly  struct class_System_Assembly
+#define struct_System_Assembly  struct System_Assembly
 typedef fixed struct_System_Assembly {
     struct_System_Object base;
 
@@ -71,19 +71,11 @@ typedef fixed struct_System_Assembly {
 
 export struct_System_Type  System_AssemblyType;
 
-#define System_Assembly_new  System_Assembly_new__00
-
-export System_Assembly  System_Assembly_new();
 export System_Assembly  System_Assembly_open(const System_string8  fileName, System_AssemblyBinding  flags);
 export void  * System_Assembly_find(System_Assembly that, const System_string8 name);
 export void  * System_Assembly_findGlobal(const System_string8 name);
 
-#define inline_System_Assembly_new()  (base_System_Assembly_init(inline_System_Object_allocClass(System_Assembly)))
-
-#if !defined(have_System_internal)
-#undef  System_Assembly_new
-#define System_Assembly_new  inline_System_Assembly_new
-#endif
+#define new_System_Assembly()  (base_System_Assembly_init((System_Assembly)System_Memory_allocClass(typeof(System_Assembly))))
 
 #if defined(using_System)
 #define struct_Assembly  struct_System_Assembly

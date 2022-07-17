@@ -106,10 +106,6 @@ Object  base_System_Object_init(Object that) {
     return that;
 }
 
-Object  System_Object_new() {
-    return inline_System_Object_new();
-}
-
 Object  System_Object_addReference(Object that) {
 	return ((((Object)that)->refCount == 0) ? that : (++(((Object)that)->refCount), that));
 }
@@ -138,10 +134,6 @@ System_uint64 base_System_Object_getSipHash(System_Object that) {
     System_intptr that_intptr = (System_intptr)that;
     Crypto_SipHash48_update(&sipHash48, &that_intptr, System_bytesize);
     return Crypto_SipHash48_final(&sipHash48);
-}
-
-System_boolean System_Object_referenceEquals(System_Object that, System_Object other) {
-    return that == other;
 }
 
 struct_System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {

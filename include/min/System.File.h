@@ -62,7 +62,7 @@ typedef System_var  System_File_special;
 
 /* class System_File */
 
-#define struct_System_File  struct class_System_File
+#define struct_System_File  struct System_File
 
 typedef fixed struct_System_File {
 	struct_System_Object  base;
@@ -84,7 +84,6 @@ typedef void  delegate(System_File_seek)(System_File that, System_ssize offset, 
 typedef System_intptr  delegate(System_File_get_Position)(System_File that);
 typedef void  delegate(System_File_set_Position)(System_File that, System_size value);
 
-export System_File  System_File_new();
 export System_File  System_File_open(System_string8 filename, System_File_mode flags);
 export System_File  base_System_File_init(System_File that);
 export void  base_System_File_free(System_File that);
@@ -104,7 +103,7 @@ export void  base_System_File_set_Position(System_File that, System_size value);
 #define System_File_get_Position(o)  ((function_System_File_get_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_get_Position))(o)
 #define System_File_set_Position(o,...)  ((function_System_File_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
 
-#define inline_System_File_new()  (base_System_File_init(inline_System_Object_allocClass(System_File)))
+#define new_System_File()  (base_System_File_init((System_File)System_Memory_allocClass(typeof(System_File))))
 
 #if defined(using_System)
 #define File_mode  System_File_mode
@@ -130,7 +129,7 @@ export void  base_System_File_set_Position(System_File that, System_size value);
 
 #define File_free  System_File_free
 #define File_init  System_File_init
-#define File_new  System_File_new
+#define new_File  System_File
 #define File_open  System_File_open
 #define File_read  System_File_read
 #define File_write  System_File_write

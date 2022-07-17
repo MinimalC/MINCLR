@@ -30,7 +30,7 @@ export struct_System_Type  Generic_T0Type;
 #if !defined(have_auto_Generic1_T1)
 #define have_auto_Generic1_T1
 
-#define struct_Generic1_T1  struct class_Generic1_T1
+#define struct_Generic1_T1  struct Generic1_T1
 typedef fixed struct_Generic1_T1 {
     struct_System_Object base;
 

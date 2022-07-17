@@ -2,18 +2,10 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
-#if !defined(have_System_Memory_Arena)
-#include "System.Memory.Arena.h"
-#endif
-#if !defined(have_System_Memory_Header)
-#include "System.Memory.Header.h"
-#endif
 #if !defined(have_System_Memory)
 #define have_System_Memory
 
 export struct_System_Type  System_MemoryType;
-
-export struct_System_Memory_Arena System_Memory_ProcessArena;
 
 /* void *memset (void *s, int c, size_t n) */
 export void  System_Memory_set(System_var dest, System_char8 src, System_size n);
@@ -35,21 +27,39 @@ export System_boolean  System_Memory_equals(System_var var0, System_var var1, Sy
 /* void * memchr ( const void * var, int value, size_t num ); */
 export System_size  System_Memory_indexof(System_var var, System_char8 needle, System_size count);
 
-export System_Object  System_Memory_allocClass(System_Type type);
 
-export void  System_Memory_freeClass(System_Object ref thatPtr);
+typedef unsigned System_Memory_PageFlags;
+enum {
+    System_Memory_PageFlags_None,    /* Page can not be accessed.  */
+    System_Memory_PageFlags_Read,    /* Page can be read.  */
+    System_Memory_PageFlags_Write,   /* Page can be written.  */
+    System_Memory_PageFlags_Execute = 4   /* Page can be executed.  */
+};
 
+typedef unsigned System_Memory_MapFlags;
+enum {
+    System_Memory_MapFlags_Shared = 1,
+    System_Memory_MapFlags_Private,
+    System_Memory_MapFlags_Anonymous = 0x20,
+};
 
+typedef unsigned System_Memory_ReferenceState;
+enum {
+    System_Memory_ReferenceState_Freed,
+    System_Memory_ReferenceState_Disposed,
+    System_Memory_ReferenceState_Disposing,
+    /* reserved */
+    System_Memory_ReferenceState_Used = 11,
+};
+
+/* oldies: */
 export void  * System_Memory_alloc(System_size length);
-
 export void  System_Memory_realloc(void  ** that, System_size oldLength, System_size newLength);
-
 export void  System_Memory_freeStruct(void *that);
-
 export void  System_Memory_free(void **thatPtr);
 
 
-#define inline_System_Memory_equals(VAR0, VAR1, N)  (0 == System_Memory_compare(VAR0, VAR1, N))
+#define inline_System_Memory_equals(VAR0, VAR1, N)  (N == System_Memory_compare(VAR0, VAR1, N))
 #define inline_System_Memory_free(VAR)  System_Memory_free((void **)VAR)
 
 #if defined(using_System)

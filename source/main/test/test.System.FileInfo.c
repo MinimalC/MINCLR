@@ -8,7 +8,7 @@ struct_string8  HALLOtxt = "./.test.txt";
 int main(int argc, char * argv[]) {
 
 	/* Test00: Create a FileInfo */
-    FileInfo fileInfo = FileInfo_new(HALLOtxt);
+    FileInfo fileInfo = new_FileInfo(HALLOtxt);
 
     Console_write("FileInfo.name: {0:string}", 1, fileInfo->name);
     if (enum_hasFlag(fileInfo->mode, System_FileInfo_type_Regular)) Console_write__string8(", File");
@@ -21,10 +21,10 @@ int main(int argc, char * argv[]) {
     Console_writeLine(", isDevice: {0:uint:hex}, Size: {1:uint}, BulkSize: {2:uint}, Blocks: {3:uint} ", 4, fileInfo->isDevice, fileInfo->size, fileInfo->bulkSize, fileInfo->blocks);
 
 	/* Test02: Free the FileInfo */
-    Object_freeClass((Object *)&fileInfo);
+    System_Memory_freeClass((Object *)&fileInfo);
 
 	/* Test01: Create a FileInfo for a Directory */
-    fileInfo = FileInfo_new(".");
+    fileInfo = new_FileInfo(".");
 
     Console_write("FileInfo.name: {0:string}", 1, fileInfo->name);
     if (enum_hasFlag(fileInfo->mode, System_FileInfo_type_Regular)) Console_write__string8(", File");
@@ -37,7 +37,7 @@ int main(int argc, char * argv[]) {
     Console_writeLine(", isDevice: {0:uint:hex}, Size: {1:uint}, BulkSize: {2:uint}, Blocks: {3:uint} ", 4, fileInfo->isDevice, fileInfo->size, fileInfo->bulkSize, fileInfo->blocks);
 
 	/* Test02: Free the FileInfo */
-    Object_freeClass((Object *)&fileInfo);
+    System_Memory_freeClass((Object *)&fileInfo);
 
 	return true;	/* false would be FAILED */
 }

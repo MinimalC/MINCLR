@@ -58,35 +58,6 @@ struct_System_Type  System_errorType = { .base = { .type = typeof(System_Type) }
 };
 
 #endif
-#if !defined(code_System_SystemException)
-#define code_System_SystemException
-
-/*# System_SystemException #*/
-
-System_SystemException  System_SystemException_new() {
-    return inline_System_SystemException_new();
-}
-
-System_SystemException  base_System_SystemException_init(System_SystemException that) {
-    base_System_Object_init((System_Object)that);
-
-    return that;
-}
-
-struct_System_Type_FunctionInfo  System_SystemExceptionTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_SystemException_init },
-};
-
-struct_System_Type  System_SystemExceptionType = { .base = { .type = typeof(System_Type) },
-    .name = "System.SystemException",
-    .size = sizeof(struct_System_SystemException),
-    .baseType = typeof(System_Exception),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
-        .length = sizeof_array(System_SystemExceptionTypeFunctions), .value = &System_SystemExceptionTypeFunctions
-    },
-};
-
-#endif
 #if !defined(code_System_Syscall)
 #define code_System_Syscall
 
@@ -99,7 +70,7 @@ struct_System_Type  System_SyscallType = { .base = { .type = typeof(System_Type)
 void System_Syscall_error(const System_error erreur) {
     if (!erreur) return;
 
-    System_SystemException exception = inline_System_SystemException_new();
+    System_Exception exception = new_System_Exception__error();
     exception->error = erreur;
     System_Exception_throw((System_Exception)exception);
 }

@@ -9,10 +9,6 @@
 
 /*# System_Assembly #*/
 
-System_Assembly  System_Assembly_new() {
-    return inline_System_Assembly_new();
-}
-
 Assembly  System_Assembly_open(const string8  fileName, System_AssemblyBinding  flags)
 {
     ISO_Library assemblyPtr = ISO_dlopen(fileName, (int32)flags);

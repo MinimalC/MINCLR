@@ -18,7 +18,7 @@ struct_System_Object_bitConfig {
     unsigned  isValue2Allocated : 1;
 };
 
-#define struct_System_Object  struct class_System_Object
+#define struct_System_Object  struct System_Object
 
 typedef fixed struct_System_Object {
 
@@ -36,14 +36,15 @@ typedef fixed struct_System_Object {
 
 export struct_System_Type  System_ObjectType;
 
-export System_Object  System_Object_new();
-export System_Object  System_Object_allocClass(System_Type type);
-export void  System_Object_freeClass(System_Object  * that);
 export System_Type  System_Object_get_Type(System_Object that);
 export System_boolean  System_Object_isInstanceof(System_Object that, System_Type type);
 export System_Object  System_Object_asInstanceof(System_Object that, System_Type type);
-export System_boolean  System_Object_referenceEquals(System_Object that, System_Object other);
 export System_Object  System_Object_addReference(System_Object that);
+
+export System_Object  System_Memory_allocClass(System_Type type);
+export System_Object  System_Memory_addReference(System_Object that);
+export void  System_Memory_freeClass(System_Object ref thatPtr);
+
 
 typedef void delegate(System_Object_free)(System_Object that);
 typedef System_Object delegate(System_Object_init)(System_Object that);
@@ -57,9 +58,7 @@ export System_uint64  base_System_Object_getSipHash(System_Object that);
 #define System_Object_init(o)  ((function_System_Object_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
 #define System_Object_getSipHash(o)  ((function_System_Object_getSipHash)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_getSipHash))(o)
 
-#define inline_System_Object_new()  (base_System_Object_init(inline_System_Object_allocClass(System_Object)))
-#define inline_System_Object_allocClass(T)  ((T)System_Object_allocClass(typeof(T)))
-#define inline_System_Object_freeClass(T)  ((void)System_Object_freeClass((System_Object *)T))
+#define new_System_Object()  (base_System_Object_init((System_Object)System_Memory_allocClass(typeof(System_Object))))
 #define inline_System_Object_get_Type(that)  ((System_Object)that)->type
 #define inline_System_Object_isInstanceof(o,T)  (System_Object_isInstanceof((System_Object)o,typeof(T)))
 #define inline_System_Object_asInstanceof(o,T)  ((T)System_Object_asInstanceof((System_Object)o,typeof(T)))
@@ -72,9 +71,7 @@ export System_uint64  base_System_Object_getSipHash(System_Object that);
 #define Object  System_Object
 #define ObjectType  System_ObjectType
 
-#define Object_new  System_Object_new
-#define Object_allocClass  System_Object_allocClass
-#define Object_freeClass  System_Object_freeClass
+#define new_Object  new_System_Object
 #define Object_get_Type  System_Object_get_Type
 #define Object_isInstanceof  System_Object_isInstanceof
 #define Object_asInstanceof  System_Object_asInstanceof
@@ -92,9 +89,6 @@ export System_uint64  base_System_Object_getSipHash(System_Object that);
 #define Object_init  System_Object_init
 #define Object_getSipHash  System_Object_getSipHash
 
-#define inline_Object_new  inline_System_Object_new
-#define inline_Object_allocClass  inline_System_Object_allocClass
-#define inline_Object_freeClass  inline_System_Object_freeClass
 #define inline_Object_get_Type  inline_System_Object_get_Type
 #define inline_Object_isType  inline_System_Object_isType
 #define inline_Object_asType  inline_System_Object_asType

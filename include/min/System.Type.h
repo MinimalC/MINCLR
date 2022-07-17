@@ -25,7 +25,7 @@
 
 /* static class System.Type */
 
-#define struct_System_Type  struct class_System_Type
+#define struct_System_Type  struct System_Type
 
 typedef fixed struct_System_Type  * System_Type;
 
@@ -33,7 +33,7 @@ typedef fixed struct_System_Type  * System_Type;
 
 /* static class System.Type.FunctionInfo */
 
-#define struct_System_Type_FunctionInfo  struct class_System_Type_FunctionInfo
+#define struct_System_Type_FunctionInfo  struct System_Type_FunctionInfo
 typedef fixed struct_System_Type_FunctionInfo {
 	struct_System_Object  base;
 
@@ -47,7 +47,7 @@ typedef fixed struct_System_Type_FunctionInfo {
 
 /* static class System.Type.FunctionInfoArray */
 
-#define struct_System_Type_FunctionInfoArray  struct class_System_Type_FunctionInfoArray
+#define struct_System_Type_FunctionInfoArray  struct System_Type_FunctionInfoArray
 typedef fixed struct_System_Type_FunctionInfoArray {
 	struct_System_Object base;
 
@@ -59,7 +59,7 @@ typedef fixed struct_System_Type_FunctionInfoArray {
 
 /* static class System.Type.InterfaceInfo */
 
-#define struct_System_Type_InterfaceInfo  struct class_System_Type_InterfaceInfo
+#define struct_System_Type_InterfaceInfo  struct System_Type_InterfaceInfo
 typedef fixed struct_System_Type_InterfaceInfo {
 	struct_System_Object  base;
 
@@ -73,7 +73,7 @@ typedef fixed struct_System_Type_InterfaceInfo {
 
 /* static class System.Type.InterfaceInfoArray */
 
-#define struct_System_Type_InterfaceInfoArray  struct class_System_Type_InterfaceInfoArray
+#define struct_System_Type_InterfaceInfoArray  struct System_Type_InterfaceInfoArray
 typedef fixed struct_System_Type_InterfaceInfoArray {
 	struct_System_Object base;
 
@@ -86,7 +86,7 @@ typedef fixed struct_System_Type_InterfaceInfoArray {
 
 /* static class System.Type.FieldInfo */
 
-#define struct_System_Type_FieldInfo  struct class_System_Type_FieldInfo
+#define struct_System_Type_FieldInfo  struct System_Type_FieldInfo
 typedef fixed struct_System_Type_FieldInfo {
 	struct_System_Object  base;
 
@@ -98,7 +98,7 @@ typedef fixed struct_System_Type_FieldInfo {
 
 /* static class System.Type.FieldInfoArray */
 
-#define struct_System_Type_FieldInfoArray  struct class_System_Type_FieldInfoArray
+#define struct_System_Type_FieldInfoArray  struct System_Type_FieldInfoArray
 typedef fixed struct_System_Type_FieldInfoArray {
 	struct_System_Object base;
 
@@ -121,7 +121,6 @@ struct_System_Type {
 	struct_System_Type_FieldInfoArray  fields; /* for Enum.getValue */
 	/* TODO: struct_System_Type_PropertyInfoArray  properties; */
 };
-
 
 /* class Types */
 

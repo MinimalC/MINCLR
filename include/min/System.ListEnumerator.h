@@ -10,7 +10,7 @@
 #if !defined(have_System_ListEnumerator)
 #define have_System_ListEnumerator
 
-#define struct_System_ListEnumerator  struct class_System_ListEnumerator
+#define struct_System_ListEnumerator  struct System_ListEnumerator
 typedef fixed struct_System_ListEnumerator {
     struct_System_Object base;
 
@@ -29,9 +29,6 @@ typedef System_ListEnumerator delegate(System_ListEnumerator_init)(System_ListEn
 typedef System_Object delegate(System_ListEnumerator_get_current)(System_ListEnumerator that);
 typedef System_boolean delegate(System_ListEnumerator_moveNext)(System_ListEnumerator that);
 
-#define System_ListEnumerator_new  System_ListEnumerator_new__00
-
-export System_ListEnumerator  System_ListEnumerator_new(System_List array);
 export System_ListEnumerator  base_System_ListEnumerator_init(System_ListEnumerator that, System_List array);
 export void  base_System_ListEnumerator_free(System_ListEnumerator that);
 export System_Object  base_System_ListEnumerator_get_current(System_ListEnumerator that);
@@ -42,12 +39,7 @@ export System_boolean  base_System_ListEnumerator_moveNext(System_ListEnumerator
 #define System_ListEnumerator_get_current(o)  ((function_System_ListEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
 #define System_ListEnumerator_moveNext(o)  ((function_System_ListEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
 
-#define inline_System_ListEnumerator_new(a)  (base_System_ListEnumerator_init(inline_System_Object_allocClass(System_ListEnumerator), a))
-
-#if !defined(have_System_internal)
-#undef  System_ListEnumerator_new
-#define System_ListEnumerator_new  inline_System_ListEnumerator_new
-#endif
+#define new_System_ListEnumerator(a)  (base_System_ListEnumerator_init((System_ListEnumerator)System_Memory_allocClass(typeof(System_ListEnumerator), a)))
 
 #if defined(using_System)
 #define struct_ListArrayEnumerator  struct_System_ListEnumerator

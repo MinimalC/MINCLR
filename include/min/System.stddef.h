@@ -163,8 +163,8 @@ This is valid C, but C++ throws a compiler exception, also within extern "C":
 :    export struct System_Type  System_ObjectType;
 :    struct System_Object { ... }
 
-Actually, in your C .h you should do:
-:    #define struct_System_Object  struct class_System_Object
+Actually, in your C .h you'd have to do:
+:    #define struct_System_Object  struct System_Object_t
 :    typedef struct_System_Object  * System_Object;
 :    export struct_System_Type  System_ObjectType;
 :    struct_System_Object { ... }
@@ -183,13 +183,17 @@ and in your C .c you do:
 
 #define sizeof_array(OBJECT)  (sizeof(OBJECT) / sizeof(OBJECT[0]))
 
+#define sizeof_class(CLASS) sizeof(struct_##CLASS)
+
 #define nameof(TYPE)  (#TYPE)
 
 #define typeof(name)  (&name##Type)
 
 
-/* Don't typedef void  System_void; just use void */
+typedef void  System_void;
 typedef void  * System_var; /* var is not unsafe in C */
+typedef unsigned  System_unsigned;
+typedef signed  System_signed;
 typedef __SIZE_TYPE__  System_size;
 typedef __SIZE_TYPE__  System_intptr;
 typedef __PTRDIFF_TYPE__  System_ssize;

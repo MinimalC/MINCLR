@@ -15,7 +15,7 @@
 #if !defined(have_Generic_T0Array)
 #define have_Generic_T0Array
 
-#define struct_Generic_T0Array  struct class_Generic_T0Array
+#define struct_Generic_T0Array  struct Generic_T0Array
 typedef fixed struct_Generic_T0Array {
     struct_System_Object base;
 
@@ -24,8 +24,6 @@ typedef fixed struct_Generic_T0Array {
     Generic_T0  (* value)[];
 
 }  * Generic_T0Array;
-
-#define stack_Generic_T0Array(LENGTH,...)  (struct_Generic_T0Array){ .base = { .base = stack_System_Object(Generic_T0Array), .length = LENGTH, }, }
 
 export struct_System_Type  Generic_T0ArrayType;
 
@@ -38,7 +36,6 @@ typedef void delegate(Generic_T0Array_copyTo)(Generic_T0Array that, Generic_T0Ar
 typedef void delegate(Generic_T0Array_resize)(Generic_T0Array that, System_size length);
 typedef System_IEnumerator  delegate(Generic_T0Array_getEnumerator)(Generic_T0Array that);
 
-export Generic_T0Array  Generic_T0Array_new(System_size length);
 export Generic_T0Array  base_Generic_T0Array_init(Generic_T0Array that, System_size length);
 export void  base_Generic_T0Array_free(Generic_T0Array that);
 export System_size  base_Generic_T0Array_get_Length(Generic_T0Array that);
@@ -57,15 +54,13 @@ export System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array th
 #define Generic_T0Array_resize(o,...)  ((function_Generic_T0Array_resize)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_Generic_T0Array_resize))(o,__VA_ARGS__)
 #define Generic_T0Array_getEnumerator(o)  ((function_Generic_T0Array_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
 
-#define inline_Generic_T0Array_new(LENGTH)  (base_Generic_T0Array_init(inline_System_Object_allocClass(Generic_T0Array), LENGTH))
+#define new_Generic_T0Array(LENGTH)  (base_Generic_T0Array_init(inline_System_Object_allocClass(Generic_T0Array), LENGTH))
 
 #if defined(using_System)
-#define struct_T0Array  struct class_Generic_T0Array
-#define stack_T0Array  stack_Generic_T0Array
 #define T0Array  Generic_T0Array
 #define T0ArrayType  Generic_T0ArrayType
 
-#define T0Array_new  Generic_T0Array_new
+#define new_T0Array  new_Generic_T0Array
 
 #define T0Array_init  Generic_T0Array_init
 #define T0Array_free  Generic_T0Array_free

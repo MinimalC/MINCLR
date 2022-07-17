@@ -7,8 +7,8 @@
 #if !defined(have_System_decimal)
 #include "System.decimal.h"
 #endif
-#if !defined(have_auto_Generic_T0)
-#define have_auto_Generic_T0
+#if !defined(have_Generic_T0)
+#define have_Generic_T0
 
 export struct_System_Type  Generic_T0Type;
 
@@ -52,9 +52,14 @@ export System_size  Generic_T0_tostring8base4__stack(Generic_T0 that, System_cha
 export System_size  Generic_T0_tostring8base8__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base8Length_DEFAULT + 1]);
 export System_size  Generic_T0_tostring8base16__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base16Length_DEFAULT + 1]);
 export System_size  Generic_T0_tostring8base10__stack(Generic_T0 that, System_char8 array[Generic_T0_string8base10Length_DEFAULT + 1]);;
-#define inline_Generic_T0_isPrintable(byte)  (byte > 0x1F && byte < 0x7F) || (byte > 0x9F && byte != 0xAD)
+#define inline_Generic_T0_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_Generic)
 #define T0Type  Generic_T0Type
 #define T0_isPrintable  Generic_T0_isPrintable
+#define T0_tostring8base2__stack  Generic_T0_tostring8base2__stack
+#define T0_tostring8base4__stack  Generic_T0_tostring8base4__stack
+#define T0_tostring8base8__stack  Generic_T0_tostring8base8__stack
+#define T0_tostring8base16__stack  Generic_T0_tostring8base16__stack
+#define T0_tostring8base10__stack  Generic_T0_tostring8base10__stack
 #endif
 #endif

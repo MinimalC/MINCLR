@@ -11,7 +11,7 @@
 
 /* 1-Dimensional, Indexed System_ObjectArray */
 
-#define struct_System_Array  struct class_System_Array
+#define struct_System_Array  struct System_Array
 typedef fixed struct_System_Array {
     struct_System_Object base;
 
@@ -53,10 +53,10 @@ export System_IEnumerator  base_System_Array_getEnumerator(System_Array that);
 #define System_Array_resize(o,...)  ((function_System_Array_resize)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Array_resize))(o,__VA_ARGS__)
 #define System_Array_getEnumerator(o)  ((function_System_Array_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
 
-#define inline_System_Array_new(LENGTH)  (base_System_Array_init(inline_System_Object_allocClass(System_Array), LENGTH))
+#define new_System_Array(LENGTH)  (base_System_Array_init((System_Array)System_Memory_allocClass(typeof(System_Array), LENGTH)))
 
 #if defined(using_System)
-#define struct_Array  struct class_System_Array
+#define struct_Array  struct System_Array
 #define stack_Array  stack_System_Array
 #define Array  System_Array
 #define ArrayType  System_ArrayType

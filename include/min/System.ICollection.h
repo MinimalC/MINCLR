@@ -7,7 +7,7 @@
 
 /* interface System_ICollection */
 
-#define struct_System_ICollection  struct interface_System_ICollection
+#define struct_System_ICollection  struct System_ICollection
 typedef fixed  struct_System_ICollection { }  * System_ICollection;
 
 export struct_System_Type  System_ICollectionType;

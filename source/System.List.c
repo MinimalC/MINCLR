@@ -12,16 +12,12 @@
 
 const System_size  System_List_Capacity = System_List_Capacity_DEFAULT;
 
-System_List  System_List_new() {
-    return inline_System_List_new();
-}
-
 System_List  base_System_List_init(System_List that) {
     base_System_Object_init((System_Object)that);
 
     that->capacity = System_List_Capacity;
-    that->hashes = System_uint64Array_new(that->capacity);
-    that->items = System_Array_new(that->capacity);
+    that->hashes = new_System_uint64Array(that->capacity);
+    that->items = new_System_Array(that->capacity);
 
     return that;
 }
@@ -46,14 +42,14 @@ System_Object  base_System_List_get_index(System_List that, size index) {
 void  base_System_List_set_index(System_List that, size index, System_Object value) {
 	assert(that)
     if (value) {
-        if (base_System_List_contains(that, value)) throw(inline_Exception_new("InvalidOperationException_new: System_List: System_Object already added"))
+        if (base_System_List_contains(that, value)) throw(new_Exception("InvalidOperationException_new: System_List: System_Object already added"))
         uint64Array_set_index(that->hashes, index, Object_getSipHash(value));
     }
     Array_set_index(that->items, index, value);
 }
 
 System_IEnumerator base_System_List_getEnumerator(System_List that) {
-    return (System_IEnumerator)inline_System_ListEnumerator_new(that);
+    return (System_IEnumerator)new_System_ListEnumerator(that);
 }
 
 System_boolean  base_System_List_contains(System_List that, System_Object object) {
@@ -69,7 +65,7 @@ System_boolean  base_System_List_contains(System_List that, System_Object object
 void  base_System_List_add(System_List that, System_Object object) {
     assert(object)
 
-    if (base_System_List_contains(that, object)) throw(inline_Exception_new("InvalidOperationException_new: System.List: System_Object already added."))
+    if (base_System_List_contains(that, object)) throw(new_Exception("InvalidOperationException_new: System.List: System_Object already added."))
 
     size new_i = that->length;
     if (new_i >= that->capacity) {

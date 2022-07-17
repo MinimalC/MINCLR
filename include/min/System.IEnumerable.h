@@ -7,7 +7,7 @@
 
 /* interface System_IEnumerator */
 
-#define struct_System_IEnumerator  struct interface_System_IEnumerator
+#define struct_System_IEnumerator  struct System_IEnumerator
 typedef fixed  struct_System_IEnumerator { }  * System_IEnumerator;
 
 export struct_System_Type  System_IEnumeratorType;

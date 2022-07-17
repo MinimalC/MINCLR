@@ -10,7 +10,7 @@
 #define System_List_Capacity_DEFAULT  64
 export const System_size  System_List_Capacity;
 
-#define struct_System_List  struct class_System_List
+#define struct_System_List  struct System_List
 typedef fixed struct_System_List {
     struct_System_Object base;
 
@@ -37,9 +37,6 @@ typedef void delegate(System_List_copyTo)(System_List that, System_List other, S
 typedef System_boolean  delegate(System_List_contains)(System_List that, System_Object object);
 typedef void delegate(System_List_add)(System_List that, System_Object object);
 
-#define System_List_new  System_List_new__00
-
-export System_List  System_List_new();
 export System_List  base_System_List_init(System_List that);
 export void  base_System_List_free(System_List that);
 export System_size  base_System_List_get_Length(System_List that);
@@ -58,12 +55,7 @@ export void  base_System_List_add(System_List that, System_Object object);
 #define System_List_contains(o,...)  ((function_System_List_contains)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_List_contains))(o,__VA_ARGS__)
 #define System_List_add(o,...)  ((function_System_List_add)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_List_add))(o,__VA_ARGS__)
 
-#define inline_System_List_new()  (base_System_List_init(inline_System_Object_allocClass(System_List)))
-
-#if !defined(have_System_internal)
-#undef  System_List_new
-#define System_List_new  inline_System_List_new
-#endif
+#define new_System_List()  (base_System_List_init((System_List)System_Memory_allocClass(typeof(System_List))))
 
 #if defined(using_System)
 #define struct_List  struct_System_List

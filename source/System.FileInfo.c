@@ -11,10 +11,6 @@
 
 /*# System_FileInfo #*/
 
-System_FileInfo  System_FileInfo_new(System_string8 fileName) {
-    return inline_System_FileInfo_new(fileName);
-}
-
 System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_string8 fileName) {
     base_System_Object_init((System_Object)that);
 

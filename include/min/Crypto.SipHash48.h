@@ -7,7 +7,7 @@
 
 /* static class Crypto.SipHash48 */
 
-#define struct_Crypto_SipHash48  struct class_Crypto_SipHash48
+#define struct_Crypto_SipHash48  struct Crypto_SipHash48
 typedef final fixed struct_Crypto_SipHash48 {
     struct_System_Object  base;
 
@@ -26,9 +26,6 @@ typedef final fixed struct_Crypto_SipHash48 {
 
 export struct_System_Type  Crypto_SipHash48Type;
 
-#define Crypto_SipHash48_new  Crypto_SipHash48_new__00
-
-export Crypto_SipHash48  Crypto_SipHash48_new();
 export void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_var input, System_size length);
 export System_uint64  Crypto_SipHash48_final(Crypto_SipHash48 that);
 
@@ -43,12 +40,7 @@ export void  base_Crypto_SipHash48_free(Crypto_SipHash48 that);
 #define Crypto_SipHash48_init  base_Crypto_SipHash48_init
 #define Crypto_SipHash48_free  base_Crypto_SipHash48_free
 
-#define inline_Crypto_SipHash48_new()  (base_Crypto_SipHash48_init(inline_System_Object_allocClass(Crypto_SipHash48)))
-
-#if !defined(have_Crypto_internal)
-#undef  Crypto_SipHash48_new
-#define Crypto_SipHash48_new  inline_Crypto_SipHash48_new
-#endif
+#define new_Crypto_SipHash48()  (base_Crypto_SipHash48_init((Crypto_SipHash48)System_Memory_allocClass(typeof(Crypto_SipHash48))))
 
 #if defined(using_Crypto)
 #define struct_SipHash48  struct_Crypto_SipHash48

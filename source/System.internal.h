@@ -6,9 +6,10 @@
 
 #define DEBUG_System_Object  2
 #define DEBUG_System_string8_formatTo  3
+#define DEBUG_System_Memory 4
 
 /* for developers */
-#define DEBUG  DEBUG_System_string8_formatTo
+#define DEBUG  DEBUG_System_Memory
 
 /* #include <System.config.h>
 #if !defined(have_System_config)

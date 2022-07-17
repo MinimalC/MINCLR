@@ -13,10 +13,6 @@
 
 /*# System_File #*/
 
-System_File  System_File_new() {
-    return inline_System_File_new();
-}
-
 File  base_System_File_init(File that) {
 	base_System_Object_init((Object)that);
 
@@ -40,7 +36,7 @@ File  System_File_open(string8 filename, File_mode flags) {
     /* DEBUG Console_writeLine("ERROR: System_File_open, flags: {0:uint:hex}", 1, flags); */
     if (!filePtr) return null;
 
-    File that = System_File_new();
+    File that = new_System_File();
     that->filePtr = filePtr;
     return that;
 }

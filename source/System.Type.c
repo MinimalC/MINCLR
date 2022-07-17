@@ -91,7 +91,7 @@ struct_System_Type  System_Type_FieldInfoArrayType = { .base = stack_System_Obje
 
 System_var System_Type_getMethod(System_Type  that, System_var fun) {
     System_var reture = System_Type_trygetMethod(that, fun);
-    if (!reture) throw_terminate(inline_System_Exception_new("NotImplementedException_new: Method not found"));
+    if (!reture) throw_terminate(new_System_Exception("NotImplementedException_new: Method not found"));
     return reture;
 }
 

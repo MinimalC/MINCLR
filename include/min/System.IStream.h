@@ -19,7 +19,7 @@ typedef System_intptr  System_origin;
 
 /* interface System.IStream */
 
-#define struct_System_IStream  struct class_System_IStream
+#define struct_System_IStream  struct System_IStream
 typedef fixed struct_System_IStream { } * System_IStream;
 
 export struct_System_Type  System_IStreamType;

@@ -5,53 +5,8 @@
 #if !defined(have_System_Exception)
 #include "System.Exception.h"
 #endif
-#if !defined(have_System_error)
-#include "System.error.h"
-#endif
 #if !defined(have_System_Syscall_command)
 #include "System.Syscall.command.h"
-#endif
-#if !defined(have_System_SystemException)
-#define have_System_SystemException
-
-#define struct_System_SystemException  struct class_System_SystemException
-typedef fixed struct_System_SystemException {
-    struct_System_Exception base;
-
-    System_error error;
-
-}  * System_SystemException;
-
-#define stack_System_SystemException(ERROR)  (struct_System_SystemException){ .base = stack_System_Object(System_SystemException), .error = ERROR, }
-
-export struct_System_Type  System_SystemExceptionType;
-
-typedef System_SystemException delegate(System_SystemException_init)(System_SystemException that);
-typedef void delegate(System_SystemException_free)(System_SystemException that);
-
-export System_SystemException  System_SystemException_new();
-export System_SystemException  base_System_SystemException_init(System_SystemException that);
-
-#define System_SystemException_init(o)  ((function_System_SystemException_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
-#define System_SystemException_free(o)  ((function_System_SystemException_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
-
-#define inline_System_SystemException_new()  (base_System_SystemException_init(inline_System_Object_allocClass(System_SystemException)))
-
-#if defined(using_System)
-#define struct_SystemException  struct_System_SystemException
-#define stack_SystemException  stack_System_SystemException
-#define SystemException  System_SystemException
-#define SystemExceptionType  System_SystemExceptionType
-
-#define SystemException_new  System_SystemException_new
-
-#define SystemException_init  System_SystemException_init
-#define SystemException_free  System_SystemException_free
-#define base_SystemException_init  base_System_SystemException_init
-#define function_SystemException_init  function_System_SystemException_init
-#define function_SystemException_free  function_System_SystemException_free
-#endif
-
 #endif
 #if !defined(have_System_Syscall)
 #define have_System_Syscall

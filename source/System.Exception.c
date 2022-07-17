@@ -34,7 +34,7 @@ System_Exception  System_Exception_get_current() {
 
 void  System_Exception_set_current(System_Exception that) {
 
-    if (System_Exception_current) inline_System_Object_freeClass(&System_Exception_current);
+    if (System_Exception_current) System_Memory_freeClass((System_Object ref)&System_Exception_current);
 
     System_Exception_current = (that == null ? null : (System_Exception)System_Object_addReference((System_Object)that));
 }
@@ -51,10 +51,6 @@ void  System_Exception_terminate(System_Exception that) {
 
     System_Exception_throw(that);
     System_Console_terminate(0);
-}
-
-System_Exception  System_Exception_new(System_string8 message) {
-    return inline_System_Exception_new(message);
 }
 
 System_Exception  base_System_Exception_init(System_Exception that, System_string8 message) {

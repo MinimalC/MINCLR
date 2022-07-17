@@ -7,7 +7,7 @@
 
 /* 3-Dimensional, Unique SipHash-Indexed ObjectObjectDictionary */
 
-#define struct_System_Dictionary  struct class_System_Dictionary
+#define struct_System_Dictionary  struct System_Dictionary
 typedef fixed struct_System_Dictionary {
     struct_System_Object base;
 
@@ -35,7 +35,7 @@ export System_Dictionary  base_System_Dictionary_init(System_Dictionary that);
 #define System_Dictionary_init(o)  ((function_System_Dictionary_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
 #define System_Dictionary_free(o)  ((function_System_Dictionary_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 
-#define inline_System_Dictionary_new()  (base_System_Dictionary_init(inline_System_Object_allocClass(System_Dictionary)))
+#define new_System_Dictionary()  (base_System_Dictionary_init((System_Dictionary)System_Memory_allocClass(typeof(System_Dictionary))))
 
 #if !defined(have_System_internal)
 #undef  System_Dictionary_new

@@ -39,13 +39,13 @@ int main(int argc, char * argv[]) {
             Console_writeLine("Test02: SUCCESS:         Crypto_SipHash48: 0x{0:uint:hex}", 1, hash_value);
     }
 
-    Object object0 = Object_new();
+    Object object0 = new_Object();
     hash_value = Object_getSipHash(object0);
     if (!hash_value)
         Console_writeLine("Test03: ERROR: System_Object_getSipHash: 0x{0:uint:hex}", 1, hash_value);
     else
         Console_writeLine("Test03: SUCCESS: System_Object_getSipHash: 0x{0:uint:hex}", 1, hash_value);
-    Object_freeClass(&object0);
+    System_Memory_freeClass((System_Object ref)&object0);
 
     return true;
 }

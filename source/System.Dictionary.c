@@ -9,9 +9,6 @@
 #if !defined(code_auto_System_Dictionary)
 #define code_auto_System_Dictionary
 /*# System_Dictionary #*/
-System_Dictionary  System_Dictionary_new() {
-    return inline_System_Dictionary_new();
-}
 System_Dictionary  base_System_Dictionary_init(System_Dictionary that) {
     base_System_Object_init((System_Object)that);
     return that;

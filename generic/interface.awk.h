@@ -9,7 +9,7 @@
 
 /* interface Generic.T0 */
 
-#define struct_Generic_T0  struct class_Generic_T0
+#define struct_Generic_T0  struct Generic_T0
 typedef fixed struct_Generic_T0 { } * Generic_T0;
 export struct_System_Type  Generic_T0Type;
 
