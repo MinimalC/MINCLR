@@ -8,9 +8,8 @@
 #if !defined(have_System_ArrayEnumerator)
 #define have_System_ArrayEnumerator
 
-#define struct_System_ArrayEnumerator  struct System_ArrayEnumerator
-typedef fixed struct_System_ArrayEnumerator {
-    struct_System_Object base;
+typedef fixed struct System_ArrayEnumerator {
+    struct System_Object base;
 
     System_Array array;
 
@@ -18,9 +17,10 @@ typedef fixed struct_System_ArrayEnumerator {
 
 }  * System_ArrayEnumerator;
 
-#define stack_System_ArrayEnumerator()  (struct_System_ArrayEnumerator){ .base = stack_System_Object(System_ArrayEnumerator), .array = null, }
+#define stack_System_ArrayEnumerator()  (struct System_ArrayEnumerator){ .base = stack_System_Object(System_ArrayEnumerator), }
+#define new_System_ArrayEnumerator(ARRAY)  (base_System_ArrayEnumerator_init((System_ArrayEnumerator)System_Memory_allocClass(typeof(System_ArrayEnumerator)), ARRAY))
 
-export struct_System_Type  System_ArrayEnumeratorType;
+export struct System_Type  System_ArrayEnumeratorType;
 
 typedef void delegate(System_ArrayEnumerator_free)(System_ArrayEnumerator that);
 typedef System_ArrayEnumerator delegate(System_ArrayEnumerator_init)(System_ArrayEnumerator that, System_Array array);
@@ -37,19 +37,16 @@ export System_boolean  base_System_ArrayEnumerator_moveNext(System_ArrayEnumerat
 #define System_ArrayEnumerator_get_current(o)  ((function_System_ArrayEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
 #define System_ArrayEnumerator_moveNext(o)  ((function_System_ArrayEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
 
-#define new_System_ArrayEnumerator(a)  (base_System_ArrayEnumerator_init((System_ArrayEnumerator)System_Memory_allocClass(typeof(System_ArrayEnumerator), a)))
-
 #if defined(using_System)
-#define struct_ArrayEnumerator  struct_System_ArrayEnumerator
 #define ArrayEnumerator  System_ArrayEnumerator
 #define ArrayEnumeratorType  System_ArrayEnumeratorType
+#define stack_ArrayEnumerator  stack_System_ArrayEnumerator
+#define new_ArrayEnumerator  new_System_ArrayEnumerator
 #define function_ArrayEnumerator_init  function_System_ArrayEnumerator_init
 #define function_ArrayEnumerator_free  function_System_ArrayEnumerator_free
 #define base_ArrayEnumerator_init  base_System_ArrayEnumerator_init
 #define base_ArrayEnumerator_free  base_System_ArrayEnumerator_free
-#define ArrayEnumerator_new  System_ArrayEnumerator_new
 #define ArrayEnumerator_init  System_ArrayEnumerator_init
 #define ArrayEnumerator_free  System_ArrayEnumerator_free
 #endif
-
 #endif

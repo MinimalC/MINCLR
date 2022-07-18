@@ -10,9 +10,8 @@
 #define System_List_Capacity_DEFAULT  64
 export const System_size  System_List_Capacity;
 
-#define struct_System_List  struct System_List
-typedef fixed struct_System_List {
-    struct_System_Object base;
+typedef fixed struct System_List {
+    struct System_Object base;
 
     System_size capacity;
 
@@ -24,9 +23,10 @@ typedef fixed struct_System_List {
 
 }  * System_List;
 
-#define stack_System_List()  (struct_System_List){ .base = stack_System_Object(System_List), }
+#define stack_System_List()  { .base = stack_System_Object(System_List), }
+#define new_System_List()  (base_System_List_init((System_List)System_Memory_allocClass(typeof(System_List))))
 
-export struct_System_Type  System_ListType;
+export struct System_Type  System_ListType;
 
 typedef System_List delegate(System_List_init)(System_List that);
 typedef void delegate(System_List_free)(System_List that);
@@ -55,13 +55,11 @@ export void  base_System_List_add(System_List that, System_Object object);
 #define System_List_contains(o,...)  ((function_System_List_contains)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_List_contains))(o,__VA_ARGS__)
 #define System_List_add(o,...)  ((function_System_List_add)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_List_add))(o,__VA_ARGS__)
 
-#define new_System_List()  (base_System_List_init((System_List)System_Memory_allocClass(typeof(System_List))))
-
 #if defined(using_System)
-#define struct_List  struct_System_List
 #define List  System_List
 #define ListType  System_ListType
-
+#define stack_List  stack_System_List
+#define new_List  new_System_List
 #define function_List_init  function_System_List_init
 #define function_List_free  function_System_List_free
 #define function_List_contains  function_System_List_contains
@@ -70,11 +68,9 @@ export void  base_System_List_add(System_List that, System_Object object);
 #define base_List_free  base_System_List_free
 #define base_List_contains  base_System_List_contains
 #define base_List_add  base_System_List_add
-#define List_new  System_List_new
 #define List_init  System_List_init
 #define List_free  System_List_free
 #define List_contains  System_List_contains
 #define List_add  System_List_add
 #endif
-
 #endif

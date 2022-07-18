@@ -22,7 +22,7 @@ System_size  base_System_IStream_get_Position(IStream that) { return 0; }
 
 void  base_System_IStream_set_Position(IStream that, size value) { }
 
-struct_System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
+struct System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_IStream_write", .function = base_System_IStream_write, .value = base_System_IStream_write },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = base_System_IStream_sync },
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = base_System_IStream_read },
@@ -31,9 +31,9 @@ struct_System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
     [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = base_System_IStream_set_Position },
 };
 
-struct_System_Type  System_IStreamType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_IStreamType = { .base = stack_System_Object(System_Type),
 	.name = "System.IStream",
-    .size = sizeof(struct_System_IStream),
+    .size = sizeof(struct System_IStream),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(System_IStreamTypeFunctions), .value = &System_IStreamTypeFunctions
     },

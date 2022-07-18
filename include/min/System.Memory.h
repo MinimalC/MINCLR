@@ -5,7 +5,7 @@
 #if !defined(have_System_Memory)
 #define have_System_Memory
 
-export struct_System_Type  System_MemoryType;
+export struct System_Type  System_MemoryType;
 
 /* void *memset (void *s, int c, size_t n) */
 export void  System_Memory_set(System_var dest, System_char8 src, System_size n);

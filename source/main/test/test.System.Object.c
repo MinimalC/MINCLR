@@ -2,16 +2,16 @@
 #include <min/System.h>
 /* #include "../../crypto_blake2b.h" */
 
-struct_string8  string8_System_Object = "System.Object";
+STRING8  string8_System_Object = "System.Object";
 
 //main(test02_System_Object, args) {
 int main(int argc, char * argv[]) {
 
-    Object object = Object_new();
+    Object object = new_Object();
     if (!object)
-        Console_writeLine__string8("Test01: ERROR: Object_new");
+        Console_writeLine__string8("Test01: ERROR: new_Object");
     else
-        Console_writeLine__string8("Test01: SUCCESS: Object_new");
+        Console_writeLine__string8("Test01: SUCCESS: new_Object");
 
 
     Type type = Object_get_Type(object);

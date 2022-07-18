@@ -48,17 +48,17 @@ void  base_System_Assembly_free(Assembly that) {
 	base_System_Object_free((Object)that);
 }
 
-struct_System_String  STRING_System_Assembly = const_System_String("System.Assembly");
+struct System_String  STRING_System_Assembly = const_System_String("System.Assembly");
 
-struct_System_Type_FunctionInfo  System_AssemblyTypeFunctions[] = {
+struct System_Type_FunctionInfo  System_AssemblyTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_Assembly_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Assembly_free },
 };
 
-struct_System_Type  System_AssemblyType = {
+struct System_Type  System_AssemblyType = {
 	.base = { .type = typeof(System_Type) },
 	.name = &STRING_System_Assembly,
-	.size = sizeof(struct_System_Assembly),
+	.size = sizeof(struct System_Assembly),
 	.baseType = &System_ObjectType,
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(System_AssemblyTypeFunctions), .value = &System_AssemblyTypeFunctions

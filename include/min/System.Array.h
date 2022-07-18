@@ -2,28 +2,24 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
-/* #if !defined(have_System_Object)
-#warning "System.Object.h not included"
-#include "System.Object.h"
-#endif */
 #if !defined(have_System_Array)
 #define have_System_Array
 
 /* 1-Dimensional, Indexed System_ObjectArray */
 
-#define struct_System_Array  struct System_Array
-typedef fixed struct_System_Array {
-    struct_System_Object base;
+typedef fixed struct System_Array {
+    struct System_Object base;
 
     System_size  length;
+
     System_Object  (* value)[];
 
 }  * System_Array;
 
-#define stack_System_Array(LENGTH,...) (struct_System_Array){ .base = stack_System_Object(System_Array),\
-    .length = LENGTH, .value = &(System_Object []){ __VA_ARGS__ }, }
+#define stack_System_Array(LENGTH) (struct System_Array){ .base = stack_System_Object(System_Array), .length = LENGTH, }
+#define new_System_Array(LENGTH)  (base_System_Array_init((System_Array)System_Memory_allocClass(typeof(System_Array)), LENGTH))
 
-export struct_System_Type  System_ArrayType;
+export struct System_Type  System_ArrayType;
 
 typedef void  delegate(System_Array_free)(System_Array that);
 typedef System_Array  delegate(System_Array_init)(System_Array that, System_size length);
@@ -34,7 +30,6 @@ typedef void  delegate(System_Array_copyTo)(System_Array that, System_Array othe
 typedef void  delegate(System_Array_resize)(System_Array that, System_size length);
 typedef System_IEnumerator  delegate(System_Array_getEnumerator)(System_Array that);
 
-export System_Array  System_Array_new(System_size length);
 export System_Array  base_System_Array_init(System_Array that, System_size length);
 export void  base_System_Array_free(System_Array that);
 export System_size  base_System_Array_get_Length(System_Array that);
@@ -53,15 +48,11 @@ export System_IEnumerator  base_System_Array_getEnumerator(System_Array that);
 #define System_Array_resize(o,...)  ((function_System_Array_resize)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Array_resize))(o,__VA_ARGS__)
 #define System_Array_getEnumerator(o)  ((function_System_Array_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
 
-#define new_System_Array(LENGTH)  (base_System_Array_init((System_Array)System_Memory_allocClass(typeof(System_Array), LENGTH)))
-
 #if defined(using_System)
-#define struct_Array  struct System_Array
-#define stack_Array  stack_System_Array
 #define Array  System_Array
 #define ArrayType  System_ArrayType
-
-#define Array_new  System_Array_new
+#define stack_Array  stack_System_Array
+#define new_Array  new_System_Array
 #define Array_init  System_Array_init
 #define Array_free  System_Array_free
 #define Array_get_Length  System_Array_get_Length
@@ -70,5 +61,4 @@ export System_IEnumerator  base_System_Array_getEnumerator(System_Array that);
 #define Array_resize  System_Array_resize
 #define Array_getEnumerator  System_Array_getEnumerator
 #endif
-
 #endif

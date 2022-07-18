@@ -233,10 +233,12 @@ print"/* else if "variableName" "operator" "value" => "elseifExpression" */">>ou
         gsub(/Generic_T0/, Namespace"_"Type)
         gsub(/_Generic/, "_"Namespace)
         gsub(/Generic\./, Namespace".")
+        gsub(/\<Generic/, Namespace)
         gsub(/"T0/, "\""Type)
         gsub(/__T0/, "__"Type)
         gsub(/_T0/, "_"Type)
         gsub(/T0\./, Type".")
+        gsub(/\<T0/, Type)
 
         # if ($0 !~ /^[ \t]*$/) print >> output
         # if ($0 != "") print >> output

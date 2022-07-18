@@ -164,12 +164,12 @@ This is valid C, but C++ throws a compiler exception, also within extern "C":
 :    struct System_Object { ... }
 
 Actually, in your C .h you'd have to do:
-:    #define struct_System_Object  struct System_Object_t
-:    typedef struct_System_Object  * System_Object;
-:    export struct_System_Type  System_ObjectType;
-:    struct_System_Object { ... }
+:
+:    typedef struct System_Object  * System_Object;
+:    export struct System_Type  System_ObjectType;
+:    struct System_Object { ... }
 and in your C .c you do:
-:    struct_System_Type  System_ObjectType  = { ... }
+:    struct System_Type  System_ObjectType  = { ... }
 */
 
 #if defined(__builtin_offsetof)
@@ -183,7 +183,7 @@ and in your C .c you do:
 
 #define sizeof_array(OBJECT)  (sizeof(OBJECT) / sizeof(OBJECT[0]))
 
-#define sizeof_class(CLASS) sizeof(struct_##CLASS)
+#define sizeof_class(CLASS) sizeof(struct ##CLASS)
 
 #define nameof(TYPE)  (#TYPE)
 
@@ -200,11 +200,18 @@ typedef __PTRDIFF_TYPE__  System_ssize;
 typedef __PTRDIFF_TYPE__  System_sintptr;
 
 #define System_size_Max  __SIZE_MAX__
+#if !defined(System_size_Width)
+#define System_size_Width  __SIZE_WIDTH__
+#endif
+#if !defined(System_size_Bytes)
+#define System_size_Bytes  __SIZEOF_POINTER__
+#endif
 
 #if defined(using_System)
 #define var  System_var
 #define size  System_size
 #define size_Max  System_size_Max
+#define size_Width  System_size_Width
 #define intptr  System_intptr
 #define ssize  System_ssize
 #define sintptr  System_sintptr
@@ -268,14 +275,14 @@ typedef signed long long int  System_int64;
 #endif
 
 
-typedef char  System_char8,  * System_string8,  struct_System_string8[];
+typedef char  System_char8,  * System_string8,  System_STRING8[];
 
 export System_char8  System_string8_Empty[1];
 
 #if defined(using_System)
 #define char8  System_char8
 #define string8  System_string8
-#define struct_string8  struct_System_string8
+#define STRING8  System_STRING8
 #define string8_Empty  System_string8_Empty
 #endif
 

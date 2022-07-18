@@ -19,10 +19,10 @@ typedef System_intptr  System_origin;
 
 /* interface System.IStream */
 
-#define struct_System_IStream  struct System_IStream
-typedef fixed struct_System_IStream { } * System_IStream;
 
-export struct_System_Type  System_IStreamType;
+typedef fixed struct System_IStream { } * System_IStream;
+
+export struct System_Type  System_IStreamType;
 
 typedef void  delegate(System_IStream_write)(System_IStream that, System_size count, System_string8 value);
 typedef void  delegate(System_IStream_sync)(System_IStream that);
@@ -46,7 +46,7 @@ export void  base_System_IStream_set_Position(System_IStream that, System_size v
 #define System_IStream_set_Position(o,...)  ((function_System_IStream_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
 
 #if defined(using_System)
-#define struct_IStream  struct_System_IStream
+
 #define IStream  System_IStream
 #define IStreamType  System_IStreamType
 

@@ -3,7 +3,7 @@
 #error "Usage: See make.GenericT.awk"
 #define Generic_T0  System_uint64
 #define Generic_T0Array  System_uint64Array
-#define struct_Generic_T0Array  struct_System_uint64Array
+
 #define Generic_T0ArrayType  System_uint64ArrayType
 #endif
 /* FileName Generic.T0Array */
@@ -15,9 +15,9 @@
 #if !defined(have_Generic_T0Array)
 #define have_Generic_T0Array
 
-#define struct_Generic_T0Array  struct Generic_T0Array
-typedef fixed struct_Generic_T0Array {
-    struct_System_Object base;
+
+typedef fixed struct Generic_T0Array {
+    struct System_Object base;
 
     System_size  length;
 
@@ -25,7 +25,10 @@ typedef fixed struct_Generic_T0Array {
 
 }  * Generic_T0Array;
 
-export struct_System_Type  Generic_T0ArrayType;
+#define stack_Generic_T0Array(LENGTH)  { .base = stack_System_Object(Generic_T0Array), .length = LENGTH }
+#define new_Generic_T0Array(LENGTH)  (base_Generic_T0Array_init((Generic_T0Array)System_Memory_allocClass(Generic_T0Array), LENGTH))
+
+export struct System_Type  Generic_T0ArrayType;
 
 typedef void delegate(Generic_T0Array_free)(Generic_T0Array that);
 typedef Generic_T0Array delegate(Generic_T0Array_init)(Generic_T0Array that, System_size length);
@@ -54,14 +57,11 @@ export System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array th
 #define Generic_T0Array_resize(o,...)  ((function_Generic_T0Array_resize)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_Generic_T0Array_resize))(o,__VA_ARGS__)
 #define Generic_T0Array_getEnumerator(o)  ((function_Generic_T0Array_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
 
-#define new_Generic_T0Array(LENGTH)  (base_Generic_T0Array_init(inline_System_Object_allocClass(Generic_T0Array), LENGTH))
-
 #if defined(using_System)
 #define T0Array  Generic_T0Array
 #define T0ArrayType  Generic_T0ArrayType
-
+#define stack_T0Array  stack_Generic_T0Array
 #define new_T0Array  new_Generic_T0Array
-
 #define T0Array_init  Generic_T0Array_init
 #define T0Array_free  Generic_T0Array_free
 #define T0Array_get_Length  Generic_T0Array_get_Length

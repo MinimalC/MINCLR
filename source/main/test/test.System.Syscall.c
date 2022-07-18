@@ -1,8 +1,8 @@
 #define using_System
 #include <min/System.h>
 
-struct_string8 isRight = " is right\n";
-struct_string8 isWrong = " is wrong\n";
+STRING8 isRight = " is right\n";
+STRING8 isWrong = " is wrong\n";
 
 intptr Beispiel(intptr a, intptr b, intptr c, intptr d, intptr e, intptr f, intptr g) {
 

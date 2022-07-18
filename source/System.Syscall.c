@@ -10,7 +10,7 @@
 
 /*# System_Syscall_command #*/
 
-struct_System_Type_FieldInfo  System_Syscall_commandTypeFields[] = {
+struct System_Type_FieldInfo  System_Syscall_commandTypeFields[] = {
 #if defined(have_Linux)
 
 #if defined(have_ARM)
@@ -31,7 +31,7 @@ struct_System_Type_FieldInfo  System_Syscall_commandTypeFields[] = {
 #endif
 };
 
-struct_System_Type  System_Syscall_commandType = { .base = { .type = typeof(System_Type) },
+struct System_Type  System_Syscall_commandType = { .base = { .type = typeof(System_Type) },
     .name = "System.Syscall.command",
     .size = sizeof(System_Syscall_command),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
@@ -45,11 +45,11 @@ struct_System_Type  System_Syscall_commandType = { .base = { .type = typeof(Syst
 
 /*# System_error #*/
 
-struct_System_Type_FieldInfo  System_errorTypeFields[] = {
+struct System_Type_FieldInfo  System_errorTypeFields[] = {
 #include <min/System.error.generic.asm.h>
 };
 
-struct_System_Type  System_errorType = { .base = { .type = typeof(System_Type) },
+struct System_Type  System_errorType = { .base = { .type = typeof(System_Type) },
     .name = "System.error",
     .size = sizeof(System_error),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
@@ -63,16 +63,16 @@ struct_System_Type  System_errorType = { .base = { .type = typeof(System_Type) }
 
 /*# System_Syscall #*/
 
-struct_System_Type  System_SyscallType = { .base = { .type = typeof(System_Type) },
+struct System_Type  System_SyscallType = { .base = { .type = typeof(System_Type) },
     .name = "System.Syscall",
 };
 
-void System_Syscall_error(const System_error erreur) {
-    if (!erreur) return;
+void System_Syscall_error(const System_error error) {
+    if (!error) return;
 
-    System_Exception exception = new_System_Exception__error();
-    exception->error = erreur;
-    System_Exception_throw((System_Exception)exception);
+    struct System_Exception exception = stack_System_Exception();
+    exception.error = error;
+    System_Exception_throw(&exception);
 }
 
 void  System_Syscall_terminate(System_size code)  {
@@ -80,7 +80,6 @@ void  System_Syscall_terminate(System_size code)  {
     /* inline_unreachable... for noreturn just repeat: */
     (void)System_Syscall_terminate(code);
 }
-
 
 System_var  System_Syscall_open(System_string8 fileName, System_intptr flags, System_intptr mode) {
     return (System_var)System_Syscall_call03(System_Syscall_command_open, (System_intptr)fileName, flags, mode);
@@ -110,7 +109,7 @@ void  System_Syscall_close(System_var filePtr) {
     (void)System_Syscall_call01(System_Syscall_command_close, (System_intptr)filePtr);
 }
 
-void  System_Syscall_fstatat(System_var directoryPtr, const System_string8 pathName, struct_System_Syscall_stat  * that, System_intptr flags) {
+void  System_Syscall_fstatat(System_var directoryPtr, const System_string8 pathName, struct System_Syscall_stat  * that, System_intptr flags) {
     (void)System_Syscall_call04(System_Syscall_command_fstatat, (System_intptr)directoryPtr, (System_intptr)pathName, (System_intptr)that, flags);
 }
 

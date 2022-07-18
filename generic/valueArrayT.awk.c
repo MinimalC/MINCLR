@@ -16,10 +16,6 @@
 
 /*# Generic_T0Array #*/
 
-Generic_T0Array  Generic_T0Array_new(System_size length) {
-    return inline_Generic_T0Array_new(length);
-}
-
 Generic_T0Array base_Generic_T0Array_init(Generic_T0Array that, System_size length) {
     base_System_Object_init((System_Object)that);
 
@@ -57,7 +53,7 @@ void  base_Generic_T0Array_resize(Generic_T0Array that, System_size length) {
 }
 
 System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array that) {
-    return (System_IEnumerator)inline_Generic_T0ArrayEnumerator_new(that);
+    return (System_IEnumerator)new_Generic_T0ArrayEnumerator(that);
 }
 
 struct System_Type_FunctionInfo  Generic_T0ArrayTypeFunctions[] = {

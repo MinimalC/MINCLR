@@ -7,10 +7,10 @@
 
 /* interface System_ICollection */
 
-#define struct_System_ICollection  struct System_ICollection
-typedef fixed  struct_System_ICollection { }  * System_ICollection;
 
-export struct_System_Type  System_ICollectionType;
+typedef fixed  struct System_ICollection { }  * System_ICollection;
+
+export struct System_Type  System_ICollectionType;
 
 typedef System_var  delegate(System_ICollection_get_index)(System_ICollection that);
 typedef void  delegate(System_ICollection_set_index)(System_ICollection that, System_var value);
@@ -28,7 +28,7 @@ export void  base_System_ICollection_copyTo(System_ICollection that, System_ICol
 #define System_ICollection_copyTo(o,...)  ((function_System_ICollection_copyTo)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_copyTo))(o, __VA_ARGS__)
 
 #if defined(using_System)
-#define struct_ICollection  struct_System_ICollection
+
 #define ICollection  System_ICollection
 #define ICollectionType  System_ICollectionType
 

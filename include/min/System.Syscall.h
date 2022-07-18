@@ -11,7 +11,7 @@
 #if !defined(have_System_Syscall)
 #define have_System_Syscall
 
-export struct_System_Type  System_SyscallType;
+export struct System_Type  System_SyscallType;
 
 import System_intptr  System_Syscall_call00(System_Syscall_command number);
 import System_intptr  System_Syscall_call01(System_Syscall_command number, System_intptr arg1);
@@ -34,15 +34,15 @@ import System_intptr  System_Syscall_call06(System_Syscall_command number, Syste
 export void  System_Syscall_error(System_error error);
 export void  System_Syscall_terminate(System_size code)  noreturn;
 
-#define struct_System_Syscall_stat_timestamp  struct System_Syscall_stat_timestamp
-struct_System_Syscall_stat_timestamp {
+
+struct System_Syscall_stat_timestamp {
 
     System_int64 sec;
     System_intptr nsec;
 };
 
-#define struct_System_Syscall_stat  struct System_Syscall_stat
-struct_System_Syscall_stat {
+
+struct System_Syscall_stat {
 
     System_uint64 deviceId;
     System_uint64 iNodeId;
@@ -56,9 +56,9 @@ struct_System_Syscall_stat {
     System_int64 size;
     System_int64 bulkSize;
     System_int64 blocks;
-    struct_System_Syscall_stat_timestamp accessTime;
-    struct_System_Syscall_stat_timestamp modifyTime;
-    struct_System_Syscall_stat_timestamp changeTime;
+    struct System_Syscall_stat_timestamp accessTime;
+    struct System_Syscall_stat_timestamp modifyTime;
+    struct System_Syscall_stat_timestamp changeTime;
     System_intptr __reserved[3];
 
 };
@@ -70,7 +70,7 @@ export System_size  System_Syscall_write(System_var filePtr, const void  * buf, 
 export System_size  System_Syscall_lseek(System_var filePtr, System_size offset, System_intptr whence);
 export void  System_Syscall_fsync(System_var filePtr);
 export void  System_Syscall_close(System_var filePtr);
-export void  System_Syscall_fstatat(System_var directoryPtr, const System_string8 pathName, struct_System_Syscall_stat  * that, System_intptr flags);
+export void  System_Syscall_fstatat(System_var directoryPtr, const System_string8 pathName, struct System_Syscall_stat  * that, System_intptr flags);
 
 export System_var  System_Syscall_mmap(System_size length, System_intptr pageflags, System_intptr mapflags, System_var file, System_intptr offset);
 export void  System_Syscall_munmap(System_var address, System_size length);

@@ -5,7 +5,7 @@
 #if !defined(have_System_Math)
 #define have_System_Math
 
-export struct_System_Type  System_MathType;
+export struct System_Type  System_MathType;
 
 #define System_Math_divideRemain__uint64  System_Math_divideRemain__uint64__generic
 

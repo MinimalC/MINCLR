@@ -8,9 +8,9 @@
 #if !defined(have_System_Exception)
 #define have_System_Exception
 
-#define struct_System_Exception  struct System_Exception
-typedef fixed struct_System_Exception {
-    struct_System_Object base;
+
+typedef fixed struct System_Exception {
+    struct System_Object base;
 
     System_error error;
 
@@ -18,9 +18,10 @@ typedef fixed struct_System_Exception {
 
 }  * System_Exception;
 
-export struct_System_Type  System_ExceptionType;
+export struct System_Type  System_ExceptionType;
 
-#define stack_System_Exception()  (struct_System_Exception){ .base = stack_System_Object(System_Exception) }
+#define stack_System_Exception()  (struct System_Exception){ .base = stack_System_Object(System_Exception) }
+#define new_System_Exception(MESSAGE)  (base_System_Exception_init((System_Exception)System_Memory_allocClass(typeof(System_Exception)), MESSAGE))
 
 export thread System_Exception  System_Exception_current;
 
@@ -38,15 +39,12 @@ export void  System_Exception_set_current(System_Exception that);
 #define System_Exception_init(o,...)  ((function_System_Exception_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Exception_init))(o, __VA_ARGS__)
 #define System_Exception_free(o)  ((function_System_Exception_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 
-#define new_System_Exception(MESSAGE)  (base_System_Exception_init((System_Exception)System_Memory_allocClass(typeof(System_Exception)), MESSAGE))
-#define new_System_Exception__error()  (System_Exception)(base_System_Object_init((System_Object)System_Memory_allocClass(typeof(System_Exception))))
-
 #if defined(using_System)
-#define struct_Exception  struct_System_Exception
+
 #define Exception  System_Exception
 #define ExceptionType  System_ExceptionType
 
-#define Exception_new  System_Exception_new
+#define new_Exception  new_System_Exception
 #define Exception_throw  System_Exception_throw
 #define Exception_terminate  System_Exception_terminate
 

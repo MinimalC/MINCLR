@@ -55,11 +55,11 @@ System_boolean  System_char8_isPrintable(System_char8 that) {
 
 /* static class System.string8 */
 
-struct_System_Type  System_string8Type = { .base = stack_System_Object(System_Type),
+struct System_Type  System_string8Type = { .base = stack_System_Object(System_Type),
     .name = "System.string8"
 };
 
-struct_System_string8  System_string8_Empty = "";
+System_STRING8  System_string8_Empty = "";
 
 size  System_string8_indexOf(string8 that, uint8 character){
     size i = 0, len = string8_get_Length(that);
@@ -149,9 +149,9 @@ bool  System_string8_isNullOrEmpty(string8 that) {
     return !that || that[0] == '\0';
 }
 
-
-struct_string8 INFO = "INFO ";
-struct_string8 WARNING = "WARNING  ";
+#if DEBUG == DEBUG_System_string8_format
+STRING8 WARNING = "WARNING  ";
+#endif
 
 void  System_string8_formatTo(string8 format, IStream stream, ...) {
     arguments args;
@@ -177,8 +177,10 @@ void  System_string8_formatSuffixTo(string8 format, char8 suffix, IStream stream
 void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, IStream stream, arguments args) {
     size argc = !args ? 0 : argument(args, size); /* this is expecting a size as first argument or null */
     if (argc > 16) { argc = 0;
+#if DEBUG == DEBUG_System_string8_format
         WARNING[7] = '0';
         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+#endif
     }
     var argv[16] = { 0 };
     size i;
@@ -195,8 +197,10 @@ void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, ISt
 
     size format_length = string8_get_Length(format);
     if (format_length > 65530) { format_length = 65530;
+#if DEBUG == DEBUG_System_string8_format
         WARNING[7] = '1';
         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+#endif
     }
 
     string8 f = format;
@@ -229,8 +233,10 @@ void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, ISt
             break;
         }
         if (!end0) {
+#if DEBUG == DEBUG_System_string8_format
             WARNING[7] = '2';
             System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+#endif
         }
         message_length += (begin0 - format);
 
@@ -242,8 +248,10 @@ void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, ISt
         message_length += System_uint16_string8base10Length_DEFAULT; */
 
         if (argi >= argc) {
+#if DEBUG == DEBUG_System_string8_format
             WARNING[7] = '3';
             System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+#endif
         }
         else {
             /* Read :obj :str :bool :char :int :uint :decimal :float :double */
@@ -304,8 +312,10 @@ void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, ISt
                 }
             }
             if (!begin1) {
+#if DEBUG == DEBUG_System_string8_format
                 WARNING[7] = '4';
                 System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
+#endif
             }
             else {
                 if (begin2) {
@@ -350,11 +360,13 @@ void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, ISt
                 }
                 else if (string8_compareSubstring(begin1, "integer", sizeof("integer") - 1) >= 3) {
 
-                    if (!argsize) argsize = 64; /* TODO: System_wordSize */
+                    if (!argsize) argsize = System_size_Width;
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
+#if DEBUG == DEBUG_System_string8_format
                         WARNING[7] = '5';
                         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
-                        argsize = 64;
+#endif
+                        argsize = System_size_Width;
                     }
                     if (argsize == 64) {
                         if (target == 16) {
@@ -448,11 +460,13 @@ void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, ISt
                 else if (string8_compareSubstring(begin1, "uinteger", sizeof("uinteger") - 1) >= 4
                       || string8_equalsSubstring(begin1, "unsigned", sizeof("unsigned") - 1))
                 {
-                    if (!argsize) argsize = 64; /* TODO: System_wordSize */
+                    if (!argsize) argsize = System_size_Width;
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
+#if DEBUG == DEBUG_System_string8_format
                         WARNING[7] = '6';
                         System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
-                        argsize = 64;
+#endif
+                        argsize = System_size_Width;
                     }
                     if (argsize == 64) {
                         if (target == 16) {
@@ -544,8 +558,10 @@ void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, ISt
                     }
                 }
                 else {
+#if DEBUG == DEBUG_System_string8_format
                     WARNING[7] = '7';
                     System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
+#endif
                 }
 
             }
@@ -559,11 +575,6 @@ void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, ISt
 
         break;
     }
-
-    /* DEBUG: Write argc
-    System_uint64_tostring8base10__stack(argc, scratch);
-    string8_copyToAt(scratch, message, message_length);
-    message_length += System_uint64_string8base10Length_DEFAULT; */
 
     if (suffix) message[message_length++] = (suffix == 0x01 ? 0x00 : suffix);
 

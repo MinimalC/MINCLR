@@ -16,19 +16,19 @@
 #if !defined(code_System_Console)
 #define code_System_Console
 
-struct_System_Type  System_ConsoleType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_ConsoleType = { .base = stack_System_Object(System_Type),
 	.name = "System.Console",
 };
 
-struct_System_File  System_Console_StdIn = {
+struct System_File  System_Console_StdIn = {
     .base = stack_System_Object(System_File),
     .filePtr = (System_var)System_File_special_STDIN,
 };
-struct_System_File  System_Console_StdOut = {
+struct System_File  System_Console_StdOut = {
     .base = stack_System_Object(System_File),
     .filePtr = (System_var)System_File_special_STDOUT,
 };
-struct_System_File  System_Console_StdErr = {
+struct System_File  System_Console_StdErr = {
     .base = stack_System_Object(System_File),
     .filePtr = (System_var)System_File_special_STDERR,
 };

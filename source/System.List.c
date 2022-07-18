@@ -24,8 +24,8 @@ System_List  base_System_List_init(System_List that) {
 
 void  base_System_List_free(System_List that) {
 
-    inline_System_Object_freeClass(&that->hashes);
-    inline_System_Object_freeClass(&that->items);
+    System_Memory_freeClass((System_Object ref)&that->hashes);
+    System_Memory_freeClass((System_Object ref)&that->items);
 
     base_System_Object_free((System_Object)that);
 }
@@ -42,7 +42,7 @@ System_Object  base_System_List_get_index(System_List that, size index) {
 void  base_System_List_set_index(System_List that, size index, System_Object value) {
 	assert(that)
     if (value) {
-        if (base_System_List_contains(that, value)) throw(new_Exception("InvalidOperationException_new: System_List: System_Object already added"))
+        if (base_System_List_contains(that, value)) throw(new_Exception("InvalidOperationException: System_List: System_Object already added"))
         uint64Array_set_index(that->hashes, index, Object_getSipHash(value));
     }
     Array_set_index(that->items, index, value);
@@ -65,7 +65,7 @@ System_boolean  base_System_List_contains(System_List that, System_Object object
 void  base_System_List_add(System_List that, System_Object object) {
     assert(object)
 
-    if (base_System_List_contains(that, object)) throw(new_Exception("InvalidOperationException_new: System.List: System_Object already added."))
+    if (base_System_List_contains(that, object)) throw(new_Exception("InvalidOperationException: System.List: System_Object already added."))
 
     size new_i = that->length;
     if (new_i >= that->capacity) {
@@ -80,7 +80,7 @@ void  base_System_List_add(System_List that, System_Object object) {
     ++that->length;
 }
 
-struct_System_Type_FunctionInfo  System_ListTypeFunctions[] = {
+struct System_Type_FunctionInfo  System_ListTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_List_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_List_free },
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_List_get_Length },
@@ -91,14 +91,14 @@ struct_System_Type_FunctionInfo  System_ListTypeFunctions[] = {
     [7] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_List_add, .value = base_System_List_add },
 };
 
-struct_System_Type_InterfaceInfo  System_ListTypeInterfaces[] = {
+struct System_Type_InterfaceInfo  System_ListTypeInterfaces[] = {
     [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
     [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
 };
 
-struct_System_Type  System_ListType = { .base = { .type = typeof(System_Type) },
+struct System_Type  System_ListType = { .base = { .type = typeof(System_Type) },
     .name = "System.List",
-    .size = sizeof(struct_System_List),
+    .size = sizeof(struct System_List),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(System_ListTypeFunctions), .value = &System_ListTypeFunctions

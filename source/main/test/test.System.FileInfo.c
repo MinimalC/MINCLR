@@ -1,8 +1,8 @@
 #define using_System
 #include <min/System.h>
 
-struct_string8  HALLO = "HaLLo";
-struct_string8  HALLOtxt = "./.test.txt";
+STRING8  HALLO = "HaLLo";
+STRING8  HALLOtxt = "./.test.txt";
 
 //main(test43_System_FileInfo, args) {
 int main(int argc, char * argv[]) {

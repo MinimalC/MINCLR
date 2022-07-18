@@ -1,8 +1,8 @@
 #define using_System
 #include <min/System.h>
 
-struct_string8  HALLOtxt = "./.FileNotFound";
-/* struct_string8  HALLOtxt = "./.test.txt"; */
+STRING8  HALLOtxt = "./.FileNotFound";
+/* STRING8  HALLOtxt = "./.test.txt"; */
 
 //main(test41_System_Exception, args) {
 int main(int argc, char * argv[]) {

@@ -18,7 +18,7 @@ string8 System_enum_getName(Type type, intptr value) {
 
     for (size i = 0; i < type->fields.length; ++i) {
 
-        struct_System_Type_FieldInfo info = array(type->fields.value)[i];
+        struct System_Type_FieldInfo info = array(type->fields.value)[i];
 
         if (info.value == value) {
             return info.name;
@@ -34,9 +34,9 @@ string8 System_enum_getName(Type type, intptr value) {
 
 /*# System_Type #*/
 
-struct_System_Type  System_TypeType = { .base = { .type = typeof(System_Type) },
+struct System_Type  System_TypeType = { .base = { .type = typeof(System_Type) },
     .name = "System.Type",
-	.size = sizeof(struct_System_Type),
+	.size = sizeof(struct System_Type),
 	.baseType = &System_ObjectType
 };
 
@@ -45,53 +45,53 @@ struct_System_Type  System_TypeType = { .base = { .type = typeof(System_Type) },
 /* sizeof(void) is 1 */
 /* sizeof(void *) is sizeof(size), sizeof(intptr) */
 
-struct_System_Type  System_voidType     = { .base = stack_System_Object(System_Type), .name = "System.void",    .size = sizeof(void) };
-struct_System_Type  System_varType      = { .base = stack_System_Object(System_Type), .name = "System.var",     .size = sizeof(void *) };
-struct_System_Type  System_sizeType     = { .base = stack_System_Object(System_Type), .name = "System.size",    .size = sizeof(System_size) };
-struct_System_Type  System_ssizeType    = { .base = stack_System_Object(System_Type), .name = "System.ssize",   .size = sizeof(System_ssize) };
-struct_System_Type  System_intptrType   = { .base = stack_System_Object(System_Type), .name = "System.intptr",  .size = sizeof(System_intptr) };
-struct_System_Type  System_sintptrType  = { .base = stack_System_Object(System_Type), .name = "System.sintptr", .size = sizeof(System_sintptr) };
-struct_System_Type  System_booleanType  = { .base = stack_System_Object(System_Type), .name = "System.boolean", .size = sizeof(System_boolean) };
+struct System_Type  System_voidType     = { .base = stack_System_Object(System_Type), .name = "System.void",    .size = sizeof(void) };
+struct System_Type  System_varType      = { .base = stack_System_Object(System_Type), .name = "System.var",     .size = sizeof(void *) };
+struct System_Type  System_sizeType     = { .base = stack_System_Object(System_Type), .name = "System.size",    .size = sizeof(System_size) };
+struct System_Type  System_ssizeType    = { .base = stack_System_Object(System_Type), .name = "System.ssize",   .size = sizeof(System_ssize) };
+struct System_Type  System_intptrType   = { .base = stack_System_Object(System_Type), .name = "System.intptr",  .size = sizeof(System_intptr) };
+struct System_Type  System_sintptrType  = { .base = stack_System_Object(System_Type), .name = "System.sintptr", .size = sizeof(System_sintptr) };
+struct System_Type  System_booleanType  = { .base = stack_System_Object(System_Type), .name = "System.boolean", .size = sizeof(System_boolean) };
 
-struct_System_Type  System_Type_FunctionInfoType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_Type_FunctionInfoType = { .base = stack_System_Object(System_Type),
 	.name = "System.Type.FunctionInfo",
-	.size = sizeof(struct_System_Type_FunctionInfo),
+	.size = sizeof(struct System_Type_FunctionInfo),
 	.baseType = &System_ObjectType
 };
 
-struct_System_Type  System_Type_FunctionInfoArrayType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_Type_FunctionInfoArrayType = { .base = stack_System_Object(System_Type),
 	.name = "System.Type.FunctionInfoArray",
-	.size = sizeof(struct_System_Type_FunctionInfoArray),
+	.size = sizeof(struct System_Type_FunctionInfoArray),
 	.baseType = &System_ObjectType
 };
 
-struct_System_Type  System_Type_InterfaceInfoType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_Type_InterfaceInfoType = { .base = stack_System_Object(System_Type),
 	.name = "System.Type.InterfaceInfo",
-	.size = sizeof(struct_System_Type_InterfaceInfo),
+	.size = sizeof(struct System_Type_InterfaceInfo),
 	.baseType = &System_ObjectType
 };
 
-struct_System_Type  System_Type_InterfaceInfoArrayType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_Type_InterfaceInfoArrayType = { .base = stack_System_Object(System_Type),
 	.name = "System.Type.InterfaceInfoArray",
-	.size = sizeof(struct_System_Type_InterfaceInfoArray),
+	.size = sizeof(struct System_Type_InterfaceInfoArray),
 	.baseType = &System_ObjectType
 };
 
-struct_System_Type  System_Type_FieldInfoType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_Type_FieldInfoType = { .base = stack_System_Object(System_Type),
 	.name = "System.Type.FieldInfo",
-	.size = sizeof(struct_System_Type_FieldInfo),
+	.size = sizeof(struct System_Type_FieldInfo),
 	.baseType = &System_ObjectType
 };
 
-struct_System_Type  System_Type_FieldInfoArrayType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_Type_FieldInfoArrayType = { .base = stack_System_Object(System_Type),
 	.name = "System.Type.FieldInfoArray",
-	.size = sizeof(struct_System_Type_FieldInfoArray),
+	.size = sizeof(struct System_Type_FieldInfoArray),
 	.baseType = &System_ObjectType
 };
 
 System_var System_Type_getMethod(System_Type  that, System_var fun) {
     System_var reture = System_Type_trygetMethod(that, fun);
-    if (!reture) throw_terminate(new_System_Exception("NotImplementedException_new: Method not found"));
+    if (!reture) throw_terminate(new_System_Exception("NotImplementedException: Method not found"));
     return reture;
 }
 

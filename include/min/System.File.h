@@ -60,12 +60,8 @@ typedef System_var  System_File_special;
 #define System_File_special_CurrentWorkingDirectory  ((System_var)-100)
 
 
-/* class System_File */
-
-#define struct_System_File  struct System_File
-
-typedef fixed struct_System_File {
-	struct_System_Object  base;
+typedef fixed struct System_File {
+	struct System_Object  base;
 
     System_var filePtr;
 
@@ -73,7 +69,7 @@ typedef fixed struct_System_File {
 
 }  * System_File;
 
-export struct_System_Type  System_FileType;
+export struct System_Type  System_FileType;
 
 typedef System_File  delegate(System_File_init)(System_File that);
 typedef void  delegate(System_File_free)(System_File that);
@@ -103,6 +99,7 @@ export void  base_System_File_set_Position(System_File that, System_size value);
 #define System_File_get_Position(o)  ((function_System_File_get_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_get_Position))(o)
 #define System_File_set_Position(o,...)  ((function_System_File_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
 
+#define stack_System_File() { .base = stack_System_Object(System_File) }
 #define new_System_File()  (base_System_File_init((System_File)System_Memory_allocClass(typeof(System_File))))
 
 #if defined(using_System)
@@ -123,13 +120,14 @@ export void  base_System_File_set_Position(System_File that, System_size value);
 #define File_special_STDOUT  System_File_special_STDOUT
 #define File_special_STDERR  System_File_special_STDERR
 
-#define struct_File  struct_System_File
+
 #define File  System_File
 #define FileType  System_FileType
 
+#define new_File  new_System_File
+
 #define File_free  System_File_free
 #define File_init  System_File_init
-#define new_File  System_File
 #define File_open  System_File_open
 #define File_read  System_File_read
 #define File_write  System_File_write

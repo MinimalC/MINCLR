@@ -10,7 +10,7 @@
 
 /*# System_IEnumerator #*/
 
-struct_System_Type  System_IEnumeratorType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_IEnumeratorType = { .base = stack_System_Object(System_Type),
 	.name = "System.IEnumerator",
 };
 
@@ -20,7 +20,7 @@ System_boolean  base_System_IEnumerator_moveNext(System_IEnumerator that) { retu
 
 /*# System_IEnumerable #*/
 
-struct_System_Type  System_IEnumerableType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_IEnumerableType = { .base = stack_System_Object(System_Type),
 	.name = "System.IEnumerable",
 };
 

@@ -1,5 +1,4 @@
 /* Gemeinfrei. Public Domain. */
-
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
@@ -10,9 +9,8 @@
 #if !defined(have_System_ListEnumerator)
 #define have_System_ListEnumerator
 
-#define struct_System_ListEnumerator  struct System_ListEnumerator
-typedef fixed struct_System_ListEnumerator {
-    struct_System_Object base;
+typedef fixed struct System_ListEnumerator {
+    struct System_Object base;
 
     System_List array;
 
@@ -20,9 +18,10 @@ typedef fixed struct_System_ListEnumerator {
 
 }  * System_ListEnumerator;
 
-#define stack_System_ListEnumerator()  (struct_System_ListEnumerator){ .base = stack_System_Object(System_ListEnumerator), .array = null, }
+#define stack_System_ListEnumerator()  (struct System_ListEnumerator){ .base = stack_System_Object(System_ListEnumerator), }
+#define new_System_ListEnumerator(ARRAY)  (base_System_ListEnumerator_init((System_ListEnumerator)System_Memory_allocClass(typeof(System_ListEnumerator), ARRAY)))
 
-export struct_System_Type  System_ListEnumeratorType;
+export struct System_Type  System_ListEnumeratorType;
 
 typedef void delegate(System_ListEnumerator_free)(System_ListEnumerator that);
 typedef System_ListEnumerator delegate(System_ListEnumerator_init)(System_ListEnumerator that, System_List array);
@@ -39,20 +38,16 @@ export System_boolean  base_System_ListEnumerator_moveNext(System_ListEnumerator
 #define System_ListEnumerator_get_current(o)  ((function_System_ListEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
 #define System_ListEnumerator_moveNext(o)  ((function_System_ListEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
 
-#define new_System_ListEnumerator(a)  (base_System_ListEnumerator_init((System_ListEnumerator)System_Memory_allocClass(typeof(System_ListEnumerator), a)))
-
 #if defined(using_System)
-#define struct_ListArrayEnumerator  struct_System_ListEnumerator
 #define ListArrayEnumerator  System_ListEnumerator
 #define ListArrayEnumeratorType  System_ListEnumeratorType
+#define stack_ListArrayEnumerator  stack_System_ListEnumerator
+#define new_ListArrayEnumerator  new_System_ListEnumerator
 #define function_ListArrayEnumerator_init  function_System_ListEnumerator_init
 #define function_ListArrayEnumerator_free  function_System_ListEnumerator_free
 #define base_ListArrayEnumerator_init  base_System_ListEnumerator_init
 #define base_ListArrayEnumerator_free  base_System_ListEnumerator_free
-#define ListArrayEnumerator_new  System_ListEnumerator_new
 #define ListArrayEnumerator_init  System_ListEnumerator_init
 #define ListArrayEnumerator_free  System_ListEnumerator_free
 #endif
-
-
 #endif

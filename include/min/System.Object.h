@@ -5,9 +5,9 @@
 #if !defined(have_System_Object)
 #define have_System_Object
 
-#define struct_System_Object_bitConfig  struct System_Object_bitConfig
 
-struct_System_Object_bitConfig {
+
+struct System_Object_bitConfig {
 
     unsigned  isAllocated : 1;
 
@@ -18,13 +18,13 @@ struct_System_Object_bitConfig {
     unsigned  isValue2Allocated : 1;
 };
 
-#define struct_System_Object  struct System_Object
 
-typedef fixed struct_System_Object {
+
+typedef fixed struct System_Object {
 
     System_Type  type;
 
-    struct_System_Object_bitConfig  bitConfig;
+    struct System_Object_bitConfig  bitConfig;
 
     System_uint  refCount;
 
@@ -32,19 +32,19 @@ typedef fixed struct_System_Object {
 
 } * System_Object;
 
-#define stack_System_Object(T)  (struct_System_Object){ .type = typeof(T), }
+#define stack_System_Object(TYPE)  (struct System_Object){ .type = typeof(TYPE), }
+#define new_System_Object()  (base_System_Object_init((System_Object)System_Memory_allocClass(typeof(System_Object))))
 
-export struct_System_Type  System_ObjectType;
-
-export System_Type  System_Object_get_Type(System_Object that);
-export System_boolean  System_Object_isInstanceof(System_Object that, System_Type type);
-export System_Object  System_Object_asInstanceof(System_Object that, System_Type type);
-export System_Object  System_Object_addReference(System_Object that);
+export struct System_Type  System_ObjectType;
 
 export System_Object  System_Memory_allocClass(System_Type type);
 export System_Object  System_Memory_addReference(System_Object that);
 export void  System_Memory_freeClass(System_Object ref thatPtr);
 
+export System_Type  System_Object_get_Type(System_Object that);
+export System_boolean  System_Object_isInstanceof(System_Object that, System_Type type);
+export System_Object  System_Object_asInstanceof(System_Object that, System_Type type);
+export System_Object  System_Object_addReference(System_Object that);
 
 typedef void delegate(System_Object_free)(System_Object that);
 typedef System_Object delegate(System_Object_init)(System_Object that);
@@ -58,15 +58,14 @@ export System_uint64  base_System_Object_getSipHash(System_Object that);
 #define System_Object_init(o)  ((function_System_Object_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
 #define System_Object_getSipHash(o)  ((function_System_Object_getSipHash)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_getSipHash))(o)
 
-#define new_System_Object()  (base_System_Object_init((System_Object)System_Memory_allocClass(typeof(System_Object))))
 #define inline_System_Object_get_Type(that)  ((System_Object)that)->type
 #define inline_System_Object_isInstanceof(o,T)  (System_Object_isInstanceof((System_Object)o,typeof(T)))
 #define inline_System_Object_asInstanceof(o,T)  ((T)System_Object_asInstanceof((System_Object)o,typeof(T)))
 #define inline_System_Object_referenceEquals(THAT,OTHER)  (THAT == OTHER)
 
 #if defined(using_System)
-#define struct_Object_bitConfig  struct_System_Object_bitConfig
-#define struct_Object  struct_System_Object
+
+
 #define stack_Object  stack_System_Object
 #define Object  System_Object
 #define ObjectType  System_ObjectType

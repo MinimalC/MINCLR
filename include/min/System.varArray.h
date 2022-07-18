@@ -12,9 +12,9 @@
 #if !defined(have_System_varArray)
 #define have_System_varArray
 
-#define struct_System_varArray struct System_varArray
-typedef fixed struct_System_varArray {
-    struct_System_Object base;
+
+typedef fixed struct System_varArray {
+    struct System_Object base;
 
     System_size  length;
 
@@ -22,7 +22,7 @@ typedef fixed struct_System_varArray {
 
 }  * System_varArray;
 
-export struct_System_Type  System_varArrayType;
+export struct System_Type  System_varArrayType;
 
 typedef void delegate(System_varArray_free)(System_varArray that);
 typedef System_varArray delegate(System_varArray_init)(System_varArray that);
@@ -87,9 +87,9 @@ export System_IEnumerator  base_System_varArray_getEnumerator(System_varArray th
 #if !defined(have_System_varArrayEnumerator)
 #define have_System_varArrayEnumerator
 
-#define struct_System_varArrayEnumerator struct System_varArrayEnumerator
-typedef fixed struct_System_varArrayEnumerator {
-    struct_System_Object base;
+
+typedef fixed struct System_varArrayEnumerator {
+    struct System_Object base;
 
     System_varArray array;
 
@@ -97,7 +97,7 @@ typedef fixed struct_System_varArrayEnumerator {
 
 }  * System_varArrayEnumerator;
 
-export struct_System_Type  System_varArrayEnumeratorType;
+export struct System_Type  System_varArrayEnumeratorType;
 
 typedef void delegate(System_varArrayEnumerator_free)(System_varArrayEnumerator that);
 typedef System_varArrayEnumerator delegate(System_varArrayEnumerator_init)(System_varArrayEnumerator that, System_varArray array);

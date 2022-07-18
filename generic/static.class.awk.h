@@ -14,7 +14,7 @@
 #if !defined(have_auto_Generic_T0)
 #define have_auto_Generic_T0
 
-export struct_System_Type  Generic_T0Type;
+export struct System_Type  Generic_T0Type;
 
 #if defined(using_Generic)
 #define T0Type  Generic_T0Type

@@ -66,9 +66,9 @@ typedef System_uint32  System_encoding;
 
 /* static class System.String */
 
-#define struct_System_String  struct System_String
-typedef fixed struct_System_String {
-	struct_System_Object  base;
+
+typedef fixed struct System_String {
+	struct System_Object  base;
 
 	System_size  length;
 
@@ -83,36 +83,30 @@ typedef fixed struct_System_String {
 }  * System_String;
 
 
-
 #if UNICODE == 32
-#define const_System_String(s)  { .base = stack_System_Object(System_String),\
+#define stack_System_String(s)  { .base = stack_System_Object(System_String),\
     .codepage = System_encoding_UTF32, .length = (sizeof(s) - 1), .value32 = (System_string32)(s), }
 #define System_encoding_DEFAULT	System_encoding_UTF32
 
 #elif UNICODE == 16
-#define const_System_String(s)  { .base = stack_System_Object(System_String),\
+#define stack_System_String(s)  { .base = stack_System_Object(System_String),\
     .codepage = System_encoding_UTF16, .length = (sizeof(s) - 1), .value16 = (System_string16)(s), }
 #define System_encoding_DEFAULT	System_encoding_UTF16
 
 #else /* if UNICODE == 8 */
-#define const_System_String(s)  { .base = stack_System_Object(System_String),\
+#define stack_System_String(s)  { .base = stack_System_Object(System_String),\
     .codepage = System_encoding_UTF8, .length = (sizeof(s) - 1), .value = (System_string8)(s), }
 #define System_encoding_DEFAULT	System_encoding_UTF8
 #endif
 
-#define stack_System_String  (struct_System_String)const_System_String
+#define new_System_String(s)  (base_System_String_init((System_String)System_Memory_allocClass(typeof(System_String)), s))
 
-/* static class System_String */
-
-export struct_System_Type  System_StringType;
-
-/* class System.String */
+export struct System_Type  System_StringType;
 
 typedef System_String delegate(System_String_init)(System_String, System_string8);
 typedef void delegate(System_String_free)(System_String that);
 typedef System_uint64 delegate(System_String_getSipHash)(System_String that);
 
-export System_String  System_String_new(System_string8);
 export System_String  base_System_String_init(System_String, System_string8);
 export void  base_System_String_free(System_String);
 export System_uint64  base_System_String_getSipHash(System_String that);
@@ -121,7 +115,6 @@ export System_uint64  base_System_String_getSipHash(System_String that);
 #define System_String_free(o)  ((function_System_String_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_String_getSipHash(o)  ((function_System_String_getSipHash)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_getSipHash))(o)
 
-#define inline_System_String_new(s)  (base_System_String_init(inline_System_Object_allocClass(System_String), s))
 
 #if defined(using_System)
 #define byteOrder  System_byteOrder
@@ -135,16 +128,17 @@ export System_uint64  base_System_String_getSipHash(System_String that);
 #define encoding_UTF32  System_encoding_UTF32
 #define encoding_DEFAULT  System_encoding_DEFAULT
 
-#define struct_String  struct_System_String
+
 #define stack_String  stack_System_String
 #define String  System_String
 #define StringType  System_StringType
-
+#define new_String  new_System_String
+#define function_String_free  function_System_String_free
 #define function_String_init  function_System_String_init
+#define function_System_String_getSipHash  function_System_String_getSipHash
 #define base_String_free  base_System_String_free
 #define base_String_init  base_System_String_init
 #define base_String_getSipHash  base_System_String_getSipHash
-#define String_new  System_String_new
 #define String_init  System_String_init
 #define String_free  System_String_free
 #define String_getSipHash  System_String_getSipHash

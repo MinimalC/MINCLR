@@ -129,22 +129,22 @@ System_Object  System_Object_asInstanceof(System_Object that, System_Type type) 
 }
 
 System_uint64 base_System_Object_getSipHash(System_Object that) {
-    struct_Crypto_SipHash48 sipHash48 = stack_Crypto_SipHash48();
+    struct Crypto_SipHash48 sipHash48 = stack_Crypto_SipHash48();
     Crypto_SipHash48_init(&sipHash48);
     System_intptr that_intptr = (System_intptr)that;
-    Crypto_SipHash48_update(&sipHash48, &that_intptr, System_bytesize);
+    Crypto_SipHash48_update(&sipHash48, &that_intptr, System_size_Bytes);
     return Crypto_SipHash48_final(&sipHash48);
 }
 
-struct_System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {
+struct System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_Object_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Object_free },
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_getSipHash, .value = base_System_Object_getSipHash },
 };
 
-struct_System_Type  System_ObjectType = { .base = { .type = typeof(System_Type) },
+struct System_Type  System_ObjectType = { .base = { .type = typeof(System_Type) },
 	.name = "System.Object",
-	.size = sizeof(struct_System_Object),
+	.size = sizeof(struct System_Object),
 	.baseType = null, /* this is System_Object */
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(System_ObjectTypeFunctions), .value = &System_ObjectTypeFunctions

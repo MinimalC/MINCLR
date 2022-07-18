@@ -2,7 +2,7 @@
 #define using_Crypto
 #include <min/System.h>
 
-struct_string8  HalloWelt = "HelloWorld";
+STRING8  HalloWelt = "HelloWorld";
 uint64 SipHash48_HalloWelt = 0x1648223A11BB3707;
 
 //main(test21_Crypto_SipHash, args) {
@@ -13,7 +13,7 @@ int main(int argc, char * argv[]) {
     string8 hash_sourcecode = HalloWelt;
     size hash_sourcecode_length = string8_get_Length(HalloWelt);
 
-    struct_SipHash48 sipHash48 = stack_SipHash48();
+    struct SipHash48 sipHash48 = stack_SipHash48();
     SipHash48_init(&sipHash48);
 
     if (argc > 1) {

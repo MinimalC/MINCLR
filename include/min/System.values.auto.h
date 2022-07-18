@@ -9,7 +9,7 @@
 #if !defined(have_System_uint8)
 #define have_System_uint8
 
-export struct_System_Type  System_uint8Type;
+export struct System_Type  System_uint8Type;
 
 
 #define System_uint8_string8base2Length_DEFAULT  8
@@ -47,7 +47,7 @@ export System_uint8  System_uint8_parsebase10(System_string8 that);
 #if !defined(have_System_uint16)
 #define have_System_uint16
 
-export struct_System_Type  System_uint16Type;
+export struct System_Type  System_uint16Type;
 
 
 #define System_uint16_string8base2Length_DEFAULT  16
@@ -85,7 +85,7 @@ export System_uint16  System_uint16_parsebase10(System_string8 that);
 #if !defined(have_System_uint32)
 #define have_System_uint32
 
-export struct_System_Type  System_uint32Type;
+export struct System_Type  System_uint32Type;
 
 
 #define System_uint32_string8base2Length_DEFAULT  32
@@ -123,7 +123,7 @@ export System_uint32  System_uint32_parsebase10(System_string8 that);
 #if !defined(have_System_uint64)
 #define have_System_uint64
 
-export struct_System_Type  System_uint64Type;
+export struct System_Type  System_uint64Type;
 
 
 #define System_uint64_string8base2Length_DEFAULT  64
@@ -161,7 +161,7 @@ export System_uint64  System_uint64_parsebase10(System_string8 that);
 #if !defined(have_System_int8)
 #define have_System_int8
 
-export struct_System_Type  System_int8Type;
+export struct System_Type  System_int8Type;
 
 
 #define System_int8_string8base2Length_DEFAULT  9
@@ -198,7 +198,7 @@ export System_size  System_int8_tostring8base10__stack(System_int8 that, System_
 #if !defined(have_System_int16)
 #define have_System_int16
 
-export struct_System_Type  System_int16Type;
+export struct System_Type  System_int16Type;
 
 
 #define System_int16_string8base2Length_DEFAULT  17
@@ -235,7 +235,7 @@ export System_size  System_int16_tostring8base10__stack(System_int16 that, Syste
 #if !defined(have_System_int32)
 #define have_System_int32
 
-export struct_System_Type  System_int32Type;
+export struct System_Type  System_int32Type;
 
 
 #define System_int32_string8base2Length_DEFAULT  33
@@ -272,7 +272,7 @@ export System_size  System_int32_tostring8base10__stack(System_int32 that, Syste
 #if !defined(have_System_int64)
 #define have_System_int64
 
-export struct_System_Type  System_int64Type;
+export struct System_Type  System_int64Type;
 
 
 #define System_int64_string8base2Length_DEFAULT  65

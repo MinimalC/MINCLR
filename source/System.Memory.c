@@ -27,7 +27,7 @@
 
 /*# System_Memory #*/
 
-struct_System_Type  System_MemoryType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_MemoryType = { .base = stack_System_Object(System_Type),
 	.name = "System.Memory",
 };
 
@@ -120,7 +120,9 @@ bool System_Memory_equals(var ptr0, var ptr1, size length) {
 internal System_var  System_Memory_ProcessVars[] = { 0, 0, 0, 0 };
 
 typedef struct System_Memory_Page {
-    /* System_Type type; */
+#if DEBUG == DEBUG_System_Memory
+    System_Type type;
+#endif
 
     System_uint pageSize;
 
@@ -128,26 +130,29 @@ typedef struct System_Memory_Page {
 
 }  * System_Memory_Page;
 
-/* struct_System_Type System_Memory_PageType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "System.Memory.Page",
-}; */
-
 typedef struct System_Memory_Header {
-    /* System_Type type; */
+#if DEBUG == DEBUG_System_Memory
+    System_Type type;
+#endif
 
     uint length;
 
-    uint refCount;
-
     Type elementType;
+
+    uint refCount;
 
 } * System_Memory_Header;
 
-/* struct_System_Type System_Memory_HeaderType = {
+#if DEBUG == DEBUG_System_Memory
+struct System_Type System_Memory_PageType = {
+    .base = { .type = typeof(System_Type) },
+    .name = "System.Memory.Page",
+};
+struct System_Type System_Memory_HeaderType = {
     .base = { .type = typeof(System_Type) },
     .name = "System.Memory.Header",
-}; */
+};
+#endif
 
 System_var  System_Memory_alloc__internal(System_Type type, System_size length) {
 
@@ -162,8 +167,8 @@ System_var  System_Memory_alloc__internal(System_Type type, System_size length) 
 
             mem64k = (System_varArray)map;
             mem64k->base.type = typeof(System_varArray);
-            mem64k->length = (4096 - sizeof(struct_System_varArray)) / sizeof(System_var);
-            mem64k->value = ((System_var)mem64k + sizeof(struct_System_varArray));
+            mem64k->length = (4096 - sizeof(struct System_varArray)) / sizeof(System_var);
+            mem64k->value = ((System_var)mem64k + sizeof(struct System_varArray));
             System_Memory_ProcessVars[0] = mem64k;
 #if DEBUG == DEBUG_System_Memory
 System_Console_writeLine("new System_varArray: length {0:uint}", 1, mem64k->length);
@@ -177,13 +182,13 @@ System_Console_writeLine("new System_varArray: length {0:uint}", 1, mem64k->leng
                 if (!map) return null;
 
                 mem64h = (System_Memory_Page)map;
-                /* mem64h->type = typeof(System_Memory_Page); */
                 size payload;
-                size pageSize = System_Math_divideRemain__uint64(1048576 - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(struct_System_Object), &payload);
+                size pageSize = System_Math_divideRemain__uint64(1048576 - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(struct System_Object), &payload);
                 mem64h->pageSize = (uint)pageSize;
                 mem64h->payload = (uint)payload;
                 array(mem64k->value)[i] = mem64h;
 #if DEBUG == DEBUG_System_Memory
+                mem64h->type = typeof(System_Memory_Page);
 System_Console_writeLine("new System_Memory_Page: pageSize {0:uint}, payload {1:uint}", 2, mem64h->pageSize, mem64h->payload);
 #endif
             }
@@ -202,6 +207,9 @@ System_Console_writeLine("using System_Memory_Page: pageSize {0:uint}, payload {
 
                 /* expect first if this is unfree, move next */
                 if (item->refCount) {
+                    /* assert(item->type == typeof(System_Memory_Header)) */
+                    assert(item->length)
+                    assert(item->elementType)
                     item += item->length;
                     continue;
                 }
@@ -221,11 +229,12 @@ System_Console_writeLine("using System_Memory_Header({0:uint}): length {1:uint},
                 }
                 /* expect null, if there is not enough space, move next */
                 assert(!item->length)
-                /* item->type = typeof(System_Memory_Header); */
                 item->length = real_size;
                 item->elementType = type;
                 item->refCount = System_Memory_ReferenceState_Used;
 #if DEBUG == DEBUG_System_Memory
+                assert(!item->type)
+                item->type = typeof(System_Memory_Header);
 System_Console_writeLine("new System_Memory_Header({0:uint}): length {1:uint}, refCount {2:uint}, elementType {3:string}", 4, index, item->length, item->refCount, item->elementType->name);
 #endif
                 return ((System_var)item + sizeof(struct System_Memory_Header));

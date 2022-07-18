@@ -4,7 +4,6 @@
 #define Generic_T0  System_uint64
 #define Generic_T0Array  System_uint64Array
 #define Generic_T0ArrayEnumerator  System_uint64ArrayEnumerator
-#define struct_Generic_T0ArrayEnumerator  struct_System_uint64ArrayEnumerator
 #define Generic_T0ArrayEnumeratorType  System_uint64ArrayEnumeratorType
 #endif
 /* FileName Generic.T0ArrayEnumerator */
@@ -15,9 +14,8 @@
 #if !defined(have_Generic_T0ArrayEnumerator)
 #define have_Generic_T0ArrayEnumerator
 
-#define struct_Generic_T0ArrayEnumerator  struct Generic_T0ArrayEnumerator
-typedef fixed struct_Generic_T0ArrayEnumerator {
-    struct_System_Object base;
+typedef fixed struct Generic_T0ArrayEnumerator {
+    struct System_Object base;
 
     Generic_T0Array array;
 
@@ -25,16 +23,16 @@ typedef fixed struct_Generic_T0ArrayEnumerator {
 
 }  * Generic_T0ArrayEnumerator;
 
-#define stack_Generic_T0ArrayEnumerator()  (struct_Generic_T0ArrayEnumerator){ .base = stack_System_Object(Generic_T0ArrayEnumerator), }
+#define stack_Generic_T0ArrayEnumerator(ARRAY)  { .base = stack_System_Object(Generic_T0ArrayEnumerator), .array = ARRAY, }
+#define new_Generic_T0ArrayEnumerator(ARRAY)  (base_Generic_T0ArrayEnumerator_init((Generic_T0ArrayEnumerator)System_Memory_allocClass(typeof(Generic_T0ArrayEnumerator)), ARRAY))
 
-export struct_System_Type  Generic_T0ArrayEnumeratorType;
+export struct System_Type  Generic_T0ArrayEnumeratorType;
 
 typedef void delegate(Generic_T0ArrayEnumerator_free)(Generic_T0ArrayEnumerator that);
 typedef Generic_T0ArrayEnumerator delegate(Generic_T0ArrayEnumerator_init)(Generic_T0ArrayEnumerator that, Generic_T0Array array);
 typedef Generic_T0 delegate(Generic_T0ArrayEnumerator_get_current)(Generic_T0ArrayEnumerator that);
 typedef System_boolean delegate(Generic_T0ArrayEnumerator_moveNext)(Generic_T0ArrayEnumerator that);
 
-export Generic_T0ArrayEnumerator  Generic_T0ArrayEnumerator_new(Generic_T0Array array);
 export Generic_T0ArrayEnumerator  base_Generic_T0ArrayEnumerator_init(Generic_T0ArrayEnumerator that, Generic_T0Array array);
 export void  base_Generic_T0ArrayEnumerator_free(Generic_T0ArrayEnumerator that);
 export Generic_T0  base_Generic_T0ArrayEnumerator_get_current(Generic_T0ArrayEnumerator that);
@@ -45,20 +43,16 @@ export System_boolean  base_Generic_T0ArrayEnumerator_moveNext(Generic_T0ArrayEn
 #define Generic_T0ArrayEnumerator_get_current(o)  ((function_Generic_T0ArrayEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
 #define Generic_T0ArrayEnumerator_moveNext(o)  ((function_Generic_T0ArrayEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
 
-#define inline_Generic_T0ArrayEnumerator_new(a)  (base_Generic_T0ArrayEnumerator_init(inline_System_Object_allocClass(Generic_T0ArrayEnumerator), a))
-
 #if defined(using_System)
-#define struct_T0ArrayEnumerator  struct_Generic_T0ArrayEnumerator
 #define T0ArrayEnumerator  Generic_T0ArrayEnumerator
 #define T0ArrayEnumeratorType  Generic_T0ArrayEnumeratorType
+#define stack_T0ArrayEnumerator  stack_Generic_T0ArrayEnumerator
+#define new_T0ArrayEnumerator  new_Generic_T0ArrayEnumerator
 #define function_T0ArrayEnumerator_init  function_Generic_T0ArrayEnumerator_init
 #define function_T0ArrayEnumerator_free  function_Generic_T0ArrayEnumerator_free
 #define base_T0ArrayEnumerator_init  base_Generic_T0ArrayEnumerator_init
 #define base_T0ArrayEnumerator_free  base_Generic_T0ArrayEnumerator_free
-#define T0ArrayEnumerator_new  Generic_T0ArrayEnumerator_new
 #define T0ArrayEnumerator_init  Generic_T0ArrayEnumerator_init
 #define T0ArrayEnumerator_free  Generic_T0ArrayEnumerator_free
 #endif
-
-
 #endif

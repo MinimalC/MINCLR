@@ -20,9 +20,9 @@ typedef System_uint32  System_FileInfo_type;
 #define System_FileInfo_type_Socket             0140000
 
 
-#define struct_System_FileInfo  struct System_FileInfo
-typedef fixed struct_System_FileInfo {
-    struct_System_Object base;
+
+typedef fixed struct System_FileInfo {
+    struct System_Object base;
 
     System_string8 name;
 
@@ -38,15 +38,15 @@ typedef fixed struct_System_FileInfo {
     System_int64 size;
     System_int64 bulkSize;
     System_int64 blocks;
-    struct_System_Syscall_stat_timestamp lastAccessTime;
-    struct_System_Syscall_stat_timestamp lastWriteTime;
-    struct_System_Syscall_stat_timestamp changeTime;
+    struct System_Syscall_stat_timestamp lastAccessTime;
+    struct System_Syscall_stat_timestamp lastWriteTime;
+    struct System_Syscall_stat_timestamp changeTime;
 
 }  * System_FileInfo;
 
-export struct_System_Type  System_FileInfoType;
+export struct System_Type  System_FileInfoType;
 
-#define stack_System_FileInfo()  (struct_System_FileInfo){ .base = stack_System_Object(System_FileInfo), }
+#define stack_System_FileInfo()  (struct System_FileInfo){ .base = stack_System_Object(System_FileInfo), }
 
 typedef System_FileInfo delegate(System_FileInfo_init)(System_FileInfo that, System_string8 fileName);
 typedef void delegate(System_FileInfo_free)(System_FileInfo that);
@@ -60,7 +60,7 @@ export System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_s
 #define new_System_FileInfo(fileName)  (base_System_FileInfo_init((System_FileInfo)System_Memory_allocClass(typeof(System_FileInfo)), fileName))
 
 #if defined(using_System)
-#define struct_FileInfo  struct_System_FileInfo
+
 #define FileInfo  System_FileInfo
 #define FileInfoType  System_FileInfoType
 #define function_FileInfo_init  function_System_FileInfo_init

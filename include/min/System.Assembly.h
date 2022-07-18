@@ -58,30 +58,27 @@ typedef System_int32  System_AssemblyBinding;
 #define AssemblyBinding_NoFree  System_AssemblyBinding_NoFree
 #endif
 
-/* static class System.Assembly */
 
-#define struct_System_Assembly  struct System_Assembly
-typedef fixed struct_System_Assembly {
-    struct_System_Object base;
+typedef fixed struct System_Assembly {
+    struct System_Object base;
 
     void  * assemblyPtr;
     System_string8  fileName;
 
 }  * System_Assembly;
 
-export struct_System_Type  System_AssemblyType;
+#define new_System_Assembly()  (base_System_Assembly_init((System_Assembly)System_Memory_allocClass(typeof(System_Assembly))))
+
+export struct System_Type  System_AssemblyType;
 
 export System_Assembly  System_Assembly_open(const System_string8  fileName, System_AssemblyBinding  flags);
 export void  * System_Assembly_find(System_Assembly that, const System_string8 name);
 export void  * System_Assembly_findGlobal(const System_string8 name);
 
-#define new_System_Assembly()  (base_System_Assembly_init((System_Assembly)System_Memory_allocClass(typeof(System_Assembly))))
-
 #if defined(using_System)
-#define struct_Assembly  struct_System_Assembly
 #define Assembly  System_Assembly
 #define AssemblyType  System_AssemblyType
-#define Assembly_new  System_Assembly_new
+#define new_Assembly  new_System_Assembly
 #define Assembly_open  System_Assembly_open
 #define Assembly_find  System_Assembly_find
 #endif

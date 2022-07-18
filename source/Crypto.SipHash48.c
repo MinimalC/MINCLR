@@ -8,30 +8,17 @@
 #if !defined(code_Crypto_SipHash48)
 #define code_Crypto_SipHash48
 
-/*  TODO: Crypto_SipHash48 returns a final "hash" of "value" - however,
-    this is actually a hash value, just NOT being verified by supercop-20191017/crypto_auth/siphash48 */
-
 /*# Crypto_SipHash48 #*/
 
-/* static class Crypto.SipHash48 */
-
 Crypto_SipHash48  base_Crypto_SipHash48_init(Crypto_SipHash48 that) {
-#if defined(DEBUG) && DEBUG == DEBUG_System_Object
-    base_System_Object_init((System_Object)that);
-#endif
 
     that->v0 = 0x736f6d6570736575ULL;
     that->v1 = 0x646f72616e646f6dULL;
     that->v2 = 0x6c7967656e657261ULL;
     that->v3 = 0x7465646279746573ULL;
-
-    return that;
 }
 
 Crypto_SipHash48  base_Crypto_SipHash48_init__key(Crypto_SipHash48 that, System_string8 key) {
-#if defined(DEBUG) && DEBUG == DEBUG_System_Object
-    base_System_Object_init((System_Object)that);
-#endif
 
 	uint64 k0 = *((uint64 *)(key + 0));
 	uint64 k1 = *((uint64 *)(key + 8));
@@ -105,25 +92,20 @@ System_uint64  Crypto_SipHash48_final(Crypto_SipHash48 that) {
 
 #undef COMPRESS
 #undef HALF_ROUND
+#undef rotl64
 
 void  base_Crypto_SipHash48_free(Crypto_SipHash48 that) {
     unused(that)
-
-#if defined(DEBUG) && DEBUG == DEBUG_System_Object
-    /* No need to do base_System_Object_free((System_Object)that). */
-    /* I just love to */
-    base_System_Object_free((System_Object)that);
-#endif
 }
 
-struct_System_Type_FunctionInfo  Crypto_SipHash48TypeFunctions[] = {
+struct System_Type_FunctionInfo  Crypto_SipHash48TypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_Crypto_SipHash48_init },
 };
 
-struct_System_Type  Crypto_SipHash48Type = {
+struct System_Type  Crypto_SipHash48Type = {
 	.base = { .type = typeof(System_Type) },
 	.name = "Crypto.SipHash48",
-	.size = sizeof(struct_Crypto_SipHash48),
+	.size = sizeof(struct Crypto_SipHash48),
 	.baseType = &System_ObjectType,
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(Crypto_SipHash48TypeFunctions), .value = &Crypto_SipHash48TypeFunctions

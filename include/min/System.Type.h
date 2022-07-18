@@ -25,17 +25,17 @@
 
 /* static class System.Type */
 
-#define struct_System_Type  struct System_Type
 
-typedef fixed struct_System_Type  * System_Type;
+
+typedef fixed struct System_Type  * System_Type;
 
 #include "System.Object.h"
 
 /* static class System.Type.FunctionInfo */
 
-#define struct_System_Type_FunctionInfo  struct System_Type_FunctionInfo
-typedef fixed struct_System_Type_FunctionInfo {
-	struct_System_Object  base;
+
+typedef fixed struct System_Type_FunctionInfo {
+	struct System_Object  base;
 
 	System_string8  name;
 
@@ -47,48 +47,48 @@ typedef fixed struct_System_Type_FunctionInfo {
 
 /* static class System.Type.FunctionInfoArray */
 
-#define struct_System_Type_FunctionInfoArray  struct System_Type_FunctionInfoArray
-typedef fixed struct_System_Type_FunctionInfoArray {
-	struct_System_Object base;
+
+typedef fixed struct System_Type_FunctionInfoArray {
+	struct System_Object base;
 
 	System_size  length;
 
-	struct_System_Type_FunctionInfo  (* value)[];
+	struct System_Type_FunctionInfo  (* value)[];
 
 }  * System_Type_FunctionInfoArray;
 
 /* static class System.Type.InterfaceInfo */
 
-#define struct_System_Type_InterfaceInfo  struct System_Type_InterfaceInfo
-typedef fixed struct_System_Type_InterfaceInfo {
-	struct_System_Object  base;
+
+typedef fixed struct System_Type_InterfaceInfo {
+	struct System_Object  base;
 
     System_Type  interfaceType;
 
 	System_size  offset;
 
-	struct_System_Type_FunctionInfoArray  functions;
+	struct System_Type_FunctionInfoArray  functions;
 
 }  * System_Type_InterfaceInfo;
 
 /* static class System.Type.InterfaceInfoArray */
 
-#define struct_System_Type_InterfaceInfoArray  struct System_Type_InterfaceInfoArray
-typedef fixed struct_System_Type_InterfaceInfoArray {
-	struct_System_Object base;
+
+typedef fixed struct System_Type_InterfaceInfoArray {
+	struct System_Object base;
 
 	System_size  length;
 
-	struct_System_Type_InterfaceInfo  (* value)[];
+	struct System_Type_InterfaceInfo  (* value)[];
 
 }  * System_Type_InterfaceInfoArray;
 
 
 /* static class System.Type.FieldInfo */
 
-#define struct_System_Type_FieldInfo  struct System_Type_FieldInfo
-typedef fixed struct_System_Type_FieldInfo {
-	struct_System_Object  base;
+
+typedef fixed struct System_Type_FieldInfo {
+	struct System_Object  base;
 
     System_string8  name;
 
@@ -98,84 +98,71 @@ typedef fixed struct_System_Type_FieldInfo {
 
 /* static class System.Type.FieldInfoArray */
 
-#define struct_System_Type_FieldInfoArray  struct System_Type_FieldInfoArray
-typedef fixed struct_System_Type_FieldInfoArray {
-	struct_System_Object base;
+
+typedef fixed struct System_Type_FieldInfoArray {
+	struct System_Object base;
 
 	System_size  length;
 
-	struct_System_Type_FieldInfo  (* value)[];
+	struct System_Type_FieldInfo  (* value)[];
 
 }  * System_Type_FieldInfoArray;
 
 
-struct_System_Type {
-	struct_System_Object  base;
+struct System_Type {
+	struct System_Object  base;
 
 	System_string8  name;
 	System_size  size;
 	System_Type  baseType;
 
-	struct_System_Type_FunctionInfoArray  functions;
-	struct_System_Type_InterfaceInfoArray  interfaces;
-	struct_System_Type_FieldInfoArray  fields; /* for Enum.getValue */
-	/* TODO: struct_System_Type_PropertyInfoArray  properties; */
+	struct System_Type_FunctionInfoArray  functions;
+	struct System_Type_InterfaceInfoArray  interfaces;
+	struct System_Type_FieldInfoArray  fields; /* for Enum.getValue */
+	/* TODO: struct System_Type_PropertyInfoArray  properties; */
 };
 
-/* class Types */
+/* export struct System_Type  namespace_System; */
 
-/* export struct_System_Type  namespace_System; */
+export struct System_Type  System_TypeType;
 
-export struct_System_Type  System_TypeType;
+export struct System_Type  System_Type_FunctionInfoType;
+export struct System_Type  System_Type_FunctionInfoArrayType;
 
-export struct_System_Type  System_Type_FunctionInfoType;
-export struct_System_Type  System_Type_FunctionInfoArrayType;
+export struct System_Type  System_Type_InterfaceInfoType;
+export struct System_Type  System_Type_InterfaceInfoArrayType;
 
-export struct_System_Type  System_Type_InterfaceInfoType;
-export struct_System_Type  System_Type_InterfaceInfoArrayType;
-
-export struct_System_Type  System_Type_FieldInfoType;
-export struct_System_Type  System_Type_FieldInfoArrayType;
+export struct System_Type  System_Type_FieldInfoType;
+export struct System_Type  System_Type_FieldInfoArrayType;
 
 #if defined(using_System)
-#define struct_Type  struct_System_Type
-#define stack_Type  stack_System_Type
 #define Type  System_Type
 #define TypeType  System_TypeType
-
-#define struct_Type_FunctionInfo  struct_System_Type_FunctionInfo
 #define Type_FunctionInfo  System_Type_FunctionInfo
 #define Type_FunctionInfoType  System_Type_FunctionInfoType
-#define struct_Type_FunctionInfoArray  struct_System_Type_FunctionInfoArray
 #define Type_FunctionInfoArray  System_Type_FunctionInfoArray
 #define Type_FunctionInfoArrayType  System_Type_FunctionInfoArrayType
-
-#define struct_Type_InterfaceInfo  struct_System_Type_InterfaceInfo
 #define Type_InterfaceInfo  System_Type_InterfaceInfo
 #define Type_InterfaceInfoType  System_Type_InterfaceInfoType
-#define struct_Type_InterfaceInfoArray  struct_System_Type_InterfaceInfoArray
 #define Type_InterfaceInfoArray  System_Type_InterfaceInfoArray
 #define Type_InterfaceInfoArrayType  System_Type_InterfaceInfoArrayType
-
-#define struct_Type_FieldInfo  struct_System_Type_FieldInfo
 #define Type_FieldInfo  System_Type_FieldInfo
 #define Type_FieldInfoType  System_Type_FieldInfoType
-#define struct_Type_FieldInfoArray  struct_System_Type_FieldInfoArray
 #define Type_FieldInfoArray  System_Type_FieldInfoArray
 #define Type_FieldInfoArrayType  System_Type_FieldInfoArrayType
 #endif
 
 /* literal Types */
 
-export struct_System_Type  System_voidType; /* sizeof(void) == 1  */
-export struct_System_Type  System_varType;  /* sizeof(void *) on x86_64 is * 8 == 64bits  */
+export struct System_Type  System_voidType; /* sizeof(void) == 1  */
+export struct System_Type  System_varType;  /* sizeof(void *) on x86_64 is * 8 == 64bits  */
 
-export struct_System_Type  System_sizeType;
-export struct_System_Type  System_intptrType;
-export struct_System_Type  System_ssizeType;
-export struct_System_Type  System_sintptrType;
+export struct System_Type  System_sizeType;
+export struct System_Type  System_intptrType;
+export struct System_Type  System_ssizeType;
+export struct System_Type  System_sintptrType;
 
-export struct_System_Type  System_booleanType;
+export struct System_Type  System_booleanType;
 
 #if defined(using_System)
 #define varType  System_varType

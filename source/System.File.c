@@ -72,7 +72,7 @@ void  base_System_File_sync(File that) {
     System_Syscall_fsync(that->filePtr);
 }
 
-struct_System_Type_FunctionInfo  System_FileTypeFunctions[] = {
+struct System_Type_FunctionInfo  System_FileTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_File_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_File_free },
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_write", .function = base_System_IStream_write, .value = base_System_File_write },
@@ -83,14 +83,14 @@ struct_System_Type_FunctionInfo  System_FileTypeFunctions[] = {
     [7] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = base_System_File_set_Position },
 };
 
-struct_System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {
+struct System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {
     [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IStreamType },
 };
 
-struct_System_Type  System_FileType = {
+struct System_Type  System_FileType = {
     .base = stack_System_Object(System_Type),
 	.name = "System.File",
-    .size = sizeof(struct_System_File),
+    .size = sizeof(struct System_File),
 	.baseType = &System_ObjectType,
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(System_FileTypeFunctions), .value = &System_FileTypeFunctions

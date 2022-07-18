@@ -7,7 +7,7 @@
 #if !defined(have_System_char8)
 #define have_System_char8
 
-export struct_System_Type  System_char8Type;
+export struct System_Type  System_char8Type;
 
 export System_boolean  System_char8_isNumber(System_char8 that);
 export System_boolean  System_char8_isUpper(System_char8 that);
@@ -37,7 +37,7 @@ export System_boolean  System_char8_isPrintable(System_char8 that);
 #if !defined(have_System_string8)
 #define have_System_string8
 
-export struct_System_Type  System_string8Type;
+export struct System_Type  System_string8Type;
 
 export System_size  System_string8_indexOf(System_string8 that, System_uint8 character);
 export System_size  System_string8_lastIndexOf(System_string8 that, System_uint8 character);

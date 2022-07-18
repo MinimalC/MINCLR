@@ -10,7 +10,7 @@
 #if !defined(have_Generic_T0)
 #define have_Generic_T0
 
-export struct_System_Type  Generic_T0Type;
+export struct System_Type  Generic_T0Type;
 
 ##if Type == "int64"
 ##set b2L = 64

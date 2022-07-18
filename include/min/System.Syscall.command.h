@@ -4,7 +4,7 @@
 
 typedef System_intptr  System_Syscall_command;
 
-export struct_System_Type  System_Syscall_commandType;
+export struct System_Type  System_Syscall_commandType;
 
 #if defined(using_System)
 #define Syscall_command  System_Syscall_command

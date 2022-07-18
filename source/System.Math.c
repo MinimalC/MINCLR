@@ -10,9 +10,9 @@
 
 /*# System_Math #*/
 
-struct_System_String  STRING_System_Math = const_System_String("System.Math");
+struct System_String  STRING_System_Math = const_System_String("System.Math");
 
-struct_System_Type  System_MathType = { .base = stack_System_Object(System_Type),
+struct System_Type  System_MathType = { .base = stack_System_Object(System_Type),
     .name = &STRING_System_Math,
 };
 

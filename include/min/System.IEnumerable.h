@@ -7,10 +7,10 @@
 
 /* interface System_IEnumerator */
 
-#define struct_System_IEnumerator  struct System_IEnumerator
-typedef fixed  struct_System_IEnumerator { }  * System_IEnumerator;
 
-export struct_System_Type  System_IEnumeratorType;
+typedef fixed  struct System_IEnumerator { }  * System_IEnumerator;
+
+export struct System_Type  System_IEnumeratorType;
 
 typedef System_var delegate(System_IEnumerator_get_current)(System_IEnumerator that);
 typedef System_boolean delegate(System_IEnumerator_moveNext)(System_IEnumerator that);
@@ -22,7 +22,7 @@ export System_boolean  base_System_IEnumerator_moveNext(System_IEnumerator that)
 #define System_IEnumerator_moveNext(o)  ((function_System_IEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
 
 #if defined(using_System)
-#define struct_IEnumerator  struct_System_IEnumerator
+
 #define IEnumerator  System_IEnumerator
 #define IEnumeratorType  System_IEnumeratorType
 #define function_IEnumerator_get_current  function_System_IEnumerator_get_current
@@ -35,10 +35,10 @@ export System_boolean  base_System_IEnumerator_moveNext(System_IEnumerator that)
 
 /* interface System_IEnumerable */
 
-#define struct_System_IEnumerable  struct interface_System_IEnumerable
-typedef fixed  struct_System_IEnumerable { }  * System_IEnumerable;
 
-export struct_System_Type  System_IEnumerableType;
+typedef fixed  struct System_IEnumerable { }  * System_IEnumerable;
+
+export struct System_Type  System_IEnumerableType;
 
 typedef System_IEnumerator delegate(System_IEnumerable_getEnumerator)(System_IEnumerable that);
 typedef void  delegate(System_IEnumerable_foreach)(System_IEnumerable that, System_Type type, void * action);
@@ -50,7 +50,7 @@ export void  base_System_IEnumerable_foreach(System_IEnumerable that, System_Typ
 #define System_IEnumerable_foreach(o,...)  ((function_System_IEnumerable_foreach)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_foreach))(o,__VA_ARGS__)
 
 #define stack_System_foreach__n(N,TYPE,THAT,ARRAYT,ARRAY,ACTION)  {\
-    ccc(struct_,ARRAYT,Enumerator) enumerator##N = ccc(stack_,ARRAYT,Enumerator)();\
+    ccc(struct ,ARRAYT,Enumerator) enumerator##N = ccc(stack_,ARRAYT,Enumerator)();\
     cc(ARRAYT,Enumerator_init)(&enumerator##N, ARRAY);\
     while (cc(ARRAYT,Enumerator_moveNext)(&enumerator##N)) {\
         TYPE THAT = (TYPE)cc(ARRAYT,Enumerator_get_current)(&enumerator##N);\
@@ -88,7 +88,7 @@ export void  base_System_IEnumerable_foreach(System_IEnumerable that, System_Typ
 #define ___inline_System_foreach(TYPE,THAT,ARRAY,ACTION)  inline_System_foreach__n(07,TYPE,THAT,ARRAY,ACTION)
 
 #if defined(using_System)
-#define struct_IEnumerable  struct_System_IEnumerable
+
 #define IEnumerable  System_IEnumerable
 #define IEnumerableType  System_IEnumerableType
 

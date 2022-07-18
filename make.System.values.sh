@@ -12,7 +12,6 @@
 ./make.Generic.T.awk Namespace=System Type=int32 generic/int.awk.h generic/int.awk.c
 ./make.Generic.T.awk Namespace=System Type=int64 generic/int.awk.h generic/int.awk.c
 
-
 file_h="include/min/System.values.auto.h"
 file_c="source/System.values.auto.c"
 echo -n > $file_h

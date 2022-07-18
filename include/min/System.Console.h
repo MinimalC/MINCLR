@@ -7,11 +7,11 @@
 #if !defined(have_System_Console)
 #define have_System_Console
 
-export struct_System_Type  System_ConsoleType;
+export struct System_Type  System_ConsoleType;
 
-export struct_System_File  System_Console_StdIn;
-export struct_System_File  System_Console_StdOut;
-export struct_System_File  System_Console_StdErr;
+export struct System_File  System_Console_StdIn;
+export struct System_File  System_Console_StdOut;
+export struct System_File  System_Console_StdErr;
 
 export void  System_Console_exit(const System_size code) noreturn;
 export void  System_Console_terminate(const System_size code) noreturn;

@@ -10,12 +10,12 @@
 
 /*# System_decimal #*/
 
-struct_System_Type  System_decimalType = { .base = { .type = typeof(System_Type) },
+struct System_Type  System_decimalType = { .base = { .type = typeof(System_Type) },
     .name = "System.decimal",
-    .size = sizeof(System_decimal),
+    .size = sizeof(struct System_decimal),
 };
 
-void  System_decimal_carryOver(System_decimal  * that, System_uint8 digits) {
+void  System_decimal_carryOver(System_decimal that, System_uint8 digits) {
     /* if digits > System_decimal_Capacity_DEFAULT - 2 { throw Exception } */
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
     for (System_size i = 0; i < digits; ++i) {
@@ -26,7 +26,7 @@ void  System_decimal_carryOver(System_decimal  * that, System_uint8 digits) {
     }
 }
 
-void  System_decimal_init__uint8(System_decimal  * that, System_uint8 uinteger) {
+void  System_decimal_init__uint8(System_decimal that, System_uint8 uinteger) {
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
     if (uinteger & 1) {
         *(string - 0) += 1;
@@ -60,7 +60,7 @@ void  System_decimal_init__uint8(System_decimal  * that, System_uint8 uinteger) 
     inline_System_decimal_carryOver(string,3)
 }
 
-void  System_decimal_init__uint16(System_decimal  * that, System_uint16 uinteger) {
+void  System_decimal_init__uint16(System_decimal that, System_uint16 uinteger) {
     System_decimal_init__uint8(that, (System_uint8)uinteger);
 
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
@@ -115,7 +115,7 @@ void  System_decimal_init__uint16(System_decimal  * that, System_uint16 uinteger
     inline_System_decimal_carryOver(string,5)
 }
 
-void  System_decimal_init__uint32(System_decimal  * that, System_uint32 uinteger) {
+void  System_decimal_init__uint32(System_decimal that, System_uint32 uinteger) {
     System_decimal_init__uint16(that, (System_uint16)uinteger);
 
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
@@ -276,7 +276,7 @@ void  System_decimal_init__uint32(System_decimal  * that, System_uint32 uinteger
     inline_System_decimal_carryOver(string,10)
 }
 
-void  System_decimal_init__uint64(System_decimal  * that, System_uint64 uinteger) {
+void  System_decimal_init__uint64(System_decimal that, System_uint64 uinteger) {
     System_decimal_init__uint32(that, (System_uint32)uinteger);
 
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
@@ -821,42 +821,42 @@ void  System_decimal_init__uint64(System_decimal  * that, System_uint64 uinteger
     inline_System_decimal_carryOver(string,19)
 }
 
-void  System_decimal_set_Precision(System_decimal  * that, System_int8 precision) {
+void  System_decimal_set_Precision(System_decimal that, System_int8 precision) {
     that->precision = precision;
 }
-System_int8  System_decimal_get_Precision(System_decimal  * that) {
+System_int8  System_decimal_get_Precision(System_decimal that) {
     return that->precision;
 }
 
-void  System_decimal_init__int8(System_decimal  * that, System_int8 int8) {
+void  System_decimal_init__int8(System_decimal that, System_int8 int8) {
     System_boolean isNegative = int8 < 0;
     if (isNegative) System_decimal_set_Precision(that, -1);
     System_uint8 uinteger = isNegative ? ~int8 + 1 : int8;
     System_decimal_init__uint8(that, uinteger);
 }
 
-void  System_decimal_init__int16(System_decimal  * that, System_int16 int16) {
+void  System_decimal_init__int16(System_decimal that, System_int16 int16) {
     System_boolean isNegative = int16 < 0;
     if (isNegative) System_decimal_set_Precision(that, -1);
     System_uint16 uinteger = isNegative ? ~int16 + 1 : int16;
     System_decimal_init__uint16(that, uinteger);
 }
 
-void  System_decimal_init__int32(System_decimal  * that, System_int32 int32) {
+void  System_decimal_init__int32(System_decimal that, System_int32 int32) {
     System_boolean isNegative = int32 < 0;
     if (isNegative) System_decimal_set_Precision(that, -1);
     System_uint32 uinteger = isNegative ? ~int32 + 1 : int32;
     System_decimal_init__uint32(that, uinteger);
 }
 
-void  System_decimal_init__int64(System_decimal  * that, System_int64 int64) {
+void  System_decimal_init__int64(System_decimal that, System_int64 int64) {
     System_boolean isNegative = int64 < 0;
     if (isNegative) System_decimal_set_Precision(that, -1);
     System_uint64 uinteger = isNegative ? ~int64 + 1 : int64;
     System_decimal_init__uint64(that, uinteger);
 }
 
-void  System_decimal_tostring8__stack(System_decimal  * that, System_char8 array[System_decimal_Capacity_DEFAULT + 1]) {
+void  System_decimal_tostring8__stack(System_decimal that, System_char8 array[System_decimal_Capacity_DEFAULT + 1]) {
     System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
     System_string8 array_string = array + System_decimal_Capacity_DEFAULT - 1;
 
