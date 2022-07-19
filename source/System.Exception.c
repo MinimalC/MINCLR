@@ -34,20 +34,20 @@ System_Exception  System_Exception_get_current() {
 
 void  System_Exception_set_current(System_Exception that) {
 
-    if (System_Exception_current) System_Memory_freeClass((System_Object ref)&System_Exception_current);
+    if (System_Exception_current) System_Memory_free(System_Exception_current);
 
-    System_Exception_current = (that == null ? null : (System_Exception)System_Object_addReference((System_Object)that));
+    System_Exception_current = (that == null ? null : (System_Exception)System_Memory_addReference((System_Object)that));
 }
 
 void  System_Exception_throw(System_Exception that) {
-    assert(that)
+    Console_assert(that);
 
     // TODO: Memory_copyTo(that, sizeof(struct System_Exception), &System_Exception_current)
     System_Exception_set_current(that);
 }
 
 void  System_Exception_terminate(System_Exception that) {
-    assert(that)
+    Console_assert(that);
 
     System_Exception_throw(that);
     System_Console_terminate(0);

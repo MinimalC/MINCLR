@@ -34,7 +34,7 @@ int main(int argc, char * argv[]) {
         Console_writeLine__string8("Test03: SUCCESS: string8_lastIndexOf");
 
     size prefix_length = string8_get_Length(prefix);
-    string8  name  = Memory_alloc(prefix_length + command_length + 1);
+    string8  name  = Memory_allocArray(typeof(System_char8), prefix_length + command_length + 1);
     string8_copySubstringTo(prefix, prefix_length, name);
     string8_copySubstringTo(command + command_i1, command_length, name + prefix_length);
 
@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
     else
         Console_writeLine__string8("Test04: SUCCESS: string8_copySubstringTo");
 
-    Memory_free((void**)&name);
+    Memory_free(name);
 
     return true;
 }

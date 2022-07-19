@@ -21,11 +21,11 @@ int main(int argc, char * argv[]) {
         Console_writeLine__string8("Test02: SUCCESS: Object_get_Type");
 
 
-    System_Memory_freeClass(&object);
+    Memory_free(object);
     if (object)
-        Console_writeLine__string8("Test03: ERROR: Object_freeClass");
+        Console_writeLine__string8("Test03: ERROR: Memory_free");
     else
-        Console_writeLine__string8("Test03: SUCCESS: Object_freeClass");
+        Console_writeLine__string8("Test03: SUCCESS: Memory_free");
 
     return true;
 }

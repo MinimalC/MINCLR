@@ -14,13 +14,13 @@ int main(int argc, char * argv[]) {
     Console_write__string8("ERROR: System_Exception_get_current() is null");
 
     catch
-    catch_class(System_SystemException,exception, {
+    catch_class(System_Exception,exception, {
         Console_write__string8("SUCCESS: System_Exception_get_current():");
-        Console_write(" {0:string}", 1, Object_get_Type(exception)->name->value);
-        Console_write(", error: {0:string} ({1:uint64})", 2, enum_getName(System_error, exception->error), exception->error);
+        Console_write(" {0:string}", 1, Object_get_Type((Object)exception)->name);
+        Console_write(", error: {0:string} ({1:uint})", 2, enum_getName(typeof(System_error), exception->error), exception->error);
 
         /* rethrow */
-        System_Exception_throw((System_Exception)exception);
+        System_Exception_throw(exception);
     })
     finally
     Console_writeLineEmpty();
@@ -28,7 +28,7 @@ int main(int argc, char * argv[]) {
     finally_return(true)
 
     /* Test02: Close the File */
-    if (file) Object_freeClass(&file);
+    if (file) Memory_free(file);
 
     return false;
 }

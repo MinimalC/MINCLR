@@ -61,8 +61,8 @@ STRING8 text_P = " P";
 int main(int argc, char *argv[]) {
 /* System_main(Eratosthenes,args) { */
 
-	knownPrimes = (uint64 *)Memory_alloc(sizeof(uint64) * sizeof_knownPrimes);
-	knownPrimes_hoch2 = (uint64 *)Memory_alloc(sizeof(uint64) * sizeof_knownPrimes);
+	knownPrimes = (uint64 *)Memory_allocArray(typeof(uint64), sizeof_knownPrimes);
+	knownPrimes_hoch2 = (uint64 *)Memory_allocArray(typeof(uint64), sizeof_knownPrimes);
 
 	knownPrimes[1] = 2U; knownPrimes_hoch2[1] = 4U;
 	knownPrimes[2] = 3U; knownPrimes_hoch2[2] = 9U;
@@ -140,14 +140,14 @@ int main(int argc, char *argv[]) {
         } */
 	}
 
-    Memory_freeStruct(knownPrimes);
-    Memory_freeStruct(knownPrimes_hoch2);
+    Memory_free(knownPrimes);
+    Memory_free(knownPrimes_hoch2);
 
 	return true;
 
 FALSE:
-    Memory_freeStruct(knownPrimes);
-    Memory_freeStruct(knownPrimes_hoch2);
+    Memory_free(knownPrimes);
+    Memory_free(knownPrimes_hoch2);
 
     return false;
 }

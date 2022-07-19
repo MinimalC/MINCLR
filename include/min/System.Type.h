@@ -152,27 +152,52 @@ export struct System_Type  System_Type_FieldInfoArrayType;
 #define Type_FieldInfoArrayType  System_Type_FieldInfoArrayType
 #endif
 
-/* literal Types */
-
 export struct System_Type  System_voidType; /* sizeof(void) == 1  */
 export struct System_Type  System_varType;  /* sizeof(void *) on x86_64 is * 8 == 64bits  */
-
 export struct System_Type  System_sizeType;
 export struct System_Type  System_intptrType;
-export struct System_Type  System_ssizeType;
-export struct System_Type  System_sintptrType;
-
 export struct System_Type  System_booleanType;
 
 #if defined(using_System)
 #define varType  System_varType
 #define sizeType  System_sizeType
 #define intptrType  System_intptrType
-#define ssizeType  System_ssizeType
-#define sintptrType  System_sintptrType
-
 #define booleanType  System_booleanType
 #endif
+
+export System_var System_Type_getMethod(System_Type  that, System_var function);
+export System_var System_Type_trygetMethod(System_Type  that, System_var function);
+// internal inline artificial System_var inline_System_Type_getMethod(System_Type  that, System_var function) {
+
+export System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other);
+
+#if defined(using_System)
+#define Type_getMethod  System_Type_getMethod
+#define Type_trygetMethod  System_Type_trygetMethod
+#endif
+
+
+export System_var  System_Memory_allocClass(System_Type type);
+export System_var  System_Memory_allocArray(System_Type type, System_size count);
+export void System_Memory_reallocArray(System_var ref that, System_size count);
+export System_Object System_Memory_addReference(System_Object that);
+export void  System_Memory_freeClass(System_var ref that);
+
+#define System_Memory_free(THAT) (System_Memory_freeClass((System_var ref)&THAT))
+
+#if defined(using_System)
+#define Memory_allocClass  System_Memory_allocClass
+#define Memory_allocArray  System_Memory_allocArray
+#define Memory_reallocArray  System_Memory_reallocArray
+#define Memory_addReference  System_Memory_addReference
+#define Memory_freeClass  System_Memory_freeClass
+#define Memory_free  System_Memory_free
+#endif
+
+
+#endif
+#if !defined(have_System_enum)
+#define have_System_enum
 
 export System_string8  System_enum_getName(System_Type type, System_intptr value);
 
@@ -181,17 +206,5 @@ export System_string8  System_enum_getName(System_Type type, System_intptr value
 #if defined(using_System)
 #define enum_getName  System_enum_getName
 #define inline_enum_getName  inline_System_enum_getName
-#endif
-
-export System_var System_Type_getMethod(System_Type  that, System_var function);
-export System_var System_Type_trygetMethod(System_Type  that, System_var function);
-
-// internal inline artificial System_var inline_System_Type_getMethod(System_Type  that, System_var function) {
-
-export System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other);
-
-#if defined(using_System)
-#define Type_getMethod  System_Type_getMethod
-#define Type_trygetMethod  System_Type_trygetMethod
 #endif
 #endif

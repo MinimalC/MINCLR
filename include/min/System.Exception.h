@@ -64,7 +64,7 @@ export void  System_Exception_set_current(System_Exception that);
 #define catch  if (!System_Exception_current) goto __finally00; __catch00: ;
 
 #define catch_class(TYPE,THAT,ACTION)  TYPE THAT = inline_System_Object_asInstanceof(System_Exception_current, TYPE);\
-    if (THAT) { System_Object_addReference((System_Object)THAT); System_Exception_set_current(null); ACTION ; System_Memory_freeClass(&THAT); }
+    if (THAT) { System_Memory_addReference((System_Object)THAT); System_Exception_set_current(null); ACTION ; System_Memory_free(THAT); }
 
 #define finally  __finally00: ;
 

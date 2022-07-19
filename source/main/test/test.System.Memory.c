@@ -11,12 +11,12 @@ int main(int argc, char * argv[]) {
     // if (argc > 2) { arg1 = argv[1]; arg1size = sizeof(argv[1]); }
 
 
-    /* Test: Memory_alloc */
-    uint8 *bytes = Memory_alloc(Test00_size);
+    /* Test: Memory_allocClass */
+    uint8 *bytes = Memory_allocClass(typeof(uint8), Test00_size);
     if (!bytes)
-        Console_writeLine__string8("Test01: ERROR: System_Memory_alloc");
+        Console_writeLine__string8("Test01: ERROR: System_Memory_allocClass");
     else
-        Console_writeLine__string8("Test01: SUCCESS: System_Memory_alloc");
+        Console_writeLine__string8("Test01: SUCCESS: System_Memory_allocClass");
 
 
     /* Test: Memory_set */
@@ -46,7 +46,7 @@ int main(int argc, char * argv[]) {
 
 
     /* Test: Memory_free */
-    Memory_free((void **)&bytes);
+    Memory_free(bytes);
     if (bytes)
         Console_writeLine__string8("Test05: ERROR: System_Memory_free");
     else

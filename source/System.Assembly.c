@@ -14,7 +14,7 @@ Assembly  System_Assembly_open(const string8  fileName, System_AssemblyBinding  
     ISO_Library assemblyPtr = ISO_dlopen(fileName, (int32)flags);
     if (!assemblyPtr) return null; /* TODO: throw FileNotFound */
 
-    Assembly that = inline_Object_allocClass(Assembly);
+    Assembly that = Memory_allocClass(typeof(Assembly));
     base_System_Assembly_init(that);
 
     that->fileName = fileName;

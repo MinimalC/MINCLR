@@ -18,13 +18,13 @@ System_Array  base_System_Array_init(System_Array that, System_size length) {
 
     size element_size = sizeof(var);
 
-    that->value =  Memory_alloc(length * element_size);
+    that->value =  Memory_allocClass(typeof(var), length);
 
     return that;
 }
 
 void  base_System_Array_free(System_Array that) {
-	assert(that)
+	Console_assert(that);
 
 	size length = that->length;
     size i;
@@ -52,7 +52,7 @@ void  base_System_Array_free(System_Array that) {
             /* Console_writeLine("{0:string}_free: [{1:uint}]: {2:string}_free", 3, type->name->value, i, object->Type->name->value); */
 #endif
 
-            Object_freeClass(&object);
+            Memory_free(object);
             *(array + i) = null;
         }
 
@@ -69,7 +69,7 @@ void  base_System_Array_free(System_Array that) {
     }
 #endif
 
-    Memory_free((void **)&that->value);
+    Memory_free(that->value);
 
 	base_System_Object_free((Object)that);
 }
@@ -79,14 +79,14 @@ System_size  base_System_Array_get_Length(System_Array that) {
 }
 
 System_Object  base_System_Array_get_index(System_Array that, size index) {
-	assert(that)
+	Console_assert(that);
 	return array(that->value)[index];
 }
 
 void  base_System_Array_set_index(System_Array that, size index, System_Object value) {
-	assert(that)
+	Console_assert(that);
     System_Object item = array(that->value)[index];
-    if (item) Object_freeClass(&item);
+    if (item) Memory_free(item);
 	array(that->value)[index] = !value ? null : Object_addReference(value);
 }
 

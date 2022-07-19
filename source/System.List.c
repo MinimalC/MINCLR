@@ -24,8 +24,8 @@ System_List  base_System_List_init(System_List that) {
 
 void  base_System_List_free(System_List that) {
 
-    System_Memory_freeClass((System_Object ref)&that->hashes);
-    System_Memory_freeClass((System_Object ref)&that->items);
+    System_Memory_free(that->hashes);
+    System_Memory_free(that->items);
 
     base_System_Object_free((System_Object)that);
 }
@@ -35,12 +35,12 @@ System_size  base_System_List_get_Length(System_List that) {
 }
 
 System_Object  base_System_List_get_index(System_List that, size index) {
-	assert(that)
+	Console_assert(that);
 	return Array_get_index(that->items, index);
 }
 
 void  base_System_List_set_index(System_List that, size index, System_Object value) {
-	assert(that)
+	Console_assert(that);
     if (value) {
         if (base_System_List_contains(that, value)) throw(new_Exception("InvalidOperationException: System_List: System_Object already added"))
         uint64Array_set_index(that->hashes, index, Object_getSipHash(value));
@@ -63,7 +63,7 @@ System_boolean  base_System_List_contains(System_List that, System_Object object
 }
 
 void  base_System_List_add(System_List that, System_Object object) {
-    assert(object)
+    Console_assert(object);
 
     if (base_System_List_contains(that, object)) throw(new_Exception("InvalidOperationException: System.List: System_Object already added."))
 

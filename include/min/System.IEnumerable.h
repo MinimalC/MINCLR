@@ -67,7 +67,7 @@ export void  base_System_IEnumerable_foreach(System_IEnumerable that, System_Typ
         if (System_Exception_get_current()) goto break_inline_foreach##N;\
         ACTION ;\
     } break_inline_foreach##N: ;\
-    inline_System_Object_freeClass(&enumerator##N); }
+    System_Memory_free(enumerator##N); }
 
 #define stack_System_foreach(TYPE,THAT,ARRAYT,ARRAY,ACTION)  stack_System_foreach__n(00,TYPE,THAT,ARRAYT,ARRAY,ACTION)
 #define stack_System_foreach_(TYPE,THAT,ARRAYT,ARRAY,ACTION)  stack_System_foreach__n(01,TYPE,THAT,ARRAYT,ARRAY,ACTION)

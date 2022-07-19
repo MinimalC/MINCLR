@@ -32,7 +32,7 @@ int main(int argc, char * argv[]) {
 
 
 	/* Test02: close the Assembly */
-    Object_freeClass(&assembly);
+    Memory_free(assembly);
 
 	return true;
 }

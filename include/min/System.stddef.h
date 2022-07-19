@@ -150,7 +150,7 @@ enum /* noname */ { System_false, System_true } ;
 /* Don't define base(name)  ff(base,name)
 Do define base_MyProject_Product_init  base_MyProject_Product_init__02  instead. */
 
-/* Example:  void System_Object_freeClass(System_Object ref that); */
+/* Example:  void System_Memory_freeClass(System_Object ref that); */
 #define ref  *
 #define out  *
 
@@ -287,19 +287,19 @@ export System_char8  System_string8_Empty[1];
 #endif
 
 
-export void  System_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 file, const System_uint32 line);
+export void  System_Console_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 file, const System_uint32 line);
 export void  System_Console_debug__format(const System_string8 expression, const System_string8 message, const System_string8 functionName, const System_string8 file, const System_uint32 line);
 
 #if !DEBUG
-#define System_assert(expression) (void)(expression);
-#define System_Console_debug(expression,message) (void)(expression);
+#define System_Console_assert(expression) (void)(expression)
+#define System_Console_debug(expression,message) (void)(expression);(void)(message)
 #else
-#define System_assert(expression)  if (!(expression)) { System_assert__string8((System_string8)(#expression), (System_string8)__func__, (System_string8)__FILE__, (System_uint32)__LINE__); }
+#define System_Console_assert(expression)  if (!(expression)) { System_Console_assert__string8((System_string8)(#expression), (System_string8)__func__, (System_string8)__FILE__, (System_uint32)__LINE__); }
 #define System_Console_debug(expression,message)  { System_Console_debug__format((System_string8)(#expression), (System_string8)(message), (System_string8)__func__, (System_string8)__FILE__, (System_uint32)__LINE__); }
 #endif
 
 #if defined(using_System)
-#define assert  System_assert
+#define Console_assert  System_Console_assert
 #define Console_debug  System_Console_debug
 #endif
 #endif

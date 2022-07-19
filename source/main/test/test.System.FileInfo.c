@@ -21,7 +21,7 @@ int main(int argc, char * argv[]) {
     Console_writeLine(", isDevice: {0:uint:hex}, Size: {1:uint}, BulkSize: {2:uint}, Blocks: {3:uint} ", 4, fileInfo->isDevice, fileInfo->size, fileInfo->bulkSize, fileInfo->blocks);
 
 	/* Test02: Free the FileInfo */
-    System_Memory_freeClass((Object *)&fileInfo);
+    Memory_free(fileInfo);
 
 	/* Test01: Create a FileInfo for a Directory */
     fileInfo = new_FileInfo(".");
@@ -37,7 +37,7 @@ int main(int argc, char * argv[]) {
     Console_writeLine(", isDevice: {0:uint:hex}, Size: {1:uint}, BulkSize: {2:uint}, Blocks: {3:uint} ", 4, fileInfo->isDevice, fileInfo->size, fileInfo->bulkSize, fileInfo->blocks);
 
 	/* Test02: Free the FileInfo */
-    System_Memory_freeClass((Object *)&fileInfo);
+    Memory_free(fileInfo);
 
 	return true;	/* false would be FAILED */
 }

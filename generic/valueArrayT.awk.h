@@ -26,7 +26,7 @@ typedef fixed struct Generic_T0Array {
 }  * Generic_T0Array;
 
 #define stack_Generic_T0Array(LENGTH)  { .base = stack_System_Object(Generic_T0Array), .length = LENGTH }
-#define new_Generic_T0Array(LENGTH)  (base_Generic_T0Array_init((Generic_T0Array)System_Memory_allocClass(Generic_T0Array), LENGTH))
+#define new_Generic_T0Array(LENGTH)  (base_Generic_T0Array_init((Generic_T0Array)System_Memory_allocClass(typeof(Generic_T0Array)), LENGTH))
 
 export struct System_Type  Generic_T0ArrayType;
 

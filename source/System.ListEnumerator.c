@@ -15,7 +15,7 @@ System_ListEnumerator  base_System_ListEnumerator_init(System_ListEnumerator tha
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_List)System_Object_addReference((System_Object)array);
+    that->array = (System_List)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -23,7 +23,7 @@ System_ListEnumerator  base_System_ListEnumerator_init(System_ListEnumerator tha
 
 void  base_System_ListEnumerator_free(System_ListEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);

@@ -115,7 +115,7 @@ void  System_string8_copySubstringToAt(string8 src, size count, string8 dest, si
 string8  System_string8_clone(string8 that) {
     size count = string8_get_Length(that);
     if (!count) return null;
-    string8 dest = Memory_alloc(count);
+    string8 dest = (string8)System_Memory_allocArray(typeof(System_char8), count);
     string8_copyTo(that, dest);
     return dest;
 }

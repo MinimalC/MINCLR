@@ -22,7 +22,7 @@ Generic_T0ArrayEnumerator  base_Generic_T0ArrayEnumerator_init(Generic_T0ArrayEn
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (Generic_T0Array)System_Object_addReference((System_Object)array);
+    that->array = (Generic_T0Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -30,7 +30,7 @@ Generic_T0ArrayEnumerator  base_Generic_T0ArrayEnumerator_init(Generic_T0ArrayEn
 
 void  base_Generic_T0ArrayEnumerator_free(Generic_T0ArrayEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);

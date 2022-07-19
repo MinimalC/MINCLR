@@ -41,7 +41,7 @@ int main(int argc, char * argv[]) {
 
 
 	/* Test02: Close the File */
-    System_Memory_freeClass((Object *)&file);
+    Memory_free(file);
 
 	return true;	/* OK (1 == true) */
 }

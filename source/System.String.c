@@ -11,10 +11,10 @@
 /*# System_String #*/
 
 void base_System_String_free(String that) {
-    assert(that)
+    Console_assert(that);
 
     if (that->value && that->base.bitConfig.isValueAllocated) {
-        Memory_free((void **)&(that->value));
+        Memory_free((that->value));
     }
 
     base_System_Object_free((Object)that);

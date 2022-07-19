@@ -11,7 +11,7 @@ int main(int argc, char * argv[]) {
     for (good = 0, i = 0; i < length; ++i) {
         Object object = new_Object();
         List_add(objects, object);
-        Object_freeClass(&object);
+        Memory_free(object);
         ++good;
     }
     good1 = 0;
@@ -25,7 +25,7 @@ int main(int argc, char * argv[]) {
     if (objects && good == 128 && good1 == 128 && good2 == 128)
          Console_writeLine("Test10: SUCCESS: new_List({0:uint})", 1, i);
     else Console_writeLine("Test10: ERROR: new_List({0:uint})", 1, i);
-    Object_freeClass(&objects);
+    Memory_free(objects);
 
     return true;
 }

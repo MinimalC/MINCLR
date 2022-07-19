@@ -52,15 +52,14 @@ enum {
     System_Memory_ReferenceState_Used = 11,
 };
 
-/* oldies: */
+/* oldies:
 export void  * System_Memory_alloc(System_size length);
 export void  System_Memory_realloc(void  ** that, System_size oldLength, System_size newLength);
 export void  System_Memory_freeStruct(void *that);
 export void  System_Memory_free(void **thatPtr);
-
+*/
 
 #define inline_System_Memory_equals(VAR0, VAR1, N)  (N == System_Memory_compare(VAR0, VAR1, N))
-#define inline_System_Memory_free(VAR)  System_Memory_free((void **)VAR)
 
 #if defined(using_System)
 #define MemoryType  System_MemoryType
@@ -72,12 +71,7 @@ export void  System_Memory_free(void **thatPtr);
 #define Memory_compare  System_Memory_compare
 #define Memory_equals  System_Memory_equals
 #define Memory_indexof  System_Memory_indexof
-#define Memory_alloc  System_Memory_alloc
-#define Memory_realloc  System_Memory_realloc
-#define Memory_freeStruct  System_Memory_freeStruct
-#define Memory_free  System_Memory_free
 
 #define inline_Memory_equals  inline_System_Memory_equals
-#define inline_Memory_free  inline_System_Memory_free
 #endif
 #endif

@@ -21,15 +21,14 @@ Generic_T0Array base_Generic_T0Array_init(Generic_T0Array that, System_size leng
 
     that->length = length;
 
-    System_size element_size = sizeof(Generic_T0);
-    Generic_T0 (* array)[] =  System_Memory_alloc(length * element_size);
+    Generic_T0 (* array)[] = System_Memory_allocArray(typeof(Generic_T0), length);
     that->value = array;
 
     return that;
 }
 
 void  base_Generic_T0Array_free(Generic_T0Array that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -48,7 +47,7 @@ void  base_Generic_T0Array_set_index(Generic_T0Array that, System_size index, Ge
 
 void  base_Generic_T0Array_resize(Generic_T0Array that, System_size length) {
     System_size element_size = sizeof(Generic_T0);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 

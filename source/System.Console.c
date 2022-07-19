@@ -49,7 +49,7 @@ void System_Console_terminate(const size code)  {
 
     System_Exception exception = System_Exception_get_current();
     if (exception) {
-        System_Object_addReference((System_Object)exception);
+        System_Memory_addReference((System_Object)exception);
         System_Exception_set_current(null);
 
         if (exception->base.type)
@@ -62,7 +62,7 @@ void System_Console_terminate(const size code)  {
 
         Console_writeLineEmpty();
 
-        System_Memory_freeClass((System_Object ref)&exception);
+        System_Memory_free(exception);
     }
 
     System_Syscall_terminate(code);
@@ -99,7 +99,7 @@ void  System_Console_write__char8(char8 character) {
 }
 
 
-void System_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
+void System_Console_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
     System_string8_formatLineTo("ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", (System_IStream)&System_Console_StdErr, 4, expression, functionName, fileName, line);
 }
 

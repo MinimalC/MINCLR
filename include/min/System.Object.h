@@ -24,27 +24,20 @@ typedef fixed struct System_Object {
 
     System_Type  type;
 
-    struct System_Object_bitConfig  bitConfig;
-
-    System_uint  refCount;
-
     System_uint64  sipHash;
+
+    struct System_Object_bitConfig  bitConfig;
 
 } * System_Object;
 
-#define stack_System_Object(TYPE)  (struct System_Object){ .type = typeof(TYPE), }
+#define stack_System_Object(TYPE)  { .type = typeof(TYPE), }
 #define new_System_Object()  (base_System_Object_init((System_Object)System_Memory_allocClass(typeof(System_Object))))
 
 export struct System_Type  System_ObjectType;
 
-export System_Object  System_Memory_allocClass(System_Type type);
-export System_Object  System_Memory_addReference(System_Object that);
-export void  System_Memory_freeClass(System_Object ref thatPtr);
-
 export System_Type  System_Object_get_Type(System_Object that);
 export System_boolean  System_Object_isInstanceof(System_Object that, System_Type type);
 export System_Object  System_Object_asInstanceof(System_Object that, System_Type type);
-export System_Object  System_Object_addReference(System_Object that);
 
 typedef void delegate(System_Object_free)(System_Object that);
 typedef System_Object delegate(System_Object_init)(System_Object that);
@@ -61,21 +54,18 @@ export System_uint64  base_System_Object_getSipHash(System_Object that);
 #define inline_System_Object_get_Type(that)  ((System_Object)that)->type
 #define inline_System_Object_isInstanceof(o,T)  (System_Object_isInstanceof((System_Object)o,typeof(T)))
 #define inline_System_Object_asInstanceof(o,T)  ((T)System_Object_asInstanceof((System_Object)o,typeof(T)))
-#define inline_System_Object_referenceEquals(THAT,OTHER)  (THAT == OTHER)
 
 #if defined(using_System)
 
-
-#define stack_Object  stack_System_Object
 #define Object  System_Object
 #define ObjectType  System_ObjectType
 
+#define stack_Object  stack_System_Object
 #define new_Object  new_System_Object
+
 #define Object_get_Type  System_Object_get_Type
 #define Object_isInstanceof  System_Object_isInstanceof
 #define Object_asInstanceof  System_Object_asInstanceof
-#define Object_referenceEquals  System_Object_referenceEquals
-#define Object_addReference  System_Object_addReference
 
 #define function_Object_init  function_System_Object_init
 #define function_Object_free  function_System_Object_free
@@ -89,8 +79,8 @@ export System_uint64  base_System_Object_getSipHash(System_Object that);
 #define Object_getSipHash  System_Object_getSipHash
 
 #define inline_Object_get_Type  inline_System_Object_get_Type
-#define inline_Object_isType  inline_System_Object_isType
-#define inline_Object_asType  inline_System_Object_asType
+#define inline_Object_isInstanceof  inline_System_Object_isInstanceof
+#define inline_Object_asInstanceof  inline_System_Object_asInstanceof
 #define inline_Object_referenceEquals  inline_System_Object_referenceEquals
 
 #define isInstanceof  inline_Object_isInstanceof

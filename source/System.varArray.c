@@ -21,15 +21,14 @@ System_varArray base_System_varArray_init(System_varArray that, System_size leng
 
     that->length = length;
 
-    System_size element_size = sizeof(System_var);
-    System_var (* array)[] =  System_Memory_alloc(length * element_size);
+    System_var (* array)[] = System_Memory_allocArray(typeof(System_var), length);
     that->value = array;
 
     return that;
 }
 
 void  base_System_varArray_free(System_varArray that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -48,7 +47,7 @@ void  base_System_varArray_set_index(System_varArray that, System_size index, Sy
 
 void  base_System_varArray_resize(System_varArray that, System_size length) {
     System_size element_size = sizeof(System_var);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 
@@ -96,7 +95,7 @@ System_varArrayEnumerator  base_System_varArrayEnumerator_init(System_varArrayEn
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_varArray)System_Object_addReference((System_Object)array);
+    that->array = (System_varArray)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -104,7 +103,7 @@ System_varArrayEnumerator  base_System_varArrayEnumerator_init(System_varArrayEn
 
 void  base_System_varArrayEnumerator_free(System_varArrayEnumerator that) {
 
-    System_Memory_freeClass((System_Object ref)&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);

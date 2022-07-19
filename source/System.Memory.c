@@ -32,7 +32,7 @@ struct System_Type  System_MemoryType = { .base = stack_System_Object(System_Typ
 };
 
 size System_Memory_indexof(var ptr, char8 needle, size count) {
-    assert(count)
+    Console_assert(count);
 
     size i = 0;
     char8 *ptrBytes = (char8 *)ptr;
@@ -47,7 +47,7 @@ size System_Memory_indexof(var ptr, char8 needle, size count) {
 }
 
 void System_Memory_zero(var dest, size n) {
-    assert(n)
+    Console_assert(n);
 
     char8 *destBytes = (char8 *)dest;
     do {
@@ -76,7 +76,7 @@ void System_Memory_move(var src, size n, var dest) {
 }
 
 void System_Memory_set(var dest, char8 src, size length) {
-    assert(length)
+    Console_assert(length);
 
     char8 *destBytes = (char8 *)dest;
     do {
@@ -87,7 +87,7 @@ void System_Memory_set(var dest, char8 src, size length) {
 }
 
 size System_Memory_compare(var ptr0, var ptr1, size length) {
-    assert(length)
+    Console_assert(length);
 
     size count = 0;
     char8 *ptr0Bytes = (char8 *)ptr0;
@@ -207,9 +207,11 @@ System_Console_writeLine("using System_Memory_Page: pageSize {0:uint}, payload {
 
                 /* expect first if this is unfree, move next */
                 if (item->refCount) {
-                    /* assert(item->type == typeof(System_Memory_Header)) */
-                    assert(item->length)
-                    assert(item->elementType)
+#if DEBUG == DEBUG_System_Memory
+                    Console_assert(item->type == typeof(System_Memory_Header);)
+#endif
+                    Console_assert(item->length);
+                    Console_assert(item->elementType);
                     item += item->length;
                     continue;
                 }
@@ -228,12 +230,12 @@ System_Console_writeLine("using System_Memory_Header({0:uint}): length {1:uint},
                     return ((System_var)item + sizeof(struct System_Memory_Header));
                 }
                 /* expect null, if there is not enough space, move next */
-                assert(!item->length)
+                Console_assert(!item->length);
                 item->length = real_size;
                 item->elementType = type;
                 item->refCount = System_Memory_ReferenceState_Used;
 #if DEBUG == DEBUG_System_Memory
-                assert(!item->type)
+                Console_assert(!item->type);
                 item->type = typeof(System_Memory_Header);
 System_Console_writeLine("new System_Memory_Header({0:uint}): length {1:uint}, refCount {2:uint}, elementType {3:string}", 4, index, item->length, item->refCount, item->elementType->name);
 #endif
@@ -245,19 +247,32 @@ System_Console_writeLine("new System_Memory_Header({0:uint}): length {1:uint}, r
     return null; /* TODO */
 }
 
-System_Object  System_Memory_allocClass(System_Type type) {
-	assert(type)
-    assert(type->size);
+System_var  System_Memory_allocClass(System_Type type) {
+	Console_assert(type);
+    Console_assert(type->size);
 
 #if DEBUG == DEBUG_System_Memory
 	Console_writeLine("System_Memory_allocClass: type {0:string}, size {1:uint}", 2, type->name, type->size);
 #endif
 
-	System_Object that = (System_Object)System_Memory_alloc__internal(type, 1);
-	that->type = type;
-	that->bitConfig.isAllocated = true;
-
+	var that = System_Memory_alloc__internal(type, 1);
+    if (System_Type_isAssignableFrom(type, typeof(System_Object))) {
+        System_Object object = (System_Object)that;
+        object->type = type;
+        object->bitConfig.isAllocated = true;
+    }
 	return that;
+}
+
+System_var  System_Memory_allocArray(System_Type type, System_size count) {
+	Console_assert(type);
+    Console_assert(type->size);
+
+#if DEBUG == DEBUG_System_Memory
+	Console_writeLine("System_Memory_allocArray: type {0:string}, size {1:uint}, count {2:uint}", 3, type->name, type->size, count);
+#endif
+
+	return System_Memory_alloc__internal(type, count);
 }
 
 System_Object  System_Memory_addReference(System_Object that) {
@@ -268,58 +283,56 @@ System_Object  System_Memory_addReference(System_Object that) {
     return that;
 }
 
-void  System_Memory_freeClass(System_Object * thatPtr) {
-	assert(thatPtr)
-	Object that = *thatPtr;
-	assert(that)
+void System_Memory_reallocArray(System_var ref that, System_size count) {
+    /* TODO */
+}
 
-	System_Type type = that->type;
+void  System_Memory_freeClass(System_var ref thatPtr) {
+	Console_assert(thatPtr);
+    var that = *thatPtr;
+	Console_assert(that);
+
     System_Memory_Header header = ((System_var)that - sizeof(struct System_Memory_Header));
-
-	assert(header->refCount >= System_Memory_ReferenceState_Used)
-	if (--header->refCount >= System_Memory_ReferenceState_Used) goto return_free;
-
-	header->refCount = System_Memory_ReferenceState_Disposing;
-
-    /* System_Object_free(that): */
-    function_Object_free free = (function_Object_free)Type_getMethod(type, base_System_Object_free);
-	if (free) free(that);
-
-	header->refCount = System_Memory_ReferenceState_Disposed;
-
-	if (that->bitConfig.isAllocated) {
 #if DEBUG == DEBUG_System_Memory
-		if (that->bitConfig.isValueAllocated)
-			Console_writeLine("System_Memory_freeClass: type {0:string}, bitConfig.isAllocated, bitConfig.isValueAllocated", 1, type->name);
-		else
-			Console_writeLine("System_Memory_freeClass: type {0:string}, bitConfig.isAllocated", 1, type->name);
+	Console_assert(header->type == typeof(System_Memory_Header));
 #endif
 
-		/* if MultiThreading, this should be done by System_GC */
+	Console_assert(header->refCount >= System_Memory_ReferenceState_Used);
+	if (--header->refCount >= System_Memory_ReferenceState_Used) goto return_free;
 
-        size length = header->length;
-        System_Memory_zero(header, sizeof(struct System_Memory_Header) + type->size);
-        /* header->type = typeof(System_Memory_Header); */
-        header->length = length;
+    if (System_Type_isAssignableFrom(header->elementType, typeof(System_Object))) {
 
-        /* TODO cleanup here? */
-	}
+        header->refCount = System_Memory_ReferenceState_Disposing;
+
+        Object object = (Object)that;
+        function_Object_free free = (function_Object_free)Type_getMethod(object->type, base_System_Object_free);
+        if (free) free(object);
+
+        header->refCount = System_Memory_ReferenceState_Disposed;
 
 #if DEBUG == DEBUG_System_Memory
-	else {
-		if (that->bitConfig.isValueAllocated)
-			Console_writeLine("System_Memory_freeClass: type {0:string}, bitConfig.isValueAllocated", 1, type->name);
+		if (object->bitConfig.isValueAllocated)
+			Console_writeLine("System_Memory_freeClass: type {0:string}, bitConfig.isValueAllocated", 1, object->type->name);
 		else
-			Console_writeLine("System_Memory_freeClass: type {0:string}", 1, type->name);
+			Console_writeLine("System_Memory_freeClass: type {0:string}", 1, object->type->name);
+#endif
 	}
+
+    /* if MultiThreading, this should be done by System_GC */
+
+    size length = header->length;
+    System_Memory_zero(header, length);
+    header->length = length;
+#if DEBUG == DEBUG_System_Memory
+    header->type = typeof(System_Memory_Header);
 #endif
 
 return_free:
-	*thatPtr = null;
+    *thatPtr = null;
 }
 
 
-/* OLD */
+/* OLD
 
 System_var  System_Memory_alloc(size length) {
 
@@ -342,16 +355,17 @@ void  System_Memory_realloc(void  ** that, size oldLength, size newLength) {
 }
 
 void System_Memory_freeStruct(void *that) {
-    assert(that)
+    Console_assert(that);
     ISO_free(that);
 }
 
 void System_Memory_free(void **thatPtr) {
-    assert(thatPtr)
+    Console_assert(thatPtr);
     void *that = *thatPtr;
-    assert(that)
+    Console_assert(that);
     System_Memory_freeStruct(that);
     *thatPtr = null;
 }
+*/
 
 #endif

@@ -13,15 +13,14 @@ System_uint8Array base_System_uint8Array_init(System_uint8Array that, System_siz
 
     that->length = length;
 
-    System_size element_size = sizeof(System_uint8);
-    System_uint8 (* array)[] =  System_Memory_alloc(length * element_size);
+    System_uint8 (* array)[] = System_Memory_allocArray(typeof(System_uint8), length);
     that->value = array;
 
     return that;
 }
 
 void  base_System_uint8Array_free(System_uint8Array that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -40,7 +39,7 @@ void  base_System_uint8Array_set_index(System_uint8Array that, System_size index
 
 void  base_System_uint8Array_resize(System_uint8Array that, System_size length) {
     System_size element_size = sizeof(System_uint8);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 
@@ -91,15 +90,14 @@ System_uint16Array base_System_uint16Array_init(System_uint16Array that, System_
 
     that->length = length;
 
-    System_size element_size = sizeof(System_uint16);
-    System_uint16 (* array)[] =  System_Memory_alloc(length * element_size);
+    System_uint16 (* array)[] = System_Memory_allocArray(typeof(System_uint16), length);
     that->value = array;
 
     return that;
 }
 
 void  base_System_uint16Array_free(System_uint16Array that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -118,7 +116,7 @@ void  base_System_uint16Array_set_index(System_uint16Array that, System_size ind
 
 void  base_System_uint16Array_resize(System_uint16Array that, System_size length) {
     System_size element_size = sizeof(System_uint16);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 
@@ -169,15 +167,14 @@ System_uint32Array base_System_uint32Array_init(System_uint32Array that, System_
 
     that->length = length;
 
-    System_size element_size = sizeof(System_uint32);
-    System_uint32 (* array)[] =  System_Memory_alloc(length * element_size);
+    System_uint32 (* array)[] = System_Memory_allocArray(typeof(System_uint32), length);
     that->value = array;
 
     return that;
 }
 
 void  base_System_uint32Array_free(System_uint32Array that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -196,7 +193,7 @@ void  base_System_uint32Array_set_index(System_uint32Array that, System_size ind
 
 void  base_System_uint32Array_resize(System_uint32Array that, System_size length) {
     System_size element_size = sizeof(System_uint32);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 
@@ -247,15 +244,14 @@ System_uint64Array base_System_uint64Array_init(System_uint64Array that, System_
 
     that->length = length;
 
-    System_size element_size = sizeof(System_uint64);
-    System_uint64 (* array)[] =  System_Memory_alloc(length * element_size);
+    System_uint64 (* array)[] = System_Memory_allocArray(typeof(System_uint64), length);
     that->value = array;
 
     return that;
 }
 
 void  base_System_uint64Array_free(System_uint64Array that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -274,7 +270,7 @@ void  base_System_uint64Array_set_index(System_uint64Array that, System_size ind
 
 void  base_System_uint64Array_resize(System_uint64Array that, System_size length) {
     System_size element_size = sizeof(System_uint64);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 
@@ -325,15 +321,14 @@ System_int8Array base_System_int8Array_init(System_int8Array that, System_size l
 
     that->length = length;
 
-    System_size element_size = sizeof(System_int8);
-    System_int8 (* array)[] =  System_Memory_alloc(length * element_size);
+    System_int8 (* array)[] = System_Memory_allocArray(typeof(System_int8), length);
     that->value = array;
 
     return that;
 }
 
 void  base_System_int8Array_free(System_int8Array that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -352,7 +347,7 @@ void  base_System_int8Array_set_index(System_int8Array that, System_size index, 
 
 void  base_System_int8Array_resize(System_int8Array that, System_size length) {
     System_size element_size = sizeof(System_int8);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 
@@ -403,15 +398,14 @@ System_int16Array base_System_int16Array_init(System_int16Array that, System_siz
 
     that->length = length;
 
-    System_size element_size = sizeof(System_int16);
-    System_int16 (* array)[] =  System_Memory_alloc(length * element_size);
+    System_int16 (* array)[] = System_Memory_allocArray(typeof(System_int16), length);
     that->value = array;
 
     return that;
 }
 
 void  base_System_int16Array_free(System_int16Array that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -430,7 +424,7 @@ void  base_System_int16Array_set_index(System_int16Array that, System_size index
 
 void  base_System_int16Array_resize(System_int16Array that, System_size length) {
     System_size element_size = sizeof(System_int16);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 
@@ -481,15 +475,14 @@ System_int32Array base_System_int32Array_init(System_int32Array that, System_siz
 
     that->length = length;
 
-    System_size element_size = sizeof(System_int32);
-    System_int32 (* array)[] =  System_Memory_alloc(length * element_size);
+    System_int32 (* array)[] = System_Memory_allocArray(typeof(System_int32), length);
     that->value = array;
 
     return that;
 }
 
 void  base_System_int32Array_free(System_int32Array that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -508,7 +501,7 @@ void  base_System_int32Array_set_index(System_int32Array that, System_size index
 
 void  base_System_int32Array_resize(System_int32Array that, System_size length) {
     System_size element_size = sizeof(System_int32);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 
@@ -559,15 +552,14 @@ System_int64Array base_System_int64Array_init(System_int64Array that, System_siz
 
     that->length = length;
 
-    System_size element_size = sizeof(System_int64);
-    System_int64 (* array)[] =  System_Memory_alloc(length * element_size);
+    System_int64 (* array)[] = System_Memory_allocArray(typeof(System_int64), length);
     that->value = array;
 
     return that;
 }
 
 void  base_System_int64Array_free(System_int64Array that) {
-    System_Memory_free((void **)&that->value);
+    System_Memory_free(that->value);
 
     base_System_Object_free((System_Object)that);
 }
@@ -586,7 +578,7 @@ void  base_System_int64Array_set_index(System_int64Array that, System_size index
 
 void  base_System_int64Array_resize(System_int64Array that, System_size length) {
     System_size element_size = sizeof(System_int64);
-    System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
+    System_Memory_reallocArray((System_var)that->value, length);
     that->length = length;
 }
 
@@ -637,7 +629,7 @@ System_uint8ArrayEnumerator  base_System_uint8ArrayEnumerator_init(System_uint8A
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_uint8Array)System_Object_addReference((System_Object)array);
+    that->array = (System_uint8Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -645,7 +637,7 @@ System_uint8ArrayEnumerator  base_System_uint8ArrayEnumerator_init(System_uint8A
 
 void  base_System_uint8ArrayEnumerator_free(System_uint8ArrayEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);
@@ -703,7 +695,7 @@ System_uint16ArrayEnumerator  base_System_uint16ArrayEnumerator_init(System_uint
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_uint16Array)System_Object_addReference((System_Object)array);
+    that->array = (System_uint16Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -711,7 +703,7 @@ System_uint16ArrayEnumerator  base_System_uint16ArrayEnumerator_init(System_uint
 
 void  base_System_uint16ArrayEnumerator_free(System_uint16ArrayEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);
@@ -769,7 +761,7 @@ System_uint32ArrayEnumerator  base_System_uint32ArrayEnumerator_init(System_uint
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_uint32Array)System_Object_addReference((System_Object)array);
+    that->array = (System_uint32Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -777,7 +769,7 @@ System_uint32ArrayEnumerator  base_System_uint32ArrayEnumerator_init(System_uint
 
 void  base_System_uint32ArrayEnumerator_free(System_uint32ArrayEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);
@@ -835,7 +827,7 @@ System_uint64ArrayEnumerator  base_System_uint64ArrayEnumerator_init(System_uint
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_uint64Array)System_Object_addReference((System_Object)array);
+    that->array = (System_uint64Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -843,7 +835,7 @@ System_uint64ArrayEnumerator  base_System_uint64ArrayEnumerator_init(System_uint
 
 void  base_System_uint64ArrayEnumerator_free(System_uint64ArrayEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);
@@ -901,7 +893,7 @@ System_int8ArrayEnumerator  base_System_int8ArrayEnumerator_init(System_int8Arra
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_int8Array)System_Object_addReference((System_Object)array);
+    that->array = (System_int8Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -909,7 +901,7 @@ System_int8ArrayEnumerator  base_System_int8ArrayEnumerator_init(System_int8Arra
 
 void  base_System_int8ArrayEnumerator_free(System_int8ArrayEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);
@@ -967,7 +959,7 @@ System_int16ArrayEnumerator  base_System_int16ArrayEnumerator_init(System_int16A
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_int16Array)System_Object_addReference((System_Object)array);
+    that->array = (System_int16Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -975,7 +967,7 @@ System_int16ArrayEnumerator  base_System_int16ArrayEnumerator_init(System_int16A
 
 void  base_System_int16ArrayEnumerator_free(System_int16ArrayEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);
@@ -1033,7 +1025,7 @@ System_int32ArrayEnumerator  base_System_int32ArrayEnumerator_init(System_int32A
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_int32Array)System_Object_addReference((System_Object)array);
+    that->array = (System_int32Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -1041,7 +1033,7 @@ System_int32ArrayEnumerator  base_System_int32ArrayEnumerator_init(System_int32A
 
 void  base_System_int32ArrayEnumerator_free(System_int32ArrayEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);
@@ -1099,7 +1091,7 @@ System_int64ArrayEnumerator  base_System_int64ArrayEnumerator_init(System_int64A
 
     if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
-    that->array = (System_int64Array)System_Object_addReference((System_Object)array);
+    that->array = (System_int64Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
 
     return that;
@@ -1107,7 +1099,7 @@ System_int64ArrayEnumerator  base_System_int64ArrayEnumerator_init(System_int64A
 
 void  base_System_int64ArrayEnumerator_free(System_int64ArrayEnumerator that) {
 
-    inline_System_Object_freeClass(&that->array);
+    System_Memory_free(that->array);
     that->index = -2;
 
     base_System_Object_free((System_Object)that);

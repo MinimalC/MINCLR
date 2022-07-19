@@ -16,78 +16,23 @@
 
 /*# System_Object #*/
 
-/* static class System_Object */
-
-System_Object  System_Object_allocClass(System_Type type) {
-	assert(type)
-    assert(type->size);
-
-	size size = type->size;
-
-#if DEBUG == DEBUG_System_Object
-	Console_writeLine("System_Object_allocClass {0:string}: .size: {1:uint}", 2, type->name->value, size);
-#endif
-
-	System_Object that = Memory_alloc(size);
-	that->type = type;
-	that->bitConfig.isAllocated = true;
-	that->refCount = 4;
-
-	return that;
+Type  System_Object_get_Type(Object that) {
+    Console_assert(that);
+    Console_assert(that->type);
+    return that->type;
 }
 
-void  System_Object_freeClass(System_Object * thatPtr) {
-	assert(thatPtr)
-	Object that = *thatPtr;
-	assert(that)
-
-	System_Type type = System_Object_get_Type(that);
-
-	if (0 == that->refCount) {
-        /* this is stack aligned */
-#if DEBUG == DEBUG_System_Object
-	Console_writeLine("{0:string}_freeClass: .size: {1:int}B ... static", 2, type->name->value, type->size);
-#endif
-		goto return_free;
-	}
-	assert(that->refCount > 3)
-	if (--that->refCount > 3) goto return_free;
-
-	that->refCount = 2;
-
-    /* System_Object_free(that): */
-    function_Object_free free = (function_Object_free)Type_getMethod(type, base_System_Object_free);
-	if (free) free(that);
-
-	that->refCount = 1;
-
-	if (that->bitConfig.isAllocated) {
-#if DEBUG == DEBUG_System_Object
-		if (that->bitConfig.isValueAllocated)
-			Console_writeLine("{0:string}_freeClass: .size: {1:int}B, .bitConfig.isAllocated, .bitConfig.isValueAllocated", 2, type->name->value, type->size);
-		else
-			Console_writeLine("{0:string}_freeClass: .size: {1:int}B, .bitConfig.isAllocated", 2, type->name->value, type->size);
-#endif
-
-		/* TODO: if MultiThreading, this should be done by System_GC */
-		Memory_free((void **)thatPtr);
-	}
-
-#if DEBUG == DEBUG_System_Object
-	else {
-		if (that->bitConfig.isValueAllocated)
-			Console_writeLine("{0:string}_freeClass: .size: {1:int}B, .bitConfig.isValueAllocated", 2, type->name->value, type->size);
-		else
-			Console_writeLine("{0:string}_freeClass: .size: {1:int}B", 2, type->name->value, type->size);
-	}
-#endif
-
-return_free:
-	*thatPtr = null;
+System_boolean  System_Object_isInstanceof(System_Object that, System_Type type) {
+    Console_assert(that);
+    Console_assert(type);
+    return System_Type_isAssignableFrom(System_Object_get_Type(that), type);
 }
 
-
-/* class System_Object */
+System_Object  System_Object_asInstanceof(System_Object that, System_Type type) {
+    Console_assert(that);
+    Console_assert(type);
+    return System_Object_isInstanceof(that, type) ? that : null;
+}
 
 void  base_System_Object_free(Object that) {
 	unused(that)
@@ -104,28 +49,6 @@ Object  base_System_Object_init(Object that) {
 #endif
 
     return that;
-}
-
-Object  System_Object_addReference(Object that) {
-	return ((((Object)that)->refCount == 0) ? that : (++(((Object)that)->refCount), that));
-}
-
-Type  System_Object_get_Type(Object that) {
-    assert(that)
-    assert(that->type)
-    return that->type;
-}
-
-System_boolean  System_Object_isInstanceof(System_Object that, System_Type type) {
-    assert(that)
-    assert(type)
-    return System_Type_isAssignableFrom(System_Object_get_Type(that), type);
-}
-
-System_Object  System_Object_asInstanceof(System_Object that, System_Type type) {
-    assert(that)
-    assert(type)
-    return System_Object_isInstanceof(that, type) ? that : null;
 }
 
 System_uint64 base_System_Object_getSipHash(System_Object that) {

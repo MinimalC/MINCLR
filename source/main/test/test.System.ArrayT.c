@@ -28,7 +28,7 @@ int main(int argc, char * argv[]) {
     if (uint8s && good == 64 /* && good1 == 64 */ && good2 == 64)
          Console_writeLine("Test01: SUCCESS: uint8Array({0:uint})", 1, i);
     else Console_writeLine("Test01: ERROR: uint8Array({0:uint), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&uint8s);
+    Memory_free(uint8s);
 
     uint16Array uint16s = new_uint16Array(64);
     length = uint16Array_get_Length(uint16s);
@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
     if (uint16s && good == i)
          Console_writeLine("Test02: SUCCESS: uint16Array({0:uint})", 1, i);
     else Console_writeLine("Test02: ERROR: uint16Array({0:uint}), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&uint16s);
+    Memory_free(uint16s);
 
     uint32Array uint32s = new_uint32Array(64);
     length = uint32Array_get_Length(uint32s);
@@ -57,7 +57,7 @@ int main(int argc, char * argv[]) {
     }
     if (uint32s && good == i) Console_writeLine("Test03: SUCCESS: uint32Array({0:uint})", 1, i);
     else Console_writeLine("Test03: ERROR: uint32Array({0:uint}), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&uint32s);
+    Memory_free(uint32s);
 
     uint64Array uint64s = new_uint64Array(64);
     length = uint64Array_get_Length(uint64s);
@@ -71,7 +71,7 @@ int main(int argc, char * argv[]) {
     }
     if (uint64s && good == i) Console_writeLine("Test04: SUCCESS: uint64Array({0:uint})", 1, i);
     else Console_writeLine("Test04: ERROR: uint64Array({0:uint}), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&uint64s);
+    Memory_free(uint64s);
 
     int8Array int8s = new_int8Array(64);
     length = int8Array_get_Length(int8s);
@@ -85,7 +85,7 @@ int main(int argc, char * argv[]) {
     }
     if (int8s && good == i) Console_writeLine("Test05: SUCCESS: int8Array({0:uint})", 1, i);
     else Console_writeLine("Test05: ERROR: int8Array({0:uint}), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&int8s);
+    Memory_free(int8s);
 
     int16Array int16s = new_int16Array(64);
     length = int16Array_get_Length(int16s);
@@ -99,7 +99,7 @@ int main(int argc, char * argv[]) {
     }
     if (int16s && good == i) Console_writeLine("Test06: SUCCESS: int16Array({0:uint})", 1, i);
     else Console_writeLine("Test06: ERROR: int16Array({0:uint}), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&int16s);
+    Memory_free(int16s);
 
     int32Array int32s = new_int32Array(64);
     length = int32Array_get_Length(int32s);
@@ -113,7 +113,7 @@ int main(int argc, char * argv[]) {
     }
     if (int32s && good == i) Console_writeLine("Test07: SUCCESS: int32Array({0:uint})", 1, i);
     else Console_writeLine("Test07: ERROR: int32Array({0:uint}), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&int32s);
+    Memory_free(int32s);
 
     int64Array int64s = new_int64Array(64);
     length = int64Array_get_Length(int64s);
@@ -127,7 +127,7 @@ int main(int argc, char * argv[]) {
     }
     if (int64s && good == i) Console_writeLine("Test08: SUCCESS: int64Array({0:uint})", 1, i);
     else Console_writeLine("Test08: ERROR: int64Array({0:uint}), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&int64s);
+    Memory_free(int64s);
 
     string8Array string8s = new_string8Array(64);
     length = string8Array_get_Length(string8s);
@@ -141,19 +141,19 @@ int main(int argc, char * argv[]) {
     }
     if (string8s && good == i) Console_writeLine("Test09: SUCCESS: string8Array({0:uint})", 1, i);
     else Console_writeLine("Test09: ERROR: string8Array({0:uint}), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&string8s);
+    Memory_free(string8s);
 
     /* Test11: Use System_Object with for and foreach */
     Array Objects = new_Array(64);
     length = Array_get_Length(Objects);
     for (good = 0, i = 0; i < length; ++i) {
-        Object Object = Array_get_index(Objects, i);
-        if (Object) continue;
-        Object = new_Object();
-        Array_set_index(Objects, i, Object);
-        Object_freeClass(&Object);
+        Object object = Array_get_index(Objects, i);
+        if (object) continue;
+        object = new_Object();
+        Array_set_index(Objects, i, object);
+        Memory_free(object);
         Object = Array_get_index(Objects, i);
-        if (!Object || !System_Object_get_Type(Object)) continue;
+        if (!object || !System_Object_get_Type(object)) continue;
         ++good;
     }
     good1 = 0;
@@ -166,7 +166,7 @@ int main(int argc, char * argv[]) {
     })
     if (Objects && good == 64 && good1 == 64 && good2 == 64) Console_writeLine("Test10: SUCCESS: new_Array({0:uint})", 1, i);
     else Console_writeLine("Test10: ERROR: new_Array({0:uint}), {1:uint} failed", 2, i, i - good);
-    Object_freeClass(&Objects);
+    Memory_free(Objects);
 
     return true;
 }

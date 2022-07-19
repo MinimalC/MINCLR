@@ -17,7 +17,7 @@ typedef fixed struct System_uint8Array {
 }  * System_uint8Array;
 
 #define stack_System_uint8Array(LENGTH)  { .base = stack_System_Object(System_uint8Array), .length = LENGTH }
-#define new_System_uint8Array(LENGTH)  (base_System_uint8Array_init((System_uint8Array)System_Memory_allocClass(System_uint8Array), LENGTH))
+#define new_System_uint8Array(LENGTH)  (base_System_uint8Array_init((System_uint8Array)System_Memory_allocClass(typeof(System_uint8Array)), LENGTH))
 
 export struct System_Type  System_uint8ArrayType;
 
@@ -95,7 +95,7 @@ typedef fixed struct System_uint16Array {
 }  * System_uint16Array;
 
 #define stack_System_uint16Array(LENGTH)  { .base = stack_System_Object(System_uint16Array), .length = LENGTH }
-#define new_System_uint16Array(LENGTH)  (base_System_uint16Array_init((System_uint16Array)System_Memory_allocClass(System_uint16Array), LENGTH))
+#define new_System_uint16Array(LENGTH)  (base_System_uint16Array_init((System_uint16Array)System_Memory_allocClass(typeof(System_uint16Array)), LENGTH))
 
 export struct System_Type  System_uint16ArrayType;
 
@@ -173,7 +173,7 @@ typedef fixed struct System_uint32Array {
 }  * System_uint32Array;
 
 #define stack_System_uint32Array(LENGTH)  { .base = stack_System_Object(System_uint32Array), .length = LENGTH }
-#define new_System_uint32Array(LENGTH)  (base_System_uint32Array_init((System_uint32Array)System_Memory_allocClass(System_uint32Array), LENGTH))
+#define new_System_uint32Array(LENGTH)  (base_System_uint32Array_init((System_uint32Array)System_Memory_allocClass(typeof(System_uint32Array)), LENGTH))
 
 export struct System_Type  System_uint32ArrayType;
 
@@ -251,7 +251,7 @@ typedef fixed struct System_uint64Array {
 }  * System_uint64Array;
 
 #define stack_System_uint64Array(LENGTH)  { .base = stack_System_Object(System_uint64Array), .length = LENGTH }
-#define new_System_uint64Array(LENGTH)  (base_System_uint64Array_init((System_uint64Array)System_Memory_allocClass(System_uint64Array), LENGTH))
+#define new_System_uint64Array(LENGTH)  (base_System_uint64Array_init((System_uint64Array)System_Memory_allocClass(typeof(System_uint64Array)), LENGTH))
 
 export struct System_Type  System_uint64ArrayType;
 
@@ -329,7 +329,7 @@ typedef fixed struct System_int8Array {
 }  * System_int8Array;
 
 #define stack_System_int8Array(LENGTH)  { .base = stack_System_Object(System_int8Array), .length = LENGTH }
-#define new_System_int8Array(LENGTH)  (base_System_int8Array_init((System_int8Array)System_Memory_allocClass(System_int8Array), LENGTH))
+#define new_System_int8Array(LENGTH)  (base_System_int8Array_init((System_int8Array)System_Memory_allocClass(typeof(System_int8Array)), LENGTH))
 
 export struct System_Type  System_int8ArrayType;
 
@@ -407,7 +407,7 @@ typedef fixed struct System_int16Array {
 }  * System_int16Array;
 
 #define stack_System_int16Array(LENGTH)  { .base = stack_System_Object(System_int16Array), .length = LENGTH }
-#define new_System_int16Array(LENGTH)  (base_System_int16Array_init((System_int16Array)System_Memory_allocClass(System_int16Array), LENGTH))
+#define new_System_int16Array(LENGTH)  (base_System_int16Array_init((System_int16Array)System_Memory_allocClass(typeof(System_int16Array)), LENGTH))
 
 export struct System_Type  System_int16ArrayType;
 
@@ -485,7 +485,7 @@ typedef fixed struct System_int32Array {
 }  * System_int32Array;
 
 #define stack_System_int32Array(LENGTH)  { .base = stack_System_Object(System_int32Array), .length = LENGTH }
-#define new_System_int32Array(LENGTH)  (base_System_int32Array_init((System_int32Array)System_Memory_allocClass(System_int32Array), LENGTH))
+#define new_System_int32Array(LENGTH)  (base_System_int32Array_init((System_int32Array)System_Memory_allocClass(typeof(System_int32Array)), LENGTH))
 
 export struct System_Type  System_int32ArrayType;
 
@@ -563,7 +563,7 @@ typedef fixed struct System_int64Array {
 }  * System_int64Array;
 
 #define stack_System_int64Array(LENGTH)  { .base = stack_System_Object(System_int64Array), .length = LENGTH }
-#define new_System_int64Array(LENGTH)  (base_System_int64Array_init((System_int64Array)System_Memory_allocClass(System_int64Array), LENGTH))
+#define new_System_int64Array(LENGTH)  (base_System_int64Array_init((System_int64Array)System_Memory_allocClass(typeof(System_int64Array)), LENGTH))
 
 export struct System_Type  System_int64ArrayType;
 

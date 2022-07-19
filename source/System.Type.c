@@ -14,7 +14,7 @@
 /*# System_enum #*/
 
 string8 System_enum_getName(Type type, intptr value) {
-    assert(type)
+    Console_assert(type);
 
     for (size i = 0; i < type->fields.length; ++i) {
 
@@ -96,8 +96,8 @@ System_var System_Type_getMethod(System_Type  that, System_var fun) {
 }
 
 System_var System_Type_trygetMethod(System_Type  that, System_var fun) {
-    System_assert(that)
-    System_assert(fun)
+    System_Console_assert(that);
+    System_Console_assert(fun);
 
     System_Type_FunctionInfo info;
     for (System_size f = 0; f < that->functions.length; ++f) {
@@ -111,8 +111,8 @@ System_var System_Type_trygetMethod(System_Type  that, System_var fun) {
 }
 
 System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other) {
-    assert(that)
-    assert(other)
+    Console_assert(that);
+    Console_assert(other);
 
     System_Type they = that;
     System_Type_InterfaceInfo info;

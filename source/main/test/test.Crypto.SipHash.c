@@ -45,7 +45,7 @@ int main(int argc, char * argv[]) {
         Console_writeLine("Test03: ERROR: System_Object_getSipHash: 0x{0:uint:hex}", 1, hash_value);
     else
         Console_writeLine("Test03: SUCCESS: System_Object_getSipHash: 0x{0:uint:hex}", 1, hash_value);
-    System_Memory_freeClass((System_Object ref)&object0);
+    Memory_free(object0);
 
     return true;
 }
