@@ -156,38 +156,29 @@ STRING8 WARNING = "WARNING  ";
 void  System_string8_formatTo(string8 format, IStream stream, ...) {
     arguments args;
     arguments_start(args, stream);
-    System_string8_formatSuffixTo__arguments(format, 0, (System_IStream)&System_Console_StdOut, args);
+    System_string8_formatEndTo__arguments(format, 0, (System_IStream)&System_Console_StdOut, args);
     arguments_end(args);
 }
 
 void  System_string8_formatLineTo(string8 format, IStream stream, ...) {
     arguments args;
     arguments_start(args, stream);
-    System_string8_formatSuffixTo__arguments(format, '\n', (System_IStream)&System_Console_StdOut, args);
+    System_string8_formatEndTo__arguments(format, '\n', (System_IStream)&System_Console_StdOut, args);
     arguments_end(args);
 }
 
-void  System_string8_formatSuffixTo(string8 format, char8 suffix, IStream stream, ...) {
+void  System_string8_formatEndTo(string8 format, char8 suffix, IStream stream, ...) {
     arguments args;
     arguments_start(args, stream);
-    System_string8_formatSuffixTo__arguments(format, suffix, (System_IStream)&System_Console_StdOut, args);
+    System_string8_formatEndTo__arguments(format, suffix, (System_IStream)&System_Console_StdOut, args);
     arguments_end(args);
 }
 
-void  System_string8_formatSuffixTo__arguments(string8 format, char8 suffix, IStream stream, arguments args) {
-    size argc = !args ? 0 : argument(args, size); /* this is expecting a size as first argument or null */
-    if (argc > 16) { argc = 0;
-#if DEBUG == DEBUG_System_string8_format
-        WARNING[7] = '0';
-        System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
-#endif
-    }
-    var argv[16] = { 0 };
-    size i;
-    for (i = 0; i < argc; ++i) {
-        argv[i] = argument(args, var);
-    }
+void  System_string8_formatEndTo__arguments(string8 format, char8 suffix, IStream stream, arguments args) {
+    var argv[System_arguments_Limit_VALUE] = { 0 };
+    size argc = stack_System_arguments_get(args, argv);
 
+    size i;
     char8  message[65535] = { 0 };
     char8  scratch[100] = { 0 };
     for (i = 0; i < sizeof(message); ++i) message[i] = 0;

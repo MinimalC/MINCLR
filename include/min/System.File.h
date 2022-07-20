@@ -5,6 +5,9 @@
 #if !defined(have_System_IStream)
 #include "System.IStream.h"
 #endif
+#if !defined(have_System_FileInfo)
+#include "System.FileInfo.h"
+#endif
 #if !defined(have_System_File)
 #define have_System_File
 
@@ -57,13 +60,14 @@ typedef System_var  System_File_special;
 #define System_File_special_STDIN   ((System_var)0)
 #define System_File_special_STDOUT  ((System_var)1)
 #define System_File_special_STDERR  ((System_var)2)
-#define System_File_special_CurrentWorkingDirectory  ((System_var)-100)
 
 
 typedef fixed struct System_File {
 	struct System_Object  base;
 
     System_var filePtr;
+
+    System_FileInfo info;
 
     System_size position;
 

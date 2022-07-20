@@ -28,16 +28,21 @@ void  base_System_File_free(File that) {
 }
 
 File  System_File_open(string8 filename, File_mode flags) {
+
 /*  System_var filePtr = ISO_fopen(filename, modes); */
     System_var filePtr = System_Syscall_openat((System_var)System_File_special_CurrentWorkingDirectory, filename,
         System_File_mode_noControllingTerminal | flags,
         System_File_permission_UserReadWrite | System_File_permission_GroupReadWrite | System_File_permission_EverybodyRead);
 
-    /* DEBUG Console_writeLine("ERROR: System_File_open, flags: {0:uint:hex}", 1, flags); */
-    if (!filePtr) return null;
+    System_error error = System_Syscall_get_error();
+    if (error || !filePtr) { /* TODO */
+        return null;
+    }
 
     File that = new_System_File();
     that->filePtr = filePtr;
+    System_FileInfo info = new_System_FileInfo(filename);
+    that->info = (System_FileInfo)System_Memory_addReference((System_Object)info);
     return that;
 }
 

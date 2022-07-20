@@ -7,6 +7,9 @@
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>
 #endif
+#if !defined(have_System_Exception)
+#include <min/System.Exception.h>
+#endif
 #if !defined(have_System_string8)
 #include <min/System.string8.h>
 #endif
@@ -75,27 +78,27 @@ void  System_Console_write__string8(string8 string) {
 void  System_Console_write(string8 format, ...) {
     arguments args;
     arguments_start(args, format);
-    System_string8_formatSuffixTo__arguments(format, null, (System_IStream)&System_Console_StdOut, args);
+    System_string8_formatEndTo__arguments(format, null, (System_IStream)&System_Console_StdOut, args);
     arguments_end(args);
 }
 
 void  System_Console_writeLineEmpty() {
-    System_string8_formatSuffixTo__arguments(string8_Empty, '\n', (System_IStream)&System_Console_StdOut, null);
+    System_string8_formatEndTo__arguments(string8_Empty, '\n', (System_IStream)&System_Console_StdOut, null);
 }
 
 void  System_Console_writeLine__string8(string8 string) {
-    System_string8_formatSuffixTo__arguments(string, '\n', (System_IStream)&System_Console_StdOut, null);
+    System_string8_formatEndTo__arguments(string, '\n', (System_IStream)&System_Console_StdOut, null);
 }
 
 void  System_Console_writeLine(string8 format, ...) {
     arguments args;
     arguments_start(args, format);
-    System_string8_formatSuffixTo__arguments(format, '\n', (System_IStream)&System_Console_StdOut, args);
+    System_string8_formatEndTo__arguments(format, '\n', (System_IStream)&System_Console_StdOut, args);
     arguments_end(args);
 }
 
 void  System_Console_write__char8(char8 character) {
-    System_string8_formatSuffixTo__arguments("", character, (System_IStream)&System_Console_StdOut, null);
+    System_string8_formatEndTo__arguments("", character, (System_IStream)&System_Console_StdOut, null);
 }
 
 

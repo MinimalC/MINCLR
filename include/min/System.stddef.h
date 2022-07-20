@@ -1,4 +1,7 @@
 /*  Gemeinfrei. Public Domain. */
+#if !defined(have_System_asm)
+#include "System.asm.h"
+#endif
 #if !defined(have_System_stddef)
 #define have_System_stddef
 

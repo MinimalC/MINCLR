@@ -200,46 +200,46 @@ System_Console_writeLine("using System_Memory_Page: pageSize {0:uint}, payload {
 
             /* NOW lookup for freedom */
 
-            System_Memory_Header item = (System_Memory_Header)((System_var)mem64h + sizeof(struct System_Memory_Page));
-
             size index = 0;
-            while (++index, (System_var)item < ((System_var)mem64h + (1048576 - mem64h->payload))) {
+            var position = ((System_var)mem64h + sizeof(struct System_Memory_Page));
+            while (++index, position < ((System_var)mem64h + (1048576 - mem64h->payload))) {
+                System_Memory_Header header = (System_Memory_Header)position;
 
                 /* expect first if this is unfree, move next */
-                if (item->refCount) {
+                if (header->refCount) {
 #if DEBUG == DEBUG_System_Memory
-                    Console_assert(item->type == typeof(System_Memory_Header);)
+                    Console_assert(header->type == typeof(System_Memory_Header);)
 #endif
-                    Console_assert(item->length);
-                    Console_assert(item->elementType);
-                    item += item->length;
+                    Console_assert(header->length);
+                    Console_assert(header->elementType);
+                    position += header->length;
                     continue;
                 }
                 /* expect second if this is free, if there is not enough space, move next */
-                if (item->length && !item->elementType) {
-                    if (item->length != real_size && item->length < real_size + sizeof(struct System_Memory_Header)) {
-                        item += item->length;
+                if (header->length && !header->elementType) {
+                    if (header->length != real_size && header->length < real_size + sizeof(struct System_Memory_Header)) {
+                        position += header->length;
                         continue;
                     }
                     /* create a new free header for empty space, change lengths */
-                    item->elementType = type;
-                    item->refCount = System_Memory_ReferenceState_Used;
+                    header->elementType = type;
+                    header->refCount = System_Memory_ReferenceState_Used;
 #if DEBUG == DEBUG_System_Memory
-System_Console_writeLine("using System_Memory_Header({0:uint}): length {1:uint}, refCount {2:uint}, elementType {3:string}", 4, index, item->length, item->refCount, item->elementType->name);
+System_Console_writeLine("using System_Memory_Header({0:uint}): length {1:uint}, refCount {2:uint}, elementType {3:string}", 4, index, header->length, header->refCount, header->elementType->name);
 #endif
-                    return ((System_var)item + sizeof(struct System_Memory_Header));
+                    return (position + sizeof(struct System_Memory_Header));
                 }
                 /* expect null, if there is not enough space, move next */
-                Console_assert(!item->length);
-                item->length = real_size;
-                item->elementType = type;
-                item->refCount = System_Memory_ReferenceState_Used;
+                Console_assert(!header->length);
+                header->length = real_size;
+                header->elementType = type;
+                header->refCount = System_Memory_ReferenceState_Used;
 #if DEBUG == DEBUG_System_Memory
-                Console_assert(!item->type);
-                item->type = typeof(System_Memory_Header);
-System_Console_writeLine("new System_Memory_Header({0:uint}): length {1:uint}, refCount {2:uint}, elementType {3:string}", 4, index, item->length, item->refCount, item->elementType->name);
+                Console_assert(!header->type);
+                header->type = typeof(System_Memory_Header);
+System_Console_writeLine("new System_Memory_Header({0:uint}): length {1:uint}, refCount {2:uint}, elementType {3:string}", 4, index, header->length, header->refCount, header->elementType->name);
 #endif
-                return ((System_var)item + sizeof(struct System_Memory_Header));
+                return (position + sizeof(struct System_Memory_Header));
             }
         }
     }

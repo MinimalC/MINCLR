@@ -55,8 +55,8 @@ export System_boolean  System_string8_isNullOrEmpty(System_string8 that);
 //export System_boolean  System_string8_startsWith(System_string8 that, String_string8 other);
 export void  System_string8_formatTo(System_string8 that, System_IStream stream, ...);
 export void  System_string8_formatLineTo(System_string8 that, System_IStream stream, ...);
-export void  System_string8_formatSuffixTo(System_string8 that, System_char8 suffix, System_IStream stream, ...);
-export void  System_string8_formatSuffixTo__arguments(System_string8 that, System_char8 suffix, System_IStream stream, System_arguments args);
+export void  System_string8_formatEndTo(System_string8 that, System_char8 suffix, System_IStream stream, ...);
+export void  System_string8_formatEndTo__arguments(System_string8 that, System_char8 suffix, System_IStream stream, System_arguments args);
 
 #define inline_System_string8_equals(chars0, chars1)  (0 == System_string8_compare(chars0, chars1))
 #define inline_System_string8_equalsSubstring(chars0, chars1, n)  (0 == System_string8_compareSubstring(chars0, chars1, n))
@@ -78,7 +78,7 @@ export void  System_string8_formatSuffixTo__arguments(System_string8 that, Syste
 #define string8_isNullOrEmpty  System_string8_isNullOrEmpty
 #define string8_formatTo  System_string8_formatTo
 #define string8_formatLineTo  System_string8_formatLineTo
-#define string8_formatSuffixTo  System_string8_formatSuffixTo
-#define string8_formatSuffixTo__arguments  System_string8_formatSuffixTo__arguments
+#define string8_formatEndTo  System_string8_formatEndTo
+#define string8_formatEndTo__arguments  System_string8_formatEndTo__arguments
 #endif
 #endif

@@ -5,8 +5,8 @@
 #if !defined(have_System_FileInfo)
 #include <min/System.FileInfo.h>
 #endif
-#if !defined(have_System_File)
-#include <min/System.File.h>
+#if !defined(have_System_Syscall)
+#include <min/System.Syscall.h>
 #endif
 
 /*# System_FileInfo #*/
@@ -14,10 +14,15 @@
 System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_string8 fileName) {
     base_System_Object_init((System_Object)that);
 
+    that->name = fileName;
+
     struct System_Syscall_stat stat;
     System_Syscall_fstatat(System_File_special_CurrentWorkingDirectory, fileName, &stat, 0);
 
-    that->name = fileName;
+    System_error error = System_Syscall_get_error();
+    if (error) { /* TODO */
+        return that;
+    }
 
     that->deviceId = stat.deviceId;
     that->iNodeId = stat.iNodeId;

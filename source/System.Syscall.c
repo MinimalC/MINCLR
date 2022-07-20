@@ -67,12 +67,16 @@ struct System_Type  System_SyscallType = { .base = { .type = typeof(System_Type)
     .name = "System.Syscall",
 };
 
-void System_Syscall_error(const System_error error) {
-    if (!error) return;
+System_error System_Syscall_error = 0;
 
-    struct System_Exception exception = stack_System_Exception();
-    exception.error = error;
-    System_Exception_throw(&exception);
+void System_Syscall_set_error(const System_error error) {
+    System_Syscall_error = error;
+}
+
+System_error System_Syscall_get_error() {
+    System_error error = System_Syscall_error;
+    System_Syscall_error = 0;
+    return error;
 }
 
 void  System_Syscall_terminate(System_size code)  {

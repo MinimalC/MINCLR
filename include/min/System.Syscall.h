@@ -2,8 +2,8 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
-#if !defined(have_System_Exception)
-#include "System.Exception.h"
+#if !defined(have_System_error)
+#include "System.error.h"
 #endif
 #if !defined(have_System_Syscall_command)
 #include "System.Syscall.command.h"
@@ -31,7 +31,10 @@ import System_intptr  System_Syscall_call06(System_Syscall_command number, Syste
 #define Syscall_call06  System_Syscall_call06
 #endif
 
-export void  System_Syscall_error(System_error error);
+export thread System_error System_Syscall_error;
+
+export void  System_Syscall_set_error(System_error error);
+export System_error  System_Syscall_get_error();
 export void  System_Syscall_terminate(System_size code)  noreturn;
 
 

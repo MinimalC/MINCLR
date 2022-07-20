@@ -24,9 +24,9 @@ typedef fixed struct System_Object {
 
     System_Type  type;
 
-    System_uint64  sipHash;
-
     struct System_Object_bitConfig  bitConfig;
+
+    System_uint64  sipHash;
 
 } * System_Object;
 
