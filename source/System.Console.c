@@ -72,7 +72,15 @@ void System_Console_terminate(const size code)  {
 }
 
 void  System_Console_write__string8(string8 string) {
-    System_File_write(&System_Console_StdOut, string8_get_Length(string), string);
+    System_File_write__string8(&System_Console_StdOut, string, string8_get_Length(string));
+}
+
+void  System_Console_write__char8(char8 character) {
+    System_File_write__string8(&System_Console_StdOut, &character, 1);
+}
+
+void  System_Console_writeLineEmpty() {
+    System_File_write__string8(&System_Console_StdOut, "\n", 1);
 }
 
 void  System_Console_write(string8 format, ...) {
@@ -81,15 +89,11 @@ void  System_Console_write(string8 format, ...) {
     var argv[System_arguments_Limit_VALUE] = { 0 };
     size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    System_IStream_formatEnd__arguments((System_IStream)&System_Console_StdOut, format, 0, argc, argv);
-}
-
-void  System_Console_writeLineEmpty() {
-    System_File_write(&System_Console_StdOut, 1, "\n");
+    System_IStream_writeEnd__arguments((System_IStream)&System_Console_StdOut, format, 0, argc, argv);
 }
 
 void  System_Console_writeLine__string8(string8 string) {
-    System_IStream_formatLine((System_IStream)&System_Console_StdOut, string);
+    System_IStream_writeLine((System_IStream)&System_Console_StdOut, string);
 }
 
 void  System_Console_writeLine(string8 format, ...) {
@@ -98,21 +102,7 @@ void  System_Console_writeLine(string8 format, ...) {
     var argv[System_arguments_Limit_VALUE] = { 0 };
     size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    System_IStream_formatEnd__arguments((System_IStream)&System_Console_StdOut, format, '\n', argc, argv);
-}
-
-void  System_Console_write__char8(char8 character) {
-    System_File_write(&System_Console_StdOut, 1, &character);
-}
-
-
-void System_Console_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
-    System_IStream_formatLine((System_IStream)&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", 4, expression, functionName, fileName, line);
-}
-
-void System_Console_debug__format(const System_string8 expression, const System_string8 message, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
-    /* TODO: Prepend __VA_ARGS__ ARGUMENTS, Append expression, message etc. */
-    System_IStream_formatLine((System_IStream)&System_Console_StdErr, "DEBUG: {0:string}: {1:string} in function {2:string} in {3:string}:{4:int}", 5, expression, message, functionName, fileName, line);
+    System_IStream_writeEnd__arguments((System_IStream)&System_Console_StdOut, format, '\n', argc, argv);
 }
 
 
@@ -163,6 +153,20 @@ void System_Console_writeHex(size length, void  * value) {
             Console_write__char8('\n');
         }
     }
+}
+
+void System_Console_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
+    System_IStream_writeLine((System_IStream)&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", 4, expression, functionName, fileName, line);
+}
+
+#undef System_Console_debug
+void System_Console_debug(const System_string8 message, ...) {
+    arguments args;
+    arguments_start(args, message);
+    var argv[System_arguments_Limit_VALUE] = { 0 };
+    size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    System_IStream_writeLine__arguments((System_IStream)&System_Console_StdErr, message, argc, argv);
 }
 
 #endif

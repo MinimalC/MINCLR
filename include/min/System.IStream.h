@@ -24,26 +24,28 @@ typedef fixed struct System_IStream { } * System_IStream;
 
 export struct System_Type  System_IStreamType;
 
-export void  System_IStream_format(System_IStream stream, System_string8 format, ...);
-export void  System_IStream_formatLine(System_IStream stream, System_string8 format, ...);
-export void  System_IStream_formatEnd(System_IStream stream, System_string8 format, System_char8 suffix, ...);
-export void  System_IStream_formatEnd__arguments(System_IStream stream, System_string8 format, System_char8 suffix, System_size argc, System_var argv[]);
+export void  System_IStream_write(System_IStream stream, System_string8 format, ...);
+export void  System_IStream_write__arguments(System_IStream stream, System_string8 format, System_size argc, System_var argv[]);
+export void  System_IStream_writeLine(System_IStream stream, System_string8 format, ...);
+export void  System_IStream_writeLine__arguments(System_IStream stream, System_string8 format, System_size argc, System_var argv[]);
+export void  System_IStream_writeEnd(System_IStream stream, System_string8 format, System_char8 suffix, ...);
+export void  System_IStream_writeEnd__arguments(System_IStream stream, System_string8 format, System_char8 suffix, System_size argc, System_var argv[]);
 
-typedef void  delegate(System_IStream_write)(System_IStream that, System_size count, System_string8 value);
+typedef void  delegate(System_IStream_write__string8)(System_IStream that, System_string8 value, System_size count);
 typedef void  delegate(System_IStream_sync)(System_IStream that);
-typedef System_size  delegate(System_IStream_read)(System_IStream that, System_size count, System_string8 value);
+typedef System_size  delegate(System_IStream_read)(System_IStream that, System_string8 value, System_size count);
 typedef void  delegate(System_IStream_seek)(System_IStream that, System_ssize offset, System_origin origin);
 typedef System_intptr  delegate(System_IStream_get_Position)(System_IStream that);
 typedef void  delegate(System_IStream_set_Position)(System_IStream that, System_size value);
 
-export void  base_System_IStream_write(System_IStream that, System_size count, System_string8 value);
+export void  base_System_IStream_write__string8(System_IStream that, System_string8 value, System_size count);
 export void  base_System_IStream_sync(System_IStream that);
-export System_size  base_System_IStream_read(System_IStream that, System_size count, System_string8 value);
+export System_size  base_System_IStream_read(System_IStream that, System_string8 value, System_size count);
 export void  base_System_IStream_seek(System_IStream that, System_ssize offset, System_origin origin);
 export System_intptr  base_System_IStream_get_Position(System_IStream that);
 export void  base_System_IStream_set_Position(System_IStream that, System_size value);
 
-#define System_IStream_write(o,...)  ((function_System_IStream_write)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write))(o, __VA_ARGS__)
+#define System_IStream_write__string8(o,...)  ((function_System_IStream_write__string8)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write__string8))(o, __VA_ARGS__)
 #define System_IStream_sync(o)      ((function_System_IStream_sync)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_sync))(o)
 #define System_IStream_read(o,...)  ((function_System_IStream_read)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_read))(o, __VA_ARGS__)
 #define System_IStream_seek(o,...)  ((function_System_IStream_seek)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_seek))(o, __VA_ARGS__)
@@ -54,12 +56,12 @@ export void  base_System_IStream_set_Position(System_IStream that, System_size v
 #define IStream  System_IStream
 #define IStreamType  System_IStreamType
 
-#define IStream_format  System_IStream_format
-#define IStream_formatLine  System_IStream_formatLine
-#define IStream_formatEnd  System_IStream_formatEnd
-#define IStream_formatEnd__arguments  System_IStream_formatEnd__arguments
-
 #define IStream_write  System_IStream_write
+#define IStream_writeLine  System_IStream_writeLine
+#define IStream_writeEnd  System_IStream_writeEnd
+#define IStream_writeEnd__arguments  System_IStream_writeEnd__arguments
+
+#define IStream_write__string8  System_IStream_write__string8
 #define IStream_sync  System_IStream_sync
 #define IStream_read  System_IStream_read
 #define IStream_seek  System_IStream_seek

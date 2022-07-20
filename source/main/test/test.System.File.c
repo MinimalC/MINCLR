@@ -12,7 +12,7 @@ int main(int argc, char * argv[]) {
 
 
 	/* Test01: Write to the File and flush */
-    File_write(file, sizeof(HALLO) - 1, HALLO);
+    File_write__string8(file, HALLO, sizeof(HALLO) - 1);
 
     File_sync(file);
 
@@ -32,7 +32,7 @@ int main(int argc, char * argv[]) {
     char8 text[6];
     for (size i = 0; i < 6; ++i) text[i] = 0x00;
 
-    size count =  File_read(file, 5, text);
+    size count =  File_read(file, text, 5);
 
     if (count == 5 && string8_equals(HALLO, text))
         Console_writeLine("{0:string} is correct, {1:uint} bytes read", 2, text, count);

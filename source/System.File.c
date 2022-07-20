@@ -27,33 +27,14 @@ void  base_System_File_free(File that) {
 	base_System_Object_free((Object)that);
 }
 
-File  System_File_open(string8 filename, File_mode flags) {
-
-/*  System_var filePtr = ISO_fopen(filename, modes); */
-    System_var filePtr = System_Syscall_openat((System_var)System_File_special_CurrentWorkingDirectory, filename,
-        System_File_mode_noControllingTerminal | flags,
-        System_File_permission_UserReadWrite | System_File_permission_GroupReadWrite | System_File_permission_EverybodyRead);
-
-    System_error error = System_Syscall_get_error();
-    if (error || !filePtr) { /* TODO */
-        return null;
-    }
-
-    File that = new_System_File();
-    that->filePtr = filePtr;
-    System_FileInfo info = new_System_FileInfo(filename);
-    that->info = (System_FileInfo)System_Memory_addReference((System_Object)info);
-    return that;
-}
-
-size  base_System_File_read(File that, size count, string8 value) {
+size  base_System_File_read(File that, string8 value, size count) {
 /*  return ISO_fread(value, 1, count, (ISO_File)that->filePtr); */
     size length = System_Syscall_read(that->filePtr, value, count);
     that->position += length;
     return length;
 }
 
-void  base_System_File_write(File that, size count, string8 value) {
+void  base_System_File_write__string8(File that, string8 value, size count) {
 /*  ISO_fwrite(value, 1, count, (ISO_File)that->filePtr); */
     size length = System_Syscall_write(that->filePtr, value, count);
     that->position += length;
@@ -80,7 +61,7 @@ void  base_System_File_sync(File that) {
 struct System_Type_FunctionInfo  System_FileTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_File_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_File_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_write", .function = base_System_IStream_write, .value = base_System_File_write },
+    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_write__string8", .function = base_System_IStream_write__string8, .value = base_System_File_write__string8 },
     [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = base_System_File_sync },
     [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = base_System_File_read },
     [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = base_System_File_seek },
@@ -104,5 +85,24 @@ struct System_Type  System_FileType = {
         .length = sizeof_array(System_FileTypeInterfaces), .value = &System_FileTypeInterfaces
     },
 };
+
+File  System_File_open(string8 filename, File_mode flags) {
+
+/*  System_var filePtr = ISO_fopen(filename, modes); */
+    System_var filePtr = System_Syscall_openat((System_var)System_File_special_CurrentWorkingDirectory, filename,
+        System_File_mode_noControllingTerminal | flags,
+        System_File_permission_UserReadWrite | System_File_permission_GroupReadWrite | System_File_permission_EverybodyRead);
+
+    System_error error = System_Syscall_get_error();
+    if (error || !filePtr) { /* TODO */
+        return null;
+    }
+
+    File that = new_System_File();
+    that->filePtr = filePtr;
+    System_FileInfo info = new_System_FileInfo(filename);
+    that->info = (System_FileInfo)System_Memory_addReference((System_Object)info);
+    return that;
+}
 
 #endif

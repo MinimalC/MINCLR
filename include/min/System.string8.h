@@ -57,7 +57,9 @@ export System_boolean  System_string8_isNullOrEmpty(System_string8 that);
 #define System_string8_formatLimit_VALUE  65536
 
 export System_size  stack_System_string8_format(System_string8 format, System_char8 message[System_string8_formatLimit_VALUE], ...);
+export System_size  stack_System_string8_format__arguments(System_string8 format, System_char8 message[System_string8_formatLimit_VALUE], System_size argc, System_var argv[]);
 export System_size  stack_System_string8_formatLine(System_string8 format, System_char8 message[System_string8_formatLimit_VALUE], ...);
+export System_size  stack_System_string8_formatLine__arguments(System_string8 format, System_char8 message[System_string8_formatLimit_VALUE], System_size argc, System_var argv[]);
 export System_size  stack_System_string8_formatEnd(System_string8 format, System_char8 suffix, System_char8 message[System_string8_formatLimit_VALUE], ...);
 export System_size  stack_System_string8_formatEnd__arguments(System_string8 format, System_char8 suffix, System_char8 message[System_string8_formatLimit_VALUE], System_size argc, System_var argv[]);
 export System_size  stack_System_string8_formatEnd__limit_arguments(System_string8 format, System_char8 suffix, System_size limit, System_char8 message[], System_size argc, System_var argv[]);

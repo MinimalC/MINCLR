@@ -150,7 +150,7 @@ bool  System_string8_isNullOrEmpty(string8 that) {
 }
 
 #if DEBUG
-STRING8 WARNING = "WARNING  \0";
+STRING8 WARNING = "WARNING  ";
 #endif
 
 
@@ -163,12 +163,20 @@ size  stack_System_string8_format(string8 format, char8 message[System_string8_f
     return stack_System_string8_formatEnd__arguments(format, 0, message, argc, argv);
 }
 
+size  stack_System_string8_format__arguments(string8 format, char8 message[System_string8_formatLimit_VALUE], size argc, var argv[]) {
+    return stack_System_string8_formatEnd__arguments(format, 0, message, argc, argv);
+}
+
 size  stack_System_string8_formatLine(string8 format, char8 message[System_string8_formatLimit_VALUE], ...) {
     arguments args;
     arguments_start(args, message);
     var argv[System_arguments_Limit_VALUE] = { 0 };
     size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
+    return stack_System_string8_formatEnd__arguments(format, '\n', message, argc, argv);
+}
+
+size  stack_System_string8_formatLine__arguments(string8 format, char8 message[System_string8_formatLimit_VALUE], size argc, var argv[]) {
     return stack_System_string8_formatEnd__arguments(format, '\n', message, argc, argv);
 }
 

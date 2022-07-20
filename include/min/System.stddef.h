@@ -290,15 +290,15 @@ export System_char8  System_string8_Empty[1];
 #endif
 
 
-export void  System_Console_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 file, const System_uint32 line);
-export void  System_Console_debug__format(const System_string8 expression, const System_string8 message, const System_string8 functionName, const System_string8 file, const System_uint32 line);
+export void  System_Console_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 file, const System_unsigned line);
+export void  System_Console_debug(const System_string8 message, ...);
 
 #if !DEBUG
 #define System_Console_assert(expression) (void)(expression)
-#define System_Console_debug(expression,message) (void)(expression);(void)(message)
+#define System_Console_debug(message,...) (void)(message, __VA_ARGS__)
 #else
-#define System_Console_assert(expression)  if (!(expression)) { System_Console_assert__string8((System_string8)(#expression), (System_string8)__func__, (System_string8)__FILE__, (System_uint32)__LINE__); }
-#define System_Console_debug(expression,message)  { System_Console_debug__format((System_string8)(#expression), (System_string8)(message), (System_string8)__func__, (System_string8)__FILE__, (System_uint32)__LINE__); }
+#define System_Console_assert(expression)  (void)(!(expression) ? System_Console_assert__string8((System_string8)#expression, (System_string8)__func__, (System_string8)__FILE__, (System_unsigned)__LINE__) : 0)
+#define System_Console_debug(message,...)  (void)System_Console_debug((System_string8)message, (System_string8)__func__, (System_string8)__FILE__, (System_string8)__LINE__, __VA_ARGS__)
 #endif
 
 #if defined(using_System)
