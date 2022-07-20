@@ -149,48 +149,56 @@ bool  System_string8_isNullOrEmpty(string8 that) {
     return !that || that[0] == '\0';
 }
 
-#if DEBUG == DEBUG_System_string8_format
-STRING8 WARNING = "WARNING  ";
+#if DEBUG
+STRING8 WARNING = "WARNING  \0";
 #endif
 
-void  System_string8_formatTo(string8 format, IStream stream, ...) {
-    arguments args;
-    arguments_start(args, stream);
-    System_string8_formatEndTo__arguments(format, 0, (System_IStream)&System_Console_StdOut, args);
-    arguments_end(args);
-}
 
-void  System_string8_formatLineTo(string8 format, IStream stream, ...) {
+size  stack_System_string8_format(string8 format, char8 message[System_string8_formatLimit_VALUE], ...) {
     arguments args;
-    arguments_start(args, stream);
-    System_string8_formatEndTo__arguments(format, '\n', (System_IStream)&System_Console_StdOut, args);
-    arguments_end(args);
-}
-
-void  System_string8_formatEndTo(string8 format, char8 suffix, IStream stream, ...) {
-    arguments args;
-    arguments_start(args, stream);
-    System_string8_formatEndTo__arguments(format, suffix, (System_IStream)&System_Console_StdOut, args);
-    arguments_end(args);
-}
-
-void  System_string8_formatEndTo__arguments(string8 format, char8 suffix, IStream stream, arguments args) {
+    arguments_start(args, message);
     var argv[System_arguments_Limit_VALUE] = { 0 };
     size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    return stack_System_string8_formatEnd__arguments(format, 0, message, argc, argv);
+}
+
+size  stack_System_string8_formatLine(string8 format, char8 message[System_string8_formatLimit_VALUE], ...) {
+    arguments args;
+    arguments_start(args, message);
+    var argv[System_arguments_Limit_VALUE] = { 0 };
+    size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    return stack_System_string8_formatEnd__arguments(format, '\n', message, argc, argv);
+}
+
+size  stack_System_string8_formatEnd(string8 format, char8 suffix, char8 message[System_string8_formatLimit_VALUE], ...) {
+    arguments args;
+    arguments_start(args, message);
+    var argv[System_arguments_Limit_VALUE] = { 0 };
+    size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    return stack_System_string8_formatEnd__arguments(format, suffix, message, argc, argv);
+}
+
+size  stack_System_string8_formatEnd__arguments(string8 format, char8 suffix, char8 message[System_string8_formatLimit_VALUE], size argc, var argv[]) {
+    return stack_System_string8_formatEnd__limit_arguments(format, suffix, System_string8_formatLimit_VALUE, message, argc, argv);
+}
+
+size  stack_System_string8_formatEnd__limit_arguments(string8 format, char8 suffix, size limit, char8 message[], size argc, var argv[]) {
+    Console_assert(!argc || argv);
 
     size i;
-    char8  message[65535] = { 0 };
     char8  scratch[100] = { 0 };
-    for (i = 0; i < sizeof(message); ++i) message[i] = 0;
     for (i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
 
     // just don't write everything else
 
     size format_length = string8_get_Length(format);
-    if (format_length > 65530) { format_length = 65530;
-#if DEBUG == DEBUG_System_string8_format
+    if (format_length > (limit - 5)) { format_length = limit - 5;
+#if DEBUG
         WARNING[7] = '1';
-        System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+        System_Console_write__string8(WARNING);
 #endif
     }
 
@@ -226,7 +234,7 @@ void  System_string8_formatEndTo__arguments(string8 format, char8 suffix, IStrea
         if (!end0) {
 #if DEBUG == DEBUG_System_string8_format
             WARNING[7] = '2';
-            System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+            System_Console_write__string8(WARNING);
 #endif
         }
         message_length += (begin0 - format);
@@ -241,7 +249,7 @@ void  System_string8_formatEndTo__arguments(string8 format, char8 suffix, IStrea
         if (argi >= argc) {
 #if DEBUG == DEBUG_System_string8_format
             WARNING[7] = '3';
-            System_IStream_write(stream, sizeof(WARNING) - 1, WARNING);
+            System_Console_write__string8(WARNING);
 #endif
         }
         else {
@@ -305,7 +313,7 @@ void  System_string8_formatEndTo__arguments(string8 format, char8 suffix, IStrea
             if (!begin1) {
 #if DEBUG == DEBUG_System_string8_format
                 WARNING[7] = '4';
-                System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
+                System_Console_write__string8(WARNING);
 #endif
             }
             else {
@@ -355,7 +363,7 @@ void  System_string8_formatEndTo__arguments(string8 format, char8 suffix, IStrea
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
 #if DEBUG == DEBUG_System_string8_format
                         WARNING[7] = '5';
-                        System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
+                        System_Console_write__string8(WARNING);
 #endif
                         argsize = System_size_Width;
                     }
@@ -455,7 +463,7 @@ void  System_string8_formatEndTo__arguments(string8 format, char8 suffix, IStrea
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
 #if DEBUG == DEBUG_System_string8_format
                         WARNING[7] = '6';
-                        System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
+                        System_Console_write__string8(WARNING);
 #endif
                         argsize = System_size_Width;
                     }
@@ -551,7 +559,7 @@ void  System_string8_formatEndTo__arguments(string8 format, char8 suffix, IStrea
                 else {
 #if DEBUG == DEBUG_System_string8_format
                     WARNING[7] = '7';
-                    System_IStream_write(stream, sizeof(WARNING) - 1, WARNING); /* TODO: Console_warning */
+                    System_Console_write__string8(WARNING);
 #endif
                 }
 
@@ -569,7 +577,7 @@ void  System_string8_formatEndTo__arguments(string8 format, char8 suffix, IStrea
 
     if (suffix) message[message_length++] = (suffix == 0x01 ? 0x00 : suffix);
 
-    System_IStream_write(stream, message_length, message);
+    return message_length;
 }
 
 #endif

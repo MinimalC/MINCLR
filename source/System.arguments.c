@@ -26,8 +26,9 @@ export System_size stack_System_arguments_get__limit(System_arguments args, Syst
     System_Console_write__string8("WARNING: stack_System_arguments");
 #endif
     }
-    for (size i = 0; i < argc; ++i) {
-        argv[i] = argument(args, var);
+    for (size i = 0; i < limit; ++i) {
+        if (i < argc) argv[i] = argument(args, var);
+        else argv[i] = 0;
     }
     return argc;    
 }

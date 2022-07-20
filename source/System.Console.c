@@ -78,37 +78,41 @@ void  System_Console_write__string8(string8 string) {
 void  System_Console_write(string8 format, ...) {
     arguments args;
     arguments_start(args, format);
-    System_string8_formatEndTo__arguments(format, null, (System_IStream)&System_Console_StdOut, args);
+    var argv[System_arguments_Limit_VALUE] = { 0 };
+    size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
+    System_IStream_formatEnd__arguments((System_IStream)&System_Console_StdOut, format, 0, argc, argv);
 }
 
 void  System_Console_writeLineEmpty() {
-    System_string8_formatEndTo__arguments(string8_Empty, '\n', (System_IStream)&System_Console_StdOut, null);
+    System_File_write(&System_Console_StdOut, 1, "\n");
 }
 
 void  System_Console_writeLine__string8(string8 string) {
-    System_string8_formatEndTo__arguments(string, '\n', (System_IStream)&System_Console_StdOut, null);
+    System_IStream_formatLine((System_IStream)&System_Console_StdOut, string);
 }
 
 void  System_Console_writeLine(string8 format, ...) {
     arguments args;
     arguments_start(args, format);
-    System_string8_formatEndTo__arguments(format, '\n', (System_IStream)&System_Console_StdOut, args);
+    var argv[System_arguments_Limit_VALUE] = { 0 };
+    size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
+    System_IStream_formatEnd__arguments((System_IStream)&System_Console_StdOut, format, '\n', argc, argv);
 }
 
 void  System_Console_write__char8(char8 character) {
-    System_string8_formatEndTo__arguments("", character, (System_IStream)&System_Console_StdOut, null);
+    System_File_write(&System_Console_StdOut, 1, &character);
 }
 
 
 void System_Console_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
-    System_string8_formatLineTo("ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", (System_IStream)&System_Console_StdErr, 4, expression, functionName, fileName, line);
+    System_IStream_formatLine((System_IStream)&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", 4, expression, functionName, fileName, line);
 }
 
 void System_Console_debug__format(const System_string8 expression, const System_string8 message, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
     /* TODO: Prepend __VA_ARGS__ ARGUMENTS, Append expression, message etc. */
-    System_string8_formatLineTo("DEBUG: {0:string}: {1:string} in function {2:string} in {3:string}:{4:int}", (System_IStream)&System_Console_StdErr, 5, expression, message, functionName, fileName, line);
+    System_IStream_formatLine((System_IStream)&System_Console_StdErr, "DEBUG: {0:string}: {1:string} in function {2:string} in {3:string}:{4:int}", 5, expression, message, functionName, fileName, line);
 }
 
 

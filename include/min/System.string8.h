@@ -1,9 +1,6 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
-#if !defined(have_System_IStream)
-#include "System.IStream.h"
-#endif
 #if !defined(have_System_char8)
 #define have_System_char8
 
@@ -53,13 +50,17 @@ export System_size  System_string8_compareSubstring(System_string8 that, System_
 export System_boolean  System_string8_equalsSubstring(System_string8 that, System_string8 other, System_size count);
 export System_boolean  System_string8_isNullOrEmpty(System_string8 that);
 //export System_boolean  System_string8_startsWith(System_string8 that, String_string8 other);
-export void  System_string8_formatTo(System_string8 that, System_IStream stream, ...);
-export void  System_string8_formatLineTo(System_string8 that, System_IStream stream, ...);
-export void  System_string8_formatEndTo(System_string8 that, System_char8 suffix, System_IStream stream, ...);
-export void  System_string8_formatEndTo__arguments(System_string8 that, System_char8 suffix, System_IStream stream, System_arguments args);
 
 #define inline_System_string8_equals(chars0, chars1)  (0 == System_string8_compare(chars0, chars1))
 #define inline_System_string8_equalsSubstring(chars0, chars1, n)  (0 == System_string8_compareSubstring(chars0, chars1, n))
+
+#define System_string8_formatLimit_VALUE  65536
+
+export System_size  stack_System_string8_format(System_string8 format, System_char8 message[System_string8_formatLimit_VALUE], ...);
+export System_size  stack_System_string8_formatLine(System_string8 format, System_char8 message[System_string8_formatLimit_VALUE], ...);
+export System_size  stack_System_string8_formatEnd(System_string8 format, System_char8 suffix, System_char8 message[System_string8_formatLimit_VALUE], ...);
+export System_size  stack_System_string8_formatEnd__arguments(System_string8 format, System_char8 suffix, System_char8 message[System_string8_formatLimit_VALUE], System_size argc, System_var argv[]);
+export System_size  stack_System_string8_formatEnd__limit_arguments(System_string8 format, System_char8 suffix, System_size limit, System_char8 message[], System_size argc, System_var argv[]);
 
 #if defined(using_System)
 #define string8_lastIndexOf  System_string8_lastIndexOf
@@ -76,9 +77,11 @@ export void  System_string8_formatEndTo__arguments(System_string8 that, System_c
 #define string8_compareIgnoreCase  System_string8_compareIgnoreCase
 #define string8_compareSubstring  System_string8_compareSubstring
 #define string8_isNullOrEmpty  System_string8_isNullOrEmpty
-#define string8_formatTo  System_string8_formatTo
-#define string8_formatLineTo  System_string8_formatLineTo
-#define string8_formatEndTo  System_string8_formatEndTo
-#define string8_formatEndTo__arguments  System_string8_formatEndTo__arguments
+
+#define string8_formatLimit_VALUE  System_string8_formatLimit_VALUE
+#define string8_format  System_string8_format
+#define string8_formatLine  System_string8_formatLine
+#define string8_formatEnd  System_string8_formatEnd
+#define string8_formatEnd__arguments  System_string8_formatEnd__arguments
 #endif
 #endif

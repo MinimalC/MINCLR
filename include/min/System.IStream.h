@@ -24,6 +24,11 @@ typedef fixed struct System_IStream { } * System_IStream;
 
 export struct System_Type  System_IStreamType;
 
+export void  System_IStream_format(System_IStream stream, System_string8 format, ...);
+export void  System_IStream_formatLine(System_IStream stream, System_string8 format, ...);
+export void  System_IStream_formatEnd(System_IStream stream, System_string8 format, System_char8 suffix, ...);
+export void  System_IStream_formatEnd__arguments(System_IStream stream, System_string8 format, System_char8 suffix, System_size argc, System_var argv[]);
+
 typedef void  delegate(System_IStream_write)(System_IStream that, System_size count, System_string8 value);
 typedef void  delegate(System_IStream_sync)(System_IStream that);
 typedef System_size  delegate(System_IStream_read)(System_IStream that, System_size count, System_string8 value);
@@ -46,9 +51,13 @@ export void  base_System_IStream_set_Position(System_IStream that, System_size v
 #define System_IStream_set_Position(o,...)  ((function_System_IStream_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
 
 #if defined(using_System)
-
 #define IStream  System_IStream
 #define IStreamType  System_IStreamType
+
+#define IStream_format  System_IStream_format
+#define IStream_formatLine  System_IStream_formatLine
+#define IStream_formatEnd  System_IStream_formatEnd
+#define IStream_formatEnd__arguments  System_IStream_formatEnd__arguments
 
 #define IStream_write  System_IStream_write
 #define IStream_sync  System_IStream_sync
@@ -57,6 +66,4 @@ export void  base_System_IStream_set_Position(System_IStream that, System_size v
 #define IStream_get_Position  System_IStream_get_Position
 #define IStream_set_Position  System_IStream_set_Position
 #endif
-
-
 #endif
