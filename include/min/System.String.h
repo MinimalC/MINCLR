@@ -41,27 +41,27 @@ extern const UInt32_t System_ByteOrder_check;
 	new:
 	UTF64LE: FF FF FF FF  FE FE FE FE
 	UTF64BE: FE FE FE FE  FF FF FF FF */
-typedef System_UInt32  System_encoding;
-#define System_encoding_UTF8     0x0000000000EFBBBF
-#define System_encoding_UTF16LE  0x000000000000FFFE
-#define System_encoding_UTF16BE  0x000000000000FEFF
-#define System_encoding_UTF32LE  0x00000000FFFFFEFE
-#define System_encoding_UTF32BE  0x00000000FEFEFFFF
+typedef System_UInt32  System_Encoding;
+#define System_Encoding_UTF8     0x0000000000EFBBBF
+#define System_Encoding_UTF16LE  0x000000000000FFFE
+#define System_Encoding_UTF16BE  0x000000000000FEFF
+#define System_Encoding_UTF32LE  0x00000000FFFFFEFE
+#define System_Encoding_UTF32BE  0x00000000FEFEFFFF
 
 #if System_ByteOrder_NATIVE == System_ByteOrder_BigEndian
 /* This is BigEndian */
-#define System_encoding_UTF16  System_encoding_UTF16BE
-#define System_encoding_UTF32  System_encoding_UTF32BE
+#define System_Encoding_UTF16  System_Encoding_UTF16BE
+#define System_Encoding_UTF32  System_Encoding_UTF32BE
 
 #elif System_ByteOrder_NATIVE == System_ByteOrder_LittleEndian
 /* This is LitteEndian */
-#define System_encoding_UTF16  System_encoding_UTF16LE
-#define System_encoding_UTF32  System_encoding_UTF32LE
+#define System_Encoding_UTF16  System_Encoding_UTF16LE
+#define System_Encoding_UTF32  System_Encoding_UTF32LE
 
 #else
-#error System_encoding: Unknown System_ByteOrder_NATIVE
-/*	#define System_encoding_UTF16	( System_ByteOrder_BigEndian ? System_encoding_UTF16BE : System_encoding_UTF16LE )
-#define System_encoding_UTF32	( System_ByteOrder_BigEndian ? System_encoding_UTF32BE : System_encoding_UTF32LE ) */
+#error System_Encoding: Unknown System_ByteOrder_NATIVE
+/*	#define System_Encoding_UTF16	( System_ByteOrder_BigEndian ? System_Encoding_UTF16BE : System_Encoding_UTF16LE )
+#define System_Encoding_UTF32	( System_ByteOrder_BigEndian ? System_Encoding_UTF32BE : System_Encoding_UTF32LE ) */
 #endif
 
 /* static class System.String */
@@ -72,7 +72,7 @@ typedef fixed struct System_String {
 
 	System_Size  length;
 
-	System_encoding  codepage;
+	System_Encoding  codepage;
 
 	System_String8  value;
 
@@ -85,18 +85,18 @@ typedef fixed struct System_String {
 
 #if UNICODE == 32
 #define stack_System_String(s)  { .base = stack_System_Object(System_String),\
-    .codepage = System_encoding_UTF32, .length = (sizeof(s) - 1), .value32 = (System_string32)(s), }
-#define System_encoding_DEFAULT	System_encoding_UTF32
+    .codepage = System_Encoding_UTF32, .length = (sizeof(s) - 1), .value32 = (System_string32)(s), }
+#define System_Encoding_DEFAULT	System_Encoding_UTF32
 
 #elif UNICODE == 16
 #define stack_System_String(s)  { .base = stack_System_Object(System_String),\
-    .codepage = System_encoding_UTF16, .length = (sizeof(s) - 1), .value16 = (System_string16)(s), }
-#define System_encoding_DEFAULT	System_encoding_UTF16
+    .codepage = System_Encoding_UTF16, .length = (sizeof(s) - 1), .value16 = (System_string16)(s), }
+#define System_Encoding_DEFAULT	System_Encoding_UTF16
 
 #else /* if UNICODE == 8 */
 #define stack_System_String(s)  { .base = stack_System_Object(System_String),\
-    .codepage = System_encoding_UTF8, .length = (sizeof(s) - 1), .value = (System_String8)(s), }
-#define System_encoding_DEFAULT	System_encoding_UTF8
+    .codepage = System_Encoding_UTF8, .length = (sizeof(s) - 1), .value = (System_String8)(s), }
+#define System_Encoding_DEFAULT	System_Encoding_UTF8
 #endif
 
 #define new_System_String(s)  (base_System_String_init((System_String)System_Memory_allocClass(typeof(System_String)), s))
@@ -122,11 +122,11 @@ export System_UInt64  base_System_String_getSipHash(System_String that);
 #define byteOrder_BigEndian  System_ByteOrder_BigEndian
 #define byteOrder_NATIVE  System_ByteOrder_NATIVE
 
-#define encoding  System_encoding
-#define encoding_UTF8  System_encoding_UTF8
-#define encoding_UTF16  System_encoding_UTF16
-#define encoding_UTF32  System_encoding_UTF32
-#define encoding_DEFAULT  System_encoding_DEFAULT
+#define encoding  System_Encoding
+#define encoding_UTF8  System_Encoding_UTF8
+#define encoding_UTF16  System_Encoding_UTF16
+#define encoding_UTF32  System_Encoding_UTF32
+#define encoding_DEFAULT  System_Encoding_DEFAULT
 
 
 #define stack_String  stack_System_String

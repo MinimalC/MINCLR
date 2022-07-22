@@ -12,54 +12,47 @@
 #define have_System_File
 
 
-typedef System_IntPtr  System_File_mode;
+typedef System_IntPtr  System_File_Mode;
 
-#define System_File_mode_readOnly                 00
-#define System_File_mode_writeOnly                01
-#define System_File_mode_readWrite                02
-#define System_File_mode_create                 0100
-#define System_File_mode_exclusive              0200
-#define System_File_mode_noControllingTerminal  0400
-#define System_File_mode_truncate              01000
-#define System_File_mode_append                02000
-#define System_File_mode_nonBlock              04000
-#define System_File_mode_dsync                010000
-#define System_File_mode_async                020000
-#define System_File_mode_direct               040000
-#define System_File_mode_LargeFile           0100000
-#define System_File_mode_Directory           0200000
-#define System_File_mode_nonFollow           0400000
-#define System_File_mode_noAccessTime       01000000
-#define System_File_mode_closeOnExecute     02000000
-#define System_File_mode_sync              (04000000 | System_File_mode_dsync)
-#define System_File_mode_Path              010000000
-#define System_File_mode_temporary        (020000000 | System_File_mode_Directory)
-
-
-typedef System_IntPtr  System_File_permission;
-
-#define System_File_permission_UserRead             0400
-#define System_File_permission_UserWrite            0200
-#define System_File_permission_UserReadWrite        (System_File_permission_UserRead | System_File_permission_UserWrite)
-#define System_File_permission_UserExecute          0100
-#define System_File_permission_UserEverything       (System_File_permission_UserRead | System_File_permission_UserWrite | System_File_permission_UserExecute)
-#define System_File_permission_GroupRead            (System_File_permission_UserRead >> 3)
-#define System_File_permission_GroupWrite           (System_File_permission_UserWrite >> 3)
-#define System_File_permission_GroupReadWrite       (System_File_permission_GroupRead | System_File_permission_GroupWrite)
-#define System_File_permission_GroupExecute         (System_File_permission_UserExecute >> 3)
-#define System_File_permission_GroupEverything      (System_File_permission_GroupRead | System_File_permission_GroupWrite | System_File_permission_GroupExecute)
-#define System_File_permission_EverybodyRead        (System_File_permission_GroupRead >> 3)
-#define System_File_permission_EverybodyWrite       (System_File_permission_GroupWrite >> 3)
-#define System_File_permission_EverybodyReadWrite   (System_File_permission_EverybodyRead | System_File_permission_EverybodyWrite)
-#define System_File_permission_EverybodyExecute     (System_File_permission_GroupExecute >> 3)
-#define System_File_permission_EverybodyEverything  (System_File_permission_EverybodyRead | System_File_permission_EverybodyWrite | System_File_permission_EverybodyExecute)
+#define System_File_Mode_readOnly                 00
+#define System_File_Mode_writeOnly                01
+#define System_File_Mode_readWrite                02
+#define System_File_Mode_create                 0100
+#define System_File_Mode_exclusive              0200
+#define System_File_Mode_noControllingTerminal  0400
+#define System_File_Mode_truncate              01000
+#define System_File_Mode_append                02000
+#define System_File_Mode_nonBlock              04000
+#define System_File_Mode_dsync                010000
+#define System_File_Mode_async                020000
+#define System_File_Mode_direct               040000
+#define System_File_Mode_LargeFile           0100000
+#define System_File_Mode_Directory           0200000
+#define System_File_Mode_nonFollow           0400000
+#define System_File_Mode_noAccessTime       01000000
+#define System_File_Mode_closeOnExecute     02000000
+#define System_File_Mode_sync              (04000000 | System_File_Mode_dsync)
+#define System_File_Mode_Path              010000000
+#define System_File_Mode_temporary        (020000000 | System_File_Mode_Directory)
 
 
-typedef System_Var  System_File_special;
+typedef System_IntPtr  System_File_Permission;
 
-#define System_File_special_STDIN   ((System_Var)0)
-#define System_File_special_STDOUT  ((System_Var)1)
-#define System_File_special_STDERR  ((System_Var)2)
+#define System_File_Permission_UserRead             0400
+#define System_File_Permission_UserWrite            0200
+#define System_File_Permission_UserReadWrite        (System_File_Permission_UserRead | System_File_Permission_UserWrite)
+#define System_File_Permission_UserExecute          0100
+#define System_File_Permission_UserEverything       (System_File_Permission_UserRead | System_File_Permission_UserWrite | System_File_Permission_UserExecute)
+#define System_File_Permission_GroupRead            (System_File_Permission_UserRead >> 3)
+#define System_File_Permission_GroupWrite           (System_File_Permission_UserWrite >> 3)
+#define System_File_Permission_GroupReadWrite       (System_File_Permission_GroupRead | System_File_Permission_GroupWrite)
+#define System_File_Permission_GroupExecute         (System_File_Permission_UserExecute >> 3)
+#define System_File_Permission_GroupEverything      (System_File_Permission_GroupRead | System_File_Permission_GroupWrite | System_File_Permission_GroupExecute)
+#define System_File_Permission_EverybodyRead        (System_File_Permission_GroupRead >> 3)
+#define System_File_Permission_EverybodyWrite       (System_File_Permission_GroupWrite >> 3)
+#define System_File_Permission_EverybodyReadWrite   (System_File_Permission_EverybodyRead | System_File_Permission_EverybodyWrite)
+#define System_File_Permission_EverybodyExecute     (System_File_Permission_GroupExecute >> 3)
+#define System_File_Permission_EverybodyEverything  (System_File_Permission_EverybodyRead | System_File_Permission_EverybodyWrite | System_File_Permission_EverybodyExecute)
 
 
 typedef fixed struct System_File {
@@ -84,7 +77,7 @@ typedef void  delegate(System_File_seek)(System_File that, System_SSize offset, 
 typedef System_IntPtr  delegate(System_File_get_Position)(System_File that);
 typedef void  delegate(System_File_set_Position)(System_File that, System_Size value);
 
-export System_File  System_File_open(System_String8 filename, System_File_mode flags);
+export System_File  System_File_open(System_String8 filename, System_File_Mode flags);
 export System_File  base_System_File_init(System_File that);
 export void  base_System_File_free(System_File that);
 export void  base_System_File_write__String8_size(System_File that, System_String8 value, System_Size count);
@@ -107,22 +100,22 @@ export void  base_System_File_set_Position(System_File that, System_Size value);
 #define new_System_File()  (base_System_File_init((System_File)System_Memory_allocClass(typeof(System_File))))
 
 #if defined(using_System)
-#define File_mode  System_File_mode
-#define File_mode_readOnly  System_File_mode_readOnly
-#define File_mode_writeOnly  System_File_mode_writeOnly
-#define File_mode_readWrite  System_File_mode_readWrite
-#define File_mode_create  System_File_mode_create
-#define File_mode_append  System_File_mode_append
-#define File_mode_exclusive  System_File_mode_exclusive
-#define File_mode_direct  System_File_mode_direct
-#define File_mode_Directory  System_File_mode_Directory
-#define File_mode_closeOnExecute  System_File_mode_closeOnExecute
-#define File_mode_syncd  System_File_mode_syncd
+#define File_Mode  System_File_Mode
+#define File_Mode_readOnly  System_File_Mode_readOnly
+#define File_Mode_writeOnly  System_File_Mode_writeOnly
+#define File_Mode_readWrite  System_File_Mode_readWrite
+#define File_Mode_create  System_File_Mode_create
+#define File_Mode_append  System_File_Mode_append
+#define File_Mode_exclusive  System_File_Mode_exclusive
+#define File_Mode_direct  System_File_Mode_direct
+#define File_Mode_Directory  System_File_Mode_Directory
+#define File_Mode_closeOnExecute  System_File_Mode_closeOnExecute
+#define File_Mode_syncd  System_File_Mode_syncd
 
-#define File_special  System_File_special
-#define File_special_STDIN  System_File_special_STDIN
-#define File_special_STDOUT  System_File_special_STDOUT
-#define File_special_STDERR  System_File_special_STDERR
+#define Syscall_StandardFile  System_Syscall_StandardFile
+#define Syscall_StandardFile_STDIN  System_Syscall_StandardFile_STDIN
+#define Syscall_StandardFile_STDOUT  System_Syscall_StandardFile_STDOUT
+#define Syscall_StandardFile_STDERR  System_Syscall_StandardFile_STDERR
 
 
 #define File  System_File

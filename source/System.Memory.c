@@ -183,7 +183,7 @@ System_Console_writeLine("new System_VarArray: length {0:uint}", 1, mem64k->leng
 
                 mem64h = (System_Memory_Page)map;
                 Size payload;
-                Size pageSize = System_Math_divideRemain__UInt64(1048576 - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(struct System_Object), &payload);
+                Size pageSize = System_Math_divRem__UInt64(1048576 - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(struct System_Object), &payload);
                 mem64h->pageSize = (UInt)pageSize;
                 mem64h->payload = (UInt)payload;
                 array(mem64k->value)[i] = mem64h;

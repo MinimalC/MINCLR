@@ -12,7 +12,7 @@ Bool Eratosthenes_IsPrime(UInt64 n, UInt64 * minimalquotient, UInt64 * quotient)
 
 	UInt64 primeI = 2, primeN = 3, primeN_hoch2 = 9, quotient1 = 0, remainder = 0;
 
-    /* UInt64 div2 = System_Math_divideRemain(n, 2, &remainder); */
+    /* UInt64 div2 = System_Math_divRem(n, 2, &remainder); */
 
 	while (0U < ++primeI) {
 		/* now primeI => [ 3 ] == 5 */
@@ -38,7 +38,7 @@ Bool Eratosthenes_IsPrime(UInt64 n, UInt64 * minimalquotient, UInt64 * quotient)
         }
 
 
-        quotient1 = System_Math_divideRemain__UInt64(n, primeN, &remainder);
+        quotient1 = System_Math_divRem__UInt64(n, primeN, &remainder);
 
     	if ( remainder == 0 ) {
             *minimalquotient = primeN;
@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
             numbers = System_UInt64_toString8base10__stack(n, decimol);
             System_String8_copySubstringTo(decimol, numbers, (nP + 22));
 
-            Syscall_write(File_special_STDOUT, nP, sizeof(nP) - 1);
+            Syscall_write(Syscall_StandardFile_STDOUT, nP, sizeof(nP) - 1);
             // Console_write__String8_size(nP);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {
@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
             numbers = System_UInt64_toString8base10__stack(n, decimol);
             System_String8_copySubstringTo(decimol, numbers, (nP + 22));
 
-            Syscall_write(File_special_STDOUT, nP, sizeof(nP) - 1);
+            Syscall_write(Syscall_StandardFile_STDOUT, nP, sizeof(nP) - 1);
             // Console_write__String8_size(nP);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {

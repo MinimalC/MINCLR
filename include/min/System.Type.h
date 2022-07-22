@@ -153,24 +153,24 @@ export struct System_Type  System_VoidType; /* sizeof(void) == 1  */
 export struct System_Type  System_VarType;  /* sizeof(void *) on x86_64 is * 8 == 64bits  */
 export struct System_Type  System_SizeType;
 export struct System_Type  System_IntPtrType;
-export struct System_Type  System_BooleanType;
+export struct System_Type  System_BoolType;
 
 #if defined(using_System)
 #define VarType  System_VarType
-#define sizeType  System_SizeType
-#define intptrType  System_IntPtrType
-#define booleanType  System_BooleanType
+#define SizeType  System_SizeType
+#define IntPtrType  System_IntPtrType
+#define BoolType  System_BoolType
 #endif
 
 export System_Var System_Type_getMethod(System_Type  that, System_Var function);
-export System_Var System_Type_trygetMethod(System_Type  that, System_Var function);
+export System_Var System_Type_tryMethod(System_Type  that, System_Var function);
 // internal inline artificial System_Var inline_System_Type_getMethod(System_Type  that, System_Var function) {
 
 export System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other);
 
 #if defined(using_System)
 #define Type_getMethod  System_Type_getMethod
-#define Type_trygetMethod  System_Type_trygetMethod
+#define Type_tryMethod  System_Type_tryMethod
 #endif
 
 

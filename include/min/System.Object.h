@@ -7,7 +7,7 @@
 
 
 
-struct System_Object_bitConfig {
+struct System_Object_BitConfig {
 
     unsigned  isAllocated : 1;
 
@@ -24,7 +24,7 @@ typedef fixed struct System_Object {
 
     System_Type  type;
 
-    struct System_Object_bitConfig  bitConfig;
+    struct System_Object_BitConfig  bitConfig;
 
     System_UInt64  sipHash;
 

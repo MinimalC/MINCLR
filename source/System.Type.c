@@ -51,7 +51,7 @@ struct System_Type  System_SizeType     = { .base = stack_System_Object(System_T
 struct System_Type  System_SSizeType    = { .base = stack_System_Object(System_Type), .name = "System.ssize",   .size = sizeof(System_SSize) };
 struct System_Type  System_IntPtrType   = { .base = stack_System_Object(System_Type), .name = "System.IntPtr",  .size = sizeof(System_IntPtr) };
 struct System_Type  System_SIntPtrType  = { .base = stack_System_Object(System_Type), .name = "System.sintptr", .size = sizeof(System_SIntPtr) };
-struct System_Type  System_BooleanType  = { .base = stack_System_Object(System_Type), .name = "System.bool", .size = sizeof(System_Bool) };
+struct System_Type  System_BoolType  = { .base = stack_System_Object(System_Type), .name = "System.bool", .size = sizeof(System_Bool) };
 
 struct System_Type  System_Type_FunctionInfoType = { .base = stack_System_Object(System_Type),
 	.name = "System.Type.FunctionInfo",
@@ -90,12 +90,12 @@ struct System_Type  System_Type_FieldInfoArrayType = { .base = stack_System_Obje
 };
 
 System_Var System_Type_getMethod(System_Type  that, System_Var fun) {
-    System_Var reture = System_Type_trygetMethod(that, fun);
+    System_Var reture = System_Type_tryMethod(that, fun);
     if (!reture) throw_terminate(new_System_Exception("NotImplementedException: Method not found"));
     return reture;
 }
 
-System_Var System_Type_trygetMethod(System_Type  that, System_Var fun) {
+System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
     System_Console_assert(that);
     System_Console_assert(fun);
 
@@ -105,7 +105,7 @@ System_Var System_Type_trygetMethod(System_Type  that, System_Var fun) {
         if (fun == info->function) return info->value;
     }
 
-    if (that->baseType) return System_Type_trygetMethod(that->baseType, fun);
+    if (that->baseType) return System_Type_tryMethod(that->baseType, fun);
 
     return null;
 }

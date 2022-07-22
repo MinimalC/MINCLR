@@ -8,7 +8,7 @@ STRING8  HALLOtxt = "./.FileNotFound";
 int main(int argc, char * argv[]) {
 
 	/* Test00: Open .FileNotFound */
-    File file = File_open(HALLOtxt, System_File_mode_readOnly);
+    File file = File_open(HALLOtxt, System_File_Mode_readOnly);
     try
 
     Console_write__String8_size("ERROR: System_Exception_get_current() is null");

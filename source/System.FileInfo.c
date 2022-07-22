@@ -17,7 +17,7 @@ System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 
     that->name = fileName;
 
     struct System_Syscall_stat stat;
-    System_Syscall_fstatat(System_File_special_CurrentWorkingDirectory, fileName, &stat, 0);
+    System_Syscall_fstatat(System_Syscall_StandardFile_CurrentWorkingDirectory, fileName, &stat, 0);
 
     System_Error error = System_Syscall_get_Error();
     if (error) { /* TODO */

@@ -25,20 +25,20 @@ struct System_Type  System_ConsoleType = { .base = stack_System_Object(System_Ty
 
 struct System_File  System_Console_StdIn = {
     .base = stack_System_Object(System_File),
-    .filePtr = (System_Var)System_File_special_STDIN,
+    .filePtr = (System_Var)System_Syscall_StandardFile_STDIN,
 };
 struct System_File  System_Console_StdOut = {
     .base = stack_System_Object(System_File),
-    .filePtr = (System_Var)System_File_special_STDOUT,
+    .filePtr = (System_Var)System_Syscall_StandardFile_STDOUT,
 };
 struct System_File  System_Console_StdErr = {
     .base = stack_System_Object(System_File),
-    .filePtr = (System_Var)System_File_special_STDERR,
+    .filePtr = (System_Var)System_Syscall_StandardFile_STDERR,
 };
 
 void  System_Console_sync() {
     /* ISO_fflush(ISO_stdout); */
-    System_Syscall_fsync((System_Var)System_File_special_STDOUT);
+    System_Syscall_fsync((System_Var)System_Syscall_StandardFile_STDOUT);
 }
 
 /* __attribute__((constructor)) void System_init */

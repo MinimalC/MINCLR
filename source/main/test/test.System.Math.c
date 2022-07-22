@@ -66,11 +66,11 @@ int main(int argc, char * argv[]) {
 
 
     UInt64 divident = 14, divisor = 2, remainder = 0;
-    UInt64 quotient = System_Math_divideRemain__UInt64(divident, divisor, &remainder);
-	Console_writeLine("Test08: System_Math_divideRemain({0:uint}, {1:uint}) => {2:uint} Rest {3:uint}", 4, divident, divisor, quotient, remainder);
+    UInt64 quotient = System_Math_divRem__UInt64(divident, divisor, &remainder);
+	Console_writeLine("Test08: System_Math_divRem({0:uint}, {1:uint}) => {2:uint} Rest {3:uint}", 4, divident, divisor, quotient, remainder);
     divident = 15; divisor = 2; remainder = 0;
-    quotient = System_Math_divideRemain__UInt64(divident, divisor, &remainder);
-	Console_writeLine("Test09: System_Math_divideRemain({0:uint}, {1:uint}) => {2:uint} Rest {3:uint}", 4, divident, divisor, quotient, remainder);
+    quotient = System_Math_divRem__UInt64(divident, divisor, &remainder);
+	Console_writeLine("Test09: System_Math_divRem({0:uint}, {1:uint}) => {2:uint} Rest {3:uint}", 4, divident, divisor, quotient, remainder);
 
 	return true;	/* OK (1 == true) */
 }

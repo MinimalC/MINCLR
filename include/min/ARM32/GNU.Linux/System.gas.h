@@ -1,7 +1,7 @@
 #if !defined(have_System_syscall_asm_linux_arm)
 #define have_System_syscall_asm_linux_arm
 
-#include "enum System.Syscall.command.asm.h"
+#include "enum System.Syscall.Command.asm.h"
 
 /* The __ARM_ARCH define is provided by gcc 4.8.  Construct it otherwise.  */
 #ifndef __ARM_ARCH

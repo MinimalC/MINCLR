@@ -16,7 +16,7 @@ struct System_Type  System_MathType = { .base = stack_System_Object(System_Type)
     .name = &STRING_System_Math,
 };
 
-System_UInt64  System_Math_divideRemain__UInt64__generic(System_UInt64 divident, System_UInt64 divisor, System_UInt64 ref remainder) {
+System_UInt64  System_Math_divRem__UInt64__generic(System_UInt64 divident, System_UInt64 divisor, System_UInt64 ref remainder) {
 
     *remainder = divident % divisor;
 

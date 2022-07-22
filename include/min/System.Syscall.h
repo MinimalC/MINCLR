@@ -5,21 +5,21 @@
 #if !defined(have_System_Error)
 #include "System.Error.h"
 #endif
-#if !defined(have_System_Syscall_command)
-#include "System.Syscall.command.h"
+#if !defined(have_System_Syscall_Command)
+#include "System.Syscall.Command.h"
 #endif
 #if !defined(have_System_Syscall)
 #define have_System_Syscall
 
 export struct System_Type  System_SyscallType;
 
-import System_IntPtr  System_Syscall_call00(System_Syscall_command number);
-import System_IntPtr  System_Syscall_call01(System_Syscall_command number, System_IntPtr arg1);
-import System_IntPtr  System_Syscall_call02(System_Syscall_command number, System_IntPtr arg1, System_IntPtr arg2);
-import System_IntPtr  System_Syscall_call03(System_Syscall_command number, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3);
-import System_IntPtr  System_Syscall_call04(System_Syscall_command number, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4);
-import System_IntPtr  System_Syscall_call05(System_Syscall_command number, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5);
-import System_IntPtr  System_Syscall_call06(System_Syscall_command number, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5, System_IntPtr arg6);
+import System_IntPtr  System_Syscall_call00(System_Syscall_Command number);
+import System_IntPtr  System_Syscall_call01(System_Syscall_Command number, System_IntPtr arg1);
+import System_IntPtr  System_Syscall_call02(System_Syscall_Command number, System_IntPtr arg1, System_IntPtr arg2);
+import System_IntPtr  System_Syscall_call03(System_Syscall_Command number, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3);
+import System_IntPtr  System_Syscall_call04(System_Syscall_Command number, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4);
+import System_IntPtr  System_Syscall_call05(System_Syscall_Command number, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5);
+import System_IntPtr  System_Syscall_call06(System_Syscall_Command number, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5, System_IntPtr arg6);
 
 #if defined(using_System)
 #define Syscall_call00  System_Syscall_call00
@@ -65,6 +65,13 @@ struct System_Syscall_stat {
     System_IntPtr __reserved[3];
 
 };
+
+typedef System_Var  System_Syscall_StandardFile;
+
+#define System_Syscall_StandardFile_STDIN   ((System_Var)0)
+#define System_Syscall_StandardFile_STDOUT  ((System_Var)1)
+#define System_Syscall_StandardFile_STDERR  ((System_Var)2)
+#define System_Syscall_StandardFile_CurrentWorkingDirectory  ((System_Var)-100)
 
 export System_Var  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
 export System_Var  System_Syscall_openat(System_Var directoryPtr, System_String8 fileName, System_IntPtr flags, System_IntPtr mode);

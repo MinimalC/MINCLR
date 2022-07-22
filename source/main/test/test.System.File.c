@@ -8,7 +8,7 @@ STRING8  HALLOtxt = "./.test.txt";
 int main(int argc, char * argv[]) {
 
 	/* Test00: Open a File */
-    File file = File_open(HALLOtxt, System_File_mode_readWrite | System_File_mode_create | System_File_mode_truncate);
+    File file = File_open(HALLOtxt, System_File_Mode_readWrite | System_File_Mode_create | System_File_Mode_truncate);
 
 
 	/* Test01: Write to the File and flush */

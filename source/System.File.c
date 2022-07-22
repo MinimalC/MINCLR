@@ -86,12 +86,12 @@ struct System_Type  System_FileType = {
     },
 };
 
-File  System_File_open(String8 filename, File_mode flags) {
+File  System_File_open(String8 filename, File_Mode flags) {
 
 /*  System_Var filePtr = ISO_fopen(filename, modes); */
-    System_Var filePtr = System_Syscall_openat((System_Var)System_File_special_CurrentWorkingDirectory, filename,
-        System_File_mode_noControllingTerminal | flags,
-        System_File_permission_UserReadWrite | System_File_permission_GroupReadWrite | System_File_permission_EverybodyRead);
+    System_Var filePtr = System_Syscall_openat((System_Var)System_Syscall_StandardFile_CurrentWorkingDirectory, filename,
+        System_File_Mode_noControllingTerminal | flags,
+        System_File_Permission_UserReadWrite | System_File_Permission_GroupReadWrite | System_File_Permission_EverybodyRead);
 
     System_Error error = System_Syscall_get_Error();
     if (error || !filePtr) { /* TODO */

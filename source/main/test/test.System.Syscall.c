@@ -14,12 +14,12 @@ int main(int argc, char * argv[]) {
 
     IntPtr  k = Beispiel(2, 4, 8, 16, 32, 64, 128);
 
-    IntPtr  l = Syscall_write(File_special_STDOUT, &k, sizeof(IntPtr));
+    IntPtr  l = Syscall_write(Syscall_StandardFile_STDOUT, &k, sizeof(IntPtr));
 
     if (l == sizeof(IntPtr) && k == 254)
-        Syscall_write(File_special_STDOUT, isRight, String8_get_Length(isRight));
+        Syscall_write(Syscall_StandardFile_STDOUT, isRight, String8_get_Length(isRight));
     else {
-        Syscall_write(File_special_STDOUT, isWrong, String8_get_Length(isWrong));
+        Syscall_write(Syscall_StandardFile_STDOUT, isWrong, String8_get_Length(isWrong));
     }
 
     return true;

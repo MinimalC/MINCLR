@@ -67,7 +67,7 @@ __function(System_Syscall_call00)
     str   lr, [ sp, #-4 ]!  /* store link register */
 
     str   r7, [ sp, #-8 ]   /* store r7 */
-    mov   r7, r0            /* enum_System_Syscall_command */
+    mov   r7, r0            /* enum_System_Syscall_Command */
     swi   #0
     ldr   r7, [ sp, #-8 ]   /* load r7 */
 
@@ -82,7 +82,7 @@ __function(System_Syscall_call01)
     str   lr, [ sp, #-4 ]!  /* push link register */
 
     str   r7, [ sp, #-8 ]   /* store r7 */
-    mov   r7, r0            /* enum_System_Syscall_command */
+    mov   r7, r0            /* enum_System_Syscall_Command */
     mov   r0, r1            /* arg1 */
     swi   #0
     ldr   r7, [ sp, #-8 ]   /* load r7 */
@@ -98,7 +98,7 @@ __function(System_Syscall_call02)
     str   lr, [ sp, #-4 ]!  /* push link register */
 
     str   r7, [ sp, #-8 ]   /* store r7 */
-    mov   r7, r0            /* enum_System_Syscall_command */
+    mov   r7, r0            /* enum_System_Syscall_Command */
     mov   r0, r1            /* arg1 */
     mov   r1, r2            /* arg2 */
     swi   #0
@@ -115,7 +115,7 @@ __function(System_Syscall_call03)
     str   lr, [ sp, #-4 ]!  /* push link register */
 
     str   r7, [ sp, #-8 ]   /* store r7 */
-    mov   r7, r0            /* enum_System_Syscall_command */
+    mov   r7, r0            /* enum_System_Syscall_Command */
     mov   r0, r1            /* arg1 */
     mov   r1, r2            /* arg2 */
     mov   r2, r3            /* arg3 */
@@ -133,7 +133,7 @@ __function(System_Syscall_call04)
     str   lr, [ sp, #-4 ]!  /* push link register */
 
     str   r7, [ sp, #-8 ]   /* store r7 */
-    mov   r7, r0            /* enum_System_Syscall_command */
+    mov   r7, r0            /* enum_System_Syscall_Command */
     mov   r0, r1            /* arg1 */
     mov   r1, r2            /* arg2 */
     mov   r2, r3            /* arg3 */
@@ -152,7 +152,7 @@ __function(System_Syscall_call05)
     str   lr, [ sp, #-4 ]!  /* push link register */
 
     str   r7, [ sp, #-8 ]   /* store r7 */
-    mov   r7, r0            /* enum_System_Syscall_command */
+    mov   r7, r0            /* enum_System_Syscall_Command */
     mov   r0, r1            /* arg1 */
     mov   r1, r2            /* arg2 */
     mov   r2, r3            /* arg3 */
@@ -172,7 +172,7 @@ __function(System_Syscall_call06)
     str   lr, [ sp, #-4 ]!  /* push link register */
 
     str   r7, [ sp, #-8 ]   /* store r7 */
-    mov   r7, r0            /* enum_System_Syscall_command */
+    mov   r7, r0            /* enum_System_Syscall_Command */
     mov   r0, r1            /* arg1 */
     mov   r1, r2            /* arg2 */
     mov   r2, r3            /* arg3 */

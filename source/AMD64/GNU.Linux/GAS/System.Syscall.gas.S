@@ -5,7 +5,7 @@
 .text
 
 function System_Syscall_call00
-    movq  %rdi, %rax    /* enum_System_Syscall_command */
+    movq  %rdi, %rax    /* enum_System_Syscall_Command */
     syscall
     sub   $8, %rsp      /* push */
     movq  %rax, (%rsp)
@@ -15,7 +15,7 @@ function System_Syscall_call00
 end_function System_Syscall_call00
 
 function System_Syscall_call01
-    movq  %rdi, %rax    /* enum_System_Syscall_command */
+    movq  %rdi, %rax    /* enum_System_Syscall_Command */
     movq  %rsi, %rdi    /* arg1 */
     syscall
     sub   $8, %rsp      /* push */
@@ -26,7 +26,7 @@ function System_Syscall_call01
 end_function System_Syscall_call01
 
 function System_Syscall_call02
-    movq  %rdi, %rax    /* enum_System_Syscall_command */
+    movq  %rdi, %rax    /* enum_System_Syscall_Command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
     syscall
@@ -38,7 +38,7 @@ function System_Syscall_call02
 end_function System_Syscall_call02
 
 function System_Syscall_call03
-    movq  %rdi, %rax    /* enum_System_Syscall_command */
+    movq  %rdi, %rax    /* enum_System_Syscall_Command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
     movq  %rcx, %rdx    /* arg3 */
@@ -51,7 +51,7 @@ function System_Syscall_call03
 end_function System_Syscall_call03
 
 function System_Syscall_call04
-    movq  %rdi, %rax    /* enum_System_Syscall_command */
+    movq  %rdi, %rax    /* enum_System_Syscall_Command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
     movq  %rcx, %rdx    /* arg3 */
@@ -65,7 +65,7 @@ function System_Syscall_call04
 end_function System_Syscall_call04
 
 function System_Syscall_call05
-    movq  %rdi, %rax    /* enum_System_Syscall_command */
+    movq  %rdi, %rax    /* enum_System_Syscall_Command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
     movq  %rcx, %rdx    /* arg3 */
@@ -80,7 +80,7 @@ function System_Syscall_call05
 end_function System_Syscall_call05
 
 function System_Syscall_call06
-    movq  %rdi, %rax    /* enum_System_Syscall_command */
+    movq  %rdi, %rax    /* enum_System_Syscall_Command */
     movq  %rsi, %rdi    /* arg1 */
     movq  %rdx, %rsi    /* arg2 */
     movq  %rcx, %rdx    /* arg3 */
