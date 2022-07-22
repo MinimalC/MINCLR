@@ -50,28 +50,11 @@ void System_Console_exit(const Size code)  {
 void System_Console_terminate(const Size code)  {
     /* fclose(randomDevice); */
 
-    System_Exception exception = System_Exception_get_current();
-    if (exception) {
-        System_Memory_addReference((System_Object)exception);
-        System_Exception_set_current(null);
-
-        if (exception->base.type)
-            Console_write("{0:string}", 1, exception->base.type->name);
-        else
-            Console_write__String8_size("System.Exception");
-
-        if (exception->message)
-            Console_write(": {0:string}", 1, exception->message);
-
-        Console_writeLineEmpty();
-
-        System_Memory_free(exception);
-    }
-
     System_Syscall_terminate(code);
 }
 
 void  System_Console_write__String8(String8 string) {
+    Debug_assert(string);
     System_File_write__String8_size(&System_Console_StdOut, string, String8_get_Length(string));
 }
 
@@ -84,6 +67,7 @@ void  System_Console_writeLineEmpty() {
 }
 
 void  System_Console_write(String8 format, ...) {
+    Debug_assert(format);
     arguments args;
     arguments_start(args, format);
     Var argv[System_arguments_Limit_VALUE] = { 0 };
@@ -93,10 +77,12 @@ void  System_Console_write(String8 format, ...) {
 }
 
 void  System_Console_writeLine__String8(String8 string) {
+    Debug_assert(string);
     System_IStream_writeLine((System_IStream)&System_Console_StdOut, string);
 }
 
 void  System_Console_writeLine(String8 format, ...) {
+    Debug_assert(format);
     arguments args;
     arguments_start(args, format);
     Var argv[System_arguments_Limit_VALUE] = { 0 };
@@ -129,7 +115,7 @@ void System_Console_writeHex(Size length, void  * value) {
         }
         else /* end of block, just aligning for ASCII dump */
         {
-            Console_write__String8_size("   ");
+            Console_write__String8("   ");
         }
 
         /* print ASCII dump */
@@ -157,12 +143,11 @@ void System_Console_writeHex(Size length, void  * value) {
 
 #undef hexdump_Columns
 
-void System_Console_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 fileName, const System_UInt32 line) {
+void System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 fileName, const System_UInt32 line) {
     System_IStream_writeLine((System_IStream)&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", 4, expression, functionName, fileName, line);
 }
 
-#undef System_Console_debug
-void System_Console_debug(const System_String8 format, ...) {
+void System_Debug_writeLine__message(const System_String8 format, ...) {
     arguments args;
     arguments_start(args, format);
     Var argv[System_arguments_Limit_VALUE] = { 0 };

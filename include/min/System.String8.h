@@ -39,6 +39,7 @@ export struct System_Type  System_String8Type;
 export System_Size  System_String8_indexOf(System_String8 that, System_UInt8 character);
 export System_Size  System_String8_lastIndexOf(System_String8 that, System_UInt8 character);
 export System_Size  System_String8_get_Length(System_String8 that);
+export System_Size  System_String8_get_Length__max(System_String8 that, System_Size limit);
 export void  System_String8_copyTo(System_String8 src, System_String8 dest);
 export void  System_String8_copyToAt(System_String8 src, System_String8 dest, System_Size at);
 export void  System_String8_copySubstringTo(System_String8 src, System_Size count, System_String8 dest);
@@ -55,6 +56,7 @@ export System_Bool  System_String8_isNullOrEmpty(System_String8 that);
 #define inline_System_String8_equalsSubstring(chars0, chars1, n)  (0 == System_String8_compareSubstring(chars0, chars1, n))
 
 #define System_String8_formatLimit_VALUE  65536
+#define System_String8_MaxLength_VALUE  System_UInt32_Max
 
 export System_Size  stack_System_String8_format(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], ...);
 export System_Size  stack_System_String8_format__arguments(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], System_Size argc, System_Var argv[]);

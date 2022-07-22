@@ -627,7 +627,7 @@ struct System_Type  System_Int64ArrayType = { .base = { .type = typeof(System_Ty
 System_UInt8ArrayEnumerator  base_System_UInt8ArrayEnumerator_init(System_UInt8ArrayEnumerator that, System_UInt8Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_UInt8Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -645,7 +645,7 @@ void  base_System_UInt8ArrayEnumerator_free(System_UInt8ArrayEnumerator that) {
 
 System_UInt8  base_System_UInt8ArrayEnumerator_get_current(System_UInt8ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
     if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
 
     return System_UInt8Array_get_index(that->array, that->index);
@@ -653,7 +653,7 @@ System_UInt8  base_System_UInt8ArrayEnumerator_get_current(System_UInt8ArrayEnum
 
 System_Bool  base_System_UInt8ArrayEnumerator_moveNext(System_UInt8ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
@@ -693,7 +693,7 @@ struct System_Type  System_UInt8ArrayEnumeratorType = { .base = { .type = typeof
 System_UInt16ArrayEnumerator  base_System_UInt16ArrayEnumerator_init(System_UInt16ArrayEnumerator that, System_UInt16Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_UInt16Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -711,7 +711,7 @@ void  base_System_UInt16ArrayEnumerator_free(System_UInt16ArrayEnumerator that) 
 
 System_UInt16  base_System_UInt16ArrayEnumerator_get_current(System_UInt16ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
     if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
 
     return System_UInt16Array_get_index(that->array, that->index);
@@ -719,7 +719,7 @@ System_UInt16  base_System_UInt16ArrayEnumerator_get_current(System_UInt16ArrayE
 
 System_Bool  base_System_UInt16ArrayEnumerator_moveNext(System_UInt16ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
@@ -759,7 +759,7 @@ struct System_Type  System_UInt16ArrayEnumeratorType = { .base = { .type = typeo
 System_UInt32ArrayEnumerator  base_System_UInt32ArrayEnumerator_init(System_UInt32ArrayEnumerator that, System_UInt32Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_UInt32Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -777,7 +777,7 @@ void  base_System_UInt32ArrayEnumerator_free(System_UInt32ArrayEnumerator that) 
 
 System_UInt32  base_System_UInt32ArrayEnumerator_get_current(System_UInt32ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
     if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
 
     return System_UInt32Array_get_index(that->array, that->index);
@@ -785,7 +785,7 @@ System_UInt32  base_System_UInt32ArrayEnumerator_get_current(System_UInt32ArrayE
 
 System_Bool  base_System_UInt32ArrayEnumerator_moveNext(System_UInt32ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
@@ -825,7 +825,7 @@ struct System_Type  System_UInt32ArrayEnumeratorType = { .base = { .type = typeo
 System_UInt64ArrayEnumerator  base_System_UInt64ArrayEnumerator_init(System_UInt64ArrayEnumerator that, System_UInt64Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_UInt64Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -843,7 +843,7 @@ void  base_System_UInt64ArrayEnumerator_free(System_UInt64ArrayEnumerator that) 
 
 System_UInt64  base_System_UInt64ArrayEnumerator_get_current(System_UInt64ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
     if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
 
     return System_UInt64Array_get_index(that->array, that->index);
@@ -851,7 +851,7 @@ System_UInt64  base_System_UInt64ArrayEnumerator_get_current(System_UInt64ArrayE
 
 System_Bool  base_System_UInt64ArrayEnumerator_moveNext(System_UInt64ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
@@ -891,7 +891,7 @@ struct System_Type  System_UInt64ArrayEnumeratorType = { .base = { .type = typeo
 System_Int8ArrayEnumerator  base_System_Int8ArrayEnumerator_init(System_Int8ArrayEnumerator that, System_Int8Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_Int8Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -909,7 +909,7 @@ void  base_System_Int8ArrayEnumerator_free(System_Int8ArrayEnumerator that) {
 
 System_Int8  base_System_Int8ArrayEnumerator_get_current(System_Int8ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
     if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
 
     return System_Int8Array_get_index(that->array, that->index);
@@ -917,7 +917,7 @@ System_Int8  base_System_Int8ArrayEnumerator_get_current(System_Int8ArrayEnumera
 
 System_Bool  base_System_Int8ArrayEnumerator_moveNext(System_Int8ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
@@ -957,7 +957,7 @@ struct System_Type  System_Int8ArrayEnumeratorType = { .base = { .type = typeof(
 System_Int16ArrayEnumerator  base_System_Int16ArrayEnumerator_init(System_Int16ArrayEnumerator that, System_Int16Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_Int16Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -975,7 +975,7 @@ void  base_System_Int16ArrayEnumerator_free(System_Int16ArrayEnumerator that) {
 
 System_Int16  base_System_Int16ArrayEnumerator_get_current(System_Int16ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
     if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
 
     return System_Int16Array_get_index(that->array, that->index);
@@ -983,7 +983,7 @@ System_Int16  base_System_Int16ArrayEnumerator_get_current(System_Int16ArrayEnum
 
 System_Bool  base_System_Int16ArrayEnumerator_moveNext(System_Int16ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
@@ -1023,7 +1023,7 @@ struct System_Type  System_Int16ArrayEnumeratorType = { .base = { .type = typeof
 System_Int32ArrayEnumerator  base_System_Int32ArrayEnumerator_init(System_Int32ArrayEnumerator that, System_Int32Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_Int32Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -1041,7 +1041,7 @@ void  base_System_Int32ArrayEnumerator_free(System_Int32ArrayEnumerator that) {
 
 System_Int32  base_System_Int32ArrayEnumerator_get_current(System_Int32ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
     if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
 
     return System_Int32Array_get_index(that->array, that->index);
@@ -1049,7 +1049,7 @@ System_Int32  base_System_Int32ArrayEnumerator_get_current(System_Int32ArrayEnum
 
 System_Bool  base_System_Int32ArrayEnumerator_moveNext(System_Int32ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
@@ -1089,7 +1089,7 @@ struct System_Type  System_Int32ArrayEnumeratorType = { .base = { .type = typeof
 System_Int64ArrayEnumerator  base_System_Int64ArrayEnumerator_init(System_Int64ArrayEnumerator that, System_Int64Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_Int64Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -1107,7 +1107,7 @@ void  base_System_Int64ArrayEnumerator_free(System_Int64ArrayEnumerator that) {
 
 System_Int64  base_System_Int64ArrayEnumerator_get_current(System_Int64ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
     if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
 
     return System_Int64Array_get_index(that->array, that->index);
@@ -1115,7 +1115,7 @@ System_Int64  base_System_Int64ArrayEnumerator_get_current(System_Int64ArrayEnum
 
 System_Bool  base_System_Int64ArrayEnumerator_moveNext(System_Int64ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {

@@ -11,7 +11,7 @@
 /*# System_String #*/
 
 void base_System_String_free(String that) {
-    Console_assert(that);
+    Debug_assert(that);
 
     if (that->value && that->base.bitConfig.isValueAllocated) {
         Memory_free((that->value));

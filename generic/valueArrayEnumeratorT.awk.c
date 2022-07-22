@@ -20,7 +20,7 @@
 Generic_T0ArrayEnumerator  base_Generic_T0ArrayEnumerator_init(Generic_T0ArrayEnumerator that, Generic_T0Array array) {
     base_System_Object_init((System_Object)that);
 
-    if (!array) throw_terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (Generic_T0Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -38,7 +38,7 @@ void  base_Generic_T0ArrayEnumerator_free(Generic_T0ArrayEnumerator that) {
 
 Generic_T0  base_Generic_T0ArrayEnumerator_get_current(Generic_T0ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
     if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
 
     return Generic_T0Array_get_index(that->array, that->index);
@@ -46,7 +46,7 @@ Generic_T0  base_Generic_T0ArrayEnumerator_get_current(Generic_T0ArrayEnumerator
 
 System_Bool  base_Generic_T0ArrayEnumerator_moveNext(Generic_T0ArrayEnumerator that) {
 
-    if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {

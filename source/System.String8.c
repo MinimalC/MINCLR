@@ -80,8 +80,13 @@ Size  System_String8_lastIndexOf(String8 that, UInt8 character) {
 }
 
 Size  System_String8_get_Length(String8 that) {
+    return System_String8_get_Length__max(that, System_String8_MaxLength_VALUE);
+}
+
+System_Size  System_String8_get_Length__max(System_String8 that, System_Size limit) {
+    Debug_assert(that);
     Size i = 0;
-    while (that[i]) ++i;
+    while (limit && that[i]) { --limit; ++i; }
     return i;
 }
 
@@ -194,7 +199,7 @@ Size  stack_System_String8_formatEnd__arguments(String8 format, Char8 suffix, Ch
 }
 
 Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suffix, Size limit, Char8 message[], Size argc, Var argv[]) {
-    Console_assert(!argc || argv);
+    Debug_assert(!argc || argv);
 
     Size i;
     Char8  scratch[72];

@@ -8,8 +8,76 @@
 #if !defined(have_System_Console)
 #include <min/System.Console.h>
 #endif
+#if !defined(have_System_Memory)
+#include <min/System.Memory.h>
+#endif
 #if !defined(code_System_Exception)
 #define code_System_Exception
+
+
+struct System_ReservedException System_Exception_current = { 0 };
+
+Char8 System_Exception_message[System_String8_formatLimit_VALUE] = "";
+
+void  System_Exception_throw(System_Exception that) {
+    Type that_type = that->base.type;
+    Debug_assert(System_Type_isInstanceOf(that_type, typeof(System_Exception)));
+    Debug_assert(that_type->size);
+
+    Memory_copyTo(that, that_type->size, &System_Exception_current);
+#if DEBUG
+    if (that->message && that->error)
+        Console_writeLine("throws {0:string}: error {1:uint} ({2:string}): {3:string}", 4, that_type->name, that->error, enum_getName(typeof(System_Error), that->error), that->message);
+    else if (that->message)
+        Console_writeLine("throws {0:string}: {1:string}", 2, that_type->name, that->message);
+    else if (that->error)
+        Console_writeLine("throws {0:string}: error {1:uint} ({2:string})", 3, that_type->name, that->error, enum_getName(typeof(System_Error), that->error));
+    else
+        Console_writeLine("throws {0:string}", 1, that_type->name);
+#endif
+    if (that->base.bitConfig.isAllocated) {
+        if (that->message) {
+            System_Size message_length = String8_get_Length(that->message);
+            Memory_copyTo(that->message, message_length, System_Exception_message);
+            System_Exception_message[message_length + 1] = '\0';
+            System_Exception_current.base.message = System_Exception_message;
+        }
+        System_Exception_current.base.base.bitConfig.isAllocated = false;
+        Memory_free(that);
+    }
+}
+
+void  System_Exception_terminate(System_Exception that) {
+    Debug_assert(that);
+#if DEBUG
+    System_Console_write__String8("TERMINIERT: ");
+#endif
+    System_Exception_throw(that);
+
+    System_Syscall_terminate(false);
+}
+
+Bool  stack_System_Exception_catch(System_Exception that, System_Type type) {
+
+    if (System_Type_isInstanceOf(System_Exception_current.base.base.type, type)) {
+        
+        Memory_moveTo(&System_Exception_current, type->size, that);
+        return true;
+    }
+    return false;
+}
+
+System_Exception  base_System_Exception_init(System_Exception that, System_String8 message) {
+    base_System_Object_init((System_Object)that);
+
+    that->message = message;
+    return that;
+}
+
+/* void  base_System_Exception_free(System_Exception that) {
+
+    base_System_Object_free((System_Object)that);
+} */
 
 struct System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Exception_init, .value = base_System_Exception_init },
@@ -25,44 +93,5 @@ struct System_Type  System_ExceptionType = {
         .length = sizeof_array(System_ExceptionTypeFunctions), .value = &System_ExceptionTypeFunctions
     },
 };
-
-/* thread */ System_Exception System_Exception_current = null;
-
-System_Exception  System_Exception_get_current() {
-    return System_Exception_current;
-}
-
-void  System_Exception_set_current(System_Exception that) {
-
-    if (System_Exception_current) System_Memory_free(System_Exception_current);
-
-    System_Exception_current = (that == null ? null : (System_Exception)System_Memory_addReference((System_Object)that));
-}
-
-void  System_Exception_throw(System_Exception that) {
-    Console_assert(that);
-
-    // TODO: Memory_copyTo(that, sizeof(struct System_Exception), &System_Exception_current)
-    System_Exception_set_current(that);
-}
-
-void  System_Exception_terminate(System_Exception that) {
-    Console_assert(that);
-
-    System_Exception_throw(that);
-    System_Console_terminate(0);
-}
-
-System_Exception  base_System_Exception_init(System_Exception that, System_String8 message) {
-    base_System_Object_init((System_Object)that);
-
-    that->message = message;
-    return that;
-}
-
-/* void  base_System_Exception_free(System_Exception that) {
-
-    base_System_Object_free((System_Object)that);
-} */
 
 #endif

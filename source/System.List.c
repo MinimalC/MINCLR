@@ -35,12 +35,12 @@ System_Size  base_System_List_get_Length(System_List that) {
 }
 
 System_Object  base_System_List_get_index(System_List that, Size index) {
-	Console_assert(that);
+	Debug_assert(that);
 	return Array_get_index(that->items, index);
 }
 
 void  base_System_List_set_index(System_List that, Size index, System_Object value) {
-	Console_assert(that);
+	Debug_assert(that);
     if (value) {
         if (base_System_List_contains(that, value)) throw(new_Exception("InvalidOperationException: System_List: System_Object already added"))
         UInt64Array_set_index(that->hashes, index, Object_getSipHash(value));
@@ -63,7 +63,7 @@ System_Bool  base_System_List_contains(System_List that, System_Object object) {
 }
 
 void  base_System_List_add(System_List that, System_Object object) {
-    Console_assert(object);
+    Debug_assert(object);
 
     if (base_System_List_contains(that, object)) throw(new_Exception("InvalidOperationException: System.List: System_Object already added."))
 

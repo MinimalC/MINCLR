@@ -32,7 +32,7 @@ struct System_Type  System_MemoryType = { .base = stack_System_Object(System_Typ
 };
 
 Size System_Memory_indexof(Var ptr, Char8 needle, Size count) {
-    Console_assert(count);
+    Debug_assert(count);
 
     Size i = 0;
     Char8 *ptrBytes = (Char8 *)ptr;
@@ -47,7 +47,7 @@ Size System_Memory_indexof(Var ptr, Char8 needle, Size count) {
 }
 
 void System_Memory_zero(Var dest, Size n) {
-    Console_assert(n);
+    Debug_assert(n);
 
     Char8 *destBytes = (Char8 *)dest;
     do {
@@ -57,26 +57,32 @@ void System_Memory_zero(Var dest, Size n) {
     } while (true);
 }
 
-void System_Memory_copy(Var src, Size n, Var dest) {
-    Char8 *destBytes = (Char8 *)dest;
-    Char8 *srcBytes = (Char8 *)src;
-    while (n--) *destBytes++ = *srcBytes++;
-}
-
-void System_Memory_move(Var src, Size n, Var dest) {
+void System_Memory_copyTo(Var src, Size n, Var dest) {
     Char8 *destBytes = (Char8 *)dest;
     Char8 *srcBytes = (Char8 *)src;
     if ( srcBytes < destBytes ) {
-        destBytes += n;
-        srcBytes += n;
+        destBytes += (n - 1);
+        srcBytes += (n - 1);
         while (n--) *destBytes-- = *srcBytes--;
     }
     else
         while (n--) *destBytes++ = *srcBytes++;
 }
 
+void System_Memory_moveTo(Var src, Size n, Var dest) {
+    Char8 *destBytes = (Char8 *)dest;
+    Char8 *srcBytes = (Char8 *)src;
+    if ( srcBytes < destBytes ) {
+        destBytes += (n - 1);
+        srcBytes += (n - 1);
+        while (n--) { *destBytes-- = *srcBytes; *srcBytes-- = 0; }
+    }
+    else
+        while (n--) { *destBytes++ = *srcBytes; *srcBytes++ = 0; }
+}
+
 void System_Memory_set(Var dest, Char8 src, Size length) {
-    Console_assert(length);
+    Debug_assert(length);
 
     Char8 *destBytes = (Char8 *)dest;
     do {
@@ -87,7 +93,7 @@ void System_Memory_set(Var dest, Char8 src, Size length) {
 }
 
 Size System_Memory_compare(Var ptr0, Var ptr1, Size length) {
-    Console_assert(length);
+    Debug_assert(length);
 
     Size count = 0;
     Char8 *ptr0Bytes = (Char8 *)ptr0;
@@ -208,10 +214,10 @@ System_Console_writeLine("using System_Memory_Page: pageSize {0:uint}, payload {
                 /* expect first if this is unfree, move next */
                 if (header->refCount) {
 #if DEBUG == DEBUG_System_Memory
-                    Console_assert(header->type == typeof(System_Memory_Header);)
+                    Debug_assert(header->type == typeof(System_Memory_Header);)
 #endif
-                    Console_assert(header->length);
-                    Console_assert(header->elementType);
+                    Debug_assert(header->length);
+                    Debug_assert(header->elementType);
                     position += header->length;
                     continue;
                 }
@@ -230,12 +236,12 @@ System_Console_writeLine("using System_Memory_Header({0:uint}): length {1:uint},
                     return (position + sizeof(struct System_Memory_Header));
                 }
                 /* expect null, if there is not enough space, move next */
-                Console_assert(!header->length);
+                Debug_assert(!header->length);
                 header->length = real_size;
                 header->elementType = type;
                 header->refCount = System_Memory_ReferenceState_Used;
 #if DEBUG == DEBUG_System_Memory
-                Console_assert(!header->type);
+                Debug_assert(!header->type);
                 header->type = typeof(System_Memory_Header);
 System_Console_writeLine("new System_Memory_Header({0:uint}): length {1:uint}, refCount {2:uint}, elementType {3:string}", 4, index, header->length, header->refCount, header->elementType->name);
 #endif
@@ -248,15 +254,15 @@ System_Console_writeLine("new System_Memory_Header({0:uint}): length {1:uint}, r
 }
 
 System_Var  System_Memory_allocClass(System_Type type) {
-	Console_assert(type);
-    Console_assert(type->size);
+	Debug_assert(type);
+    Debug_assert(type->size);
 
 #if DEBUG == DEBUG_System_Memory
 	Console_writeLine("System_Memory_allocClass: type {0:string}, size {1:uint}", 2, type->name, type->size);
 #endif
 
 	Var that = System_Memory_alloc__internal(type, 1);
-    if (System_Type_isAssignableFrom(type, typeof(System_Object))) {
+    if (System_Type_isInstanceOf(type, typeof(System_Object))) {
         System_Object object = (System_Object)that;
         object->type = type;
         object->bitConfig.isAllocated = true;
@@ -265,8 +271,8 @@ System_Var  System_Memory_allocClass(System_Type type) {
 }
 
 System_Var  System_Memory_allocArray(System_Type type, System_Size count) {
-	Console_assert(type);
-    Console_assert(type->size);
+	Debug_assert(type);
+    Debug_assert(type->size);
 
 #if DEBUG == DEBUG_System_Memory
 	Console_writeLine("System_Memory_allocArray: type {0:string}, size {1:uint}, count {2:uint}", 3, type->name, type->size, count);
@@ -288,19 +294,19 @@ void System_Memory_reallocArray(System_Var ref that, System_Size count) {
 }
 
 void  System_Memory_freeClass(System_Var ref thatPtr) {
-	Console_assert(thatPtr);
+	Debug_assert(thatPtr);
     Var that = *thatPtr;
-	Console_assert(that);
+	Debug_assert(that);
 
     System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
 #if DEBUG == DEBUG_System_Memory
-	Console_assert(header->type == typeof(System_Memory_Header));
+	Debug_assert(header->type == typeof(System_Memory_Header));
 #endif
 
-	Console_assert(header->refCount >= System_Memory_ReferenceState_Used);
+	Debug_assert(header->refCount >= System_Memory_ReferenceState_Used);
 	if (--header->refCount >= System_Memory_ReferenceState_Used) goto return_free;
 
-    if (System_Type_isAssignableFrom(header->elementType, typeof(System_Object))) {
+    if (System_Type_isInstanceOf(header->elementType, typeof(System_Object))) {
 
         header->refCount = System_Memory_ReferenceState_Disposing;
 
@@ -355,14 +361,14 @@ void  System_Memory_realloc(void  ** that, Size oldLength, Size newLength) {
 }
 
 void System_Memory_freeStruct(void *that) {
-    Console_assert(that);
+    Debug_assert(that);
     ISO_free(that);
 }
 
 void System_Memory_free(void **thatPtr) {
-    Console_assert(thatPtr);
+    Debug_assert(thatPtr);
     void *that = *thatPtr;
-    Console_assert(that);
+    Debug_assert(that);
     System_Memory_freeStruct(that);
     *thatPtr = null;
 }

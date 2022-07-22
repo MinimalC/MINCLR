@@ -275,8 +275,8 @@ export System_Char8  System_String8_Empty[1];
 #endif
 
 
-export void  System_Console_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Unsigned line);
-export void  System_Console_debug(const System_String8 message, ...);
+export void  System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Unsigned line);
+export void  System_Debug_writeLine__message(const System_String8 message, ...);
 
 #if !defined(DEBUG)
 #define DEBUG 1
@@ -292,15 +292,15 @@ export void  System_Console_debug(const System_String8 message, ...);
 */
 #endif
 #if !DEBUG
-#define System_Console_assert(expression) (void)(expression)
-#define System_Console_debug(message,...) (void)(message, __VA_ARGS__)
+#define System_Debug_assert(expression) (void)(expression)
+#define System_Debug_writeLine(message,...) (void)(message, __VA_ARGS__)
 #else
-#define System_Console_assert(expression)  (void)(!(expression) ? System_Console_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Unsigned)__LINE__) : 0)
-#define System_Console_debug(message,...)  (void)System_Console_debug((System_String8)message, (System_String8)__func__, (System_String8)__FILE__, (System_String8)__LINE__, __VA_ARGS__)
+#define System_Debug_assert(expression)  (void)(!(expression) ? System_Debug_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Unsigned)__LINE__) : 0)
+#define System_Debug_writeLine(message,...)  (void)System_Debug_writeLine__message((System_String8)message, (System_String8)__func__, (System_String8)__FILE__, (System_String8)__LINE__, __VA_ARGS__)
 #endif
 
 #if defined(using_System)
-#define Console_assert  System_Console_assert
-#define Console_debug  System_Console_debug
+#define Debug_assert  System_Debug_assert
+#define Debug_writeLine  System_Debug_writeLine
 #endif
 #endif

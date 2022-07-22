@@ -8,10 +8,33 @@
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>
 #endif
+#if !defined(have_System_Exception)
+#include <min/System.Exception.h>
+#endif
 #if !defined(code_System_File)
 #define code_System_File
 
 /*# System_File #*/
+
+File  System_File_open(String8 filename, File_Mode flags) {
+
+/*  System_Var filePtr = ISO_fopen(filename, modes); */
+    System_Var filePtr = System_Syscall_openat((System_Var)System_Syscall_StandardFile_CurrentWorkingDirectory, filename,
+        System_File_Mode_noControllingTerminal | flags,
+        System_File_Permission_UserReadWrite | System_File_Permission_GroupReadWrite | System_File_Permission_EverybodyRead);
+
+    System_Error error = System_Syscall_get_Error();
+    if (error || !filePtr) { /* TODO */
+        struct System_Exception exception = stack_System_Exception__error(error, "FileNotFound");
+        throw_return(&exception);
+    }
+
+    File that = new_System_File();
+    that->filePtr = filePtr;
+    System_FileInfo info = new_System_FileInfo(filename);
+    that->info = (System_FileInfo)System_Memory_addReference((System_Object)info);
+    return that;
+}
 
 File  base_System_File_init(File that) {
 	base_System_Object_init((Object)that);
@@ -85,24 +108,5 @@ struct System_Type  System_FileType = {
         .length = sizeof_array(System_FileTypeInterfaces), .value = &System_FileTypeInterfaces
     },
 };
-
-File  System_File_open(String8 filename, File_Mode flags) {
-
-/*  System_Var filePtr = ISO_fopen(filename, modes); */
-    System_Var filePtr = System_Syscall_openat((System_Var)System_Syscall_StandardFile_CurrentWorkingDirectory, filename,
-        System_File_Mode_noControllingTerminal | flags,
-        System_File_Permission_UserReadWrite | System_File_Permission_GroupReadWrite | System_File_Permission_EverybodyRead);
-
-    System_Error error = System_Syscall_get_Error();
-    if (error || !filePtr) { /* TODO */
-        return null;
-    }
-
-    File that = new_System_File();
-    that->filePtr = filePtr;
-    System_FileInfo info = new_System_FileInfo(filename);
-    that->info = (System_FileInfo)System_Memory_addReference((System_Object)info);
-    return that;
-}
 
 #endif

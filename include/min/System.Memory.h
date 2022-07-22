@@ -14,10 +14,10 @@ export void  System_Memory_set(System_Var dest, System_Char8 src, System_Size n)
 export void  System_Memory_zero(System_Var dest, System_Size n);
 
 /* void * memcpy ( void * destination, const void * source, size_t num ); */
-export void  System_Memory_copy(System_Var src, System_Size n, System_Var dest);
+export void  System_Memory_copyTo(System_Var src, System_Size n, System_Var dest);
 
 /* void *memmove (void *dest, const void *src, size_t n) */
-export void  System_Memory_move(System_Var src, System_Size n, System_Var dest);
+export void  System_Memory_moveTo(System_Var src, System_Size n, System_Var dest);
 
 /* int memcmp ( const void * var1, const void * var2, size_t num ); */
 export System_Size  System_Memory_compare(System_Var var0, System_Var var1, System_Size length);
@@ -66,8 +66,8 @@ export void  System_Memory_free(void **thatPtr);
 
 #define Memory_set  System_Memory_set
 #define Memory_zero  System_Memory_zero
-#define Memory_copy  System_Memory_copy
-#define Memory_move  System_Memory_move
+#define Memory_copyTo  System_Memory_copyTo
+#define Memory_moveTo  System_Memory_moveTo
 #define Memory_compare  System_Memory_compare
 #define Memory_equals  System_Memory_equals
 #define Memory_indexof  System_Memory_indexof

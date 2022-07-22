@@ -31,7 +31,7 @@ export void  System_Console_writeHex(System_Size length, System_Var value);
 #define Console_exit  System_Console_exit
 #define Console_terminate  System_Console_terminate
 #define Console_sync  System_Console_sync
-#define Console_write__String8_size  System_Console_write__String8
+#define Console_write__String8  System_Console_write__String8
 #define Console_write  System_Console_write
 #define Console_writeLineEmpty  System_Console_writeLineEmpty
 #define Console_writeLine__String8  System_Console_writeLine__String8

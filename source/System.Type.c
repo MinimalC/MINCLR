@@ -14,7 +14,7 @@
 /*# System_enum #*/
 
 String8 System_enum_getName(Type type, IntPtr value) {
-    Console_assert(type);
+    Debug_assert(type);
 
     for (Size i = 0; i < type->fields.length; ++i) {
 
@@ -91,13 +91,13 @@ struct System_Type  System_Type_FieldInfoArrayType = { .base = stack_System_Obje
 
 System_Var System_Type_getMethod(System_Type  that, System_Var fun) {
     System_Var reture = System_Type_tryMethod(that, fun);
-    if (!reture) throw_terminate(new_System_Exception("NotImplementedException: Method not found"));
+    if (!reture) terminate(new_System_Exception("NotImplementedException: Method not found"));
     return reture;
 }
 
 System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
-    System_Console_assert(that);
-    System_Console_assert(fun);
+    System_Debug_assert(that);
+    System_Debug_assert(fun);
 
     System_Type_FunctionInfo info;
     for (System_Size f = 0; f < that->functions.length; ++f) {
@@ -110,9 +110,9 @@ System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
     return null;
 }
 
-System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other) {
-    Console_assert(that);
-    Console_assert(other);
+System_Bool  System_Type_isInstanceOf(System_Type  that, System_Type  other) {
+    Debug_assert(that);
+    Debug_assert(other);
 
     System_Type they = that;
     System_Type_InterfaceInfo info;
