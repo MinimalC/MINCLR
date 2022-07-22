@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Math)
@@ -16,7 +16,7 @@ struct System_Type  System_MathType = { .base = stack_System_Object(System_Type)
     .name = &STRING_System_Math,
 };
 
-System_uint64  System_Math_divideRemain__uint64__generic(System_uint64 divident, System_uint64 divisor, System_uint64 ref remainder) {
+System_UInt64  System_Math_divideRemain__UInt64__generic(System_UInt64 divident, System_UInt64 divisor, System_UInt64 ref remainder) {
 
     *remainder = divident % divisor;
 

@@ -11,7 +11,7 @@
 typedef fixed struct System_Dictionary {
     struct System_Object base;
 
-    System_uint64Array hashes;
+    System_UInt64Array hashes;
 
     System_Array keys;
 

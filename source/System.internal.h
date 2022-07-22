@@ -1,11 +1,11 @@
-#if defined(have_System_internal)
+#if defined(have_System_Internal)
 #error "Multiple inclusion of System.internal.h !"
 #endif
-#define have_System_internal
+#define have_System_Internal
 #define using_System
 
 #define DEBUG_System_Object  2
-#define DEBUG_System_string8_format  3
+#define DEBUG_System_String8_format  3
 #define DEBUG_System_Memory 4
 
 #if !defined(NODEBUG) || !defined(RELEASE)

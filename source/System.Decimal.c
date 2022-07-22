@@ -1,24 +1,24 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_File)
-#include <min/System.decimal.h>
+#include <min/System.Decimal.h>
 #endif
-#if !defined(code_System_decimal)
-#define code_System_decimal
+#if !defined(code_System_Decimal)
+#define code_System_Decimal
 
-/*# System_decimal #*/
+/*# System_Decimal #*/
 
-struct System_Type  System_decimalType = { .base = { .type = typeof(System_Type) },
-    .name = "System.decimal",
-    .size = sizeof(struct System_decimal),
+struct System_Type  System_DecimalType = { .base = { .type = typeof(System_Type) },
+    .name = "System.Decimal",
+    .size = sizeof(struct System_Decimal),
 };
 
-void  System_decimal_carryOver(System_decimal that, System_uint8 digits) {
-    /* if digits > System_decimal_Capacity_DEFAULT - 2 { throw Exception } */
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
-    for (System_size i = 0; i < digits; ++i) {
+void  System_Decimal_carryOver(System_Decimal that, System_UInt8 digits) {
+    /* if digits > System_Decimal_Capacity_DEFAULT - 2 { throw Exception } */
+    System_UInt8 * string = that->value + System_Decimal_Capacity_DEFAULT - 1;
+    for (System_Size i = 0; i < digits; ++i) {
         while (*(string - i) > 9) {
             *(string - i - 1) += 1;
             *(string - i) -= 10;
@@ -26,8 +26,8 @@ void  System_decimal_carryOver(System_decimal that, System_uint8 digits) {
     }
 }
 
-void  System_decimal_init__uint8(System_decimal that, System_uint8 uinteger) {
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
+void  System_Decimal_init__UInt8(System_Decimal that, System_UInt8 uinteger) {
+    System_UInt8 * string = that->value + System_Decimal_Capacity_DEFAULT - 1;
     if (uinteger & 1) {
         *(string - 0) += 1;
     }
@@ -57,13 +57,13 @@ void  System_decimal_init__uint8(System_decimal that, System_uint8 uinteger) {
         *(string - 1) += 2;
         *(string - 0) += 8;
     }
-    inline_System_decimal_carryOver(string,3)
+    inline_System_Decimal_carryOver(string,3)
 }
 
-void  System_decimal_init__uint16(System_decimal that, System_uint16 uinteger) {
-    System_decimal_init__uint8(that, (System_uint8)uinteger);
+void  System_Decimal_init__UInt16(System_Decimal that, System_UInt16 uinteger) {
+    System_Decimal_init__UInt8(that, (System_UInt8)uinteger);
 
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
+    System_UInt8 * string = that->value + System_Decimal_Capacity_DEFAULT - 1;
     if (uinteger & 256) {
         *(string - 2) += 2;
         *(string - 1) += 5;
@@ -112,13 +112,13 @@ void  System_decimal_init__uint16(System_decimal that, System_uint16 uinteger) {
         *(string - 1) += 6;
         *(string - 0) += 8;
     }
-    inline_System_decimal_carryOver(string,5)
+    inline_System_Decimal_carryOver(string,5)
 }
 
-void  System_decimal_init__uint32(System_decimal that, System_uint32 uinteger) {
-    System_decimal_init__uint16(that, (System_uint16)uinteger);
+void  System_Decimal_init__UInt32(System_Decimal that, System_UInt32 uinteger) {
+    System_Decimal_init__UInt16(that, (System_UInt16)uinteger);
 
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
+    System_UInt8 * string = that->value + System_Decimal_Capacity_DEFAULT - 1;
     if (uinteger & 65536) {
         *(string - 4) += 6;
         *(string - 3) += 5;
@@ -273,13 +273,13 @@ void  System_decimal_init__uint32(System_decimal that, System_uint32 uinteger) {
         *(string - 1) += 4;
         *(string - 0) += 8;
     }
-    inline_System_decimal_carryOver(string,10)
+    inline_System_Decimal_carryOver(string,10)
 }
 
-void  System_decimal_init__uint64(System_decimal that, System_uint64 uinteger) {
-    System_decimal_init__uint32(that, (System_uint32)uinteger);
+void  System_Decimal_init__UInt64(System_Decimal that, System_UInt64 uinteger) {
+    System_Decimal_init__UInt32(that, (System_UInt32)uinteger);
 
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
+    System_UInt8 * string = that->value + System_Decimal_Capacity_DEFAULT - 1;
 
     if (uinteger & 4294967296) {
         *(string - 9) += 4;
@@ -818,53 +818,53 @@ void  System_decimal_init__uint64(System_decimal that, System_uint64 uinteger) {
         *(string - 1) += 0;
         *(string - 0) += 8;
     }
-    inline_System_decimal_carryOver(string,19)
+    inline_System_Decimal_carryOver(string,19)
 }
 
-void  System_decimal_set_Precision(System_decimal that, System_int8 precision) {
+void  System_Decimal_set_Precision(System_Decimal that, System_Int8 precision) {
     that->precision = precision;
 }
-System_int8  System_decimal_get_Precision(System_decimal that) {
+System_Int8  System_Decimal_get_Precision(System_Decimal that) {
     return that->precision;
 }
 
-void  System_decimal_init__int8(System_decimal that, System_int8 int8) {
-    System_boolean isNegative = int8 < 0;
-    if (isNegative) System_decimal_set_Precision(that, -1);
-    System_uint8 uinteger = isNegative ? ~int8 + 1 : int8;
-    System_decimal_init__uint8(that, uinteger);
+void  System_Decimal_init__Int8(System_Decimal that, System_Int8 Int8) {
+    System_Bool isNegative = Int8 < 0;
+    if (isNegative) System_Decimal_set_Precision(that, -1);
+    System_UInt8 uinteger = isNegative ? ~Int8 + 1 : Int8;
+    System_Decimal_init__UInt8(that, uinteger);
 }
 
-void  System_decimal_init__int16(System_decimal that, System_int16 int16) {
-    System_boolean isNegative = int16 < 0;
-    if (isNegative) System_decimal_set_Precision(that, -1);
-    System_uint16 uinteger = isNegative ? ~int16 + 1 : int16;
-    System_decimal_init__uint16(that, uinteger);
+void  System_Decimal_init__Int16(System_Decimal that, System_Int16 int16) {
+    System_Bool isNegative = int16 < 0;
+    if (isNegative) System_Decimal_set_Precision(that, -1);
+    System_UInt16 uinteger = isNegative ? ~int16 + 1 : int16;
+    System_Decimal_init__UInt16(that, uinteger);
 }
 
-void  System_decimal_init__int32(System_decimal that, System_int32 int32) {
-    System_boolean isNegative = int32 < 0;
-    if (isNegative) System_decimal_set_Precision(that, -1);
-    System_uint32 uinteger = isNegative ? ~int32 + 1 : int32;
-    System_decimal_init__uint32(that, uinteger);
+void  System_Decimal_init__Int32(System_Decimal that, System_Int32 int32) {
+    System_Bool isNegative = int32 < 0;
+    if (isNegative) System_Decimal_set_Precision(that, -1);
+    System_UInt32 uinteger = isNegative ? ~int32 + 1 : int32;
+    System_Decimal_init__UInt32(that, uinteger);
 }
 
-void  System_decimal_init__int64(System_decimal that, System_int64 int64) {
-    System_boolean isNegative = int64 < 0;
-    if (isNegative) System_decimal_set_Precision(that, -1);
-    System_uint64 uinteger = isNegative ? ~int64 + 1 : int64;
-    System_decimal_init__uint64(that, uinteger);
+void  System_Decimal_init__Int64(System_Decimal that, System_Int64 int64) {
+    System_Bool isNegative = int64 < 0;
+    if (isNegative) System_Decimal_set_Precision(that, -1);
+    System_UInt64 uinteger = isNegative ? ~int64 + 1 : int64;
+    System_Decimal_init__UInt64(that, uinteger);
 }
 
-void  System_decimal_tostring8__stack(System_decimal that, System_char8 array[System_decimal_Capacity_DEFAULT + 1]) {
-    System_uint8 * string = that->value + System_decimal_Capacity_DEFAULT - 1;
-    System_string8 array_string = array + System_decimal_Capacity_DEFAULT - 1;
+void  System_Decimal_toString8__stack(System_Decimal that, System_Char8 array[System_Decimal_Capacity_DEFAULT + 1]) {
+    System_UInt8 * string = that->value + System_Decimal_Capacity_DEFAULT - 1;
+    System_String8 array_string = array + System_Decimal_Capacity_DEFAULT - 1;
 
-    for (System_size i = 0; i < System_decimal_Capacity_DEFAULT; ++i) {
+    for (System_Size i = 0; i < System_Decimal_Capacity_DEFAULT; ++i) {
         *(array_string - i) = '0' + *(string - i);
     }
     array_string = array;
-    for (System_size l = 0; l < System_decimal_Capacity_DEFAULT - 1; ++l) {
+    for (System_Size l = 0; l < System_Decimal_Capacity_DEFAULT - 1; ++l) {
         if (*(array_string + l) != '0') break;
         *(array_string + l) = ' ';
     }

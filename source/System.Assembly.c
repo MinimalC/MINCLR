@@ -1,4 +1,4 @@
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Assembly)
@@ -9,9 +9,9 @@
 
 /*# System_Assembly #*/
 
-Assembly  System_Assembly_open(const string8  fileName, System_AssemblyBinding  flags)
+Assembly  System_Assembly_open(const String8  fileName, System_AssemblyBinding  flags)
 {
-    ISO_Library assemblyPtr = ISO_dlopen(fileName, (int32)flags);
+    ISO_Library assemblyPtr = ISO_dlopen(fileName, (Int32)flags);
     if (!assemblyPtr) return null; /* TODO: throw FileNotFound */
 
     Assembly that = Memory_allocClass(typeof(Assembly));
@@ -23,11 +23,11 @@ Assembly  System_Assembly_open(const string8  fileName, System_AssemblyBinding  
     return that;
 }
 
-void * System_Assembly_findGlobal(const System_string8 name) {
+void * System_Assembly_findGlobal(const System_String8 name) {
     return ISO_dlsym(null, name);
 }
 
-void  * System_Assembly_find(Assembly that, const System_string8  name)
+void  * System_Assembly_find(Assembly that, const System_String8  name)
 {
     return ISO_dlsym((ISO_Library)that->assemblyPtr, name);
 }

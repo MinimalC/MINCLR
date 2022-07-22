@@ -12,11 +12,11 @@ typedef fixed  struct System_IEnumerator { }  * System_IEnumerator;
 
 export struct System_Type  System_IEnumeratorType;
 
-typedef System_var delegate(System_IEnumerator_get_current)(System_IEnumerator that);
-typedef System_boolean delegate(System_IEnumerator_moveNext)(System_IEnumerator that);
+typedef System_Var delegate(System_IEnumerator_get_current)(System_IEnumerator that);
+typedef System_Bool delegate(System_IEnumerator_moveNext)(System_IEnumerator that);
 
-export System_var  base_System_IEnumerator_get_current(System_IEnumerator that);
-export System_boolean  base_System_IEnumerator_moveNext(System_IEnumerator that);
+export System_Var  base_System_IEnumerator_get_current(System_IEnumerator that);
+export System_Bool  base_System_IEnumerator_moveNext(System_IEnumerator that);
 
 #define System_IEnumerator_get_current(o)  ((function_System_IEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
 #define System_IEnumerator_moveNext(o)  ((function_System_IEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)

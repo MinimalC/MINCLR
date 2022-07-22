@@ -1,4 +1,4 @@
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Console)
@@ -10,8 +10,8 @@
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
 #endif
-#if !defined(have_System_string8)
-#include <min/System.string8.h>
+#if !defined(have_System_String8)
+#include <min/System.String8.h>
 #endif
 #if !defined(have_ISO)
 #include <min/ISO.h>
@@ -25,29 +25,29 @@ struct System_Type  System_ConsoleType = { .base = stack_System_Object(System_Ty
 
 struct System_File  System_Console_StdIn = {
     .base = stack_System_Object(System_File),
-    .filePtr = (System_var)System_File_special_STDIN,
+    .filePtr = (System_Var)System_File_special_STDIN,
 };
 struct System_File  System_Console_StdOut = {
     .base = stack_System_Object(System_File),
-    .filePtr = (System_var)System_File_special_STDOUT,
+    .filePtr = (System_Var)System_File_special_STDOUT,
 };
 struct System_File  System_Console_StdErr = {
     .base = stack_System_Object(System_File),
-    .filePtr = (System_var)System_File_special_STDERR,
+    .filePtr = (System_Var)System_File_special_STDERR,
 };
 
 void  System_Console_sync() {
     /* ISO_fflush(ISO_stdout); */
-    System_Syscall_fsync((System_var)System_File_special_STDOUT);
+    System_Syscall_fsync((System_Var)System_File_special_STDOUT);
 }
 
 /* __attribute__((constructor)) void System_init */
 
-void System_Console_exit(const size code)  {
+void System_Console_exit(const Size code)  {
     System_Syscall_terminate(code);
 }
 
-void System_Console_terminate(const size code)  {
+void System_Console_terminate(const Size code)  {
     /* fclose(randomDevice); */
 
     System_Exception exception = System_Exception_get_current();
@@ -58,7 +58,7 @@ void System_Console_terminate(const size code)  {
         if (exception->base.type)
             Console_write("{0:string}", 1, exception->base.type->name);
         else
-            Console_write__string8("System.Exception");
+            Console_write__String8_size("System.Exception");
 
         if (exception->message)
             Console_write(": {0:string}", 1, exception->message);
@@ -71,36 +71,36 @@ void System_Console_terminate(const size code)  {
     System_Syscall_terminate(code);
 }
 
-void  System_Console_write__string8(string8 string) {
-    System_File_write__string8(&System_Console_StdOut, string, string8_get_Length(string));
+void  System_Console_write__String8(String8 string) {
+    System_File_write__String8_size(&System_Console_StdOut, string, String8_get_Length(string));
 }
 
-void  System_Console_write__char8(char8 character) {
-    System_File_write__string8(&System_Console_StdOut, &character, 1);
+void  System_Console_write__char8(Char8 character) {
+    System_File_write__String8_size(&System_Console_StdOut, &character, 1);
 }
 
 void  System_Console_writeLineEmpty() {
-    System_File_write__string8(&System_Console_StdOut, "\n", 1);
+    System_File_write__String8_size(&System_Console_StdOut, "\n", 1);
 }
 
-void  System_Console_write(string8 format, ...) {
+void  System_Console_write(String8 format, ...) {
     arguments args;
     arguments_start(args, format);
-    var argv[System_arguments_Limit_VALUE] = { 0 };
-    size argc = stack_System_arguments_get(args, argv);
+    Var argv[System_arguments_Limit_VALUE] = { 0 };
+    Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
     System_IStream_writeEnd__arguments((System_IStream)&System_Console_StdOut, format, 0, argc, argv);
 }
 
-void  System_Console_writeLine__string8(string8 string) {
+void  System_Console_writeLine__String8(String8 string) {
     System_IStream_writeLine((System_IStream)&System_Console_StdOut, string);
 }
 
-void  System_Console_writeLine(string8 format, ...) {
+void  System_Console_writeLine(String8 format, ...) {
     arguments args;
     arguments_start(args, format);
-    var argv[System_arguments_Limit_VALUE] = { 0 };
-    size argc = stack_System_arguments_get(args, argv);
+    Var argv[System_arguments_Limit_VALUE] = { 0 };
+    Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
     System_IStream_writeEnd__arguments((System_IStream)&System_Console_StdOut, format, '\n', argc, argv);
 }
@@ -108,11 +108,11 @@ void  System_Console_writeLine(string8 format, ...) {
 
 #define hexdump_Columns  32
 
-void System_Console_writeHex(size length, void  * value) {
+void System_Console_writeHex(Size length, void  * value) {
     if (length == 0 || !value) return;
 
-    uint8  * memory = (uint8  *)value;
-    size i, j;
+    UInt8  * memory = (UInt8  *)value;
+    Size i, j;
 
     for (i = 0; i < length + ((length % hexdump_Columns) ? (hexdump_Columns - length % hexdump_Columns) : 0); i++)
     {
@@ -129,7 +129,7 @@ void System_Console_writeHex(size length, void  * value) {
         }
         else /* end of block, just aligning for ASCII dump */
         {
-            Console_write__string8("   ");
+            Console_write__String8_size("   ");
         }
 
         /* print ASCII dump */
@@ -141,7 +141,7 @@ void System_Console_writeHex(size length, void  * value) {
                 {
                     Console_write__char8(' ');
                 }
-                else if(System_char8_isPrintable(memory[j])) /* printable char */
+                else if(System_Char8_isPrintable(memory[j])) /* printable char */
                 {
                     Console_write__char8(0xFF & (memory[j]));
                 }
@@ -155,18 +155,20 @@ void System_Console_writeHex(size length, void  * value) {
     }
 }
 
-void System_Console_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 fileName, const System_uint32 line) {
+#undef hexdump_Columns
+
+void System_Console_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 fileName, const System_UInt32 line) {
     System_IStream_writeLine((System_IStream)&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", 4, expression, functionName, fileName, line);
 }
 
 #undef System_Console_debug
-void System_Console_debug(const System_string8 message, ...) {
+void System_Console_debug(const System_String8 format, ...) {
     arguments args;
-    arguments_start(args, message);
-    var argv[System_arguments_Limit_VALUE] = { 0 };
-    size argc = stack_System_arguments_get(args, argv);
+    arguments_start(args, format);
+    Var argv[System_arguments_Limit_VALUE] = { 0 };
+    Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    System_IStream_writeLine__arguments((System_IStream)&System_Console_StdErr, message, argc, argv);
+    System_IStream_writeLine__arguments((System_IStream)&System_Console_StdErr, format, argc, argv);
 }
 
 #endif

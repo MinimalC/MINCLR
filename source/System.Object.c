@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Object)
@@ -22,7 +22,7 @@ Type  System_Object_get_Type(Object that) {
     return that->type;
 }
 
-System_boolean  System_Object_isInstanceof(System_Object that, System_Type type) {
+System_Bool  System_Object_isInstanceof(System_Object that, System_Type type) {
     Console_assert(that);
     Console_assert(type);
     return System_Type_isAssignableFrom(System_Object_get_Type(that), type);
@@ -51,11 +51,11 @@ Object  base_System_Object_init(Object that) {
     return that;
 }
 
-System_uint64 base_System_Object_getSipHash(System_Object that) {
+System_UInt64 base_System_Object_getSipHash(System_Object that) {
     struct Crypto_SipHash48 sipHash48 = stack_Crypto_SipHash48();
     Crypto_SipHash48_init(&sipHash48);
-    System_intptr that_intptr = (System_intptr)that;
-    Crypto_SipHash48_update(&sipHash48, &that_intptr, System_size_Bytes);
+    System_IntPtr that_intptr = (System_IntPtr)that;
+    Crypto_SipHash48_update(&sipHash48, &that_intptr, System_Size_Bytes);
     return Crypto_SipHash48_final(&sipHash48);
 }
 

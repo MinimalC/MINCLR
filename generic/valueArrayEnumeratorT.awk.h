@@ -1,10 +1,10 @@
 /* Gemeinfrei. Public Domain. */
 #if !defined(T)
 #error "Usage: See make.GenericT.awk"
-#define Generic_T0  System_uint64
-#define Generic_T0Array  System_uint64Array
-#define Generic_T0ArrayEnumerator  System_uint64ArrayEnumerator
-#define Generic_T0ArrayEnumeratorType  System_uint64ArrayEnumeratorType
+#define Generic_T0  System_UInt64
+#define Generic_T0Array  System_UInt64Array
+#define Generic_T0ArrayEnumerator  System_UInt64ArrayEnumerator
+#define Generic_T0ArrayEnumeratorType  System_UInt64ArrayEnumeratorType
 #endif
 /* FileName Generic.T0ArrayEnumerator */
 /* GENERIC */
@@ -19,7 +19,7 @@ typedef fixed struct Generic_T0ArrayEnumerator {
 
     Generic_T0Array array;
 
-    System_size index;
+    System_Size index;
 
 }  * Generic_T0ArrayEnumerator;
 
@@ -31,12 +31,12 @@ export struct System_Type  Generic_T0ArrayEnumeratorType;
 typedef void delegate(Generic_T0ArrayEnumerator_free)(Generic_T0ArrayEnumerator that);
 typedef Generic_T0ArrayEnumerator delegate(Generic_T0ArrayEnumerator_init)(Generic_T0ArrayEnumerator that, Generic_T0Array array);
 typedef Generic_T0 delegate(Generic_T0ArrayEnumerator_get_current)(Generic_T0ArrayEnumerator that);
-typedef System_boolean delegate(Generic_T0ArrayEnumerator_moveNext)(Generic_T0ArrayEnumerator that);
+typedef System_Bool delegate(Generic_T0ArrayEnumerator_moveNext)(Generic_T0ArrayEnumerator that);
 
 export Generic_T0ArrayEnumerator  base_Generic_T0ArrayEnumerator_init(Generic_T0ArrayEnumerator that, Generic_T0Array array);
 export void  base_Generic_T0ArrayEnumerator_free(Generic_T0ArrayEnumerator that);
 export Generic_T0  base_Generic_T0ArrayEnumerator_get_current(Generic_T0ArrayEnumerator that);
-export System_boolean  base_Generic_T0ArrayEnumerator_moveNext(Generic_T0ArrayEnumerator that);
+export System_Bool  base_Generic_T0ArrayEnumerator_moveNext(Generic_T0ArrayEnumerator that);
 
 #define Generic_T0ArrayEnumerator_init(o,...)  ((function_Generic_T0ArrayEnumerator_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_Generic_T0ArrayEnumerator_init))(o,__VA_ARGS__)
 #define Generic_T0ArrayEnumerator_free(o)  ((function_Generic_T0ArrayEnumerator_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)

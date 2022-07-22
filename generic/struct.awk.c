@@ -2,7 +2,7 @@
 #if !defined(T)
 #error "Usage: See make.GenericT.awk"
 
-#define Generic_T0  System_decimal
+#define Generic_T0  System_Decimal
 #endif
 /* Type1 required */
 /* GENERIC */

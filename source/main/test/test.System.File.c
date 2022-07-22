@@ -12,12 +12,12 @@ int main(int argc, char * argv[]) {
 
 
 	/* Test01: Write to the File and flush */
-    File_write__string8(file, HALLO, sizeof(HALLO) - 1);
+    File_write__String8_size(file, HALLO, sizeof(HALLO) - 1);
 
     File_sync(file);
 
 	/* Test02: get Position */
-    size position = File_get_Position(file);
+    Size position = File_get_Position(file);
 
     if (position == 5)
         Console_writeLine("Position {0:uint} is correct", 1, position);
@@ -29,12 +29,12 @@ int main(int argc, char * argv[]) {
     File_set_Position(file, 0);
 
 	/* Test04: Read from the File */
-    char8 text[6];
-    for (size i = 0; i < 6; ++i) text[i] = 0x00;
+    Char8 text[6];
+    for (Size i = 0; i < 6; ++i) text[i] = 0x00;
 
-    size count =  File_read(file, text, 5);
+    Size count =  File_read(file, text, 5);
 
-    if (count == 5 && string8_equals(HALLO, text))
+    if (count == 5 && String8_equals(HALLO, text))
         Console_writeLine("{0:string} is correct, {1:uint} bytes read", 2, text, count);
     else
         Console_writeLine("{0:string} is NOT correct, {1:uint} bytes read", 2, text, count);

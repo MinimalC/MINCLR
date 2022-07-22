@@ -7,10 +7,10 @@
 
 typedef fixed struct Crypto_SipHash48 {
 
-    System_uint64  v0;
-    System_uint64  v1;
-    System_uint64  v2;
-    System_uint64  v3;
+    System_UInt64  v0;
+    System_UInt64  v1;
+    System_UInt64  v2;
+    System_UInt64  v3;
 
 } * Crypto_SipHash48;
 
@@ -24,8 +24,8 @@ typedef fixed struct Crypto_SipHash48 {
 
 export struct System_Type  Crypto_SipHash48Type;
 
-export void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_var input, System_size length);
-export System_uint64  Crypto_SipHash48_final(Crypto_SipHash48 that);
+export void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_Var input, System_Size length);
+export System_UInt64  Crypto_SipHash48_final(Crypto_SipHash48 that);
 
 typedef Crypto_SipHash48 delegate(Crypto_SipHash48_init)(Crypto_SipHash48 that);
 typedef void delegate(Crypto_SipHash48_free)(Crypto_SipHash48 that);

@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Type)
@@ -13,10 +13,10 @@
 
 /*# System_enum #*/
 
-string8 System_enum_getName(Type type, intptr value) {
+String8 System_enum_getName(Type type, IntPtr value) {
     Console_assert(type);
 
-    for (size i = 0; i < type->fields.length; ++i) {
+    for (Size i = 0; i < type->fields.length; ++i) {
 
         struct System_Type_FieldInfo info = array(type->fields.value)[i];
 
@@ -25,7 +25,7 @@ string8 System_enum_getName(Type type, intptr value) {
         }
     }
 
-    return string8_Empty;
+    return String8_Empty;
 }
 
 #endif
@@ -43,15 +43,15 @@ struct System_Type  System_TypeType = { .base = { .type = typeof(System_Type) },
 /* Literal Types */
 
 /* sizeof(void) is 1 */
-/* sizeof(void *) is sizeof(size), sizeof(intptr) */
+/* sizeof(void *) is sizeof(Size), sizeof(IntPtr) */
 
-struct System_Type  System_voidType     = { .base = stack_System_Object(System_Type), .name = "System.void",    .size = sizeof(void) };
-struct System_Type  System_varType      = { .base = stack_System_Object(System_Type), .name = "System.var",     .size = sizeof(void *) };
-struct System_Type  System_sizeType     = { .base = stack_System_Object(System_Type), .name = "System.size",    .size = sizeof(System_size) };
-struct System_Type  System_ssizeType    = { .base = stack_System_Object(System_Type), .name = "System.ssize",   .size = sizeof(System_ssize) };
-struct System_Type  System_intptrType   = { .base = stack_System_Object(System_Type), .name = "System.intptr",  .size = sizeof(System_intptr) };
-struct System_Type  System_sintptrType  = { .base = stack_System_Object(System_Type), .name = "System.sintptr", .size = sizeof(System_sintptr) };
-struct System_Type  System_booleanType  = { .base = stack_System_Object(System_Type), .name = "System.boolean", .size = sizeof(System_boolean) };
+struct System_Type  System_VoidType     = { .base = stack_System_Object(System_Type), .name = "System.void",    .size = sizeof(void) };
+struct System_Type  System_VarType      = { .base = stack_System_Object(System_Type), .name = "System.Var",     .size = sizeof(void *) };
+struct System_Type  System_SizeType     = { .base = stack_System_Object(System_Type), .name = "System.size",    .size = sizeof(System_Size) };
+struct System_Type  System_SSizeType    = { .base = stack_System_Object(System_Type), .name = "System.ssize",   .size = sizeof(System_SSize) };
+struct System_Type  System_IntPtrType   = { .base = stack_System_Object(System_Type), .name = "System.IntPtr",  .size = sizeof(System_IntPtr) };
+struct System_Type  System_SIntPtrType  = { .base = stack_System_Object(System_Type), .name = "System.sintptr", .size = sizeof(System_SIntPtr) };
+struct System_Type  System_BooleanType  = { .base = stack_System_Object(System_Type), .name = "System.bool", .size = sizeof(System_Bool) };
 
 struct System_Type  System_Type_FunctionInfoType = { .base = stack_System_Object(System_Type),
 	.name = "System.Type.FunctionInfo",
@@ -89,18 +89,18 @@ struct System_Type  System_Type_FieldInfoArrayType = { .base = stack_System_Obje
 	.baseType = &System_ObjectType
 };
 
-System_var System_Type_getMethod(System_Type  that, System_var fun) {
-    System_var reture = System_Type_trygetMethod(that, fun);
+System_Var System_Type_getMethod(System_Type  that, System_Var fun) {
+    System_Var reture = System_Type_trygetMethod(that, fun);
     if (!reture) throw_terminate(new_System_Exception("NotImplementedException: Method not found"));
     return reture;
 }
 
-System_var System_Type_trygetMethod(System_Type  that, System_var fun) {
+System_Var System_Type_trygetMethod(System_Type  that, System_Var fun) {
     System_Console_assert(that);
     System_Console_assert(fun);
 
     System_Type_FunctionInfo info;
-    for (System_size f = 0; f < that->functions.length; ++f) {
+    for (System_Size f = 0; f < that->functions.length; ++f) {
         info = &array(that->functions.value)[f];
         if (fun == info->function) return info->value;
     }
@@ -110,7 +110,7 @@ System_var System_Type_trygetMethod(System_Type  that, System_var fun) {
     return null;
 }
 
-System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other) {
+System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other) {
     Console_assert(that);
     Console_assert(other);
 
@@ -118,7 +118,7 @@ System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  oth
     System_Type_InterfaceInfo info;
     while (they) {
         if (other == they) return true;
-        for (System_size f = 0; f < they->interfaces.length; ++f) {
+        for (System_Size f = 0; f < they->interfaces.length; ++f) {
             info = &array(they->interfaces.value)[f];
             if (other == info->interfaceType) return true;
         }

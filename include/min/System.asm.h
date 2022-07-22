@@ -102,16 +102,16 @@
 
 #if defined(have_AMD64)
 #if defined(have_AMD64_32)
-#define System_size_Width  32
-#define System_size_Bytes  4
+#define System_Size_Width  32
+#define System_Size_Bytes  4
 #else
-#define System_size_Width  64
-#define System_size_Bytes  8
+#define System_Size_Width  64
+#define System_Size_Bytes  8
 #endif
 
 #else
-#define System_size_Width  32
-#define System_size_Bytes  4
+#define System_Size_Width  32
+#define System_Size_Bytes  4
 #endif
 
 #endif

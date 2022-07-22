@@ -11,15 +11,15 @@
 #define ISO_terminate  _Exit
 #define ISO_exit  exit
 
-import void ISO_terminate(System_int32 status) noreturn;
-import void ISO_exit(System_int32 status) noreturn;
+import void ISO_terminate(System_Int32 status) noreturn;
+import void ISO_exit(System_Int32 status) noreturn;
 
 
 /* ISO_errno */
 
 #define ISO_errno_location  __errno_location
 
-import System_int32 * ISO_errno_location();
+import System_Int32 * ISO_errno_location();
 
 
 /* ISO_malloc and _free */
@@ -28,8 +28,8 @@ import System_int32 * ISO_errno_location();
 #define ISO_realloc  realloc
 #define ISO_free  free
 
-import void  * ISO_malloc(System_size length);
-import void  * ISO_realloc(void * that, System_size length);
+import void  * ISO_malloc(System_Size length);
+import void  * ISO_realloc(void * that, System_Size length);
 import void  ISO_free(void  * that);
 
 /* ISO_File */
@@ -43,9 +43,9 @@ typedef struct class_ISO_File  * ISO_File;
 #define ISO_vfprintf  vfprintf
 #define ISO_putc  putc
 
-import System_int32  ISO_fprintf(ISO_File filePtr, const System_string8  format, ...);
-import System_int32  ISO_vfprintf(ISO_File filePtr, const System_string8  format, System_arguments  args);
-import System_int32  ISO_putc(System_int32  character, ISO_File);
+import System_Int32  ISO_fprintf(ISO_File filePtr, const System_String8  format, ...);
+import System_Int32  ISO_vfprintf(ISO_File filePtr, const System_String8  format, System_arguments  args);
+import System_Int32  ISO_putc(System_Int32  character, ISO_File);
 
 
 /* ISO_stdin _stdout and _stderr */
@@ -60,7 +60,7 @@ import ISO_File  ISO_stderr;
 
 /* ISO_f*lose */
 
-typedef System_int32  ISO_seekorigin;
+typedef System_Int32  ISO_seekorigin;
 #define ISO_SEEK_BEGIN  0
 #define ISO_SEEK_CURRENT  1
 #define ISO_SEEK_END  2
@@ -73,13 +73,13 @@ typedef System_int32  ISO_seekorigin;
 #define ISO_fseek  fseek
 #define ISO_ftell  ftell
 
-import ISO_File  ISO_fopen(System_string8 filename, System_string8 modes);
-import System_int32  ISO_fclose(ISO_File file);
-import System_size  ISO_fwrite(const void  * value, System_size __size, System_size n, ISO_File file);
+import ISO_File  ISO_fopen(System_String8 filename, System_String8 modes);
+import System_Int32  ISO_fclose(ISO_File file);
+import System_Size  ISO_fwrite(const void  * value, System_Size __size, System_Size n, ISO_File file);
 import void  ISO_fflush(ISO_File file);
-import System_size  ISO_fread(void  * value, System_size __size, System_size n, ISO_File file);
-import void  ISO_fseek(ISO_File file, System_size offset, ISO_seekorigin whence);
-import System_size  ISO_ftell(ISO_File file);
+import System_Size  ISO_fread(void  * value, System_Size __size, System_Size n, ISO_File file);
+import void  ISO_fseek(ISO_File file, System_Size offset, ISO_seekorigin whence);
+import System_Size  ISO_ftell(ISO_File file);
 
 
 /* ISO_assembly */
@@ -93,9 +93,9 @@ typedef struct class_ISO_Library  * ISO_Library;
 #define ISO_dlclose  dlclose
 #define ISO_dlsym  dlsym
 
-import ISO_Library  ISO_dlopen(const System_string8 filename, System_int32 flags);
-import System_int32  ISO_dlclose(ISO_Library  that);
-import void  * ISO_dlsym(ISO_Library  that, const System_string8 symbol);
+import ISO_Library  ISO_dlopen(const System_String8 filename, System_Int32 flags);
+import System_Int32  ISO_dlclose(ISO_Library  that);
+import void  * ISO_dlsym(ISO_Library  that, const System_String8 symbol);
 
 
 #endif

@@ -1,10 +1,10 @@
 /* Gemeinfrei. Public Domain. */
 #if !defined(T)
 #error "Usage: See make.GenericT.awk"
-#define Generic_T0  System_uint64
-#define Generic_T0Array  System_uint64Array
+#define Generic_T0  System_UInt64
+#define Generic_T0Array  System_UInt64Array
 
-#define Generic_T0ArrayType  System_uint64ArrayType
+#define Generic_T0ArrayType  System_UInt64ArrayType
 #endif
 /* FileName Generic.T0Array */
 /* seeAlso valueArrayEnumeratorT */
@@ -19,7 +19,7 @@
 typedef fixed struct Generic_T0Array {
     struct System_Object base;
 
-    System_size  length;
+    System_Size  length;
 
     Generic_T0  (* value)[];
 
@@ -31,21 +31,21 @@ typedef fixed struct Generic_T0Array {
 export struct System_Type  Generic_T0ArrayType;
 
 typedef void delegate(Generic_T0Array_free)(Generic_T0Array that);
-typedef Generic_T0Array delegate(Generic_T0Array_init)(Generic_T0Array that, System_size length);
-typedef System_size  delegate(Generic_T0Array_get_Length)(Generic_T0Array that);
-typedef Generic_T0  delegate(Generic_T0Array_get_index)(Generic_T0Array that, System_size index);
-typedef void  delegate(Generic_T0Array_set_index)(Generic_T0Array that, System_size index, Generic_T0 value);
-typedef void delegate(Generic_T0Array_copyTo)(Generic_T0Array that, Generic_T0Array other, System_size offset);
-typedef void delegate(Generic_T0Array_resize)(Generic_T0Array that, System_size length);
+typedef Generic_T0Array delegate(Generic_T0Array_init)(Generic_T0Array that, System_Size length);
+typedef System_Size  delegate(Generic_T0Array_get_Length)(Generic_T0Array that);
+typedef Generic_T0  delegate(Generic_T0Array_get_index)(Generic_T0Array that, System_Size index);
+typedef void  delegate(Generic_T0Array_set_index)(Generic_T0Array that, System_Size index, Generic_T0 value);
+typedef void delegate(Generic_T0Array_copyTo)(Generic_T0Array that, Generic_T0Array other, System_Size offset);
+typedef void delegate(Generic_T0Array_resize)(Generic_T0Array that, System_Size length);
 typedef System_IEnumerator  delegate(Generic_T0Array_getEnumerator)(Generic_T0Array that);
 
-export Generic_T0Array  base_Generic_T0Array_init(Generic_T0Array that, System_size length);
+export Generic_T0Array  base_Generic_T0Array_init(Generic_T0Array that, System_Size length);
 export void  base_Generic_T0Array_free(Generic_T0Array that);
-export System_size  base_Generic_T0Array_get_Length(Generic_T0Array that);
-export Generic_T0  base_Generic_T0Array_get_index(Generic_T0Array that, System_size index);
-export void  base_Generic_T0Array_set_index(Generic_T0Array that, System_size index, Generic_T0 value);
-export void  base_Generic_T0Array_copyTo(Generic_T0Array that, Generic_T0Array other, System_size offset);
-export void  base_Generic_T0Array_resize(Generic_T0Array that, System_size length);
+export System_Size  base_Generic_T0Array_get_Length(Generic_T0Array that);
+export Generic_T0  base_Generic_T0Array_get_index(Generic_T0Array that, System_Size index);
+export void  base_Generic_T0Array_set_index(Generic_T0Array that, System_Size index, Generic_T0 value);
+export void  base_Generic_T0Array_copyTo(Generic_T0Array that, Generic_T0Array other, System_Size offset);
+export void  base_Generic_T0Array_resize(Generic_T0Array that, System_Size length);
 export System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array that);
 
 #define Generic_T0Array_init(o,...)  ((function_Generic_T0Array_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_Generic_T0Array_init))(o, __VA_ARGS__)

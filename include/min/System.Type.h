@@ -34,11 +34,11 @@ typedef fixed struct System_Type  * System_Type;
 typedef fixed struct System_Type_FunctionInfo {
 	struct System_Object  base;
 
-	System_string8  name;
+	System_String8  name;
 
-	System_var function;
+	System_Var function;
 
-	System_var value;
+	System_Var value;
 
 }  * System_Type_FunctionInfo;
 
@@ -48,7 +48,7 @@ typedef fixed struct System_Type_FunctionInfo {
 typedef fixed struct System_Type_FunctionInfoArray {
 	struct System_Object base;
 
-	System_size  length;
+	System_Size  length;
 
 	struct System_Type_FunctionInfo  (* value)[];
 
@@ -62,7 +62,7 @@ typedef fixed struct System_Type_InterfaceInfo {
 
     System_Type  interfaceType;
 
-	System_size  offset;
+	System_Size  offset;
 
 	struct System_Type_FunctionInfoArray  functions;
 
@@ -74,7 +74,7 @@ typedef fixed struct System_Type_InterfaceInfo {
 typedef fixed struct System_Type_InterfaceInfoArray {
 	struct System_Object base;
 
-	System_size  length;
+	System_Size  length;
 
 	struct System_Type_InterfaceInfo  (* value)[];
 
@@ -87,9 +87,9 @@ typedef fixed struct System_Type_InterfaceInfoArray {
 typedef fixed struct System_Type_FieldInfo {
 	struct System_Object  base;
 
-    System_string8  name;
+    System_String8  name;
 
-    System_intptr  value;
+    System_IntPtr  value;
 
 }  * System_Type_FieldInfo;
 
@@ -99,7 +99,7 @@ typedef fixed struct System_Type_FieldInfo {
 typedef fixed struct System_Type_FieldInfoArray {
 	struct System_Object base;
 
-	System_size  length;
+	System_Size  length;
 
 	struct System_Type_FieldInfo  (* value)[];
 
@@ -109,8 +109,8 @@ typedef fixed struct System_Type_FieldInfoArray {
 struct System_Type {
 	struct System_Object  base;
 
-	System_string8  name;
-	System_size  size;
+	System_String8  name;
+	System_Size  size;
 	System_Type  baseType;
 
 	struct System_Type_FunctionInfoArray  functions;
@@ -149,24 +149,24 @@ export struct System_Type  System_Type_FieldInfoArrayType;
 #define Type_FieldInfoArrayType  System_Type_FieldInfoArrayType
 #endif
 
-export struct System_Type  System_voidType; /* sizeof(void) == 1  */
-export struct System_Type  System_varType;  /* sizeof(void *) on x86_64 is * 8 == 64bits  */
-export struct System_Type  System_sizeType;
-export struct System_Type  System_intptrType;
-export struct System_Type  System_booleanType;
+export struct System_Type  System_VoidType; /* sizeof(void) == 1  */
+export struct System_Type  System_VarType;  /* sizeof(void *) on x86_64 is * 8 == 64bits  */
+export struct System_Type  System_SizeType;
+export struct System_Type  System_IntPtrType;
+export struct System_Type  System_BooleanType;
 
 #if defined(using_System)
-#define varType  System_varType
-#define sizeType  System_sizeType
-#define intptrType  System_intptrType
-#define booleanType  System_booleanType
+#define VarType  System_VarType
+#define sizeType  System_SizeType
+#define intptrType  System_IntPtrType
+#define booleanType  System_BooleanType
 #endif
 
-export System_var System_Type_getMethod(System_Type  that, System_var function);
-export System_var System_Type_trygetMethod(System_Type  that, System_var function);
-// internal inline artificial System_var inline_System_Type_getMethod(System_Type  that, System_var function) {
+export System_Var System_Type_getMethod(System_Type  that, System_Var function);
+export System_Var System_Type_trygetMethod(System_Type  that, System_Var function);
+// internal inline artificial System_Var inline_System_Type_getMethod(System_Type  that, System_Var function) {
 
-export System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Type  other);
+export System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other);
 
 #if defined(using_System)
 #define Type_getMethod  System_Type_getMethod
@@ -174,13 +174,13 @@ export System_boolean  System_Type_isAssignableFrom(System_Type  that, System_Ty
 #endif
 
 
-export System_var  System_Memory_allocClass(System_Type type);
-export System_var  System_Memory_allocArray(System_Type type, System_size count);
-export void System_Memory_reallocArray(System_var ref that, System_size count);
+export System_Var  System_Memory_allocClass(System_Type type);
+export System_Var  System_Memory_allocArray(System_Type type, System_Size count);
+export void System_Memory_reallocArray(System_Var ref that, System_Size count);
 export System_Object System_Memory_addReference(System_Object that);
-export void  System_Memory_freeClass(System_var ref that);
+export void  System_Memory_freeClass(System_Var ref that);
 
-#define System_Memory_free(THAT) (System_Memory_freeClass((System_var ref)&THAT))
+#define System_Memory_free(THAT) (System_Memory_freeClass((System_Var ref)&THAT))
 
 #if defined(using_System)
 #define Memory_allocClass  System_Memory_allocClass
@@ -196,9 +196,9 @@ export void  System_Memory_freeClass(System_var ref that);
 #if !defined(have_System_enum)
 #define have_System_enum
 
-export System_string8  System_enum_getName(System_Type type, System_intptr value);
+export System_String8  System_enum_getName(System_Type type, System_IntPtr value);
 
-#define inline_System_enum_getName(CLASS, VALUE)  System_enum_getName(typeof(CLASS), (System_intptr)(VALUE))
+#define inline_System_enum_getName(CLASS, VALUE)  System_enum_getName(typeof(CLASS), (System_IntPtr)(VALUE))
 
 #if defined(using_System)
 #define enum_getName  System_enum_getName

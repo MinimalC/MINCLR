@@ -8,24 +8,24 @@
 export struct System_Type  System_MemoryType;
 
 /* void *memset (void *s, int c, size_t n) */
-export void  System_Memory_set(System_var dest, System_char8 src, System_size n);
+export void  System_Memory_set(System_Var dest, System_Char8 src, System_Size n);
 
 /* void bzero(void *dest, size_t count) */
-export void  System_Memory_zero(System_var dest, System_size n);
+export void  System_Memory_zero(System_Var dest, System_Size n);
 
 /* void * memcpy ( void * destination, const void * source, size_t num ); */
-export void  System_Memory_copy(System_var src, System_size n, System_var dest);
+export void  System_Memory_copy(System_Var src, System_Size n, System_Var dest);
 
 /* void *memmove (void *dest, const void *src, size_t n) */
-export void  System_Memory_move(System_var src, System_size n, System_var dest);
+export void  System_Memory_move(System_Var src, System_Size n, System_Var dest);
 
 /* int memcmp ( const void * var1, const void * var2, size_t num ); */
-export System_size  System_Memory_compare(System_var var0, System_var var1, System_size length);
+export System_Size  System_Memory_compare(System_Var var0, System_Var var1, System_Size length);
 
-export System_boolean  System_Memory_equals(System_var var0, System_var var1, System_size length);
+export System_Bool  System_Memory_equals(System_Var var0, System_Var var1, System_Size length);
 
 /* void * memchr ( const void * var, int value, size_t num ); */
-export System_size  System_Memory_indexof(System_var var, System_char8 needle, System_size count);
+export System_Size  System_Memory_indexof(System_Var var, System_Char8 needle, System_Size count);
 
 
 typedef unsigned System_Memory_PageFlags;
@@ -53,8 +53,8 @@ enum {
 };
 
 /* oldies:
-export void  * System_Memory_alloc(System_size length);
-export void  System_Memory_realloc(void  ** that, System_size oldLength, System_size newLength);
+export void  * System_Memory_alloc(System_Size length);
+export void  System_Memory_realloc(void  ** that, System_Size oldLength, System_Size newLength);
 export void  System_Memory_freeStruct(void *that);
 export void  System_Memory_free(void **thatPtr);
 */

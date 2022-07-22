@@ -1,4 +1,4 @@
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Array)
@@ -11,14 +11,14 @@
 
 /* class System_Array */
 
-System_Array  base_System_Array_init(System_Array that, System_size length) {
+System_Array  base_System_Array_init(System_Array that, System_Size length) {
 	base_System_Object_init((Object)that);
 
     that->length = length;
 
-    size element_size = sizeof(var);
+    Size element_size = sizeof(Var);
 
-    that->value =  Memory_allocClass(typeof(var), length);
+    that->value =  Memory_allocClass(typeof(Var), length);
 
     return that;
 }
@@ -26,12 +26,12 @@ System_Array  base_System_Array_init(System_Array that, System_size length) {
 void  base_System_Array_free(System_Array that) {
 	Console_assert(that);
 
-	size length = that->length;
-    size i;
+	Size length = that->length;
+    Size i;
 
 #if DEBUG == DEBUG_System_Object
 	System_Type type = ((System_Object)that)->Type;
-    size start_null = 0;
+    Size start_null = 0;
 #endif
 
     /* * TODO: Array_get_index, Array_set_index and Array_hasValue */
@@ -74,24 +74,24 @@ void  base_System_Array_free(System_Array that) {
 	base_System_Object_free((Object)that);
 }
 
-System_size  base_System_Array_get_Length(System_Array that) {
+System_Size  base_System_Array_get_Length(System_Array that) {
     return that->length;
 }
 
-System_Object  base_System_Array_get_index(System_Array that, size index) {
+System_Object  base_System_Array_get_index(System_Array that, Size index) {
 	Console_assert(that);
 	return array(that->value)[index];
 }
 
-void  base_System_Array_set_index(System_Array that, size index, System_Object value) {
+void  base_System_Array_set_index(System_Array that, Size index, System_Object value) {
 	Console_assert(that);
     System_Object item = array(that->value)[index];
     if (item) Memory_free(item);
 	array(that->value)[index] = !value ? null : Object_addReference(value);
 }
 
-void  base_System_Array_resize(System_Array that, System_size length) {
-    size element_size = sizeof(var);
+void  base_System_Array_resize(System_Array that, System_Size length) {
+    Size element_size = sizeof(Var);
     System_Memory_realloc((void **)&that->value, (that->length * element_size), (length * element_size));
     that->length = length;
 }

@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_ArrayEnumerator)
@@ -37,11 +37,11 @@ System_Object  base_System_ArrayEnumerator_get_current(System_ArrayEnumerator th
     return System_Array_get_index(that->array, that->index);
 }
 
-System_boolean  base_System_ArrayEnumerator_moveNext(System_ArrayEnumerator that) {
+System_Bool  base_System_ArrayEnumerator_moveNext(System_ArrayEnumerator that) {
 
     if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
-    System_size new_index = ++(that->index);
+    System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
         that->index = new_index;
         return true;

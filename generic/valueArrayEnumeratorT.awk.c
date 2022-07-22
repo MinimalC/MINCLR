@@ -44,16 +44,16 @@ Generic_T0  base_Generic_T0ArrayEnumerator_get_current(Generic_T0ArrayEnumerator
     return Generic_T0Array_get_index(that->array, that->index);
 }
 
-System_boolean  base_Generic_T0ArrayEnumerator_moveNext(Generic_T0ArrayEnumerator that) {
+System_Bool  base_Generic_T0ArrayEnumerator_moveNext(Generic_T0ArrayEnumerator that) {
 
     if (that->index == -2) throw_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
-    System_size new_index = ++(that->index);
+    System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
         that->index = new_index;
-        return System_true;
+        return true;
     }
-    return System_false;
+    return false;
 }
 
 struct System_Type_FunctionInfo  Generic_T0ArrayEnumeratorTypeFunctions[] = {
@@ -65,7 +65,7 @@ struct System_Type_FunctionInfo  Generic_T0ArrayEnumeratorTypeFunctions[] = {
 
 struct System_Type  Generic_T0ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0ArrayEnumerator",
-    .size = sizeof(struct Generic_T0ArrayEnumerator),
+    .Size = sizeof(struct Generic_T0ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(&Generic_T0ArrayEnumeratorTypeFunctions), .value = &Generic_T0ArrayEnumeratorTypeFunctions

@@ -9,31 +9,16 @@
 #error "Use include System.asm.h instead."
 #endif
 
-enum /* noname */ { System_null } ;
+enum { null } ;
 
-#define System_default(class)  ((class)System_null)
 
-#if defined(using_System)
-#define null  System_null
-#define default(class)  ((class)null)
-#endif
+typedef _Bool  System_Bool;
 
-/* ISO C boolean */
-
-#if defined(__cplusplus)
-typedef bool  System_boolean;
-#else
-typedef _Bool  System_boolean;
-#endif
-
-enum /* noname */ { System_false, System_true } ;
+enum { false, true } ;
 
 #if defined(using_System)
-/* please don't use #if defined(bool) */
-#define bool  System_boolean
-
-#define false  System_false
-#define true  System_true
+/* please don't use #if defined(Bool) */
+#define Bool  System_Bool
 #endif
 
 
@@ -52,7 +37,7 @@ enum /* noname */ { System_false, System_true } ;
 
 #if defined(MSVCC)
 #define import  extern __declspec(dllimport)
-#if defined(have_System_internal)
+#if defined(have_System_Internal)
 #define export  __declspec(dllexport)
 #else
 #define export  import
@@ -69,7 +54,7 @@ enum /* noname */ { System_false, System_true } ;
 
 #else /* if GNUCC */
 #define import  extern
-#if defined(have_System_internal)
+#if defined(have_System_Internal)
 #define export  __attribute__((visibility("default")))
 #else
 #define export  import
@@ -104,19 +89,19 @@ enum /* noname */ { System_false, System_true } ;
 
 #define final  /* final */
 
-#if defined(have_System_internal)
+#if defined(have_System_Internal)
 #define fixed  /* noconst */
 #else
 #define fixed  const
 #endif
 
-#define unused(name)  (void)(name);
+#define unused(names)  (void)(names);
 
 
 #if defined(have_ARM)
-#define breakpoint  asm("bkpt");
+#define breakpoint  asm("bkpt")
 #elif defined(have_AMD64) || defined(have_X86)
-#define breakpoint  asm("int $3");
+#define breakpoint  asm("int $3")
 #else
 #define breakpoint
 #warning breakpoint: Architecture not supported
@@ -178,9 +163,9 @@ and in your C .c you do:
 #if defined(__builtin_offsetof)
 #define offsetof(TYPE,MEMBER)  __builtin_offsetof(TYPE,MEMBER)
 #else
-#define offsetof(TYPE,MEMBER)  ((System_size) &((TYPE *)0)->MEMBER)
+#define offsetof(TYPE,MEMBER)  ((System_Size) &((TYPE *)0)->MEMBER)
 #endif
-#define offsetof_class(TYPE,MEMBER)  ((System_size) &((TYPE)0)->MEMBER)
+#define offsetof_class(TYPE,MEMBER)  ((System_Size) &((TYPE)0)->MEMBER)
 
 #define instancein(OBJECT,MEMBER,TYPE)  ((TYPE *)OBJECT->MEMBER)
 
@@ -193,112 +178,125 @@ and in your C .c you do:
 #define typeof(name)  (&name##Type)
 
 
-typedef void  System_void;
-typedef void  * System_var; /* var is not unsafe in C */
-typedef unsigned  System_unsigned;
-typedef signed  System_signed;
-typedef __SIZE_TYPE__  System_size;
-typedef __SIZE_TYPE__  System_intptr;
-typedef __PTRDIFF_TYPE__  System_ssize;
-typedef __PTRDIFF_TYPE__  System_sintptr;
+typedef void  System_Void;
+typedef void  * System_Var; /* Var is not unsafe in C */
+typedef unsigned  System_Unsigned;
+typedef signed  System_Signed;
+typedef __SIZE_TYPE__  System_Size;
+typedef __SIZE_TYPE__  System_IntPtr;
+typedef __PTRDIFF_TYPE__  System_SSize;
+typedef __PTRDIFF_TYPE__  System_SIntPtr;
 
-#define System_size_Max  __SIZE_MAX__
-#if !defined(System_size_Width)
-#define System_size_Width  __SIZE_WIDTH__
+#define System_Size_Max  __SIZE_MAX__
+#if !defined(System_Size_Width)
+#define System_Size_Width  __SIZE_WIDTH__
 #endif
-#if !defined(System_size_Bytes)
-#define System_size_Bytes  __SIZEOF_POINTER__
+#if !defined(System_Size_Bytes)
+#define System_Size_Bytes  __SIZEOF_POINTER__
 #endif
 
 #if defined(using_System)
-#define var  System_var
-#define size  System_size
-#define size_Max  System_size_Max
-#define size_Width  System_size_Width
-#define intptr  System_intptr
-#define ssize  System_ssize
-#define sintptr  System_sintptr
+#define Var  System_Var
+#define Size  System_Size
+#define Size_Max  System_Size_Max
+#define Size_Width  System_Size_Width
+#define IntPtr  System_IntPtr
+#define SSize  System_SSize
+#define SIntPtr  System_SIntPtr
 #endif
 
 
-typedef unsigned char  System_uint8;
+typedef unsigned char  System_UInt8;
 #if defined(have_vscode)
-#define System_uint8  unsigned char
+#define System_UInt8  unsigned char
 #endif
-typedef unsigned short  System_uint16;
-typedef unsigned int  System_uint32;
+typedef unsigned short  System_UInt16;
+typedef unsigned int  System_UInt32;
 #if defined(__LP64__)
-typedef unsigned long int  System_uint64;
+typedef unsigned long int  System_UInt64;
 #else
-typedef unsigned long long int  System_uint64;
+typedef unsigned long long int  System_UInt64;
 #endif
-typedef signed char  System_int8;
-typedef signed short  System_int16;
-typedef signed int  System_int32;
+typedef signed char  System_Int8;
+typedef signed short  System_Int16;
+typedef signed int  System_Int32;
 #if defined(__LP64__)
-typedef signed long int  System_int64;
+typedef signed long int  System_Int64;
 #else
-typedef signed long long int  System_int64;
+typedef signed long long int  System_Int64;
 #endif
 
 #if defined(using_System)
-#define uint8  System_uint8
-#define uint16  System_uint16
-#define uint32  System_uint32
-#define uint64  System_uint64
+#define UInt8  System_UInt8
+#define UInt16  System_UInt16
+#define UInt32  System_UInt32
+#define UInt64  System_UInt64
 
-#define int8  System_int8
-#define int16  System_int16
-#define int32  System_int32
-#define int64  System_int64
+#define Int8  System_Int8
+#define Int16  System_Int16
+#define Int32  System_Int32
+#define Int64  System_Int64
 #endif
 
 
-#define System_byte  System_uint8
-#define System_ushort  System_uint16
-#define System_uint  System_uint32
-#define System_ulong  System_uint64
+#define System_Byte  System_UInt8
+#define System_UShort  System_UInt16
+#define System_UInt  System_UInt32
+#define System_ULong  System_UInt64
 
-#define System_sbyte  System_int8
-#define System_short  System_int16
-#define System_int  System_int32
-#define System_long  System_int64
+#define System_SByte  System_Int8
+#define System_Short  System_Int16
+#define System_Int  System_Int32
+#define System_Long  System_Int64
 
 /* Look, this doesn't rewrite keyword type names in C. */
 #if defined(using_System)
-#define byte  System_byte
-#define ushort  System_ushort
-#define uint  System_uint
-#define ulong  System_ulong
+#define Byte  System_Byte
+#define UShort  System_UShort
+#define UInt  System_UInt
+#define ULong  System_ULong
 
-#define sbyte  System_sbyte
-#define sshort  System_short
-#define iint  System_int
-#define llong  System_long
+#define SByte  System_SByte
+#define SShort  System_Short
+#define Int  System_Int
+#define Long  System_Long
 #endif
 
 
-typedef char  System_char8,  * System_string8,  System_STRING8[];
+typedef char  System_Char8,  * System_String8,  System_STRING8[];
 
-export System_char8  System_string8_Empty[1];
+export System_Char8  System_String8_Empty[1];
 
 #if defined(using_System)
-#define char8  System_char8
-#define string8  System_string8
+#define Char8  System_Char8
+#define String8  System_String8
 #define STRING8  System_STRING8
-#define string8_Empty  System_string8_Empty
+#define String8_Empty  System_String8_Empty
 #endif
 
 
-export void  System_Console_assert__string8(const System_string8 expression, const System_string8 functionName, const System_string8 file, const System_unsigned line);
-export void  System_Console_debug(const System_string8 message, ...);
+export void  System_Console_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Unsigned line);
+export void  System_Console_debug(const System_String8 message, ...);
 
+#if !defined(DEBUG)
+#define DEBUG 1
+/*  This is set, so you can easily do #if DEBUG.
+    You need to #define DEBUG 0 for yourself, for example
+
+#if !defined(NODEBUG) || !defined(RELEASE)
+#define DEBUG 0
+#else
+#define DEBUG 1
+#endif
+
+*/
+#endif
 #if !DEBUG
 #define System_Console_assert(expression) (void)(expression)
 #define System_Console_debug(message,...) (void)(message, __VA_ARGS__)
 #else
-#define System_Console_assert(expression)  (void)(!(expression) ? System_Console_assert__string8((System_string8)#expression, (System_string8)__func__, (System_string8)__FILE__, (System_unsigned)__LINE__) : 0)
-#define System_Console_debug(message,...)  (void)System_Console_debug((System_string8)message, (System_string8)__func__, (System_string8)__FILE__, (System_string8)__LINE__, __VA_ARGS__)
+#define System_Console_assert(expression)  (void)(!(expression) ? System_Console_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Unsigned)__LINE__) : 0)
+#define System_Console_debug(message,...)  (void)System_Console_debug((System_String8)message, (System_String8)__func__, (System_String8)__FILE__, (System_String8)__LINE__, __VA_ARGS__)
 #endif
 
 #if defined(using_System)

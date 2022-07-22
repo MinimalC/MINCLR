@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_IEnumerable)
@@ -14,8 +14,8 @@ struct System_Type  System_IEnumeratorType = { .base = stack_System_Object(Syste
 	.name = "System.IEnumerator",
 };
 
-System_var  base_System_IEnumerator_get_current(System_IEnumerator that) { return null; }
-System_boolean  base_System_IEnumerator_moveNext(System_IEnumerator that) { return false; }
+System_Var  base_System_IEnumerator_get_current(System_IEnumerator that) { return null; }
+System_Bool  base_System_IEnumerator_moveNext(System_IEnumerator that) { return false; }
 
 
 /*# System_IEnumerable #*/

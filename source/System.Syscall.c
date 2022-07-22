@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Syscall)
@@ -40,20 +40,20 @@ struct System_Type  System_Syscall_commandType = { .base = { .type = typeof(Syst
 };
 
 #endif
-#if !defined(code_System_error)
-#define code_System_error
+#if !defined(code_System_Error)
+#define code_System_Error
 
-/*# System_error #*/
+/*# System_Error #*/
 
-struct System_Type_FieldInfo  System_errorTypeFields[] = {
-#include <min/System.error.generic.asm.h>
+struct System_Type_FieldInfo  System_ErrorTypeFields[] = {
+#include <min/System.Error.generic.asm.h>
 };
 
-struct System_Type  System_errorType = { .base = { .type = typeof(System_Type) },
-    .name = "System.error",
-    .size = sizeof(System_error),
+struct System_Type  System_ErrorType = { .base = { .type = typeof(System_Type) },
+    .name = "System.Error",
+    .size = sizeof(System_Error),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
-        .value = &System_errorTypeFields, .length = sizeof_array(System_errorTypeFields),
+        .value = &System_ErrorTypeFields, .length = sizeof_array(System_ErrorTypeFields),
     },
 };
 
@@ -67,62 +67,62 @@ struct System_Type  System_SyscallType = { .base = { .type = typeof(System_Type)
     .name = "System.Syscall",
 };
 
-System_error System_Syscall_error = 0;
+System_Error System_Syscall_error = 0;
 
-void System_Syscall_set_error(const System_error error) {
+void System_Syscall_set_Error(const System_Error error) {
     System_Syscall_error = error;
 }
 
-System_error System_Syscall_get_error() {
-    System_error error = System_Syscall_error;
+System_Error System_Syscall_get_Error() {
+    System_Error error = System_Syscall_error;
     System_Syscall_error = 0;
     return error;
 }
 
-void  System_Syscall_terminate(System_size code)  {
+void  System_Syscall_terminate(System_Size code)  {
     (void)System_Syscall_call01(System_Syscall_command_exit, code);
     /* inline_unreachable... for noreturn just repeat: */
     (void)System_Syscall_terminate(code);
 }
 
-System_var  System_Syscall_open(System_string8 fileName, System_intptr flags, System_intptr mode) {
-    return (System_var)System_Syscall_call03(System_Syscall_command_open, (System_intptr)fileName, flags, mode);
+System_Var  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode) {
+    return (System_Var)System_Syscall_call03(System_Syscall_command_open, (System_IntPtr)fileName, flags, mode);
 }
 
-System_var  System_Syscall_openat(System_var directoryPtr, System_string8 fileName, System_intptr flags, System_intptr mode) {
-    return (System_var)System_Syscall_call04(System_Syscall_command_openat, (System_intptr)directoryPtr, (System_intptr)fileName, flags, mode);
+System_Var  System_Syscall_openat(System_Var directoryPtr, System_String8 fileName, System_IntPtr flags, System_IntPtr mode) {
+    return (System_Var)System_Syscall_call04(System_Syscall_command_openat, (System_IntPtr)directoryPtr, (System_IntPtr)fileName, flags, mode);
 }
 
-System_size  System_Syscall_read(System_var filePtr, const void  * buf, System_size count) {
-    return System_Syscall_call03(System_Syscall_command_read, (System_intptr)filePtr, (System_intptr)buf, count);
+System_Size  System_Syscall_read(System_Var filePtr, const void  * buf, System_Size count) {
+    return System_Syscall_call03(System_Syscall_command_read, (System_IntPtr)filePtr, (System_IntPtr)buf, count);
 }
 
-System_size  System_Syscall_write(System_var filePtr, const void  * buf, System_size count) {
-    return System_Syscall_call03(System_Syscall_command_write, (System_intptr)filePtr, (System_intptr)buf, count);
+System_Size  System_Syscall_write(System_Var filePtr, const void  * buf, System_Size count) {
+    return System_Syscall_call03(System_Syscall_command_write, (System_IntPtr)filePtr, (System_IntPtr)buf, count);
 }
 
-System_size  System_Syscall_lseek(System_var filePtr, System_size offset, System_intptr whence) {
-    return System_Syscall_call03(System_Syscall_command_lseek, (System_intptr)filePtr, offset, whence);
+System_Size  System_Syscall_lseek(System_Var filePtr, System_Size offset, System_IntPtr whence) {
+    return System_Syscall_call03(System_Syscall_command_lseek, (System_IntPtr)filePtr, offset, whence);
 }
 
-void  System_Syscall_fsync(System_var filePtr) {
-    (void)System_Syscall_call01(System_Syscall_command_fsync, (System_intptr)filePtr);
+void  System_Syscall_fsync(System_Var filePtr) {
+    (void)System_Syscall_call01(System_Syscall_command_fsync, (System_IntPtr)filePtr);
 }
 
-void  System_Syscall_close(System_var filePtr) {
-    (void)System_Syscall_call01(System_Syscall_command_close, (System_intptr)filePtr);
+void  System_Syscall_close(System_Var filePtr) {
+    (void)System_Syscall_call01(System_Syscall_command_close, (System_IntPtr)filePtr);
 }
 
-void  System_Syscall_fstatat(System_var directoryPtr, const System_string8 pathName, struct System_Syscall_stat  * that, System_intptr flags) {
-    (void)System_Syscall_call04(System_Syscall_command_fstatat, (System_intptr)directoryPtr, (System_intptr)pathName, (System_intptr)that, flags);
+void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, struct System_Syscall_stat  * that, System_IntPtr flags) {
+    (void)System_Syscall_call04(System_Syscall_command_fstatat, (System_IntPtr)directoryPtr, (System_IntPtr)pathName, (System_IntPtr)that, flags);
 }
 
-System_var  System_Syscall_mmap(System_size length, System_intptr page, System_intptr map, System_var file, System_intptr offset) {
-    return (System_var)System_Syscall_call06(System_Syscall_command_mmap, /* initial address */ null, length, page, map, (System_intptr)file, offset);
+System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_IntPtr map, System_Var file, System_IntPtr offset) {
+    return (System_Var)System_Syscall_call06(System_Syscall_command_mmap, /* initial address */ null, length, page, map, (System_IntPtr)file, offset);
 }
 
-void  System_Syscall_munmap(System_var address, System_size length) {
-    (void)System_Syscall_call02(System_Syscall_command_munmap, (System_intptr)address, length);
+void  System_Syscall_munmap(System_Var address, System_Size length) {
+    (void)System_Syscall_call02(System_Syscall_command_munmap, (System_IntPtr)address, length);
 }
 
 #endif

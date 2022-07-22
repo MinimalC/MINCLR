@@ -97,7 +97,7 @@ end_function System_Syscall_call06
 
 hidden_function System_Syscall_good
     movq  $0, %rdi
-    call_function System_Syscall_set_error
+    call_function System_Syscall_set_Error
     movq  (%rsp), %rax  /* pop */
     add   $8, %rsp
     ret
@@ -106,7 +106,7 @@ end_function System_Syscall_good
 hidden_function System_Syscall_failed
     negq  %rax
     movq  %rax, %rdi
-    call_function System_Syscall_set_error
+    call_function System_Syscall_set_Error
     movq  $0, %rax      /* return 0 */
     add   $8, %rsp
     ret

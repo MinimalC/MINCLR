@@ -11,13 +11,13 @@ int main(int argc, char * argv[]) {
     File file = File_open(HALLOtxt, System_File_mode_readOnly);
     try
 
-    Console_write__string8("ERROR: System_Exception_get_current() is null");
+    Console_write__String8_size("ERROR: System_Exception_get_current() is null");
 
     catch
     catch_class(System_Exception,exception, {
-        Console_write__string8("SUCCESS: System_Exception_get_current():");
+        Console_write__String8_size("SUCCESS: System_Exception_get_current():");
         Console_write(" {0:string}", 1, Object_get_Type((Object)exception)->name);
-        Console_write(", error: {0:string} ({1:uint})", 2, enum_getName(typeof(System_error), exception->error), exception->error);
+        Console_write(", error: {0:string} ({1:uint})", 2, enum_getName(typeof(System_Error), exception->error), exception->error);
 
         /* rethrow */
         System_Exception_throw(exception);

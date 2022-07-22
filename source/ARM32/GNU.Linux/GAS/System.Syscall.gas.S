@@ -195,7 +195,7 @@ __end_function(System_Syscall_call06)
 
 __hidden_function(System_Syscall_good)
     mov   r0, #0
-    bl    System_Syscall_set_error(PLT)
+    bl    System_Syscall_set_Error(PLT)
     ldr   r0, [ sp, #0 ]    /* load r0 */
 
     __return
@@ -203,7 +203,7 @@ __end_function(System_Syscall_good)
 
 __hidden_function(System_Syscall_failed)
     neg   r0, r0
-    bl    System_Syscall_set_error(PLT)
+    bl    System_Syscall_set_Error(PLT)
     mov   r0, #0            /* return 0 */
 
     __return

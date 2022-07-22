@@ -12,7 +12,7 @@
 #define have_System_File
 
 
-typedef System_intptr  System_File_mode;
+typedef System_IntPtr  System_File_mode;
 
 #define System_File_mode_readOnly                 00
 #define System_File_mode_writeOnly                01
@@ -36,7 +36,7 @@ typedef System_intptr  System_File_mode;
 #define System_File_mode_temporary        (020000000 | System_File_mode_Directory)
 
 
-typedef System_intptr  System_File_permission;
+typedef System_IntPtr  System_File_permission;
 
 #define System_File_permission_UserRead             0400
 #define System_File_permission_UserWrite            0200
@@ -55,21 +55,21 @@ typedef System_intptr  System_File_permission;
 #define System_File_permission_EverybodyEverything  (System_File_permission_EverybodyRead | System_File_permission_EverybodyWrite | System_File_permission_EverybodyExecute)
 
 
-typedef System_var  System_File_special;
+typedef System_Var  System_File_special;
 
-#define System_File_special_STDIN   ((System_var)0)
-#define System_File_special_STDOUT  ((System_var)1)
-#define System_File_special_STDERR  ((System_var)2)
+#define System_File_special_STDIN   ((System_Var)0)
+#define System_File_special_STDOUT  ((System_Var)1)
+#define System_File_special_STDERR  ((System_Var)2)
 
 
 typedef fixed struct System_File {
 	struct System_Object  base;
 
-    System_var filePtr;
+    System_Var filePtr;
 
     System_FileInfo info;
 
-    System_size position;
+    System_Size position;
 
 }  * System_File;
 
@@ -77,26 +77,26 @@ export struct System_Type  System_FileType;
 
 typedef System_File  delegate(System_File_init)(System_File that);
 typedef void  delegate(System_File_free)(System_File that);
-typedef void  delegate(System_File_write__string8)(System_File that, System_string8 value, System_size count);
+typedef void  delegate(System_File_write__String8_size)(System_File that, System_String8 value, System_Size count);
 typedef void  delegate(System_File_sync)(System_File that);
-typedef System_size  delegate(System_File_read)(System_File that, System_string8 value, System_size count);
-typedef void  delegate(System_File_seek)(System_File that, System_ssize offset, System_origin origin);
-typedef System_intptr  delegate(System_File_get_Position)(System_File that);
-typedef void  delegate(System_File_set_Position)(System_File that, System_size value);
+typedef System_Size  delegate(System_File_read)(System_File that, System_String8 value, System_Size count);
+typedef void  delegate(System_File_seek)(System_File that, System_SSize offset, System_origin origin);
+typedef System_IntPtr  delegate(System_File_get_Position)(System_File that);
+typedef void  delegate(System_File_set_Position)(System_File that, System_Size value);
 
-export System_File  System_File_open(System_string8 filename, System_File_mode flags);
+export System_File  System_File_open(System_String8 filename, System_File_mode flags);
 export System_File  base_System_File_init(System_File that);
 export void  base_System_File_free(System_File that);
-export void  base_System_File_write__string8(System_File that, System_string8 value, System_size count);
+export void  base_System_File_write__String8_size(System_File that, System_String8 value, System_Size count);
 export void  base_System_File_sync(System_File that);
-export void  base_System_File_seek(System_File that, System_ssize offset, System_origin origin);
-export System_size  base_System_File_read(System_File that, System_string8 value, System_size count);
-export System_intptr  base_System_File_get_Position(System_File that);
-export void  base_System_File_set_Position(System_File that, System_size value);
+export void  base_System_File_seek(System_File that, System_SSize offset, System_origin origin);
+export System_Size  base_System_File_read(System_File that, System_String8 value, System_Size count);
+export System_IntPtr  base_System_File_get_Position(System_File that);
+export void  base_System_File_set_Position(System_File that, System_Size value);
 
 #define System_File_free(o)  ((function_System_File_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_File_init(o)  ((function_System_File_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
-#define System_File_write__string8(o,...)  ((function_System_File_write__string8)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write__string8))(o, __VA_ARGS__)
+#define System_File_write__String8_size(o,...)  ((function_System_File_write__String8_size)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write__String8_size))(o, __VA_ARGS__)
 #define System_File_sync(o)  ((function_System_File_sync)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_sync))(o)
 #define System_File_read(o,...)  ((function_System_File_read)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_read))(o, __VA_ARGS__)
 #define System_File_seek(o,...)  ((function_System_File_seek)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_seek))(o, __VA_ARGS__)
@@ -134,7 +134,7 @@ export void  base_System_File_set_Position(System_File that, System_size value);
 #define File_init  System_File_init
 #define File_open  System_File_open
 #define File_read  System_File_read
-#define File_write__string8  System_File_write__string8
+#define File_write__String8_size  System_File_write__String8_size
 #define File_seek  System_File_seek
 #define File_get_Position  System_File_get_Position
 #define File_set_Position  System_File_set_Position
@@ -143,7 +143,7 @@ export void  base_System_File_set_Position(System_File that, System_size value);
 #define base_File_free  base_System_File_free
 #define base_File_init  base_System_File_init
 #define base_File_read  base_System_File_read
-#define base_File_write__string8  base_System_File_write__string8
+#define base_File_write__String8_size  base_System_File_write__String8_size
 #define base_File_seek  base_System_File_seek
 #define base_File_get_Position  base_System_File_get_Position
 #define base_File_set_Position  base_System_File_set_Position

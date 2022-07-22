@@ -29,12 +29,12 @@ typedef fixed struct Generic_T0Array {
 export struct System_Type  Generic_T0ArrayType;
 
 typedef void delegate(Generic_T0Array_free)(Generic_T0Array that);
-typedef void delegate(Generic_T0Array_init)(Generic_T0Array that, System_size length);
-typedef System_size  delegate(Generic_T0Array_get_Length)(Generic_T0Array that);
-typedef Generic_T0  delegate(Generic_T0Array_get_index)(Generic_T0Array that, System_size index);
-typedef void  delegate(Generic_T0Array_set_index)(Generic_T0Array that, System_size index, Generic_T0 value);
-typedef void delegate(Generic_T0Array_copyTo)(Generic_T0Array that, Generic_T0Array other, System_size offset);
-typedef void delegate(Generic_T0Array_resize)(Generic_T0Array that, System_size length);
+typedef void delegate(Generic_T0Array_init)(Generic_T0Array that, System_Size length);
+typedef System_Size  delegate(Generic_T0Array_get_Length)(Generic_T0Array that);
+typedef Generic_T0  delegate(Generic_T0Array_get_index)(Generic_T0Array that, System_Size index);
+typedef void  delegate(Generic_T0Array_set_index)(Generic_T0Array that, System_Size index, Generic_T0 value);
+typedef void delegate(Generic_T0Array_copyTo)(Generic_T0Array that, Generic_T0Array other, System_Size offset);
+typedef void delegate(Generic_T0Array_resize)(Generic_T0Array that, System_Size length);
 
 #define Generic_T0Array_init(o,...)  ((function_Generic_T0Array_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Array_init))(o, __VA_ARGS__)
 #define Generic_T0Array_free(o)  ((function_Generic_T0Array_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)

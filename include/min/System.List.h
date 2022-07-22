@@ -8,16 +8,16 @@
 /* 2-Dimensional, Unique SipHash-Indexed ObjectList */
 
 #define System_List_Capacity_DEFAULT  64
-export const System_size  System_List_Capacity;
+export const System_Size  System_List_Capacity;
 
 typedef fixed struct System_List {
     struct System_Object base;
 
-    System_size capacity;
+    System_Size capacity;
 
-    System_size length;
+    System_Size length;
 
-    System_uint64Array hashes;
+    System_UInt64Array hashes;
 
     System_Array items;
 
@@ -30,20 +30,20 @@ export struct System_Type  System_ListType;
 
 typedef System_List delegate(System_List_init)(System_List that);
 typedef void delegate(System_List_free)(System_List that);
-typedef System_size  delegate(System_List_get_Length)(System_List that);
-typedef System_Object  delegate(System_List_get_index)(System_List that, System_size index);
-typedef void  delegate(System_List_set_index)(System_List that, System_size index, System_Object value);
-typedef void delegate(System_List_copyTo)(System_List that, System_List other, System_size offset);
-typedef System_boolean  delegate(System_List_contains)(System_List that, System_Object object);
+typedef System_Size  delegate(System_List_get_Length)(System_List that);
+typedef System_Object  delegate(System_List_get_index)(System_List that, System_Size index);
+typedef void  delegate(System_List_set_index)(System_List that, System_Size index, System_Object value);
+typedef void delegate(System_List_copyTo)(System_List that, System_List other, System_Size offset);
+typedef System_Bool  delegate(System_List_contains)(System_List that, System_Object object);
 typedef void delegate(System_List_add)(System_List that, System_Object object);
 
 export System_List  base_System_List_init(System_List that);
 export void  base_System_List_free(System_List that);
-export System_size  base_System_List_get_Length(System_List that);
-export System_Object  base_System_List_get_index(System_List that, System_size index);
-export void  base_System_List_set_index(System_List that, System_size index, System_Object value);
-export void  base_System_List_copyTo(System_List that, System_List other, System_size offset);
-export System_boolean  base_System_List_contains(System_List that, System_Object object);
+export System_Size  base_System_List_get_Length(System_List that);
+export System_Object  base_System_List_get_index(System_List that, System_Size index);
+export void  base_System_List_set_index(System_List that, System_Size index, System_Object value);
+export void  base_System_List_copyTo(System_List that, System_List other, System_Size offset);
+export System_Bool  base_System_List_contains(System_List that, System_Object object);
 export void  base_System_List_add(System_List that, System_Object object);
 
 #define System_List_init(o)  ((function_System_List_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)

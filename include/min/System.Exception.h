@@ -2,8 +2,8 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
-#if !defined(have_System_error)
-#include "System.error.h"
+#if !defined(have_System_Error)
+#include "System.Error.h"
 #endif
 #if !defined(have_System_Exception)
 #define have_System_Exception
@@ -12,9 +12,9 @@
 typedef fixed struct System_Exception {
     struct System_Object base;
 
-    System_error error;
+    System_Error error;
 
-    System_string8  message;
+    System_String8  message;
 
 }  * System_Exception;
 
@@ -25,13 +25,13 @@ export struct System_Type  System_ExceptionType;
 
 export thread System_Exception  System_Exception_current;
 
-typedef System_Exception delegate(System_Exception_init)(System_Exception that, System_string8 message);
+typedef System_Exception delegate(System_Exception_init)(System_Exception that, System_String8 message);
 typedef void delegate(System_Exception_free)(System_Exception that);
 
 export void  System_Exception_throw(System_Exception that);
 export void  System_Exception_terminate(System_Exception that) noreturn;
 
-export System_Exception  base_System_Exception_init(System_Exception that, System_string8 message);
+export System_Exception  base_System_Exception_init(System_Exception that, System_String8 message);
 /* export void  base_System_Exception_free(System_Exception that); */
 export System_Exception  System_Exception_get_current();
 export void  System_Exception_set_current(System_Exception that);
@@ -72,7 +72,7 @@ export void  System_Exception_set_current(System_Exception that);
 
 #define throw(EXCEPTION)  { System_Exception_throw(EXCEPTION); return; }
 
-#define throw_return(EXCEPTION)  { System_Exception_throw(EXCEPTION); return System_null; }
+#define throw_return(EXCEPTION)  { System_Exception_throw(EXCEPTION); return null; }
 
 #define throw_terminate  System_Exception_terminate
 

@@ -16,7 +16,7 @@
 
 /*# Generic_T0Array #*/
 
-Generic_T0Array base_Generic_T0Array_init(Generic_T0Array that, System_size length) {
+Generic_T0Array base_Generic_T0Array_init(Generic_T0Array that, System_Size length) {
     base_System_Object_init((System_Object)that);
 
     that->length = length;
@@ -33,21 +33,21 @@ void  base_Generic_T0Array_free(Generic_T0Array that) {
     base_System_Object_free((System_Object)that);
 }
 
-System_size  base_Generic_T0Array_get_Length(Generic_T0Array that) {
+System_Size  base_Generic_T0Array_get_Length(Generic_T0Array that) {
     return that->length;
 }
 
-Generic_T0  base_Generic_T0Array_get_index(Generic_T0Array that, System_size index) {
+Generic_T0  base_Generic_T0Array_get_index(Generic_T0Array that, System_Size index) {
     return array(that->value)[index];
 }
 
-void  base_Generic_T0Array_set_index(Generic_T0Array that, System_size index, Generic_T0 value) {
+void  base_Generic_T0Array_set_index(Generic_T0Array that, System_Size index, Generic_T0 value) {
     array(that->value)[index] = value;
 }
 
-void  base_Generic_T0Array_resize(Generic_T0Array that, System_size length) {
-    System_size element_size = sizeof(Generic_T0);
-    System_Memory_reallocArray((System_var)that->value, length);
+void  base_Generic_T0Array_resize(Generic_T0Array that, System_Size length) {
+    System_Size element_size = sizeof(Generic_T0);
+    System_Memory_reallocArray((System_Var)that->value, length);
     that->length = length;
 }
 
@@ -72,7 +72,7 @@ struct System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
 
 struct System_Type  Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0Array",
-    .size = sizeof(struct Generic_T0Array),
+    .Size = sizeof(struct Generic_T0Array),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(&Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions

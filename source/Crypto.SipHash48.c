@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_Crypto_SipHash48)
@@ -18,10 +18,10 @@ Crypto_SipHash48  base_Crypto_SipHash48_init(Crypto_SipHash48 that) {
     that->v3 = 0x7465646279746573ULL;
 }
 
-Crypto_SipHash48  base_Crypto_SipHash48_init__key(Crypto_SipHash48 that, System_string8 key) {
+Crypto_SipHash48  base_Crypto_SipHash48_init__key(Crypto_SipHash48 that, System_String8 key) {
 
-	uint64 k0 = *((uint64 *)(key + 0));
-	uint64 k1 = *((uint64 *)(key + 8));
+	UInt64 k0 = *((UInt64 *)(key + 0));
+	UInt64 k1 = *((UInt64 *)(key + 8));
 
     that->v0 = k0 ^ 0x736f6d6570736575ULL;
     that->v1 = k1 ^ 0x646f72616e646f6dULL;
@@ -51,22 +51,22 @@ Crypto_SipHash48  base_Crypto_SipHash48_init__key(Crypto_SipHash48 that, System_
 		v2 = rotl64(v2, 32); \
 	} while(0)
 
-void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_var input, System_size length) {
+void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_Var input, System_Size length) {
 
-    uint64 v0 = that->v0, v1 = that->v1;
-    uint64 v2 = that->v2, v3 = that->v3;
+    UInt64 v0 = that->v0, v1 = that->v1;
+    UInt64 v2 = that->v2, v3 = that->v3;
 
-    size i, k, len;
-    uint64 mi, mask;
+    Size i, k, len;
+    UInt64 mi, mask;
 	for (i = 0; i * 8 < length - (length % 8); ++i)
 	{
-		mi = *((uint64*)(input + i));
+		mi = *((UInt64*)(input + i));
 		v3 ^= mi;
 		for (k = 0; k < SIPHASH_ROUNDS; ++k) COMPRESS(v0,v1,v2,v3);
 		v0 ^= mi;
 	}
 
-	mi = *((uint64 *)(input + i));
+	mi = *((UInt64 *)(input + i));
 	len = (length & 0xff) << 56;
 	mask = length % 8 == 0 ? 0 : 0xffffffffffffffffULL >> (8 * (8 - (length % 8)));
 	mi = (mi & mask) ^ len;
@@ -79,13 +79,13 @@ void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_var input, System_si
     that->v2 = v2; that->v3 = v3;
 }
 
-System_uint64  Crypto_SipHash48_final(Crypto_SipHash48 that) {
+System_UInt64  Crypto_SipHash48_final(Crypto_SipHash48 that) {
 
-    uint64 v0 = that->v0, v1 = that->v1;
-    uint64 v2 = that->v2, v3 = that->v3;
+    UInt64 v0 = that->v0, v1 = that->v1;
+    UInt64 v2 = that->v2, v3 = that->v3;
 
 	v2 ^= 0xff;
-	for(size k = 0; k < SIPHASH_FINALROUNDS; ++k) COMPRESS(v0,v1,v2,v3);
+	for(Size k = 0; k < SIPHASH_FINALROUNDS; ++k) COMPRESS(v0,v1,v2,v3);
 
 	return (v0 ^ v1) ^ (v2 ^ v3);
 }

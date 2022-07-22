@@ -5,7 +5,7 @@ STRING8  STRING8_Hallo = "Hallo";
 
 //main(test05_System_ListT, args) {
 int main(int argc, char * argv[]) {
-    size i = 0, length = 128, good = 0, good1 = 0, good2 = 0;
+    Size i = 0, length = 128, good = 0, good1 = 0, good2 = 0;
 
     List objects = new_List();
     for (good = 0, i = 0; i < length; ++i) {

@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_List)
@@ -10,13 +10,13 @@
 
 /*# System_List #*/
 
-const System_size  System_List_Capacity = System_List_Capacity_DEFAULT;
+const System_Size  System_List_Capacity = System_List_Capacity_DEFAULT;
 
 System_List  base_System_List_init(System_List that) {
     base_System_Object_init((System_Object)that);
 
     that->capacity = System_List_Capacity;
-    that->hashes = new_System_uint64Array(that->capacity);
+    that->hashes = new_System_UInt64Array(that->capacity);
     that->items = new_System_Array(that->capacity);
 
     return that;
@@ -30,20 +30,20 @@ void  base_System_List_free(System_List that) {
     base_System_Object_free((System_Object)that);
 }
 
-System_size  base_System_List_get_Length(System_List that) {
+System_Size  base_System_List_get_Length(System_List that) {
     return that->length;
 }
 
-System_Object  base_System_List_get_index(System_List that, size index) {
+System_Object  base_System_List_get_index(System_List that, Size index) {
 	Console_assert(that);
 	return Array_get_index(that->items, index);
 }
 
-void  base_System_List_set_index(System_List that, size index, System_Object value) {
+void  base_System_List_set_index(System_List that, Size index, System_Object value) {
 	Console_assert(that);
     if (value) {
         if (base_System_List_contains(that, value)) throw(new_Exception("InvalidOperationException: System_List: System_Object already added"))
-        uint64Array_set_index(that->hashes, index, Object_getSipHash(value));
+        UInt64Array_set_index(that->hashes, index, Object_getSipHash(value));
     }
     Array_set_index(that->items, index, value);
 }
@@ -52,12 +52,12 @@ System_IEnumerator base_System_List_getEnumerator(System_List that) {
     return (System_IEnumerator)new_System_ListEnumerator(that);
 }
 
-System_boolean  base_System_List_contains(System_List that, System_Object object) {
+System_Bool  base_System_List_contains(System_List that, System_Object object) {
 
-    uint64 object_siphash = Object_getSipHash(object);
+    UInt64 object_siphash = Object_getSipHash(object);
 
-    for (size i = 0; i < that->length; ++i) {
-        if (object_siphash == uint64Array_get_index(that->hashes, i)) return true;
+    for (Size i = 0; i < that->length; ++i) {
+        if (object_siphash == UInt64Array_get_index(that->hashes, i)) return true;
     }
     return false;
 }
@@ -67,15 +67,15 @@ void  base_System_List_add(System_List that, System_Object object) {
 
     if (base_System_List_contains(that, object)) throw(new_Exception("InvalidOperationException: System.List: System_Object already added."))
 
-    size new_i = that->length;
+    Size new_i = that->length;
     if (new_i >= that->capacity) {
-        size new_capacity = that->capacity * 2;
-        uint64Array_resize(that->hashes, new_capacity);
+        Size new_capacity = that->capacity * 2;
+        UInt64Array_resize(that->hashes, new_capacity);
         Array_resize(that->items, new_capacity);
         that->capacity = new_capacity;
     }
 
-    uint64Array_set_index(that->hashes, new_i, Object_getSipHash(object));
+    UInt64Array_set_index(that->hashes, new_i, Object_getSipHash(object));
     Array_set_index(that->items, new_i, object);
     ++that->length;
 }

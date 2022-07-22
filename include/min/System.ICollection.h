@@ -12,15 +12,15 @@ typedef fixed  struct System_ICollection { }  * System_ICollection;
 
 export struct System_Type  System_ICollectionType;
 
-typedef System_var  delegate(System_ICollection_get_index)(System_ICollection that);
-typedef void  delegate(System_ICollection_set_index)(System_ICollection that, System_var value);
-typedef System_size delegate(System_ICollection_get_Length)(System_ICollection that);
-typedef void delegate(System_ICollection_copyTo)(System_ICollection that, System_ICollection other, System_size offset);
+typedef System_Var  delegate(System_ICollection_get_index)(System_ICollection that);
+typedef void  delegate(System_ICollection_set_index)(System_ICollection that, System_Var value);
+typedef System_Size delegate(System_ICollection_get_Length)(System_ICollection that);
+typedef void delegate(System_ICollection_copyTo)(System_ICollection that, System_ICollection other, System_Size offset);
 
-export System_var  base_System_ICollection_get_index(System_ICollection that);
-export void  base_System_ICollection_set_index(System_ICollection that, System_var value);
-export System_size  base_System_ICollection_get_Length(System_ICollection that);
-export void  base_System_ICollection_copyTo(System_ICollection that, System_ICollection other, System_size offset);
+export System_Var  base_System_ICollection_get_index(System_ICollection that);
+export void  base_System_ICollection_set_index(System_ICollection that, System_Var value);
+export System_Size  base_System_ICollection_get_Length(System_ICollection that);
+export void  base_System_ICollection_copyTo(System_ICollection that, System_ICollection other, System_Size offset);
 
 #define System_ICollection_get_index(o)  ((function_System_ICollection_get_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), System_ICollection_get_index))(o)
 #define System_ICollection_set_index(o,...)  ((function_System_ICollection_set_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), System_ICollection_set_index))(o, __VA_ARGS__)

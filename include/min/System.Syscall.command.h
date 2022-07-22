@@ -2,7 +2,7 @@
 #if !defined(have_System_Syscall_command)
 #define have_System_Syscall_command
 
-typedef System_intptr  System_Syscall_command;
+typedef System_IntPtr  System_Syscall_command;
 
 export struct System_Type  System_Syscall_commandType;
 

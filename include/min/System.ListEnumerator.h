@@ -14,7 +14,7 @@ typedef fixed struct System_ListEnumerator {
 
     System_List array;
 
-    System_size index;
+    System_Size index;
 
 }  * System_ListEnumerator;
 
@@ -26,12 +26,12 @@ export struct System_Type  System_ListEnumeratorType;
 typedef void delegate(System_ListEnumerator_free)(System_ListEnumerator that);
 typedef System_ListEnumerator delegate(System_ListEnumerator_init)(System_ListEnumerator that, System_List array);
 typedef System_Object delegate(System_ListEnumerator_get_current)(System_ListEnumerator that);
-typedef System_boolean delegate(System_ListEnumerator_moveNext)(System_ListEnumerator that);
+typedef System_Bool delegate(System_ListEnumerator_moveNext)(System_ListEnumerator that);
 
 export System_ListEnumerator  base_System_ListEnumerator_init(System_ListEnumerator that, System_List array);
 export void  base_System_ListEnumerator_free(System_ListEnumerator that);
 export System_Object  base_System_ListEnumerator_get_current(System_ListEnumerator that);
-export System_boolean  base_System_ListEnumerator_moveNext(System_ListEnumerator that);
+export System_Bool  base_System_ListEnumerator_moveNext(System_ListEnumerator that);
 
 #define System_ListEnumerator_init(o,...)  ((function_System_ListEnumerator_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ListEnumerator_init))(o,__VA_ARGS__)
 #define System_ListEnumerator_free(o)  ((function_System_ListEnumerator_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)

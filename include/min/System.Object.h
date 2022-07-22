@@ -26,7 +26,7 @@ typedef fixed struct System_Object {
 
     struct System_Object_bitConfig  bitConfig;
 
-    System_uint64  sipHash;
+    System_UInt64  sipHash;
 
 } * System_Object;
 
@@ -36,16 +36,16 @@ typedef fixed struct System_Object {
 export struct System_Type  System_ObjectType;
 
 export System_Type  System_Object_get_Type(System_Object that);
-export System_boolean  System_Object_isInstanceof(System_Object that, System_Type type);
+export System_Bool  System_Object_isInstanceof(System_Object that, System_Type type);
 export System_Object  System_Object_asInstanceof(System_Object that, System_Type type);
 
 typedef void delegate(System_Object_free)(System_Object that);
 typedef System_Object delegate(System_Object_init)(System_Object that);
-typedef System_uint64 delegate(System_Object_getSipHash)(System_Object that);
+typedef System_UInt64 delegate(System_Object_getSipHash)(System_Object that);
 
 export void  base_System_Object_free(System_Object that);
 export System_Object  base_System_Object_init(System_Object that);
-export System_uint64  base_System_Object_getSipHash(System_Object that);
+export System_UInt64  base_System_Object_getSipHash(System_Object that);
 
 #define System_Object_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_Object_init(o)  ((function_System_Object_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)

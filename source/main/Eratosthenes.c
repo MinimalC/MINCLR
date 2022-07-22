@@ -1,18 +1,18 @@
 #define using_System
 #include <min/System.h>
 
-const size sizeof_knownPrimes = 0x7FFFFFU;
+const Size sizeof_knownPrimes = 0x7FFFFFU;
 
-internal uint64 * knownPrimes;
-internal uint64 * knownPrimes_hoch2;
+internal UInt64 * knownPrimes;
+internal UInt64 * knownPrimes_hoch2;
 
-internal size knownPrimesL = 0U;
+internal Size knownPrimesL = 0U;
 
-bool Eratosthenes_IsPrime(uint64 n, uint64 * minimalquotient, uint64 * quotient) {
+Bool Eratosthenes_IsPrime(UInt64 n, UInt64 * minimalquotient, UInt64 * quotient) {
 
-	uint64 primeI = 2, primeN = 3, primeN_hoch2 = 9, quotient1 = 0, remainder = 0;
+	UInt64 primeI = 2, primeN = 3, primeN_hoch2 = 9, quotient1 = 0, remainder = 0;
 
-    /* uint64 div2 = System_Math_divideRemain(n, 2, &remainder); */
+    /* UInt64 div2 = System_Math_divideRemain(n, 2, &remainder); */
 
 	while (0U < ++primeI) {
 		/* now primeI => [ 3 ] == 5 */
@@ -22,7 +22,7 @@ bool Eratosthenes_IsPrime(uint64 n, uint64 * minimalquotient, uint64 * quotient)
 			primeN_hoch2 = knownPrimes_hoch2[primeI];
 		}
 		else {
-			Console_writeLine__string8("SUPER !");
+			Console_writeLine__String8("SUPER !");
             Console_sync();
 			Console_exit(1);
 		}
@@ -38,7 +38,7 @@ bool Eratosthenes_IsPrime(uint64 n, uint64 * minimalquotient, uint64 * quotient)
         }
 
 
-        quotient1 = System_Math_divideRemain__uint64(n, primeN, &remainder);
+        quotient1 = System_Math_divideRemain__UInt64(n, primeN, &remainder);
 
     	if ( remainder == 0 ) {
             *minimalquotient = primeN;
@@ -61,21 +61,21 @@ STRING8 text_P = " P";
 int main(int argc, char *argv[]) {
 /* System_main(Eratosthenes,args) { */
 
-	knownPrimes = (uint64 *)Memory_allocArray(typeof(uint64), sizeof_knownPrimes);
-	knownPrimes_hoch2 = (uint64 *)Memory_allocArray(typeof(uint64), sizeof_knownPrimes);
+	knownPrimes = (UInt64 *)Memory_allocArray(typeof(UInt64), sizeof_knownPrimes);
+	knownPrimes_hoch2 = (UInt64 *)Memory_allocArray(typeof(UInt64), sizeof_knownPrimes);
 
 	knownPrimes[1] = 2U; knownPrimes_hoch2[1] = 4U;
 	knownPrimes[2] = 3U; knownPrimes_hoch2[2] = 9U;
 	knownPrimes[3] = 5U; knownPrimes_hoch2[3] = 25U;
 	knownPrimesL = 4U;
 
-    System_char8 nP[] = "n                    P                     \n";
-    System_char8 decimol[System_uint64_string8base10Length_DEFAULT - 1] = { };
+    System_Char8 nP[] = "n                    P                     \n";
+    System_Char8 decimol[System_UInt64_String8base10Length_DEFAULT - 1] = { };
 
-	uint64 n = 5U;
-	uint64 minimalquotient = 0, quotient = 0; /* knownPrimesL_remainder = 0; */
+	UInt64 n = 5U;
+	UInt64 minimalquotient = 0, quotient = 0; /* knownPrimesL_remainder = 0; */
 
-    size numbers;
+    Size numbers;
 
 	while (n > 3U) {
 
@@ -90,19 +90,19 @@ int main(int argc, char *argv[]) {
 			}
             else knownPrimesL++;
 			/* else {
-    			Console_writeLine__string8("SUPER !");
+    			Console_writeLine__String8("SUPER !");
                 Console_sync();
 				goto FALSE;
 			} */
 
-            numbers = System_uint64_tostring8base10__stack(knownPrimesL, decimol);
-            System_string8_copySubstringTo(decimol, numbers, (nP + 1));
+            numbers = System_UInt64_toString8base10__stack(knownPrimesL, decimol);
+            System_String8_copySubstringTo(decimol, numbers, (nP + 1));
 
-            numbers = System_uint64_tostring8base10__stack(n, decimol);
-            System_string8_copySubstringTo(decimol, numbers, (nP + 22));
+            numbers = System_UInt64_toString8base10__stack(n, decimol);
+            System_String8_copySubstringTo(decimol, numbers, (nP + 22));
 
             Syscall_write(File_special_STDOUT, nP, sizeof(nP) - 1);
-            // Console_write__string8(nP);
+            // Console_write__String8_size(nP);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {
             Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);
@@ -120,19 +120,19 @@ int main(int argc, char *argv[]) {
 			}
             else knownPrimesL++;
 			/* else {
-    			Console_writeLine__string8("SUPER !");
+    			Console_writeLine__String8("SUPER !");
                 Console_sync();
 				goto FALSE;
 			} */
 
-            numbers = System_uint64_tostring8base10__stack(knownPrimesL, decimol);
-            System_string8_copySubstringTo(decimol, numbers, (nP + 1));
+            numbers = System_UInt64_toString8base10__stack(knownPrimesL, decimol);
+            System_String8_copySubstringTo(decimol, numbers, (nP + 1));
 
-            numbers = System_uint64_tostring8base10__stack(n, decimol);
-            System_string8_copySubstringTo(decimol, numbers, (nP + 22));
+            numbers = System_UInt64_toString8base10__stack(n, decimol);
+            System_String8_copySubstringTo(decimol, numbers, (nP + 22));
 
             Syscall_write(File_special_STDOUT, nP, sizeof(nP) - 1);
-            // Console_write__string8(nP);
+            // Console_write__String8_size(nP);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {
             Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);

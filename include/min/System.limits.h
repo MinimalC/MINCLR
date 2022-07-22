@@ -3,32 +3,32 @@
 #if !defined(have_System_limits)
 #define have_System_limits
 
-#define System_int8_Min  (-0x80)
-#define System_int16_Min  (-0x8000)
-#define System_int32_Min  (-0x80000000L)
-/* # define System_int64_Min  (-9223372036854775807LL-1) */
-#define System_int8_Max  (0x7F)
-#define System_int16_Max  (0x7FFF)
-#define System_int32_Max  (0x7FFFFFFFL)
-/* # define System_int64_Max  (9223372036854775807LL) */
-#define System_uint8_Max  (0xFF)
-#define System_uint16_Max  (0xFFFF)
-#define System_uint32_Max  (0xFFFFFFFFU)
-/* # define System_uint64_Max  (18446744073709551615ULL) */
+#define System_Int8_Min  (-0x80)
+#define System_Int16_Min  (-0x8000)
+#define System_Int32_Min  (-0x80000000L)
+/* # define System_Int64_Min  (-9223372036854775807LL-1) */
+#define System_Int8_Max  (0x7F)
+#define System_Int16_Max  (0x7FFF)
+#define System_Int32_Max  (0x7FFFFFFFL)
+/* # define System_Int64_Max  (9223372036854775807LL) */
+#define System_UInt8_Max  (0xFF)
+#define System_UInt16_Max  (0xFFFF)
+#define System_UInt32_Max  (0xFFFFFFFFU)
+/* # define System_UInt64_Max  (18446744073709551615ULL) */
 
 #if defined(using_System)
-#define int8_Min  System_int8_Min
-#define int16_Min  System_int16_Min
-#define int32_Min  System_int32_Min
-#define int64_Min  System_int64_Min
-#define int8_Max  System_int8_Max
-#define int16_Max  System_int16_Max
-#define int32_Max  System_int32_Max
-#define int64_Max  System_int64_Max
-#define uint8_Max  System_uint8_Max
-#define uint16_Max  System_uint16_Max
-#define uint32_Max  System_uint32_Max
-#define uint64_Max  System_uint64_Max
+#define Int8_Min  System_Int8_Min
+#define Int16_Min  System_Int16_Min
+#define Int32_Min  System_Int32_Min
+#define Int64_Min  System_Int64_Min
+#define Int8_Max  System_Int8_Max
+#define Int16_Max  System_Int16_Max
+#define Int32_Max  System_Int32_Max
+#define Int64_Max  System_Int64_Max
+#define UInt8_Max  System_UInt8_Max
+#define UInt16_Max  System_UInt16_Max
+#define UInt32_Max  System_UInt32_Max
+#define UInt64_Max  System_UInt64_Max
 #endif
 
 

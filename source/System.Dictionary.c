@@ -1,6 +1,6 @@
 /* Gemeinfrei. Public Domain. */
 
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Dictionary)

@@ -16,9 +16,9 @@
 
 #include "System.values.auto.h"
 
-#include "System.decimal.h"
+#include "System.Decimal.h"
 
-#include "System.string8.h"
+#include "System.String8.h"
 
 
 #include "System.Object.h"

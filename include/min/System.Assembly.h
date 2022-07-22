@@ -10,14 +10,14 @@
 #define System_Assembly_next  ((void *) -1l)
 
 /* export void System_Assembly_close(void  * that); */
-export System_string8  System_Assembly_error();
+export System_String8  System_Assembly_error();
 
 #if defined(using_System)
 #define Assembly_error  System_Assembly_error
 #endif
 
 
-typedef System_int32  System_AssemblyBinding;
+typedef System_Int32  System_AssemblyBinding;
 /*#if defined(__x86_64__) */
 
 /* Lazy function call binding. */
@@ -63,7 +63,7 @@ typedef fixed struct System_Assembly {
     struct System_Object base;
 
     void  * assemblyPtr;
-    System_string8  fileName;
+    System_String8  fileName;
 
 }  * System_Assembly;
 
@@ -71,9 +71,9 @@ typedef fixed struct System_Assembly {
 
 export struct System_Type  System_AssemblyType;
 
-export System_Assembly  System_Assembly_open(const System_string8  fileName, System_AssemblyBinding  flags);
-export void  * System_Assembly_find(System_Assembly that, const System_string8 name);
-export void  * System_Assembly_findGlobal(const System_string8 name);
+export System_Assembly  System_Assembly_open(const System_String8  fileName, System_AssemblyBinding  flags);
+export void  * System_Assembly_find(System_Assembly that, const System_String8 name);
+export void  * System_Assembly_findGlobal(const System_String8 name);
 
 #if defined(using_System)
 #define Assembly  System_Assembly

@@ -2,7 +2,7 @@
 #define have_System_arguments
 
 /*  WARNING: Using ellipsis ..., va_list and va_arg is unsafe!
-    There should be at least one System_size count argument,
+    There should be at least one System_Size count argument,
     which is the count of arguments following. */
 
 #if defined(GNUCC)
@@ -23,8 +23,8 @@ typedef __builtin_va_list  System_arguments;
 
 #define System_arguments_Limit_VALUE 16
 
-export System_size stack_System_arguments_get(System_arguments args, System_var argv[System_arguments_Limit_VALUE]);
-export System_size stack_System_arguments_get__limit(System_arguments args, System_var argv[], System_size limit);
+export System_Size stack_System_arguments_get(System_arguments args, System_Var argv[System_arguments_Limit_VALUE]);
+export System_Size stack_System_arguments_get__limit(System_arguments args, System_Var argv[], System_Size limit);
 
 #if defined(using_System)
 #define argument  System_argument

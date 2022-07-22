@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_internal)
+#if !defined(have_System_Internal)
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Exception)
@@ -53,7 +53,7 @@ void  System_Exception_terminate(System_Exception that) {
     System_Console_terminate(0);
 }
 
-System_Exception  base_System_Exception_init(System_Exception that, System_string8 message) {
+System_Exception  base_System_Exception_init(System_Exception that, System_String8 message) {
     base_System_Object_init((System_Object)that);
 
     that->message = message;
