@@ -211,7 +211,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
     if (format_length > (limit - 5)) { format_length = limit - 5;
 #if DEBUG
         WARNING[7] = '1';
-        System_Console_write__String8(WARNING);
+        System_Console_write__string(WARNING);
 #endif
     }
 
@@ -247,7 +247,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
         if (!end0) {
 #if DEBUG == DEBUG_System_String8_format
             WARNING[7] = '2';
-            System_Console_write__String8(WARNING);
+            System_Console_write__string(WARNING);
 #endif
         }
         message_length += (begin0 - format);
@@ -262,7 +262,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
         if (argi >= argc) {
 #if DEBUG == DEBUG_System_String8_format
             WARNING[7] = '3';
-            System_Console_write__String8(WARNING);
+            System_Console_write__string(WARNING);
 #endif
         }
         else {
@@ -326,7 +326,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
             if (!begin1) {
 #if DEBUG == DEBUG_System_String8_format
                 WARNING[7] = '4';
-                System_Console_write__String8(WARNING);
+                System_Console_write__string(WARNING);
 #endif
             }
             else {
@@ -376,7 +376,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
 #if DEBUG == DEBUG_System_String8_format
                         WARNING[7] = '5';
-                        System_Console_write__String8(WARNING);
+                        System_Console_write__string(WARNING);
 #endif
                         argsize = System_Size_Width;
                     }
@@ -476,7 +476,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
 #if DEBUG == DEBUG_System_String8_format
                         WARNING[7] = '6';
-                        System_Console_write__String8(WARNING);
+                        System_Console_write__string(WARNING);
 #endif
                         argsize = System_Size_Width;
                     }
@@ -572,7 +572,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                 else {
 #if DEBUG == DEBUG_System_String8_format
                     WARNING[7] = '7';
-                    System_Console_write__String8(WARNING);
+                    System_Console_write__string(WARNING);
 #endif
                 }
 

@@ -13,7 +13,7 @@
 
 /*# System_IStream #*/
 
-void  base_System_IStream_write__String8_size(IStream that, String8 value, Size count) { }
+void  base_System_IStream_write__string_size(IStream that, String8 value, Size count) { }
 
 void  base_System_IStream_sync(IStream that) {  }
 
@@ -26,7 +26,7 @@ System_Size  base_System_IStream_get_Position(IStream that) { return 0; }
 void  base_System_IStream_set_Position(IStream that, Size value) { }
 
 struct System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_IStream_write__String8_size", .function = base_System_IStream_write__String8_size, .value = null },
+    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_IStream_write__string_size", .function = base_System_IStream_write__string_size, .value = null },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = null },
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = null },
     [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = null },
@@ -81,7 +81,7 @@ void  System_IStream_writeEnd__arguments(IStream stream, String8 format, Char8 s
     Char8  message[System_String8_formatLimit_VALUE] = { 0 };
     for (Size i = 0; i < sizeof(message); ++i) message[i] = 0;
     Size message_length = stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);
-    System_IStream_write__String8_size(stream, message, message_length);
+    System_IStream_write__string_size(stream, message, message_length);
 }
 
 #endif

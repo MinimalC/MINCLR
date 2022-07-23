@@ -22,7 +22,7 @@ Bool Eratosthenes_IsPrime(UInt64 n, UInt64 * minimalquotient, UInt64 * quotient)
 			primeN_hoch2 = knownPrimes_hoch2[primeI];
 		}
 		else {
-			Console_writeLine__String8("SUPER !");
+			Console_writeLine__string("SUPER !");
             Console_sync();
 			Console_exit(1);
 		}
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 			}
             else knownPrimesL++;
 			/* else {
-    			Console_writeLine__String8("SUPER !");
+    			Console_writeLine__string("SUPER !");
                 Console_sync();
 				goto FALSE;
 			} */
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
             System_String8_copySubstringTo(decimol, numbers, (nP + 22));
 
             Syscall_write(Syscall_StandardFile_STDOUT, nP, sizeof(nP) - 1);
-            // Console_write__String8(nP);
+            // Console_write__string(nP);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {
             Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
 			}
             else knownPrimesL++;
 			/* else {
-    			Console_writeLine__String8("SUPER !");
+    			Console_writeLine__string("SUPER !");
                 Console_sync();
 				goto FALSE;
 			} */
@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
             System_String8_copySubstringTo(decimol, numbers, (nP + 22));
 
             Syscall_write(Syscall_StandardFile_STDOUT, nP, sizeof(nP) - 1);
-            // Console_write__String8(nP);
+            // Console_write__string(nP);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {
             Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);

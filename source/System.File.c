@@ -57,7 +57,7 @@ Size  base_System_File_read(File that, String8 value, Size count) {
     return length;
 }
 
-void  base_System_File_write__String8_size(File that, String8 value, Size count) {
+void  base_System_File_write__string_size(File that, String8 value, Size count) {
 /*  ISO_fwrite(value, 1, count, (ISO_File)that->filePtr); */
     Size length = System_Syscall_write(that->filePtr, value, count);
     that->position += length;
@@ -84,7 +84,7 @@ void  base_System_File_sync(File that) {
 struct System_Type_FunctionInfo  System_FileTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_File_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_File_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_write__String8_size", .function = base_System_IStream_write__String8_size, .value = base_System_File_write__String8_size },
+    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_write__string_size", .function = base_System_IStream_write__string_size, .value = base_System_File_write__string_size },
     [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = base_System_File_sync },
     [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = base_System_File_read },
     [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = base_System_File_seek },

@@ -31,7 +31,7 @@ struct System_Type  System_MemoryType = { .base = stack_System_Object(System_Typ
 	.name = "System.Memory",
 };
 
-Size System_Memory_indexof(Var ptr, Char8 needle, Size count) {
+Size System_Memory_indexOf(Var ptr, Char8 needle, Size count) {
     Debug_assert(count);
 
     Size i = 0;
@@ -262,10 +262,9 @@ System_Var  System_Memory_allocClass(System_Type type) {
 #endif
 
 	Var that = System_Memory_alloc__internal(type, 1);
-    if (System_Type_isInstanceOf(type, typeof(System_Object))) {
+    if (System_Type_isAssignableFrom(type, typeof(System_Object))) {
         System_Object object = (System_Object)that;
         object->type = type;
-        object->bitConfig.isAllocated = true;
     }
 	return that;
 }
@@ -281,8 +280,23 @@ System_Var  System_Memory_allocArray(System_Type type, System_Size count) {
 	return System_Memory_alloc__internal(type, count);
 }
 
-System_Object  System_Memory_addReference(System_Object that) {
-    if (!that->bitConfig.isAllocated) return that;
+Bool System_Memory_isAllocated(const Var that) {
+    Debug_assert(that);
+
+    System_VarArray mem64k = System_Memory_ProcessVars[0];
+    if (mem64k) {
+        Var page;
+        for (Size i = 0; i < mem64k->length; ++i) {
+            page = array(mem64k->value)[i];
+            if (that >= page && that < page + 1048576) return true;
+        }
+    }
+
+    return false;
+}
+
+System_Var  System_Memory_addReference(System_Var that) {
+    if (!Memory_isAllocated(that)) return that;
 
     System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
 	++header->refCount;
@@ -298,6 +312,8 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
     Var that = *thatPtr;
 	Debug_assert(that);
 
+    if (!Memory_isAllocated(that)) return;
+
     System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
 #if DEBUG == DEBUG_System_Memory
 	Debug_assert(header->type == typeof(System_Memory_Header));
@@ -306,7 +322,7 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
 	Debug_assert(header->refCount >= System_Memory_ReferenceState_Used);
 	if (--header->refCount >= System_Memory_ReferenceState_Used) goto return_free;
 
-    if (System_Type_isInstanceOf(header->elementType, typeof(System_Object))) {
+    if (System_Type_isAssignableFrom(header->elementType, typeof(System_Object))) {
 
         header->refCount = System_Memory_ReferenceState_Disposing;
 
@@ -315,13 +331,6 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
         if (free) free(object);
 
         header->refCount = System_Memory_ReferenceState_Disposed;
-
-#if DEBUG == DEBUG_System_Memory
-		if (object->bitConfig.isValueAllocated)
-			Console_writeLine("System_Memory_freeClass: type {0:string}, bitConfig.isValueAllocated", 1, object->type->name);
-		else
-			Console_writeLine("System_Memory_freeClass: type {0:string}", 1, object->type->name);
-#endif
 	}
 
     /* if MultiThreading, this should be done by System_GC */

@@ -53,39 +53,39 @@ void System_Console_terminate(const Size code)  {
     System_Syscall_terminate(code);
 }
 
-void  System_Console_write__String8(String8 string) {
+void  System_Console_write__string(String8 string) {
     Debug_assert(string);
-    System_File_write__String8_size(&System_Console_StdOut, string, String8_get_Length(string));
+    System_File_write__string_size(&System_Console_StdOut, string, String8_get_Length(string));
 }
 
-void  System_Console_write__char8(Char8 character) {
-    System_File_write__String8_size(&System_Console_StdOut, &character, 1);
+void  System_Console_write__char(Char8 character) {
+    System_File_write__string_size(&System_Console_StdOut, &character, 1);
 }
 
 void  System_Console_writeLineEmpty() {
-    System_File_write__String8_size(&System_Console_StdOut, "\n", 1);
+    System_File_write__string_size(&System_Console_StdOut, "\n", 1);
 }
 
 void  System_Console_write(String8 format, ...) {
     Debug_assert(format);
     arguments args;
     arguments_start(args, format);
-    Var argv[System_arguments_Limit_VALUE] = { 0 };
+    Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
     System_IStream_writeEnd__arguments((System_IStream)&System_Console_StdOut, format, 0, argc, argv);
 }
 
-void  System_Console_writeLine__String8(String8 string) {
+void  System_Console_writeLine__string(String8 string) {
     Debug_assert(string);
-    System_IStream_writeLine((System_IStream)&System_Console_StdOut, string);
+    System_Console_writeLine(string, 0);
 }
 
 void  System_Console_writeLine(String8 format, ...) {
     Debug_assert(format);
     arguments args;
     arguments_start(args, format);
-    Var argv[System_arguments_Limit_VALUE] = { 0 };
+    Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
     System_IStream_writeEnd__arguments((System_IStream)&System_Console_StdOut, format, '\n', argc, argv);
@@ -94,7 +94,7 @@ void  System_Console_writeLine(String8 format, ...) {
 
 #define hexdump_Columns  32
 
-void System_Console_writeHex(Size length, void  * value) {
+void System_Debug_writeHex(Size length, void  * value) {
     if (length == 0 || !value) return;
 
     UInt8  * memory = (UInt8  *)value;
@@ -115,7 +115,7 @@ void System_Console_writeHex(Size length, void  * value) {
         }
         else /* end of block, just aligning for ASCII dump */
         {
-            Console_write__String8("   ");
+            Console_write__string("   ");
         }
 
         /* print ASCII dump */
@@ -125,18 +125,18 @@ void System_Console_writeHex(Size length, void  * value) {
             {
                 if(j >= length) /* end of block, not really printing */
                 {
-                    Console_write__char8(' ');
+                    Console_write__char(' ');
                 }
                 else if(System_Char8_isPrintable(memory[j])) /* printable char */
                 {
-                    Console_write__char8(0xFF & (memory[j]));
+                    Console_write__char(0xFF & (memory[j]));
                 }
                 else /* other char */
                 {
-                    Console_write__char8('.');
+                    Console_write__char('.');
                 }
             }
-            Console_write__char8('\n');
+            Console_write__char('\n');
         }
     }
 }

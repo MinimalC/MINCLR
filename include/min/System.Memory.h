@@ -25,7 +25,7 @@ export System_Size  System_Memory_compare(System_Var var0, System_Var var1, Syst
 export System_Bool  System_Memory_equals(System_Var var0, System_Var var1, System_Size length);
 
 /* void * memchr ( const void * var, int value, size_t num ); */
-export System_Size  System_Memory_indexof(System_Var var, System_Char8 needle, System_Size count);
+export System_Size  System_Memory_indexOf(System_Var var, System_Char8 needle, System_Size count);
 
 
 typedef unsigned System_Memory_PageFlags;
@@ -70,7 +70,7 @@ export void  System_Memory_free(void **thatPtr);
 #define Memory_moveTo  System_Memory_moveTo
 #define Memory_compare  System_Memory_compare
 #define Memory_equals  System_Memory_equals
-#define Memory_indexof  System_Memory_indexof
+#define Memory_indexOf  System_Memory_indexOf
 
 #define inline_Memory_equals  inline_System_Memory_equals
 #endif

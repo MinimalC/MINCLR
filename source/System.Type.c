@@ -110,7 +110,7 @@ System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
     return null;
 }
 
-System_Bool  System_Type_isInstanceOf(System_Type  that, System_Type  other) {
+System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other) {
     Debug_assert(that);
     Debug_assert(other);
 

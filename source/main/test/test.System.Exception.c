@@ -11,7 +11,7 @@ int main(int argc, char * argv[]) {
     File file = File_open(HALLOtxt, System_File_Mode_readOnly);
     try
 
-    Console_write__String8("ERROR: try isn't");
+    Console_write__string("ERROR: try isn't");
 
     catch
     catch_class(System_Exception,exception, {

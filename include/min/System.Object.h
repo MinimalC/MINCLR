@@ -9,13 +9,7 @@
 
 struct System_Object_BitConfig {
 
-    unsigned  isAllocated : 1;
-
-    unsigned  isValueAllocated : 1;
-
-    unsigned  isValue1Allocated : 1;
-
-    unsigned  isValue2Allocated : 1;
+    unsigned  toBeDisposed : 1;
 };
 
 

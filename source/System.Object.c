@@ -25,7 +25,7 @@ Type  System_Object_get_Type(Object that) {
 System_Bool  System_Object_isInstanceof(System_Object that, System_Type type) {
     Debug_assert(that);
     Debug_assert(type);
-    return System_Type_isInstanceOf(System_Object_get_Type(that), type);
+    return System_Type_isAssignableFrom(System_Object_get_Type(that), type);
 }
 
 System_Object  System_Object_asInstanceof(System_Object that, System_Type type) {

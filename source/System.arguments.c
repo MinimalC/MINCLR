@@ -20,10 +20,10 @@ System_Size stack_System_arguments_get(arguments args, System_Var argv[System_ar
 export System_Size stack_System_arguments_get__limit(System_arguments args, System_Var argv[], System_Size limit) {
     Debug_assert(argv);
     /* this is expecting a Size as first argument or null */
-    Size argc = !args ? 0 : argument(args, Size);
-    if (argc > limit) { argc = 0;
+    unsigned argc = !args ? 0 : argument(args,unsigned);
+    if (argc && argc > limit) { argc = 0;
 #if DEBUG
-    System_Console_write__String8("WARNING: stack_System_arguments");
+    System_Console_writeLine__string("WARNING: stack_System_arguments");
 #endif
     }
     for (Size i = 0; i < limit; ++i) {

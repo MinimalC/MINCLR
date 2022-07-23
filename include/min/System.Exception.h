@@ -27,15 +27,7 @@ export struct System_Type  System_ExceptionType;
 #define stack_System_Exception__error(ERROR, MESSAGE)  { .base = stack_System_Object(System_Exception), .error = ERROR, .message = MESSAGE }
 #define new_System_Exception(MESSAGE)  (base_System_Exception_init((System_Exception)System_Memory_allocClass(typeof(System_Exception)), MESSAGE))
 
-typedef struct System_ReservedException {
-    struct System_Exception base;
-
-    System_Size __reserved[8];
-} * System_ReservedException;
-
-export thread struct System_ReservedException  System_Exception_current;
-
-export thread System_Char8 System_Exception_message[System_String8_formatLimit_VALUE];
+export thread System_Exception  System_Exception_current;
 
 typedef System_Exception delegate(System_Exception_init)(System_Exception that, System_String8 message);
 typedef void delegate(System_Exception_free)(System_Exception that);
@@ -70,12 +62,13 @@ export System_Exception  base_System_Exception_init(System_Exception that, Syste
 #endif
 
 
-#define try  if (System_Exception_current.base.base.type) goto __catch00;
+#define try  if (System_Exception_current->base.type) goto __catch00;
 
-#define catch  if (!System_Exception_current.base.base.type) goto __finally00;\
+#define catch  if (!System_Exception_current->base.type) goto __finally00;\
 __catch00: ;
 
-#define catch_class(TYPE,THAT,ACTION)  do { struct TYPE ff(struct,THAT) = { 0 }; TYPE THAT = &ff(struct,THAT); if (stack_System_Exception_catch((System_Exception)THAT, typeof(TYPE))) { ACTION } goto __finally00; } while (0);
+#define catch_class(TYPE,THAT,ACTION)  do { struct TYPE ff(struct,THAT) = { 0 }; TYPE THAT = &ff(struct,THAT);\
+if (stack_System_Exception_catch((System_Exception)THAT, typeof(TYPE))) { ACTION } goto __finally00; } while (0);
 
 #define throw(EXCEPTION)  System_Exception_throw((System_Exception)EXCEPTION); return;
 
@@ -88,8 +81,8 @@ __catch00: ;
 #define finally  \
 __finally00: ;
 
-#define finally_void  if (System_Exception_current.base.base.type) return;
+#define finally_void  if (System_Exception_current->base.type) return;
 
-#define finally_return  if (System_Exception_current.base.base.type) return null;
+#define finally_return  if (System_Exception_current->base.type) return null;
 
 #endif

@@ -14,17 +14,24 @@
 #if !defined(code_System_Exception)
 #define code_System_Exception
 
+typedef struct System_ReservedException {
+    struct System_Exception base;
 
-struct System_ReservedException System_Exception_current = { 0 };
+    System_Size __reserved[8];
+} * System_ReservedException;
 
-Char8 System_Exception_message[System_String8_formatLimit_VALUE] = "";
+thread struct System_ReservedException System_ReservedException_current = { 0 };
+
+thread System_Exception System_Exception_current = (System_Exception)&System_ReservedException_current;
+
+thread System_Char8 System_Exception_message[4096] = "";
 
 void  System_Exception_throw(System_Exception that) {
     Type that_type = that->base.type;
-    Debug_assert(System_Type_isInstanceOf(that_type, typeof(System_Exception)));
+    Debug_assert(System_Type_isAssignableFrom(that_type, typeof(System_Exception)));
     Debug_assert(that_type->size);
 
-    Memory_copyTo(that, that_type->size, &System_Exception_current);
+    Memory_copyTo(that, that_type->size, System_Exception_current);
 #if DEBUG
     if (that->message && that->error)
         Console_writeLine("throws {0:string}: error {1:uint} ({2:string}): {3:string}", 4, that_type->name, that->error, enum_getName(typeof(System_Error), that->error), that->message);
@@ -35,22 +42,20 @@ void  System_Exception_throw(System_Exception that) {
     else
         Console_writeLine("throws {0:string}", 1, that_type->name);
 #endif
-    if (that->base.bitConfig.isAllocated) {
-        if (that->message) {
-            System_Size message_length = String8_get_Length(that->message);
-            Memory_copyTo(that->message, message_length, System_Exception_message);
-            System_Exception_message[message_length + 1] = '\0';
-            System_Exception_current.base.message = System_Exception_message;
-        }
-        System_Exception_current.base.base.bitConfig.isAllocated = false;
-        Memory_free(that);
+    if (that->message && Memory_isAllocated(that->message)) {
+        for (Size i = 0; i < 4096; ++i) System_Exception_message[i] = 0;
+        System_Size message_length = String8_get_Length(that->message);
+        Memory_copyTo(that->message, message_length, System_Exception_message);
+        System_Exception_current->message = System_Exception_message;
     }
+    else System_Exception_message[0] = 0;
+    if (Memory_isAllocated(that)) Memory_free(that);
 }
 
 void  System_Exception_terminate(System_Exception that) {
     Debug_assert(that);
 #if DEBUG
-    System_Console_write__String8("TERMINIERT: ");
+    System_Console_write__string("TERMINIERT: ");
 #endif
     System_Exception_throw(that);
 
@@ -59,9 +64,9 @@ void  System_Exception_terminate(System_Exception that) {
 
 Bool  stack_System_Exception_catch(System_Exception that, System_Type type) {
 
-    if (System_Type_isInstanceOf(System_Exception_current.base.base.type, type)) {
+    if (System_Type_isAssignableFrom(System_Exception_current->base.type, type)) {
         
-        Memory_moveTo(&System_Exception_current, type->size, that);
+        Memory_moveTo(System_Exception_current, type->size, that);
         return true;
     }
     return false;

@@ -11,10 +11,10 @@ int main(int argc, char * argv[]) {
     FileInfo fileInfo = new_FileInfo(HALLOtxt);
 
     Console_write("FileInfo.name: {0:string}", 1, fileInfo->name);
-    if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Regular)) Console_write__String8(", File");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Directory)) Console_write__String8(", Directory");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Link)) Console_write__String8(", Link");
-    else Console_write__String8(" Unknown?");
+    if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Regular)) Console_write__string(", File");
+    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Directory)) Console_write__string(", Directory");
+    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Link)) Console_write__string(", Link");
+    else Console_write__string(" Unknown?");
 
     Console_writeLine(" ({0:uint32:octal}), UserID: {1:uint32}, GroupID: {2:uint32}", 3, fileInfo->mode, fileInfo->userId, fileInfo->groupId);
     Console_write("DeviceId: {0:uint:hex}, INodeId: {1:uint}, Hardlinks: {2:uint}", 3, fileInfo->deviceId, fileInfo->iNodeId, fileInfo->hardlinks);
@@ -27,10 +27,10 @@ int main(int argc, char * argv[]) {
     fileInfo = new_FileInfo(".");
 
     Console_write("FileInfo.name: {0:string}", 1, fileInfo->name);
-    if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Regular)) Console_write__String8(", File");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Directory)) Console_write__String8(", Directory");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Link)) Console_write__String8(", Link");
-    else Console_write__String8(" Unknown?");
+    if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Regular)) Console_write__string(", File");
+    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Directory)) Console_write__string(", Directory");
+    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Link)) Console_write__string(", Link");
+    else Console_write__string(" Unknown?");
 
     Console_writeLine(" ({0:uint32:octal}), UserID: {1:uint32}, GroupID: {2:uint32}", 3, fileInfo->mode, fileInfo->userId, fileInfo->groupId);
     Console_write("DeviceId: {0:uint:hex}, INodeId: {1:uint}, Hardlinks: {2:uint}", 3, fileInfo->deviceId, fileInfo->iNodeId, fileInfo->hardlinks);
@@ -43,11 +43,11 @@ int main(int argc, char * argv[]) {
     fileInfo = new_FileInfo(FILENOTFOUND);
 
     Console_write("FileInfo.name: {0:string}", 1, fileInfo->name);
-    if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Regular)) Console_write__String8(", File");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Directory)) Console_write__String8(", Directory");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Link)) Console_write__String8(", Link");
-    else if (!fileInfo->mode) Console_write__String8(", null 404");
-    else Console_write__String8(", Unknown?");
+    if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Regular)) Console_write__string(", File");
+    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Directory)) Console_write__string(", Directory");
+    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Link)) Console_write__string(", Link");
+    else if (!fileInfo->mode) Console_write__string(", null 404");
+    else Console_write__string(", Unknown?");
 
     Console_writeLine(" ({0:uint32:octal}), UserID: {1:uint32}, GroupID: {2:uint32}", 3, fileInfo->mode, fileInfo->userId, fileInfo->groupId);
     Console_write("DeviceId: {0:uint:hex}, INodeId: {1:uint}, Hardlinks: {2:uint}", 3, fileInfo->deviceId, fileInfo->iNodeId, fileInfo->hardlinks);

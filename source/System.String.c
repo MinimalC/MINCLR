@@ -13,9 +13,7 @@
 void base_System_String_free(String that) {
     Debug_assert(that);
 
-    if (that->value && that->base.bitConfig.isValueAllocated) {
-        Memory_free((that->value));
-    }
+    if (that->value && Memory_isAllocated(that->value)) Memory_free(that->value);
 
     base_System_Object_free((Object)that);
 }
@@ -23,7 +21,6 @@ void base_System_String_free(String that) {
 String  base_System_String_init(String that, String8 string) {
     base_System_Object_init((Object)that);
 
-    /* that->base.bitConfig.isValueAllocated = true; */
     that->codepage = System_Encoding_DEFAULT;
     that->length = System_String8_get_Length(string);
     that->value = string;

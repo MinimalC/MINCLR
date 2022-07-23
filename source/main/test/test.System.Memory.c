@@ -12,45 +12,48 @@ int main(int argc, char * argv[]) {
 
 
     /* Test: Memory_allocClass */
-    UInt8 *bytes = Memory_allocClass(typeof(UInt8), Test00_size);
+    UInt8 *bytes = Memory_allocArray(typeof(UInt8), Test00_size);
     if (!bytes)
-        Console_writeLine__String8("Test01: ERROR: System_Memory_allocClass");
+        Console_writeLine__string("Test01: ERROR: System_Memory_allocClass");
     else
-        Console_writeLine__String8("Test01: SUCCESS: System_Memory_allocClass");
+        Console_writeLine__string("Test01: SUCCESS: System_Memory_allocClass");
 
+    if (!System_Memory_isAllocated((Var)bytes))
+        Console_writeLine__string("Test01: ERROR: System_Memory_isAllocated");
+    else
+        Console_writeLine__string("Test01: SUCCESS: System_Memory_isAllocated");
 
     /* Test: Memory_set */
     Memory_set(bytes, 0x01, Test00_size);
     // *(bytes + 2) = 0x03;
     bytes[2] = 0x03;
 
-
     /* Test: Memory_compare and Memory_equals  */
-    if (0 != Memory_compare(bytes, Test00_Check, Test00_size))
-        Console_writeLine__String8("Test02: ERROR: System_Memory_compare");
+    if (Test00_size != Memory_compare(bytes, Test00_Check, Test00_size))
+        Console_writeLine__string("Test02: ERROR: System_Memory_compare");
     else
-        Console_writeLine__String8("Test02: SUCCESS: System_Memory_compare");
+        Console_writeLine__string("Test02: SUCCESS: System_Memory_compare");
 
     if (!Memory_equals(bytes, Test00_Check, Test00_size))
-        Console_writeLine__String8("Test03: ERROR: System_Memory_equals");
+        Console_writeLine__string("Test03: ERROR: System_Memory_equals");
     else
-        Console_writeLine__String8("Test03: SUCCESS: System_Memory_equals");
+        Console_writeLine__string("Test03: SUCCESS: System_Memory_equals");
 
 
     /* Test: Memory_indexOf */
     Size indexOf2 = Memory_indexOf(bytes, 0x03, Test00_size);
     if (indexOf2 != 3)
-        Console_writeLine__String8("Test04: ERROR: System_Memory_indexOf");
+        Console_writeLine__string("Test04: ERROR: System_Memory_indexOf");
     else
-        Console_writeLine__String8("Test04: SUCCESS: System_Memory_indexOf");
+        Console_writeLine__string("Test04: SUCCESS: System_Memory_indexOf");
 
 
     /* Test: Memory_free */
     Memory_free(bytes);
     if (bytes)
-        Console_writeLine__String8("Test05: ERROR: System_Memory_free");
+        Console_writeLine__string("Test05: ERROR: System_Memory_free");
     else
-        Console_writeLine__String8("Test05: SUCCESS: System_Memory_free");
+        Console_writeLine__string("Test05: SUCCESS: System_Memory_free");
 
 
     return true;

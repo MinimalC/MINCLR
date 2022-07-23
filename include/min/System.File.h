@@ -70,7 +70,7 @@ export struct System_Type  System_FileType;
 
 typedef System_File  delegate(System_File_init)(System_File that);
 typedef void  delegate(System_File_free)(System_File that);
-typedef void  delegate(System_File_write__String8_size)(System_File that, System_String8 value, System_Size count);
+typedef void  delegate(System_File_write__string_size)(System_File that, System_String8 value, System_Size count);
 typedef void  delegate(System_File_sync)(System_File that);
 typedef System_Size  delegate(System_File_read)(System_File that, System_String8 value, System_Size count);
 typedef void  delegate(System_File_seek)(System_File that, System_SSize offset, System_origin origin);
@@ -80,7 +80,7 @@ typedef void  delegate(System_File_set_Position)(System_File that, System_Size v
 export System_File  System_File_open(System_String8 filename, System_File_Mode flags);
 export System_File  base_System_File_init(System_File that);
 export void  base_System_File_free(System_File that);
-export void  base_System_File_write__String8_size(System_File that, System_String8 value, System_Size count);
+export void  base_System_File_write__string_size(System_File that, System_String8 value, System_Size count);
 export void  base_System_File_sync(System_File that);
 export void  base_System_File_seek(System_File that, System_SSize offset, System_origin origin);
 export System_Size  base_System_File_read(System_File that, System_String8 value, System_Size count);
@@ -89,7 +89,7 @@ export void  base_System_File_set_Position(System_File that, System_Size value);
 
 #define System_File_free(o)  ((function_System_File_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_File_init(o)  ((function_System_File_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
-#define System_File_write__String8_size(o,...)  ((function_System_File_write__String8_size)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write__String8_size))(o, __VA_ARGS__)
+#define System_File_write__string_size(o,...)  ((function_System_File_write__string_size)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write__string_size))(o, __VA_ARGS__)
 #define System_File_sync(o)  ((function_System_File_sync)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_sync))(o)
 #define System_File_read(o,...)  ((function_System_File_read)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_read))(o, __VA_ARGS__)
 #define System_File_seek(o,...)  ((function_System_File_seek)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_seek))(o, __VA_ARGS__)
@@ -127,7 +127,7 @@ export void  base_System_File_set_Position(System_File that, System_Size value);
 #define File_init  System_File_init
 #define File_open  System_File_open
 #define File_read  System_File_read
-#define File_write__String8_size  System_File_write__String8_size
+#define File_write__string_size  System_File_write__string_size
 #define File_seek  System_File_seek
 #define File_get_Position  System_File_get_Position
 #define File_set_Position  System_File_set_Position
@@ -136,7 +136,7 @@ export void  base_System_File_set_Position(System_File that, System_Size value);
 #define base_File_free  base_System_File_free
 #define base_File_init  base_System_File_init
 #define base_File_read  base_System_File_read
-#define base_File_write__String8_size  base_System_File_write__String8_size
+#define base_File_write__string_size  base_System_File_write__string_size
 #define base_File_seek  base_System_File_seek
 #define base_File_get_Position  base_System_File_get_Position
 #define base_File_set_Position  base_System_File_set_Position

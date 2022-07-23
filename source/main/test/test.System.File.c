@@ -12,7 +12,7 @@ int main(int argc, char * argv[]) {
 
 
 	/* Test01: Write to the File and flush */
-    File_write__String8_size(file, HALLO, sizeof(HALLO) - 1);
+    File_write__string_size(file, HALLO, sizeof(HALLO) - 1);
 
     File_sync(file);
 
