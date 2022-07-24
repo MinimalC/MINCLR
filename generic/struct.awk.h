@@ -11,7 +11,7 @@
 #if !defined(have_Generic_T0)
 #define have_Generic_T0
 
-typedef fixed struct Generic_T0 {
+typedef System_fixed struct Generic_T0 {
 
 } * Generic_T0;
 
@@ -31,7 +31,7 @@ export void  Generic_T0_init(Generic_T0 that);
 #if !defined(have_Generic1_T1)
 #define have_Generic1_T1
 
-typedef fixed struct Generic1_T1 {
+typedef System_fixed struct Generic1_T1 {
     struct System_Object base;
 
     Generic_T0 value;

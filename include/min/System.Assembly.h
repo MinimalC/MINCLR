@@ -59,7 +59,7 @@ typedef System_Int32  System_AssemblyBinding;
 #endif
 
 
-typedef fixed struct System_Assembly {
+typedef System_fixed struct System_Assembly {
     struct System_Object base;
 
     void  * assemblyPtr;

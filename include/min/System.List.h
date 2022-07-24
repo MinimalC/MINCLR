@@ -10,7 +10,7 @@
 #define System_List_Capacity_DEFAULT  64
 export const System_Size  System_List_Capacity;
 
-typedef fixed struct System_List {
+typedef System_fixed struct System_List {
     struct System_Object base;
 
     System_Size capacity;

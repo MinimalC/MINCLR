@@ -7,7 +7,7 @@
 #if !defined(have_Generic_T0)
 #define have_Generic_T0
 
-typedef fixed struct Generic_T0 { } * Generic_T0;
+typedef System_fixed struct Generic_T0 { } * Generic_T0;
 
 export struct System_Type  Generic_T0Type;
 

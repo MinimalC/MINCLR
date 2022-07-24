@@ -5,12 +5,13 @@
 #if !defined(have_System_Decimal)
 #define have_System_Decimal
 
-#define System_Decimal_Capacity_DEFAULT  128
+#define System_Decimal_Capacity_DEFAULT  126
 export const System_Size  System_Decimal_Capacity;
 
-typedef fixed struct System_Decimal {
+typedef System_fixed struct System_Decimal {
     System_Int8  precision;
-    System_UInt8  value[System_Decimal_Capacity_DEFAULT + 1];
+    System_UInt8  value[System_Decimal_Capacity_DEFAULT];
+    System_UInt8  null;
 } * System_Decimal;
 
 #define stack_System_Decimal()  { }

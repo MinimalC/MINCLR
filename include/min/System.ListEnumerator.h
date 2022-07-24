@@ -9,7 +9,7 @@
 #if !defined(have_System_ListEnumerator)
 #define have_System_ListEnumerator
 
-typedef fixed struct System_ListEnumerator {
+typedef System_fixed struct System_ListEnumerator {
     struct System_Object base;
 
     System_List array;

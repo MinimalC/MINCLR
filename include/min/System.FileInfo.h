@@ -31,7 +31,7 @@ typedef System_UInt32  System_FileInfo_Type;
 #define FileInfo_Type_Socket  System_FileInfo_Type_Socket
 #endif
 
-typedef fixed struct System_FileInfo {
+typedef System_fixed struct System_FileInfo {
     struct System_Object base;
 
     System_String8 name;

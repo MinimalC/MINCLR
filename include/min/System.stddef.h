@@ -1,16 +1,14 @@
 /*  Gemeinfrei. Public Domain. */
+#if defined(__ASSEMBLER__)
+#error "Use include System.asm.h instead."
+#endif
 #if !defined(have_System_asm)
 #include "System.asm.h"
 #endif
 #if !defined(have_System_stddef)
 #define have_System_stddef
 
-#if defined(__ASSEMBLER__)
-#error "Use include System.asm.h instead."
-#endif
-
 enum { null } ;
-
 
 typedef _Bool  System_Bool;
 
@@ -20,7 +18,6 @@ enum { false, true } ;
 /* please don't use #if defined(Bool) */
 #define Bool  System_Bool
 #endif
-
 
 /*#if defined(__builtin_alloca)
 #define System_stackalloc  __builtin_alloca
@@ -33,7 +30,6 @@ enum { false, true } ;
 #define stackalloc  System_stackalloc
 #endif
 #endif*/
-
 
 #if defined(MSVCC)
 #define import  extern __declspec(dllimport)
@@ -70,7 +66,6 @@ enum { false, true } ;
 /* #define thread  _Thread_local */
 #endif
 
-
 #if !defined(noreturn)
 #define noreturn /* noreturn */
 #endif
@@ -90,13 +85,12 @@ enum { false, true } ;
 #define final  /* final */
 
 #if defined(have_System_Internal)
-#define fixed  /* noconst */
+#define System_fixed  /* noconst */
 #else
-#define fixed  const
+#define System_fixed  const
 #endif
 
 #define unused(names)  (void)(names);
-
 
 #if defined(have_ARM)
 #define breakpoint  asm("bkpt")
@@ -106,7 +100,6 @@ enum { false, true } ;
 #define breakpoint
 #warning breakpoint: Architecture not supported
 #endif
-
 
 /* concat: SystemObjekt */
 #define cc(a,b)    a##b
@@ -121,13 +114,11 @@ enum { false, true } ;
 #define fff(a,b,c)    ff(a##_##b,c)
 #define ffff(a,b,c,d)    fff(a##_##b,c,d)
 
-
 #define	System_enum_hasFlag(ENUM,FLAG)  (((ENUM) & FLAG) == FLAG)
 
 #if defined(using_System)
 #define enum_hasFlag  System_enum_hasFlag
 #endif
-
 
 /* Example: typedef void delegate(System_Object_init)(System_Object that);
    Use function(System_Object_init), write base(System_Object_init) */
@@ -177,7 +168,6 @@ and in your C .c you do:
 
 #define typeof(name)  (&name##Type)
 
-
 typedef void  System_Void;
 typedef void  * System_Var; /* Var is not unsafe in C */
 typedef unsigned  System_Unsigned;
@@ -204,7 +194,6 @@ typedef __PTRDIFF_TYPE__  System_SIntPtr;
 #define SSize  System_SSize
 #define SIntPtr  System_SIntPtr
 #endif
-
 
 typedef unsigned char  System_UInt8;
 #if defined(have_vscode)
@@ -238,7 +227,6 @@ typedef signed long long int  System_Int64;
 #define Int64  System_Int64
 #endif
 
-
 #define System_Byte  System_UInt8
 #define System_UShort  System_UInt16
 #define System_UInt  System_UInt32
@@ -249,7 +237,7 @@ typedef signed long long int  System_Int64;
 #define System_Int  System_Int32
 #define System_Long  System_Int64
 
-/* Look, this doesn't rewrite keyword type names in C. */
+/* Look, this is trying not to rewrite unsigned long long longer int integer names in C. */
 #if defined(using_System)
 #define Byte  System_Byte
 #define UShort  System_UShort
@@ -262,7 +250,6 @@ typedef signed long long int  System_Int64;
 #define Long  System_Long
 #endif
 
-
 typedef char  System_Char8,  * System_String8,  System_STRING8[];
 
 export System_Char8  System_String8_Empty[1];
@@ -274,22 +261,19 @@ export System_Char8  System_String8_Empty[1];
 #define String8_Empty  System_String8_Empty
 #endif
 
-
 export void  System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Unsigned line);
 export void  System_Debug_writeLine__message(const System_String8 message, ...);
 
-#if !defined(DEBUG)
-#define DEBUG 1
-/*  This is set, so you can easily do #if DEBUG.
+/*  #define DEBUG so you can easily do #if DEBUG.
     You need to #define DEBUG 0 for yourself, for example
-
 #if !defined(NODEBUG) || !defined(RELEASE)
 #define DEBUG 0
 #else
 #define DEBUG 1
 #endif
-
 */
+#if !defined(DEBUG)
+#define DEBUG 1
 #endif
 #if !DEBUG
 #define System_Debug_assert(expression) (void)(expression)
@@ -298,7 +282,6 @@ export void  System_Debug_writeLine__message(const System_String8 message, ...);
 #define System_Debug_assert(expression)  (void)(!(expression) ? System_Debug_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Unsigned)__LINE__) : 0)
 #define System_Debug_writeLine(message,...)  (void)System_Debug_writeLine__message((System_String8)message, (System_String8)__func__, (System_String8)__FILE__, (System_String8)__LINE__, __VA_ARGS__)
 #endif
-
 #if defined(using_System)
 #define Debug_assert  System_Debug_assert
 #define Debug_writeLine  System_Debug_writeLine

@@ -8,7 +8,7 @@
 /* 3-Dimensional, Unique SipHash-Indexed ObjectObjectDictionary */
 
 
-typedef fixed struct System_Dictionary {
+typedef System_fixed struct System_Dictionary {
     struct System_Object base;
 
     System_UInt64Array hashes;

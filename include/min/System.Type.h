@@ -24,14 +24,14 @@
 
 
 
-typedef fixed struct System_Type  * System_Type;
+typedef System_fixed struct System_Type  * System_Type;
 
 #include "System.Object.h"
 
 /* static class System.Type.FunctionInfo */
 
 
-typedef fixed struct System_Type_FunctionInfo {
+typedef System_fixed struct System_Type_FunctionInfo {
 	struct System_Object  base;
 
 	System_String8  name;
@@ -45,7 +45,7 @@ typedef fixed struct System_Type_FunctionInfo {
 /* static class System.Type.FunctionInfoArray */
 
 
-typedef fixed struct System_Type_FunctionInfoArray {
+typedef System_fixed struct System_Type_FunctionInfoArray {
 	struct System_Object base;
 
 	System_Size  length;
@@ -57,7 +57,7 @@ typedef fixed struct System_Type_FunctionInfoArray {
 /* static class System.Type.InterfaceInfo */
 
 
-typedef fixed struct System_Type_InterfaceInfo {
+typedef System_fixed struct System_Type_InterfaceInfo {
 	struct System_Object  base;
 
     System_Type  interfaceType;
@@ -71,7 +71,7 @@ typedef fixed struct System_Type_InterfaceInfo {
 /* static class System.Type.InterfaceInfoArray */
 
 
-typedef fixed struct System_Type_InterfaceInfoArray {
+typedef System_fixed struct System_Type_InterfaceInfoArray {
 	struct System_Object base;
 
 	System_Size  length;
@@ -84,7 +84,7 @@ typedef fixed struct System_Type_InterfaceInfoArray {
 /* static class System.Type.FieldInfo */
 
 
-typedef fixed struct System_Type_FieldInfo {
+typedef System_fixed struct System_Type_FieldInfo {
 	struct System_Object  base;
 
     System_String8  name;
@@ -96,7 +96,7 @@ typedef fixed struct System_Type_FieldInfo {
 /* static class System.Type.FieldInfoArray */
 
 
-typedef fixed struct System_Type_FieldInfoArray {
+typedef System_fixed struct System_Type_FieldInfoArray {
 	struct System_Object base;
 
 	System_Size  length;

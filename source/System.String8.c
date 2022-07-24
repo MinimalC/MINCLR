@@ -90,13 +90,6 @@ System_Size  System_String8_get_Length__max(System_String8 that, System_Size lim
     return i;
 }
 
-/* Size  System_String8_get_Length__max(String8 that, Size count) {
-    Size i = 0;
-    while (count && that[i]) { ++i; --count; }
-    return i;
-} */
-
-
 void  System_String8_copyTo(String8 src, String8 dest) {
     Size count = String8_get_Length(src);
     while ( count && ( *dest++ = *src++ ) ) --count;

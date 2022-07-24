@@ -22,14 +22,24 @@ typedef struct System_ReservedException {
 
 thread struct System_ReservedException System_ReservedException_current = { 0 };
 
-thread System_Exception System_Exception_current = (System_Exception)&System_ReservedException_current;
+thread System_Exception System_Exception_current = null;
 
 thread System_Char8 System_Exception_message[4096] = "";
+
+Bool  System_Exception_try() {
+    return (System_Exception_current && System_Exception_current->base.type) ? true : false;
+}
+
+Bool  System_Exception_tryNot() {
+    return (!System_Exception_current || !System_Exception_current->base.type) ? true : false;
+}
 
 void  System_Exception_throw(System_Exception that) {
     Type that_type = that->base.type;
     Debug_assert(System_Type_isAssignableFrom(that_type, typeof(System_Exception)));
     Debug_assert(that_type->size);
+
+    if (!System_Exception_current) System_Exception_current = (System_Exception)&System_ReservedException_current;
 
     Memory_copyTo(that, that_type->size, System_Exception_current);
 #if DEBUG
@@ -63,6 +73,8 @@ void  System_Exception_terminate(System_Exception that) {
 }
 
 Bool  stack_System_Exception_catch(System_Exception that, System_Type type) {
+
+    if (!System_Exception_current) return false;
 
     if (System_Type_isAssignableFrom(System_Exception_current->base.type, type)) {
         

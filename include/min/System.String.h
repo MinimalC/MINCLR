@@ -67,7 +67,7 @@ typedef System_UInt32  System_Encoding;
 /* static class System.String */
 
 
-typedef fixed struct System_String {
+typedef System_fixed struct System_String {
 	struct System_Object  base;
 
 	System_Size  length;

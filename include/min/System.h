@@ -70,8 +70,4 @@
 
 /* #include "System.Socket.h" */
 
-
-#undef  fixed
-#define fixed  /* noconst */
-
 #endif

@@ -14,7 +14,7 @@
 #if !defined(have_Generic_T0ArrayEnumerator)
 #define have_Generic_T0ArrayEnumerator
 
-typedef fixed struct Generic_T0ArrayEnumerator {
+typedef System_fixed struct Generic_T0ArrayEnumerator {
     struct System_Object base;
 
     Generic_T0Array array;

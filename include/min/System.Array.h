@@ -7,7 +7,7 @@
 
 /* 1-Dimensional, Indexed System_ObjectArray */
 
-typedef fixed struct System_Array {
+typedef System_fixed struct System_Array {
     struct System_Object base;
 
     System_Size  length;

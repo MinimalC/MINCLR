@@ -8,7 +8,7 @@
 #if !defined(have_System_ArrayEnumerator)
 #define have_System_ArrayEnumerator
 
-typedef fixed struct System_ArrayEnumerator {
+typedef System_fixed struct System_ArrayEnumerator {
     struct System_Object base;
 
     System_Array array;

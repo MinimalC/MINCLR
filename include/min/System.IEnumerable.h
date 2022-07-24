@@ -8,7 +8,7 @@
 /* interface System_IEnumerator */
 
 
-typedef fixed  struct System_IEnumerator { }  * System_IEnumerator;
+typedef System_fixed  struct System_IEnumerator { }  * System_IEnumerator;
 
 export struct System_Type  System_IEnumeratorType;
 
@@ -36,7 +36,7 @@ export System_Bool  base_System_IEnumerator_moveNext(System_IEnumerator that);
 /* interface System_IEnumerable */
 
 
-typedef fixed  struct System_IEnumerable { }  * System_IEnumerable;
+typedef System_fixed  struct System_IEnumerable { }  * System_IEnumerable;
 
 export struct System_Type  System_IEnumerableType;
 

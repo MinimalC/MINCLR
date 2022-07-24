@@ -7,7 +7,7 @@
 #define have_System_UInt8Array
 
 
-typedef fixed struct System_UInt8Array {
+typedef System_fixed struct System_UInt8Array {
     struct System_Object base;
 
     System_Size  length;
@@ -85,7 +85,7 @@ export System_IEnumerator  base_System_UInt8Array_getEnumerator(System_UInt8Arra
 #define have_System_UInt16Array
 
 
-typedef fixed struct System_UInt16Array {
+typedef System_fixed struct System_UInt16Array {
     struct System_Object base;
 
     System_Size  length;
@@ -163,7 +163,7 @@ export System_IEnumerator  base_System_UInt16Array_getEnumerator(System_UInt16Ar
 #define have_System_UInt32Array
 
 
-typedef fixed struct System_UInt32Array {
+typedef System_fixed struct System_UInt32Array {
     struct System_Object base;
 
     System_Size  length;
@@ -241,7 +241,7 @@ export System_IEnumerator  base_System_UInt32Array_getEnumerator(System_UInt32Ar
 #define have_System_UInt64Array
 
 
-typedef fixed struct System_UInt64Array {
+typedef System_fixed struct System_UInt64Array {
     struct System_Object base;
 
     System_Size  length;
@@ -319,7 +319,7 @@ export System_IEnumerator  base_System_UInt64Array_getEnumerator(System_UInt64Ar
 #define have_System_Int8Array
 
 
-typedef fixed struct System_Int8Array {
+typedef System_fixed struct System_Int8Array {
     struct System_Object base;
 
     System_Size  length;
@@ -397,7 +397,7 @@ export System_IEnumerator  base_System_Int8Array_getEnumerator(System_Int8Array 
 #define have_System_Int16Array
 
 
-typedef fixed struct System_Int16Array {
+typedef System_fixed struct System_Int16Array {
     struct System_Object base;
 
     System_Size  length;
@@ -475,7 +475,7 @@ export System_IEnumerator  base_System_Int16Array_getEnumerator(System_Int16Arra
 #define have_System_Int32Array
 
 
-typedef fixed struct System_Int32Array {
+typedef System_fixed struct System_Int32Array {
     struct System_Object base;
 
     System_Size  length;
@@ -553,7 +553,7 @@ export System_IEnumerator  base_System_Int32Array_getEnumerator(System_Int32Arra
 #define have_System_Int64Array
 
 
-typedef fixed struct System_Int64Array {
+typedef System_fixed struct System_Int64Array {
     struct System_Object base;
 
     System_Size  length;
@@ -630,7 +630,7 @@ export System_IEnumerator  base_System_Int64Array_getEnumerator(System_Int64Arra
 #if !defined(have_System_UInt8ArrayEnumerator)
 #define have_System_UInt8ArrayEnumerator
 
-typedef fixed struct System_UInt8ArrayEnumerator {
+typedef System_fixed struct System_UInt8ArrayEnumerator {
     struct System_Object base;
 
     System_UInt8Array array;
@@ -680,7 +680,7 @@ export System_Bool  base_System_UInt8ArrayEnumerator_moveNext(System_UInt8ArrayE
 #if !defined(have_System_UInt16ArrayEnumerator)
 #define have_System_UInt16ArrayEnumerator
 
-typedef fixed struct System_UInt16ArrayEnumerator {
+typedef System_fixed struct System_UInt16ArrayEnumerator {
     struct System_Object base;
 
     System_UInt16Array array;
@@ -730,7 +730,7 @@ export System_Bool  base_System_UInt16ArrayEnumerator_moveNext(System_UInt16Arra
 #if !defined(have_System_UInt32ArrayEnumerator)
 #define have_System_UInt32ArrayEnumerator
 
-typedef fixed struct System_UInt32ArrayEnumerator {
+typedef System_fixed struct System_UInt32ArrayEnumerator {
     struct System_Object base;
 
     System_UInt32Array array;
@@ -780,7 +780,7 @@ export System_Bool  base_System_UInt32ArrayEnumerator_moveNext(System_UInt32Arra
 #if !defined(have_System_UInt64ArrayEnumerator)
 #define have_System_UInt64ArrayEnumerator
 
-typedef fixed struct System_UInt64ArrayEnumerator {
+typedef System_fixed struct System_UInt64ArrayEnumerator {
     struct System_Object base;
 
     System_UInt64Array array;
@@ -830,7 +830,7 @@ export System_Bool  base_System_UInt64ArrayEnumerator_moveNext(System_UInt64Arra
 #if !defined(have_System_Int8ArrayEnumerator)
 #define have_System_Int8ArrayEnumerator
 
-typedef fixed struct System_Int8ArrayEnumerator {
+typedef System_fixed struct System_Int8ArrayEnumerator {
     struct System_Object base;
 
     System_Int8Array array;
@@ -880,7 +880,7 @@ export System_Bool  base_System_Int8ArrayEnumerator_moveNext(System_Int8ArrayEnu
 #if !defined(have_System_Int16ArrayEnumerator)
 #define have_System_Int16ArrayEnumerator
 
-typedef fixed struct System_Int16ArrayEnumerator {
+typedef System_fixed struct System_Int16ArrayEnumerator {
     struct System_Object base;
 
     System_Int16Array array;
@@ -930,7 +930,7 @@ export System_Bool  base_System_Int16ArrayEnumerator_moveNext(System_Int16ArrayE
 #if !defined(have_System_Int32ArrayEnumerator)
 #define have_System_Int32ArrayEnumerator
 
-typedef fixed struct System_Int32ArrayEnumerator {
+typedef System_fixed struct System_Int32ArrayEnumerator {
     struct System_Object base;
 
     System_Int32Array array;
@@ -980,7 +980,7 @@ export System_Bool  base_System_Int32ArrayEnumerator_moveNext(System_Int32ArrayE
 #if !defined(have_System_Int64ArrayEnumerator)
 #define have_System_Int64ArrayEnumerator
 
-typedef fixed struct System_Int64ArrayEnumerator {
+typedef System_fixed struct System_Int64ArrayEnumerator {
     struct System_Object base;
 
     System_Int64Array array;

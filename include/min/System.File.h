@@ -55,7 +55,7 @@ typedef System_IntPtr  System_File_Permission;
 #define System_File_Permission_EverybodyEverything  (System_File_Permission_EverybodyRead | System_File_Permission_EverybodyWrite | System_File_Permission_EverybodyExecute)
 
 
-typedef fixed struct System_File {
+typedef System_fixed struct System_File {
 	struct System_Object  base;
 
     System_Var filePtr;

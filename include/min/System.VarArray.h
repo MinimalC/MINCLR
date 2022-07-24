@@ -13,7 +13,7 @@
 #define have_System_VarArray
 
 
-typedef fixed struct System_VarArray {
+typedef System_fixed struct System_VarArray {
     struct System_Object base;
 
     System_Size  length;
@@ -88,7 +88,7 @@ export System_IEnumerator  base_System_VarArray_getEnumerator(System_VarArray th
 #define have_System_VarArrayEnumerator
 
 
-typedef fixed struct System_VarArrayEnumerator {
+typedef System_fixed struct System_VarArrayEnumerator {
     struct System_Object base;
 
     System_VarArray array;

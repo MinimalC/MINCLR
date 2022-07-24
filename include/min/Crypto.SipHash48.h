@@ -5,7 +5,7 @@
 #if !defined(have_Crypto_SipHash48)
 #define have_Crypto_SipHash48
 
-typedef fixed struct Crypto_SipHash48 {
+typedef System_fixed struct Crypto_SipHash48 {
 
     System_UInt64  v0;
     System_UInt64  v1;

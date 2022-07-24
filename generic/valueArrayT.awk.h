@@ -16,7 +16,7 @@
 #define have_Generic_T0Array
 
 
-typedef fixed struct Generic_T0Array {
+typedef System_fixed struct Generic_T0Array {
     struct System_Object base;
 
     System_Size  length;

@@ -214,7 +214,7 @@ System_Console_writeLine("using System_Memory_Page: pageSize {0:uint}, payload {
                 /* expect first if this is unfree, move next */
                 if (header->refCount) {
 #if DEBUG == DEBUG_System_Memory
-                    Debug_assert(header->type == typeof(System_Memory_Header);)
+                    Debug_assert(header->type == typeof(System_Memory_Header));
 #endif
                     Debug_assert(header->length);
                     Debug_assert(header->elementType);
@@ -280,12 +280,12 @@ System_Var  System_Memory_allocArray(System_Type type, System_Size count) {
 	return System_Memory_alloc__internal(type, count);
 }
 
-Bool System_Memory_isAllocated(const Var that) {
+Bool System_Memory_isAllocated(Var that) {
     Debug_assert(that);
 
     System_VarArray mem64k = System_Memory_ProcessVars[0];
     if (mem64k) {
-        Var page;
+        Var page = 0;
         for (Size i = 0; i < mem64k->length; ++i) {
             page = array(mem64k->value)[i];
             if (that >= page && that < page + 1048576) return true;
