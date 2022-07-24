@@ -31,8 +31,8 @@ export thread System_Exception  System_Exception_current;
 typedef System_Exception delegate(System_Exception_init)(System_Exception that, System_String8 message);
 typedef void delegate(System_Exception_free)(System_Exception that);
 
-export System_Bool  System_Exception_try();
-export System_Bool  System_Exception_tryNot();
+export System_Bool  System_Exception_try(void);
+export System_Bool  System_Exception_tryNot(void);
 export void  System_Exception_throw(System_Exception that);
 export void  System_Exception_terminate(System_Exception that) noreturn;
 export System_Bool  stack_System_Exception_catch(System_Exception that, System_Type type);
@@ -70,6 +70,8 @@ export System_Exception  base_System_Exception_init(System_Exception that, Syste
 
 #define System_try  if (inline_System_Exception_try()) goto __catch00;
 
+#define System_try_throw(EXCEPTION)  System_Exception_throw((System_Exception)EXCEPTION); goto __catch00;
+
 #define System_catch  if (inline_System_Exception_tryNot()) goto __finally00;\
 __catch00: ;
 
@@ -93,6 +95,7 @@ __finally00: ;
 
 #if defined(using_System)
 #define try  System_try
+#define try_throw  System_try_throw
 #define catch  System_catch
 #define catch_class  System_catch_class
 #define throw  System_throw

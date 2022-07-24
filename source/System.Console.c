@@ -44,12 +44,19 @@ void  System_Console_sync() {
 /* __attribute__((constructor)) void System_init */
 
 void System_Console_exit(const Size code)  {
-    System_Syscall_terminate(code);
-}
-
-void System_Console_terminate(const Size code)  {
-    /* fclose(randomDevice); */
-
+#if DEBUG || !DEBUG
+    struct System_Exception exception;
+    if (stack_System_Exception_catch(&exception, typeof(System_Exception))) {
+        if (exception.message && exception.error)
+            Console_writeLine("{0:string}: error {1:uint} ({2:string}): {3:string}", 4, exception.base.type->name, exception.error, enum_getName(typeof(System_Error), exception.error), exception.message);
+        else if (exception.message)
+            Console_writeLine("{0:string}: {1:string}", 2, exception.base.type->name, exception.message);
+        else if (exception.error)
+            Console_writeLine("{0:string}: error {1:uint} ({2:string})", 3, exception.base.type->name, exception.error, enum_getName(typeof(System_Error), exception.error));
+        else
+            Console_writeLine("{0:string}", 1, exception.base.type->name);
+    }
+#endif
     System_Syscall_terminate(code);
 }
 
@@ -62,7 +69,7 @@ void  System_Console_write__char(Char8 character) {
     System_File_write__string_size(&System_Console_StdOut, &character, 1);
 }
 
-void  System_Console_writeLineEmpty() {
+void  System_Console_writeLineEmpty(void) {
     System_File_write__string_size(&System_Console_StdOut, "\n", 1);
 }
 

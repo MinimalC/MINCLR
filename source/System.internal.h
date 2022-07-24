@@ -8,7 +8,11 @@
 #define DEBUG_System_String8_format  3
 #define DEBUG_System_Memory 4
 
-#if !defined(NODEBUG) || !defined(RELEASE)
+#if defined(NDEBUG)
+#undef NDEBUG
+#define RELEASE
+#endif
+#if !defined(RELEASE)
 /* for developers */
 #define DEBUG  1
 #else
