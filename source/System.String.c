@@ -41,7 +41,7 @@ struct System_Type_FunctionInfo  System_StringTypeFunctions[] = {
 };
 
 struct System_Type  System_StringType = { .base = stack_System_Object(System_Type),
-    .name = "System.String",
+    .name = "String",
     .Size = sizeof(struct System_String),
     .baseType = typeof(System_Object),
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),

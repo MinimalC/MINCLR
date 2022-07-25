@@ -160,9 +160,11 @@ and in your C .c you do:
 
 #define instancein(OBJECT,MEMBER,TYPE)  ((TYPE *)OBJECT->MEMBER)
 
-#define sizeof_array(OBJECT)  (sizeof(OBJECT) / sizeof(OBJECT[0]))
-
 #define sizeof_class(CLASS) sizeof(struct ##CLASS)
+
+#define sizeof_item(ARRAY)  sizeof(ARRAY[0])
+
+#define sizeof_array(ARRAY)  (sizeof(ARRAY) / sizeof_item(ARRAY))
 
 #define nameof(TYPE)  (#TYPE)
 

@@ -35,7 +35,7 @@ String8 System_enum_getName(Type type, IntPtr value) {
 /*# System_Type #*/
 
 struct System_Type  System_TypeType = { .base = { .type = typeof(System_Type) },
-    .name = "System.Type",
+    .name = "Type",
 	.size = sizeof(struct System_Type),
 	.baseType = &System_ObjectType
 };
@@ -45,46 +45,46 @@ struct System_Type  System_TypeType = { .base = { .type = typeof(System_Type) },
 /* sizeof(void) is 1 */
 /* sizeof(void *) is sizeof(Size), sizeof(IntPtr) */
 
-struct System_Type  System_VoidType     = { .base = stack_System_Object(System_Type), .name = "System.void",    .size = sizeof(void) };
-struct System_Type  System_VarType      = { .base = stack_System_Object(System_Type), .name = "System.Var",     .size = sizeof(void *) };
-struct System_Type  System_SizeType     = { .base = stack_System_Object(System_Type), .name = "System.size",    .size = sizeof(System_Size) };
-struct System_Type  System_SSizeType    = { .base = stack_System_Object(System_Type), .name = "System.ssize",   .size = sizeof(System_SSize) };
-struct System_Type  System_IntPtrType   = { .base = stack_System_Object(System_Type), .name = "System.IntPtr",  .size = sizeof(System_IntPtr) };
-struct System_Type  System_SIntPtrType  = { .base = stack_System_Object(System_Type), .name = "System.sintptr", .size = sizeof(System_SIntPtr) };
-struct System_Type  System_BoolType  = { .base = stack_System_Object(System_Type), .name = "System.bool", .size = sizeof(System_Bool) };
+struct System_Type  System_VoidType     = { .base = stack_System_Object(System_Type), .name = "Void",    .size = sizeof(void) };
+struct System_Type  System_VarType      = { .base = stack_System_Object(System_Type), .name = "Var",     .size = sizeof(void *) };
+struct System_Type  System_SizeType     = { .base = stack_System_Object(System_Type), .name = "Size",    .size = sizeof(System_Size) };
+struct System_Type  System_SSizeType    = { .base = stack_System_Object(System_Type), .name = "SSize",   .size = sizeof(System_SSize) };
+struct System_Type  System_IntPtrType   = { .base = stack_System_Object(System_Type), .name = "IntPtr",  .size = sizeof(System_IntPtr) };
+struct System_Type  System_SIntPtrType  = { .base = stack_System_Object(System_Type), .name = "SIntptr", .size = sizeof(System_SIntPtr) };
+struct System_Type  System_BoolType     = { .base = stack_System_Object(System_Type), .name = "Bool",    .size = sizeof(System_Bool) };
 
 struct System_Type  System_Type_FunctionInfoType = { .base = stack_System_Object(System_Type),
-	.name = "System.Type.FunctionInfo",
+	.name = "Type.FunctionInfo",
 	.size = sizeof(struct System_Type_FunctionInfo),
 	.baseType = &System_ObjectType
 };
 
 struct System_Type  System_Type_FunctionInfoArrayType = { .base = stack_System_Object(System_Type),
-	.name = "System.Type.FunctionInfoArray",
+	.name = "Type.FunctionInfoArray",
 	.size = sizeof(struct System_Type_FunctionInfoArray),
 	.baseType = &System_ObjectType
 };
 
 struct System_Type  System_Type_InterfaceInfoType = { .base = stack_System_Object(System_Type),
-	.name = "System.Type.InterfaceInfo",
+	.name = "Type.InterfaceInfo",
 	.size = sizeof(struct System_Type_InterfaceInfo),
 	.baseType = &System_ObjectType
 };
 
 struct System_Type  System_Type_InterfaceInfoArrayType = { .base = stack_System_Object(System_Type),
-	.name = "System.Type.InterfaceInfoArray",
+	.name = "Type.InterfaceInfoArray",
 	.size = sizeof(struct System_Type_InterfaceInfoArray),
 	.baseType = &System_ObjectType
 };
 
 struct System_Type  System_Type_FieldInfoType = { .base = stack_System_Object(System_Type),
-	.name = "System.Type.FieldInfo",
+	.name = "Type.FieldInfo",
 	.size = sizeof(struct System_Type_FieldInfo),
 	.baseType = &System_ObjectType
 };
 
 struct System_Type  System_Type_FieldInfoArrayType = { .base = stack_System_Object(System_Type),
-	.name = "System.Type.FieldInfoArray",
+	.name = "Type.FieldInfoArray",
 	.size = sizeof(struct System_Type_FieldInfoArray),
 	.baseType = &System_ObjectType
 };

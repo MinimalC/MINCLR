@@ -32,7 +32,7 @@ struct System_Type_FieldInfo  System_Syscall_CommandTypeFields[] = {
 };
 
 struct System_Type  System_Syscall_CommandType = { .base = { .type = typeof(System_Type) },
-    .name = "System.Syscall.Command",
+    .name = "Syscall.Command",
     .size = sizeof(System_Syscall_Command),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
         .value = &System_Syscall_CommandTypeFields, .length = sizeof_array(System_Syscall_CommandTypeFields),
@@ -50,7 +50,7 @@ struct System_Type_FieldInfo  System_ErrorTypeFields[] = {
 };
 
 struct System_Type  System_ErrorType = { .base = { .type = typeof(System_Type) },
-    .name = "System.Error",
+    .name = "Error",
     .size = sizeof(System_Error),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
         .value = &System_ErrorTypeFields, .length = sizeof_array(System_ErrorTypeFields),
@@ -64,7 +64,7 @@ struct System_Type  System_ErrorType = { .base = { .type = typeof(System_Type) }
 /*# System_Syscall #*/
 
 struct System_Type  System_SyscallType = { .base = { .type = typeof(System_Type) },
-    .name = "System.Syscall",
+    .name = "Syscall",
 };
 
 System_Error System_Syscall_error = 0;

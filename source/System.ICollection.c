@@ -11,7 +11,7 @@
 /*# System_ICollection #*/
 
 struct System_Type  System_ICollectionType = { .base = stack_System_Object(System_Type),
-	.name = "System.ICollection",
+	.name = "ICollection",
 };
 
 System_Var  base_System_ICollection_get_index(System_ICollection that) { return null; }

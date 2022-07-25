@@ -56,7 +56,7 @@ struct System_Type_FunctionInfo  System_FileInfoTypeFunctions[] = {
 
 struct System_Type  System_FileInfoType = {
     .base = { .type = typeof(System_Type) },
-    .name = "System.FileInfo",
+    .name = "FileInfo",
     .size = sizeof(struct System_FileInfo),
     .baseType = &System_ObjectType,
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),

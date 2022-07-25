@@ -98,7 +98,7 @@ struct System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {
 
 struct System_Type  System_FileType = {
     .base = stack_System_Object(System_Type),
-	.name = "System.File",
+	.name = "File",
     .size = sizeof(struct System_File),
 	.baseType = &System_ObjectType,
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),

@@ -35,7 +35,7 @@ struct System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
 };
 
 struct System_Type  System_IStreamType = { .base = stack_System_Object(System_Type),
-	.name = "System.IStream",
+	.name = "IStream",
     .size = sizeof(struct System_IStream),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(System_IStreamTypeFunctions), .value = &System_IStreamTypeFunctions

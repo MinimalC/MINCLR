@@ -20,7 +20,7 @@
 #define code_System_Console
 
 struct System_Type  System_ConsoleType = { .base = stack_System_Object(System_Type),
-	.name = "System.Console",
+	.name = "Console",
 };
 
 struct System_File  System_Console_StdIn = {

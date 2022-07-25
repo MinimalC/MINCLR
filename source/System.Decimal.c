@@ -11,7 +11,7 @@
 /*# System_Decimal #*/
 
 struct System_Type  System_DecimalType = { .base = { .type = typeof(System_Type) },
-    .name = "System.Decimal",
+    .name = "Decimal",
     .size = sizeof(struct System_Decimal),
 };
 

@@ -66,7 +66,7 @@ struct System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {
 };
 
 struct System_Type  System_ObjectType = { .base = { .type = typeof(System_Type) },
-	.name = "System.Object",
+	.name = "Object",
 	.size = sizeof(struct System_Object),
 	.baseType = null, /* this is System_Object */
 	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),

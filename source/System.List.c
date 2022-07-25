@@ -97,7 +97,7 @@ struct System_Type_InterfaceInfo  System_ListTypeInterfaces[] = {
 };
 
 struct System_Type  System_ListType = { .base = { .type = typeof(System_Type) },
-    .name = "System.List",
+    .name = "List",
     .size = sizeof(struct System_List),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),

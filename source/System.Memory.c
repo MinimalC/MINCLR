@@ -28,7 +28,7 @@
 /*# System_Memory #*/
 
 struct System_Type  System_MemoryType = { .base = stack_System_Object(System_Type),
-	.name = "System.Memory",
+	.name = "Memory",
 };
 
 Size System_Memory_indexOf(Var ptr, Char8 needle, Size count) {
@@ -152,11 +152,11 @@ typedef struct System_Memory_Header {
 #if DEBUG == DEBUG_System_Memory
 struct System_Type System_Memory_PageType = {
     .base = { .type = typeof(System_Type) },
-    .name = "System.Memory.Page",
+    .name = "Memory.Page",
 };
 struct System_Type System_Memory_HeaderType = {
     .base = { .type = typeof(System_Type) },
-    .name = "System.Memory.Header",
+    .name = "Memory.Header",
 };
 #endif
 
@@ -283,17 +283,22 @@ System_Var  System_Memory_allocArray(System_Type type, System_Size count) {
 Bool System_Memory_isAllocated(Var that) {
     Debug_assert(that);
 
-    System_VarArray mem64k = System_Memory_ProcessVars[0];
-    if (mem64k) {
-        Var page = 0;
-        for (Size i = 0; i < mem64k->length; ++i) {
-            page = array(mem64k->value)[i];
-            if (that >= page && that < page + 1048576) return true;
+    static const Size memory_length = sizeof_array(System_Memory_ProcessVars);
+    
+    System_VarArray memory;
+    for (Size i = 0; i < memory_length; ++i) {
+        memory = System_Memory_ProcessVars[i];
+        if (memory) {
+            Var page = 0;
+            for (Size i = 0; i < memory->length; ++i) {
+                page = array(memory->value)[i];
+                if (page && that >= page && that < page + 1048576) return true;
+            }
         }
     }
-
     return false;
 }
+
 
 System_Var  System_Memory_addReference(System_Var that) {
     if (!Memory_isAllocated(that)) return that;

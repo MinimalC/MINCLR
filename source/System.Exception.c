@@ -103,7 +103,7 @@ struct System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {
 
 struct System_Type  System_ExceptionType = {
     .base = { .type = typeof(System_Type) },
-    .name = "System.Exception",
+    .name = "Exception",
     .size = sizeof(struct System_Exception),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),

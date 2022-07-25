@@ -58,7 +58,7 @@ struct System_Type_FunctionInfo  System_ArrayEnumeratorTypeFunctions[] = {
 
 struct System_Type  System_ArrayEnumeratorType = {
     .base = { .type = typeof(System_Type) },
-    .name = "System.ArrayEnumerator",
+    .name = "ArrayEnumerator",
     .size = sizeof(struct System_ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),

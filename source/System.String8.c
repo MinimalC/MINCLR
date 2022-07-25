@@ -56,7 +56,7 @@ System_Bool  System_Char8_isPrintable(System_Char8 that) {
 /* static class System.String8 */
 
 struct System_Type  System_String8Type = { .base = stack_System_Object(System_Type),
-    .name = "System.String8"
+    .name = "String8"
 };
 
 System_STRING8  System_String8_Empty = "";

@@ -117,7 +117,7 @@ struct System_Type_InterfaceInfo System_ArrayTypeInterfaces[] = {
 
 struct System_Type  System_ArrayType = {
     .base = stack_System_Object(System_Type),
-	.name = "System.Array",
+	.name = "Array",
 	.size = sizeof(struct System_Array),
 	.baseType = &System_ObjectType,
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
