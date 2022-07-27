@@ -8,8 +8,14 @@
 /* FileName Generic.T0Array */
 /* seeAlso valueArrayEnumeratorT */
 /* GENERIC */
+#if !defined(internal_Generic)
+#include "internal.Generic.h"
+#endif
 #if !defined(have_Generic_T0Array)
 #include <min/Generic.T0Array.h>
+#endif
+#if !defined(have_System_Exception)
+#include <min/System.Exception.h>
 #endif
 #if !defined(code_Generic_T0Array)
 #define code_Generic_T0Array
@@ -72,7 +78,7 @@ struct System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
 
 struct System_Type  Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0Array",
-    .Size = sizeof(struct Generic_T0Array),
+    .size = sizeof(struct Generic_T0Array),
     .baseType = typeof(System_Object),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
         .length = sizeof_array(&Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions

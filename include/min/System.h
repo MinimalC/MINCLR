@@ -29,7 +29,6 @@
 #include "System.VarArray.h"
 
 #include "System.Array.h"
-#include "System.ArrayEnumerator.h"
 
 /* #include "System.Arrays.auto.h" */
 

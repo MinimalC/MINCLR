@@ -1,7 +1,13 @@
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System_UInt8)
-#include "System.UInt8.h"
+#include "System.values.auto.h"
+#endif
+#if !defined(have_System_IEnumerable)
+#include "System.IEnumerable.h"
+#endif
+#if !defined(have_System_ICollection)
+#include "System.ICollection.h"
 #endif
 #if !defined(have_System_UInt8Array)
 #define have_System_UInt8Array
@@ -81,6 +87,9 @@ export System_IEnumerator  base_System_UInt8Array_getEnumerator(System_UInt8Arra
 #if !defined(have_System_UInt16)
 #include "System.UInt16.h"
 #endif
+#if !defined(have_System_IEnumerable)
+#include "System.IEnumerable.h"
+#endif
 #if !defined(have_System_UInt16Array)
 #define have_System_UInt16Array
 
@@ -158,6 +167,9 @@ export System_IEnumerator  base_System_UInt16Array_getEnumerator(System_UInt16Ar
 /* AUTOGEN */
 #if !defined(have_System_UInt32)
 #include "System.UInt32.h"
+#endif
+#if !defined(have_System_IEnumerable)
+#include "System.IEnumerable.h"
 #endif
 #if !defined(have_System_UInt32Array)
 #define have_System_UInt32Array
@@ -237,6 +249,9 @@ export System_IEnumerator  base_System_UInt32Array_getEnumerator(System_UInt32Ar
 #if !defined(have_System_UInt64)
 #include "System.UInt64.h"
 #endif
+#if !defined(have_System_IEnumerable)
+#include "System.IEnumerable.h"
+#endif
 #if !defined(have_System_UInt64Array)
 #define have_System_UInt64Array
 
@@ -314,6 +329,9 @@ export System_IEnumerator  base_System_UInt64Array_getEnumerator(System_UInt64Ar
 /* AUTOGEN */
 #if !defined(have_System_Int8)
 #include "System.Int8.h"
+#endif
+#if !defined(have_System_IEnumerable)
+#include "System.IEnumerable.h"
 #endif
 #if !defined(have_System_Int8Array)
 #define have_System_Int8Array
@@ -393,6 +411,9 @@ export System_IEnumerator  base_System_Int8Array_getEnumerator(System_Int8Array 
 #if !defined(have_System_Int16)
 #include "System.Int16.h"
 #endif
+#if !defined(have_System_IEnumerable)
+#include "System.IEnumerable.h"
+#endif
 #if !defined(have_System_Int16Array)
 #define have_System_Int16Array
 
@@ -471,6 +492,9 @@ export System_IEnumerator  base_System_Int16Array_getEnumerator(System_Int16Arra
 #if !defined(have_System_Int32)
 #include "System.Int32.h"
 #endif
+#if !defined(have_System_IEnumerable)
+#include "System.IEnumerable.h"
+#endif
 #if !defined(have_System_Int32Array)
 #define have_System_Int32Array
 
@@ -548,6 +572,9 @@ export System_IEnumerator  base_System_Int32Array_getEnumerator(System_Int32Arra
 /* AUTOGEN */
 #if !defined(have_System_Int64)
 #include "System.Int64.h"
+#endif
+#if !defined(have_System_IEnumerable)
+#include "System.IEnumerable.h"
 #endif
 #if !defined(have_System_Int64Array)
 #define have_System_Int64Array

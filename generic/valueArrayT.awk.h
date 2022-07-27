@@ -12,6 +12,12 @@
 #if !defined(have_Generic_T0)
 #include "Generic.T0.h"
 #endif
+#if !defined(have_System_IEnumerable)
+#include "System.IEnumerable.h"
+#endif
+#if !defined(have_System_ICollection)
+#include "System.ICollection.h"
+#endif
 #if !defined(have_Generic_T0Array)
 #define have_Generic_T0Array
 
