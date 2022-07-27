@@ -1,6 +1,6 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_IStream)
 #include <min/System.IStream.h>
@@ -79,7 +79,7 @@ void  System_IStream_writeEnd(IStream stream, String8 format, Char8 suffix, ...)
 
 void  System_IStream_writeEnd__arguments(IStream stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
     Char8  message[System_String8_formatLimit_VALUE] = { 0 };
-    for (Size i = 0; i < sizeof(message); ++i) message[i] = 0;
+    for (Size i = 0; i < System_String8_formatLimit_VALUE; ++i) message[i] = 0;
     Size message_length = stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);
     System_IStream_write__string_size(stream, message, message_length);
 }

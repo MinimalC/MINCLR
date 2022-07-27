@@ -33,7 +33,7 @@ enum { false, true } ;
 
 #if defined(MSVCC)
 #define import  extern __declspec(dllimport)
-#if defined(have_System_Internal)
+#if defined(internal_System)
 #define export  __declspec(dllexport)
 #else
 #define export  import
@@ -50,7 +50,7 @@ enum { false, true } ;
 
 #else /* if GNUCC */
 #define import  extern
-#if defined(have_System_Internal)
+#if defined(internal_System)
 #define export  __attribute__((visibility("default")))
 #else
 #define export  import
@@ -84,7 +84,7 @@ enum { false, true } ;
 
 #define final  /* final */
 
-#if defined(have_System_Internal)
+#if defined(internal_System)
 #define System_fixed  /* noconst */
 #else
 #define System_fixed  const
@@ -282,7 +282,7 @@ export void  System_Debug_writeLine__message(const System_String8 message, ...);
 #define System_Debug_writeLine(message,...) (void)(message, __VA_ARGS__)
 #else
 #define System_Debug_assert(expression)  (void)(!(expression) ? System_Debug_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Unsigned)__LINE__) : 0)
-#define System_Debug_writeLine(message,...)  (void)System_Debug_writeLine__message((System_String8)message, (System_String8)__func__, (System_String8)__FILE__, (System_String8)__LINE__, __VA_ARGS__)
+#define System_Debug_writeLine(message,...)  (void)System_Debug_writeLine__message((System_String8)message, __VA_ARGS__)
 #endif
 #if defined(using_System)
 #define Debug_assert  System_Debug_assert

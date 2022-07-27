@@ -1,6 +1,6 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_String)
 #include <min/System.String.h>

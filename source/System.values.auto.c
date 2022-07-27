@@ -1,8 +1,8 @@
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_Char8)
 #include <min/System.String8.h>
@@ -157,8 +157,8 @@ System_UInt8  System_UInt8_parsebase10(System_String8 that) {
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_Char8)
 #include <min/System.String8.h>
@@ -315,8 +315,8 @@ System_UInt16  System_UInt16_parsebase10(System_String8 that) {
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_Char8)
 #include <min/System.String8.h>
@@ -478,8 +478,8 @@ System_UInt32  System_UInt32_parsebase10(System_String8 that) {
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_Char8)
 #include <min/System.String8.h>
@@ -650,8 +650,8 @@ System_UInt64  System_UInt64_parsebase10(System_String8 that) {
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_Int8)
 #include <min/System.values.auto.h>
@@ -808,8 +808,8 @@ System_Size  System_Int8_toString8base10__stack(System_Int8 that, System_Char8 a
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_Int16)
 #include <min/System.values.auto.h>
@@ -966,8 +966,8 @@ System_Size  System_Int16_toString8base10__stack(System_Int16 that, System_Char8
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_Int32)
 #include <min/System.values.auto.h>
@@ -1124,8 +1124,8 @@ System_Size  System_Int32_toString8base10__stack(System_Int32 that, System_Char8
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(have_System_Internal)
-#include "System.internal.h"
+#if !defined(internal_System)
+#include "internal.System.h"
 #endif
 #if !defined(have_System_Int64)
 #include <min/System.values.auto.h>

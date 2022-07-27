@@ -21,12 +21,12 @@
 #include "System.String8.h"
 
 
-#include "System.Object.h"
-
 #include "System.String.h"
 
 #include "System.Exception.h"
 
+
+#include "System.VarArray.h"
 
 #include "System.Array.h"
 #include "System.ArrayEnumerator.h"
