@@ -68,6 +68,8 @@ typedef System_fixed struct System_File {
 
 export struct System_Type  System_FileType;
 
+export System_File  System_File_open(System_String8 filename, System_File_Mode flags);
+
 typedef System_File  delegate(System_File_init)(System_File that);
 typedef void  delegate(System_File_free)(System_File that);
 typedef void  delegate(System_File_write__string_size)(System_File that, System_String8 value, System_Size count);
@@ -77,7 +79,6 @@ typedef void  delegate(System_File_seek)(System_File that, System_SSize offset, 
 typedef System_IntPtr  delegate(System_File_get_Position)(System_File that);
 typedef void  delegate(System_File_set_Position)(System_File that, System_Size value);
 
-export System_File  System_File_open(System_String8 filename, System_File_Mode flags);
 export System_File  base_System_File_init(System_File that);
 export void  base_System_File_free(System_File that);
 export void  base_System_File_write__string_size(System_File that, System_String8 value, System_Size count);

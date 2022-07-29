@@ -6,8 +6,8 @@
 #define Generic_T0Type  System_ObjectType
 #endif
 /*  GENERIC  */
-#if !defined(have_Generic)
-#include "Generic.h"
+#if !defined(have_System_Type)
+#include <min/System.Type.h>
 #endif
 #if !defined(have_Generic_T0)
 #define have_Generic_T0

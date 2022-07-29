@@ -7,16 +7,16 @@
 #define Generic_T0ArrayType  System_ArrayType
 #endif
 /* GENERIC */
-#if !defined(have_Generic)
-#warning "Generic.h not included"
-#include "Generic.internal.h"
+#if !defined(internal_Generic)
+#include "internal.Generic.h"
 #endif
-#if !defined(code_auto_Generic_T0)
-#define code_auto_Generic_T0
+#if !defined(have_Generic_T0)
+#include <min/Generic.T0.h>
+#endif
+#if !defined(code_Generic_T0)
+#define code_Generic_T0
 
-struct System_String  STRING_Generic_T0 = const_System_String("Generic.T0");
-
-struct System_Type  Generic_T0Type = { .base = { .type = typeof(System_Type), }, .name = &STRING_Generic_T0, };
+struct System_Type  Generic_T0Type = { .base = { .type = typeof(System_Type), }, .name = "Generic.T0", };
 
 #endif
 

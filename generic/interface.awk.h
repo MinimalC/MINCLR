@@ -1,8 +1,7 @@
 /* Gemeinfrei. Public Domain. */
 /* GENERIC */
-#if !defined(have_Generic)
-#warning "Generic.h not included"
-#include "Generic.h"
+#if !defined(have_System_Type)
+#include "System.Type.h"
 #endif
 #if !defined(have_Generic_T0)
 #define have_Generic_T0

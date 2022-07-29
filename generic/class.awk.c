@@ -7,6 +7,9 @@
 #define Generic_T0ArrayType  System_ArrayType
 #endif
 /* GENERIC */
+#if !defined(internal_Generic)
+#include "internal.Generic.h"
+#endif
 #if !defined(have_Generic_T0)
 #include <min/Generic.T0.h>
 #endif

@@ -2,17 +2,17 @@
 #if !defined(have_System_asm)
 #define have_System_asm
 
-#if defined(DEBUG)
-#if defined(RELEASE)
-#warning DEBUG was defined
-#undef DEBUG
-/* default */
-#define DEBUG  0
-#endif
+/*  Now you can easily do #if DEBUG.
+    You need to #define DEBUG 0 for yourself, for example
+#if !defined(NODEBUG) || !defined(RELEASE)
+#define DEBUG 0
 #else
-#define DEBUG  0
+#define DEBUG 1
 #endif
-
+*/
+#if !defined(DEBUG)
+#define DEBUG 1
+#endif
 
 /* Compiler: MSVCC */
 #if defined(_MSC_VER)
@@ -57,16 +57,16 @@
 #if defined(have_Linux) || defined(have_Unix)
 
 #if defined(__arm__)
-#define have_ARM  1
+#define have_ARM
 
 #elif defined(__x86_64__)
-#define have_AMD64  1
+#define have_AMD64
 #if defined(__ILP32__)
-#define have_X86  1
+#define have_X86
 #endif
 
 #elif defined(__i386__)
-#define have_X86  1
+#define have_X86
 
 #else
 #error Architecture not implemented.
@@ -76,12 +76,12 @@
 #elif defined(have_Windows)
 
 #if defined(_M_ARM)
-#define have_ARM  1
+#define have_ARM
 
 #elif defined(_M_X64) || defined(_M_AMD64)
-#define have_AMD64  1
+#define have_AMD64
 #if defined(_M_IX86)
-#define have_X86  1
+#define have_X86
 #endif
 
 #else
@@ -93,25 +93,10 @@
 #endif
 
 #if defined(__ASSEMBLER__)
-#define have_ASSEMBLER  1
+#define have_ASSEMBLER
 #endif
 
 #if defined(__PIC__)
-#define have_PIC  1
+#define have_PIC
 #endif
-
-#if defined(have_AMD64)
-#if defined(have_AMD64_32)
-#define System_Size_Width  32
-#define System_Size_Bytes  4
-#else
-#define System_Size_Width  64
-#define System_Size_Bytes  8
-#endif
-
-#else
-#define System_Size_Width  32
-#define System_Size_Bytes  4
-#endif
-
 #endif

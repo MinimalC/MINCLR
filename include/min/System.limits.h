@@ -3,6 +3,15 @@
 #if !defined(have_System_limits)
 #define have_System_limits
 
+/*  on AMD64
+    System_Size_Max is 0xFFFFFFFFFFFFFFFFULL
+    System_Size_Width is 64
+    System_Size_Bytes is 8
+*/
+#define System_Size_Max  __SIZE_MAX__
+#define System_Size_Width  __SIZE_WIDTH__
+#define System_Size_Bytes  __SIZEOF_POINTER__
+
 #define System_Int8_Min  -0x80
 #define System_Int16_Min  -0x8000
 #define System_Int32_Min  -0x80000000L
@@ -17,6 +26,8 @@
 #define System_UInt64_Max  0xFFFFFFFFFFFFFFFFULL
 
 #if defined(using_System)
+#define Size_Max  System_Size_Max
+#define Size_Width  System_Size_Width
 #define Int8_Min  System_Int8_Min
 #define Int16_Min  System_Int16_Min
 #define Int32_Min  System_Int32_Min

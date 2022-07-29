@@ -10,7 +10,7 @@
 /* seeAlso valueArrayEnumeratorT */
 /* GENERIC */
 #if !defined(have_Generic_T0)
-#include "Generic.T0.h"
+#include "System.values.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"
@@ -20,7 +20,6 @@
 #endif
 #if !defined(have_Generic_T0Array)
 #define have_Generic_T0Array
-
 
 typedef System_fixed struct Generic_T0Array {
     struct System_Object base;

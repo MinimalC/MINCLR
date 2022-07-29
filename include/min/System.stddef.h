@@ -179,19 +179,9 @@ typedef __SIZE_TYPE__  System_IntPtr;
 typedef __PTRDIFF_TYPE__  System_SSize;
 typedef __PTRDIFF_TYPE__  System_SIntPtr;
 
-#define System_Size_Max  __SIZE_MAX__
-#if !defined(System_Size_Width)
-#define System_Size_Width  __SIZE_WIDTH__
-#endif
-#if !defined(System_Size_Bytes)
-#define System_Size_Bytes  __SIZEOF_POINTER__
-#endif
-
 #if defined(using_System)
 #define Var  System_Var
 #define Size  System_Size
-#define Size_Max  System_Size_Max
-#define Size_Width  System_Size_Width
 #define IntPtr  System_IntPtr
 #define SSize  System_SSize
 #define SIntPtr  System_SIntPtr
@@ -266,17 +256,6 @@ export System_Char8  System_String8_Empty[1];
 export void  System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Unsigned line);
 export void  System_Debug_writeLine__message(const System_String8 message, ...);
 
-/*  #define DEBUG so you can easily do #if DEBUG.
-    You need to #define DEBUG 0 for yourself, for example
-#if !defined(NODEBUG) || !defined(RELEASE)
-#define DEBUG 0
-#else
-#define DEBUG 1
-#endif
-*/
-#if !defined(DEBUG)
-#define DEBUG 1
-#endif
 #if !DEBUG
 #define System_Debug_assert(expression) (void)(expression)
 #define System_Debug_writeLine(message,...) (void)(message, __VA_ARGS__)

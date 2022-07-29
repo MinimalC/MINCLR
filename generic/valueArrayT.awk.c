@@ -12,7 +12,7 @@
 #include "internal.Generic.h"
 #endif
 #if !defined(have_Generic_T0Array)
-#include <min/Generic.T0Array.h>
+#include <min/System.valueArrays.auto.h>
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
