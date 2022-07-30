@@ -15,13 +15,13 @@
 
 /*# System_UInt8 #*/
 
-struct System_Type  System_UInt8Type  = { .base = stack_System_Object(System_Type), .name = "UInt8", .size = sizeof(System_UInt8) };
+struct System_Type  System_UInt8Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt8", .size = sizeof(System_UInt8) };
 
 System_Bool  System_UInt8_isPrintable(System_UInt8 that) {
     return inline_System_UInt8_isPrintable(that);
 }
 
-System_Size  System_UInt8_toString8base2__stack(System_UInt8 that, System_Char8 array[System_UInt8_String8base2Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt8_toString8base2(System_UInt8 that, System_Char8 array[System_UInt8_String8base2Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt8_String8base2Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -44,7 +44,7 @@ System_Size  System_UInt8_toString8base2__stack(System_UInt8 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_UInt8_toString8base4__stack(System_UInt8 that, System_Char8 array[System_UInt8_String8base4Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt8_toString8base4(System_UInt8 that, System_Char8 array[System_UInt8_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt8_String8base4Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -67,7 +67,7 @@ System_Size  System_UInt8_toString8base4__stack(System_UInt8 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_UInt8_toString8base8__stack(System_UInt8 that, System_Char8 array[System_UInt8_String8base8Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt8_toString8base8(System_UInt8 that, System_Char8 array[System_UInt8_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt8_String8base8Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -90,7 +90,7 @@ System_Size  System_UInt8_toString8base8__stack(System_UInt8 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_UInt8_toString8base16__stack(System_UInt8 that, System_Char8 array[System_UInt8_String8base16Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt8_toString8base16(System_UInt8 that, System_Char8 array[System_UInt8_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt8_String8base16Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -102,6 +102,7 @@ System_Size  System_UInt8_toString8base16__stack(System_UInt8 that, System_Char8
     }
     string = array;
     System_Size numbers = System_UInt8_String8base16Length_DEFAULT - zeroes;
+    if (!numbers) { numbers = 1; --zeroes; }
     if (zeroes) {
         for (i = 0; i < System_UInt8_String8base16Length_DEFAULT; ++i) {
             if (i < numbers) *(string + i) = *(string + i + zeroes);
@@ -113,7 +114,7 @@ System_Size  System_UInt8_toString8base16__stack(System_UInt8 that, System_Char8
     return numbers;
 }
 
-System_Size  System_UInt8_toString8base10__stack(System_UInt8 that, System_Char8 array[System_UInt8_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt8_toString8base10(System_UInt8 that, System_Char8 array[System_UInt8_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal = stack_System_Decimal();
     System_Decimal_init__UInt8(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
@@ -171,13 +172,13 @@ System_UInt8  System_UInt8_parsebase10(System_String8 that) {
 
 /*# System_UInt16 #*/
 
-struct System_Type  System_UInt16Type  = { .base = stack_System_Object(System_Type), .name = "UInt16", .size = sizeof(System_UInt16) };
+struct System_Type  System_UInt16Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt16", .size = sizeof(System_UInt16) };
 
 System_Bool  System_UInt16_isPrintable(System_UInt16 that) {
     return inline_System_UInt16_isPrintable(that);
 }
 
-System_Size  System_UInt16_toString8base2__stack(System_UInt16 that, System_Char8 array[System_UInt16_String8base2Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt16_toString8base2(System_UInt16 that, System_Char8 array[System_UInt16_String8base2Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt16_String8base2Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -200,7 +201,7 @@ System_Size  System_UInt16_toString8base2__stack(System_UInt16 that, System_Char
     return numbers;
 }
 
-System_Size  System_UInt16_toString8base4__stack(System_UInt16 that, System_Char8 array[System_UInt16_String8base4Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt16_toString8base4(System_UInt16 that, System_Char8 array[System_UInt16_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt16_String8base4Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -223,7 +224,7 @@ System_Size  System_UInt16_toString8base4__stack(System_UInt16 that, System_Char
     return numbers;
 }
 
-System_Size  System_UInt16_toString8base8__stack(System_UInt16 that, System_Char8 array[System_UInt16_String8base8Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt16_toString8base8(System_UInt16 that, System_Char8 array[System_UInt16_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt16_String8base8Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -246,7 +247,7 @@ System_Size  System_UInt16_toString8base8__stack(System_UInt16 that, System_Char
     return numbers;
 }
 
-System_Size  System_UInt16_toString8base16__stack(System_UInt16 that, System_Char8 array[System_UInt16_String8base16Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt16_toString8base16(System_UInt16 that, System_Char8 array[System_UInt16_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt16_String8base16Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -258,6 +259,7 @@ System_Size  System_UInt16_toString8base16__stack(System_UInt16 that, System_Cha
     }
     string = array;
     System_Size numbers = System_UInt16_String8base16Length_DEFAULT - zeroes;
+    if (!numbers) { numbers = 1; --zeroes; }
     if (zeroes) {
         for (i = 0; i < System_UInt16_String8base16Length_DEFAULT; ++i) {
             if (i < numbers) *(string + i) = *(string + i + zeroes);
@@ -269,7 +271,7 @@ System_Size  System_UInt16_toString8base16__stack(System_UInt16 that, System_Cha
     return numbers;
 }
 
-System_Size  System_UInt16_toString8base10__stack(System_UInt16 that, System_Char8 array[System_UInt16_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt16_toString8base10(System_UInt16 that, System_Char8 array[System_UInt16_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal = stack_System_Decimal();
     System_Decimal_init__UInt16(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
@@ -329,13 +331,13 @@ System_UInt16  System_UInt16_parsebase10(System_String8 that) {
 
 /*# System_UInt32 #*/
 
-struct System_Type  System_UInt32Type  = { .base = stack_System_Object(System_Type), .name = "UInt32", .size = sizeof(System_UInt32) };
+struct System_Type  System_UInt32Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt32", .size = sizeof(System_UInt32) };
 
 System_Bool  System_UInt32_isPrintable(System_UInt32 that) {
     return inline_System_UInt32_isPrintable(that);
 }
 
-System_Size  System_UInt32_toString8base2__stack(System_UInt32 that, System_Char8 array[System_UInt32_String8base2Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt32_toString8base2(System_UInt32 that, System_Char8 array[System_UInt32_String8base2Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt32_String8base2Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -358,7 +360,7 @@ System_Size  System_UInt32_toString8base2__stack(System_UInt32 that, System_Char
     return numbers;
 }
 
-System_Size  System_UInt32_toString8base4__stack(System_UInt32 that, System_Char8 array[System_UInt32_String8base4Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt32_toString8base4(System_UInt32 that, System_Char8 array[System_UInt32_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt32_String8base4Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -381,7 +383,7 @@ System_Size  System_UInt32_toString8base4__stack(System_UInt32 that, System_Char
     return numbers;
 }
 
-System_Size  System_UInt32_toString8base8__stack(System_UInt32 that, System_Char8 array[System_UInt32_String8base8Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt32_toString8base8(System_UInt32 that, System_Char8 array[System_UInt32_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt32_String8base8Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -404,7 +406,7 @@ System_Size  System_UInt32_toString8base8__stack(System_UInt32 that, System_Char
     return numbers;
 }
 
-System_Size  System_UInt32_toString8base16__stack(System_UInt32 that, System_Char8 array[System_UInt32_String8base16Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt32_toString8base16(System_UInt32 that, System_Char8 array[System_UInt32_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt32_String8base16Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -416,6 +418,7 @@ System_Size  System_UInt32_toString8base16__stack(System_UInt32 that, System_Cha
     }
     string = array;
     System_Size numbers = System_UInt32_String8base16Length_DEFAULT - zeroes;
+    if (!numbers) { numbers = 1; --zeroes; }
     if (zeroes) {
         for (i = 0; i < System_UInt32_String8base16Length_DEFAULT; ++i) {
             if (i < numbers) *(string + i) = *(string + i + zeroes);
@@ -427,7 +430,7 @@ System_Size  System_UInt32_toString8base16__stack(System_UInt32 that, System_Cha
     return numbers;
 }
 
-System_Size  System_UInt32_toString8base10__stack(System_UInt32 that, System_Char8 array[System_UInt32_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt32_toString8base10(System_UInt32 that, System_Char8 array[System_UInt32_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal = stack_System_Decimal();
     System_Decimal_init__UInt32(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
@@ -492,13 +495,13 @@ System_UInt32  System_UInt32_parsebase10(System_String8 that) {
 
 /*# System_UInt64 #*/
 
-struct System_Type  System_UInt64Type  = { .base = stack_System_Object(System_Type), .name = "UInt64", .size = sizeof(System_UInt64) };
+struct System_Type  System_UInt64Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt64", .size = sizeof(System_UInt64) };
 
 System_Bool  System_UInt64_isPrintable(System_UInt64 that) {
     return inline_System_UInt64_isPrintable(that);
 }
 
-System_Size  System_UInt64_toString8base2__stack(System_UInt64 that, System_Char8 array[System_UInt64_String8base2Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt64_toString8base2(System_UInt64 that, System_Char8 array[System_UInt64_String8base2Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt64_String8base2Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -521,7 +524,7 @@ System_Size  System_UInt64_toString8base2__stack(System_UInt64 that, System_Char
     return numbers;
 }
 
-System_Size  System_UInt64_toString8base4__stack(System_UInt64 that, System_Char8 array[System_UInt64_String8base4Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt64_toString8base4(System_UInt64 that, System_Char8 array[System_UInt64_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt64_String8base4Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -544,7 +547,7 @@ System_Size  System_UInt64_toString8base4__stack(System_UInt64 that, System_Char
     return numbers;
 }
 
-System_Size  System_UInt64_toString8base8__stack(System_UInt64 that, System_Char8 array[System_UInt64_String8base8Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt64_toString8base8(System_UInt64 that, System_Char8 array[System_UInt64_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt64_String8base8Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -567,7 +570,7 @@ System_Size  System_UInt64_toString8base8__stack(System_UInt64 that, System_Char
     return numbers;
 }
 
-System_Size  System_UInt64_toString8base16__stack(System_UInt64 that, System_Char8 array[System_UInt64_String8base16Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt64_toString8base16(System_UInt64 that, System_Char8 array[System_UInt64_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt64_String8base16Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -579,6 +582,7 @@ System_Size  System_UInt64_toString8base16__stack(System_UInt64 that, System_Cha
     }
     string = array;
     System_Size numbers = System_UInt64_String8base16Length_DEFAULT - zeroes;
+    if (!numbers) { numbers = 1; --zeroes; }
     if (zeroes) {
         for (i = 0; i < System_UInt64_String8base16Length_DEFAULT; ++i) {
             if (i < numbers) *(string + i) = *(string + i + zeroes);
@@ -590,7 +594,7 @@ System_Size  System_UInt64_toString8base16__stack(System_UInt64 that, System_Cha
     return numbers;
 }
 
-System_Size  System_UInt64_toString8base10__stack(System_UInt64 that, System_Char8 array[System_UInt64_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_System_UInt64_toString8base10(System_UInt64 that, System_Char8 array[System_UInt64_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal = stack_System_Decimal();
     System_Decimal_init__UInt64(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
@@ -662,13 +666,13 @@ System_UInt64  System_UInt64_parsebase10(System_String8 that) {
 /*# System_Int8 #*/
 
 
-struct System_Type  System_Int8Type  = { .base = stack_System_Object(System_Type), .name = "Int8", .size = sizeof(System_Int8) };
+struct System_Type  System_Int8Type  = { .base = stack_System_Object(System_Type), .name = "System.Int8", .size = sizeof(System_Int8) };
 
 System_Bool  System_Int8_isPrintable(System_Int8 that) {
     return inline_System_Int8_isPrintable(that);
 }
 
-System_Size  System_Int8_toString8base2__stack(System_Int8 that, System_Char8 array[System_Int8_String8base2Length_DEFAULT + 1]) {
+System_Size  stack_System_Int8_toString8base2(System_Int8 that, System_Char8 array[System_Int8_String8base2Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int8_String8base2Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -695,7 +699,7 @@ System_Size  System_Int8_toString8base2__stack(System_Int8 that, System_Char8 ar
     return numbers;
 }
 
-System_Size  System_Int8_toString8base4__stack(System_Int8 that, System_Char8 array[System_Int8_String8base4Length_DEFAULT + 1]) {
+System_Size  stack_System_Int8_toString8base4(System_Int8 that, System_Char8 array[System_Int8_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int8_String8base4Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -722,7 +726,7 @@ System_Size  System_Int8_toString8base4__stack(System_Int8 that, System_Char8 ar
     return numbers;
 }
 
-System_Size  System_Int8_toString8base8__stack(System_Int8 that, System_Char8 array[System_Int8_String8base8Length_DEFAULT + 1]) {
+System_Size  stack_System_Int8_toString8base8(System_Int8 that, System_Char8 array[System_Int8_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int8_String8base8Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -749,7 +753,7 @@ System_Size  System_Int8_toString8base8__stack(System_Int8 that, System_Char8 ar
     return numbers;
 }
 
-System_Size  System_Int8_toString8base16__stack(System_Int8 that, System_Char8 array[System_Int8_String8base16Length_DEFAULT + 1]) {
+System_Size  stack_System_Int8_toString8base16(System_Int8 that, System_Char8 array[System_Int8_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int8_String8base16Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -776,7 +780,7 @@ System_Size  System_Int8_toString8base16__stack(System_Int8 that, System_Char8 a
     return numbers;
 }
 
-System_Size  System_Int8_toString8base10__stack(System_Int8 that, System_Char8 array[System_Int8_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_System_Int8_toString8base10(System_Int8 that, System_Char8 array[System_Int8_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal = stack_System_Decimal();
     System_Decimal_init__Int8(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
@@ -820,13 +824,13 @@ System_Size  System_Int8_toString8base10__stack(System_Int8 that, System_Char8 a
 /*# System_Int16 #*/
 
 
-struct System_Type  System_Int16Type  = { .base = stack_System_Object(System_Type), .name = "Int16", .size = sizeof(System_Int16) };
+struct System_Type  System_Int16Type  = { .base = stack_System_Object(System_Type), .name = "System.Int16", .size = sizeof(System_Int16) };
 
 System_Bool  System_Int16_isPrintable(System_Int16 that) {
     return inline_System_Int16_isPrintable(that);
 }
 
-System_Size  System_Int16_toString8base2__stack(System_Int16 that, System_Char8 array[System_Int16_String8base2Length_DEFAULT + 1]) {
+System_Size  stack_System_Int16_toString8base2(System_Int16 that, System_Char8 array[System_Int16_String8base2Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int16_String8base2Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -853,7 +857,7 @@ System_Size  System_Int16_toString8base2__stack(System_Int16 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_Int16_toString8base4__stack(System_Int16 that, System_Char8 array[System_Int16_String8base4Length_DEFAULT + 1]) {
+System_Size  stack_System_Int16_toString8base4(System_Int16 that, System_Char8 array[System_Int16_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int16_String8base4Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -880,7 +884,7 @@ System_Size  System_Int16_toString8base4__stack(System_Int16 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_Int16_toString8base8__stack(System_Int16 that, System_Char8 array[System_Int16_String8base8Length_DEFAULT + 1]) {
+System_Size  stack_System_Int16_toString8base8(System_Int16 that, System_Char8 array[System_Int16_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int16_String8base8Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -907,7 +911,7 @@ System_Size  System_Int16_toString8base8__stack(System_Int16 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_Int16_toString8base16__stack(System_Int16 that, System_Char8 array[System_Int16_String8base16Length_DEFAULT + 1]) {
+System_Size  stack_System_Int16_toString8base16(System_Int16 that, System_Char8 array[System_Int16_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int16_String8base16Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -934,7 +938,7 @@ System_Size  System_Int16_toString8base16__stack(System_Int16 that, System_Char8
     return numbers;
 }
 
-System_Size  System_Int16_toString8base10__stack(System_Int16 that, System_Char8 array[System_Int16_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_System_Int16_toString8base10(System_Int16 that, System_Char8 array[System_Int16_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal = stack_System_Decimal();
     System_Decimal_init__Int16(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
@@ -978,13 +982,13 @@ System_Size  System_Int16_toString8base10__stack(System_Int16 that, System_Char8
 /*# System_Int32 #*/
 
 
-struct System_Type  System_Int32Type  = { .base = stack_System_Object(System_Type), .name = "Int32", .size = sizeof(System_Int32) };
+struct System_Type  System_Int32Type  = { .base = stack_System_Object(System_Type), .name = "System.Int32", .size = sizeof(System_Int32) };
 
 System_Bool  System_Int32_isPrintable(System_Int32 that) {
     return inline_System_Int32_isPrintable(that);
 }
 
-System_Size  System_Int32_toString8base2__stack(System_Int32 that, System_Char8 array[System_Int32_String8base2Length_DEFAULT + 1]) {
+System_Size  stack_System_Int32_toString8base2(System_Int32 that, System_Char8 array[System_Int32_String8base2Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int32_String8base2Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -1011,7 +1015,7 @@ System_Size  System_Int32_toString8base2__stack(System_Int32 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_Int32_toString8base4__stack(System_Int32 that, System_Char8 array[System_Int32_String8base4Length_DEFAULT + 1]) {
+System_Size  stack_System_Int32_toString8base4(System_Int32 that, System_Char8 array[System_Int32_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int32_String8base4Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -1038,7 +1042,7 @@ System_Size  System_Int32_toString8base4__stack(System_Int32 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_Int32_toString8base8__stack(System_Int32 that, System_Char8 array[System_Int32_String8base8Length_DEFAULT + 1]) {
+System_Size  stack_System_Int32_toString8base8(System_Int32 that, System_Char8 array[System_Int32_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int32_String8base8Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -1065,7 +1069,7 @@ System_Size  System_Int32_toString8base8__stack(System_Int32 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_Int32_toString8base16__stack(System_Int32 that, System_Char8 array[System_Int32_String8base16Length_DEFAULT + 1]) {
+System_Size  stack_System_Int32_toString8base16(System_Int32 that, System_Char8 array[System_Int32_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int32_String8base16Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -1092,7 +1096,7 @@ System_Size  System_Int32_toString8base16__stack(System_Int32 that, System_Char8
     return numbers;
 }
 
-System_Size  System_Int32_toString8base10__stack(System_Int32 that, System_Char8 array[System_Int32_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_System_Int32_toString8base10(System_Int32 that, System_Char8 array[System_Int32_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal = stack_System_Decimal();
     System_Decimal_init__Int32(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
@@ -1136,13 +1140,13 @@ System_Size  System_Int32_toString8base10__stack(System_Int32 that, System_Char8
 /*# System_Int64 #*/
 
 
-struct System_Type  System_Int64Type  = { .base = stack_System_Object(System_Type), .name = "Int64", .size = sizeof(System_Int64) };
+struct System_Type  System_Int64Type  = { .base = stack_System_Object(System_Type), .name = "System.Int64", .size = sizeof(System_Int64) };
 
 System_Bool  System_Int64_isPrintable(System_Int64 that) {
     return inline_System_Int64_isPrintable(that);
 }
 
-System_Size  System_Int64_toString8base2__stack(System_Int64 that, System_Char8 array[System_Int64_String8base2Length_DEFAULT + 1]) {
+System_Size  stack_System_Int64_toString8base2(System_Int64 that, System_Char8 array[System_Int64_String8base2Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int64_String8base2Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -1169,7 +1173,7 @@ System_Size  System_Int64_toString8base2__stack(System_Int64 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_Int64_toString8base4__stack(System_Int64 that, System_Char8 array[System_Int64_String8base4Length_DEFAULT + 1]) {
+System_Size  stack_System_Int64_toString8base4(System_Int64 that, System_Char8 array[System_Int64_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int64_String8base4Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -1196,7 +1200,7 @@ System_Size  System_Int64_toString8base4__stack(System_Int64 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_Int64_toString8base8__stack(System_Int64 that, System_Char8 array[System_Int64_String8base8Length_DEFAULT + 1]) {
+System_Size  stack_System_Int64_toString8base8(System_Int64 that, System_Char8 array[System_Int64_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int64_String8base8Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -1223,7 +1227,7 @@ System_Size  System_Int64_toString8base8__stack(System_Int64 that, System_Char8 
     return numbers;
 }
 
-System_Size  System_Int64_toString8base16__stack(System_Int64 that, System_Char8 array[System_Int64_String8base16Length_DEFAULT + 1]) {
+System_Size  stack_System_Int64_toString8base16(System_Int64 that, System_Char8 array[System_Int64_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int64_String8base16Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -1250,7 +1254,7 @@ System_Size  System_Int64_toString8base16__stack(System_Int64 that, System_Char8
     return numbers;
 }
 
-System_Size  System_Int64_toString8base10__stack(System_Int64 that, System_Char8 array[System_Int64_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_System_Int64_toString8base10(System_Int64 that, System_Char8 array[System_Int64_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal = stack_System_Decimal();
     System_Decimal_init__Int64(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;

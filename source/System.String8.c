@@ -248,7 +248,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
         argi = System_UInt16_parsebase10(begin0 + 1);
 
         /* DEBUG
-        System_UInt16_toString8base10__stack(argi, scratch);
+        stack_System_UInt16_toString8base10(argi, scratch);
         String8_copyToAt(scratch, message, message_length);
         message_length += System_UInt16_String8base10Length_DEFAULT; */
 
@@ -327,7 +327,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                     argsize = System_UInt16_parsebase10(begin2);
 
                     /* DEBUG: Write argsize
-                    System_UInt16_toString8base10__stack(argsize, scratch);
+                    stack_System_UInt16_toString8base10(argsize, scratch);
                     String8_copyToAt(scratch, message, message_length);
                     message_length += System_UInt16_String8base10Length_DEFAULT; */
                 }
@@ -375,88 +375,88 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                     }
                     if (argsize == 64) {
                         if (target == 16) {
-                            numbers = System_Int64_toString8base16__stack((Int64)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int64_toString8base16((Int64)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 10) {
-                            numbers = System_Int64_toString8base10__stack((Int64)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int64_toString8base10((Int64)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 8) {
-                            numbers = System_Int64_toString8base8__stack((Int64)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int64_toString8base8((Int64)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 2) {
-                            numbers = System_Int64_toString8base2__stack((Int64)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int64_toString8base2((Int64)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                     }
                     else if (argsize == 32) {
                         if (target == 16) {
-                            numbers = System_Int32_toString8base16__stack((Int32)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int32_toString8base16((Int32)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 10) {
-                            numbers = System_Int32_toString8base10__stack((Int32)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int32_toString8base10((Int32)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 8) {
-                            numbers = System_Int32_toString8base8__stack((Int32)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int32_toString8base8((Int32)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 2) {
-                            numbers = System_Int32_toString8base2__stack((Int32)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int32_toString8base2((Int32)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                     }
                     else if (argsize == 16) {
                         if (target == 16) {
-                            numbers = System_Int16_toString8base16__stack((Int16)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int16_toString8base16((Int16)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 10) {
-                            numbers = System_Int16_toString8base10__stack((Int16)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int16_toString8base10((Int16)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 8) {
-                            numbers = System_Int16_toString8base8__stack((Int16)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int16_toString8base8((Int16)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 2) {
-                            numbers = System_Int16_toString8base2__stack((Int16)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int16_toString8base2((Int16)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                     }
                     else if (argsize == 8) {
                         if (target == 16) {
-                            numbers = System_Int8_toString8base16__stack((Int8)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int8_toString8base16((Int8)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 10) {
-                            numbers = System_Int8_toString8base10__stack((Int8)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int8_toString8base10((Int8)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 8) {
-                            numbers = System_Int8_toString8base8__stack((Int8)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int8_toString8base8((Int8)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 2) {
-                            numbers = System_Int8_toString8base2__stack((Int8)(Size)argv[argi], scratch);
+                            numbers = stack_System_Int8_toString8base2((Int8)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
@@ -475,88 +475,88 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                     }
                     if (argsize == 64) {
                         if (target == 16) {
-                            numbers = System_UInt64_toString8base16__stack((UInt64)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt64_toString8base16((UInt64)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 10) {
-                            numbers = System_UInt64_toString8base10__stack((UInt64)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt64_toString8base10((UInt64)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 8) {
-                            numbers = System_UInt64_toString8base8__stack((UInt64)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt64_toString8base8((UInt64)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 2) {
-                            numbers = System_UInt64_toString8base2__stack((UInt64)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt64_toString8base2((UInt64)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                     }
                     else if (argsize == 32) {
                         if (target == 16) {
-                            numbers = System_UInt32_toString8base16__stack((UInt32)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt32_toString8base16((UInt32)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 10) {
-                            numbers = System_UInt32_toString8base10__stack((UInt32)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt32_toString8base10((UInt32)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 8) {
-                            numbers = System_UInt32_toString8base8__stack((UInt32)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt32_toString8base8((UInt32)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 2) {
-                            numbers = System_UInt32_toString8base2__stack((UInt32)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt32_toString8base2((UInt32)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                     }
                     else if (argsize == 16) {
                         if (target == 16) {
-                            numbers = System_UInt16_toString8base16__stack((UInt16)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt16_toString8base16((UInt16)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 10) {
-                            numbers = System_UInt16_toString8base10__stack((UInt16)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt16_toString8base10((UInt16)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 8) {
-                            numbers = System_UInt16_toString8base8__stack((UInt16)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt16_toString8base8((UInt16)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 2) {
-                            numbers = System_UInt16_toString8base2__stack((UInt16)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt16_toString8base2((UInt16)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                     }
                     else if (argsize == 8) {
                         if (target == 16) {
-                            numbers = System_UInt8_toString8base16__stack((UInt8)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt8_toString8base16((UInt8)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 10) {
-                            numbers = System_UInt8_toString8base10__stack((UInt8)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt8_toString8base10((UInt8)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 8) {
-                            numbers = System_UInt8_toString8base8__stack((UInt8)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt8_toString8base8((UInt8)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }
                         else if (target == 2) {
-                            numbers = System_UInt8_toString8base2__stack((UInt8)(Size)argv[argi], scratch);
+                            numbers = stack_System_UInt8_toString8base2((UInt8)(Size)argv[argi], scratch);
                             String8_copyToAt(scratch, message, message_length);
                             message_length += numbers;
                         }

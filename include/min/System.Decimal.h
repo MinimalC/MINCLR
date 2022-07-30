@@ -27,7 +27,7 @@ export void  System_Decimal_init__Int8(System_Decimal  that, System_Int8 Int8);
 export void  System_Decimal_init__Int16(System_Decimal  that, System_Int16 Int16);
 export void  System_Decimal_init__Int32(System_Decimal  that, System_Int32 Int32);
 export void  System_Decimal_init__Int64(System_Decimal  that, System_Int64 Int64);
-export void  System_Decimal_toString8__stack(System_Decimal  that, System_Char8 array[System_Decimal_Capacity_DEFAULT + 1]);
+export void  stack_System_Decimal_toString8(System_Decimal  that, System_Char8 array[System_Decimal_Capacity_DEFAULT + 1]);
 export void  System_Decimal_set_Precision(System_Decimal  that, System_Int8 precision);
 export System_Int8  System_Decimal_get_Precision(System_Decimal  that);
 

@@ -95,10 +95,10 @@ int main(int argc, char *argv[]) {
 				goto FALSE;
 			} */
 
-            numbers = System_UInt64_toString8base10__stack(knownPrimesL, decimol);
+            numbers = stack_System_UInt64_toString8base10(knownPrimesL, decimol);
             System_String8_copySubstringTo(decimol, numbers, (nP + 1));
 
-            numbers = System_UInt64_toString8base10__stack(n, decimol);
+            numbers = stack_System_UInt64_toString8base10(n, decimol);
             System_String8_copySubstringTo(decimol, numbers, (nP + 22));
 
             Syscall_write(Syscall_StandardFile_STDOUT, nP, sizeof(nP) - 1);
@@ -125,10 +125,10 @@ int main(int argc, char *argv[]) {
 				goto FALSE;
 			} */
 
-            numbers = System_UInt64_toString8base10__stack(knownPrimesL, decimol);
+            numbers = stack_System_UInt64_toString8base10(knownPrimesL, decimol);
             System_String8_copySubstringTo(decimol, numbers, (nP + 1));
 
-            numbers = System_UInt64_toString8base10__stack(n, decimol);
+            numbers = stack_System_UInt64_toString8base10(n, decimol);
             System_String8_copySubstringTo(decimol, numbers, (nP + 22));
 
             Syscall_write(Syscall_StandardFile_STDOUT, nP, sizeof(nP) - 1);

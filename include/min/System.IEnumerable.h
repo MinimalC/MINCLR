@@ -76,7 +76,7 @@ export void  base_System_IEnumerable_foreach(System_IEnumerable that, System_Typ
 #define stack_System_foreach____(TYPE,THAT,ARRAYT,ARRAY,ACTION)  stack_System_foreach__n(04,TYPE,THAT,ARRAYT,ARRAY,ACTION)
 #define _stack_System_foreach(TYPE,THAT,ARRAYT,ARRAY,ACTION)  stack_System_foreach__n(05,TYPE,THAT,ARRAYT,ARRAY,ACTION)
 #define __stack_System_foreach(TYPE,THAT,ARRAYT,ARRAY,ACTION)  stack_System_foreach__n(06,TYPE,THAT,ARRAYT,ARRAY,ACTION)
-#define ___stack_System_foreach(TYPE,THAT,ARRAYT,ARRAY,ACTION)  stack_System_foreach__n(07,TYPE,THAT,ARRAYT,ARRAY,ACTION)
+#define stack___System_foreach(TYPE,THAT,ARRAYT,ARRAY,ACTION)  stack_System_foreach__n(07,TYPE,THAT,ARRAYT,ARRAY,ACTION)
 
 #define inline_System_foreach(TYPE,THAT,ARRAY,ACTION)  inline_System_foreach__n(00,TYPE,THAT,ARRAY,ACTION)
 #define inline_System_foreach_(TYPE,THAT,ARRAY,ACTION)  inline_System_foreach__n(01,TYPE,THAT,ARRAY,ACTION)

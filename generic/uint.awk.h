@@ -47,20 +47,20 @@ export struct System_Type  Generic_T0Type;
 #define Generic_T0_String8base10Length_DEFAULT  #b10L
 
 export System_Bool  Generic_T0_isPrintable(Generic_T0 that);
-export System_Size  Generic_T0_toString8base2__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base2Length_DEFAULT + 1]);
-export System_Size  Generic_T0_toString8base4__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1]);
-export System_Size  Generic_T0_toString8base8__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1]);
-export System_Size  Generic_T0_toString8base16__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1]);
-export System_Size  Generic_T0_toString8base10__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]);
+export System_Size  stack_Generic_T0_toString8base2(Generic_T0 that, System_Char8 array[Generic_T0_String8base2Length_DEFAULT + 1]);
+export System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1]);
+export System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1]);
+export System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1]);
+export System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]);
 export Generic_T0  Generic_T0_parsebase10(System_String8 that);
 #define inline_Generic_T0_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_Generic)
 #define T0Type  Generic_T0Type
 #define T0_isPrintable  Generic_T0_isPrintable
-#define T0_toString8base2__stack  Generic_T0_toString8base2__stack
-#define T0_toString8base4__stack  Generic_T0_toString8base4__stack
-#define T0_toString8base8__stack  Generic_T0_toString8base8__stack
-#define T0_toString8base16__stack  Generic_T0_toString8base16__stack
-#define T0_toString8base10__stack  Generic_T0_toString8base10__stack
+#define stack_T0_toString8base2  stack_Generic_T0_toString8base2
+#define stack_T0_toString8base4  stack_Generic_T0_toString8base4
+#define stack_T0_toString8base8  stack_Generic_T0_toString8base8
+#define stack_T0_toString8base16  stack_Generic_T0_toString8base16
+#define stack_T0_toString8base10  stack_Generic_T0_toString8base10
 #endif
 #endif

@@ -30,7 +30,7 @@ System_Bool  Generic_T0_isPrintable(Generic_T0 that) {
     return inline_Generic_T0_isPrintable(that);
 }
 
-System_Size  Generic_T0_toString8base2__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base2Length_DEFAULT + 1]) {
+System_Size  stack_Generic_T0_toString8base2(Generic_T0 that, System_Char8 array[Generic_T0_String8base2Length_DEFAULT + 1]) {
     System_String8 string = array + Generic_T0_String8base2Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -57,7 +57,7 @@ System_Size  Generic_T0_toString8base2__stack(Generic_T0 that, System_Char8 arra
     return numbers;
 }
 
-System_Size  Generic_T0_toString8base4__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1]) {
+System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + Generic_T0_String8base4Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -84,7 +84,7 @@ System_Size  Generic_T0_toString8base4__stack(Generic_T0 that, System_Char8 arra
     return numbers;
 }
 
-System_Size  Generic_T0_toString8base8__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1]) {
+System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + Generic_T0_String8base8Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -111,7 +111,7 @@ System_Size  Generic_T0_toString8base8__stack(Generic_T0 that, System_Char8 arra
     return numbers;
 }
 
-System_Size  Generic_T0_toString8base16__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1]) {
+System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + Generic_T0_String8base16Length_DEFAULT - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
@@ -138,7 +138,7 @@ System_Size  Generic_T0_toString8base16__stack(Generic_T0 that, System_Char8 arr
     return numbers;
 }
 
-System_Size  Generic_T0_toString8base10__stack(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal = stack_System_Decimal();
     System_Decimal_init__T0(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;

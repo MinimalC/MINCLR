@@ -4,6 +4,9 @@
 #if !defined(have_System_Console)
 #include <min/System.Console.h>
 #endif
+#if !defined(have_System_Memory)
+#include <min/System.Memory.h>
+#endif
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>
 #endif
@@ -12,6 +15,9 @@
 #endif
 #if !defined(have_System_String8)
 #include <min/System.String8.h>
+#endif
+#if !defined(have_System_UInt8)
+#include <min/System.values.auto.h>
 #endif
 #if !defined(have_ISO)
 #include <min/ISO.h>
@@ -100,55 +106,81 @@ void  System_Console_writeLine(String8 format, ...) {
 
 
 #define hexdump_Columns  32
+#define hexdump_Space_VALUE  142 /* = 12 + (hexdump_Columns * 3) + hexdump_Columns + 2 */
 
 void System_Debug_writeHex(Size length, void  * value) {
     if (length == 0 || !value) return;
 
     UInt8  * memory = (UInt8  *)value;
-    Size i, j;
+    Size i, j, l, pos, length_div_columns_rem = length % hexdump_Columns, i_div_columns_rem;
 
-    for (i = 0; i < length + ((length % hexdump_Columns) ? (hexdump_Columns - length % hexdump_Columns) : 0); i++)
+
+    Char8 scratch[System_UInt64_String8base16Length_DEFAULT];
+    for (i = 0; i < System_UInt64_String8base16Length_DEFAULT; ++i) scratch[i] = 0;
+
+    Char8 buffer[hexdump_Space_VALUE];
+    static Size hexdump_Space = hexdump_Space_VALUE;
+    for (i = 0; i < hexdump_Space; ++i) buffer[i] = 0;
+    buffer[0] = '0';
+    buffer[1] = 'x';
+
+    for (i = 0; i < length + ((length_div_columns_rem) ? (hexdump_Columns - length_div_columns_rem) : 0); ++i)
     {
+        i_div_columns_rem = i % hexdump_Columns;
+
         /* print offset */
-        if(i % hexdump_Columns == 0)
+        if(i_div_columns_rem == 0)
         {
-            Console_write("0x{0:uint64:hex}: ", 1, i); // TODO: precision 8 on amd64, 4 on arm
+            pos = 2;
+            l = stack_System_UInt64_toString8base16(i, scratch);
+            Memory_copyTo(scratch, l, buffer + pos);
+            pos += l;
+            buffer[pos++] = ':';
+            buffer[pos++] = ' ';
         }
 
         /* print hex data */
         if(i < length)
         {
-            Console_write("{0:uint8:hex} ", 1, 0xFF & (memory[i])); // TODO: precision 2
+            l = stack_System_UInt8_toString8base16(0xFF & memory[i], scratch);
+            Memory_copyTo(scratch, l, buffer + pos);
+            pos += l;
+            buffer[pos++] = ' ';
         }
         else /* end of block, just aligning for ASCII dump */
         {
-            Console_write__string("   ");
+            buffer[pos++] = ' ';
+            /* buffer[pos++] = ' '; */
+            /* buffer[pos++] = ' '; */
         }
 
         /* print ASCII dump */
-        if(i % hexdump_Columns == (hexdump_Columns - 1))
+        if(i_div_columns_rem == (hexdump_Columns - 1))
         {
             for(j = i - (hexdump_Columns - 1); j <= i; j++)
             {
                 if(j >= length) /* end of block, not really printing */
                 {
-                    Console_write__char(' ');
+                    buffer[pos++] = ' ';
                 }
                 else if(System_Char8_isPrintable(memory[j])) /* printable char */
                 {
-                    Console_write__char(0xFF & (memory[j]));
+                    buffer[pos++] = 0xFF & memory[j];
                 }
                 else /* other char */
                 {
-                    Console_write__char('.');
+                    buffer[pos++] = '.';
                 }
             }
-            Console_write__char('\n');
+            buffer[pos++] = '\n';
+            buffer[pos++] = '\0';
+            Console_write__string(buffer);
         }
     }
 }
 
 #undef hexdump_Columns
+#undef hexdump_Space_VALUE
 
 void System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 fileName, const System_UInt32 line) {
     System_IStream_writeLine((System_IStream)&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", 4, expression, functionName, fileName, line);

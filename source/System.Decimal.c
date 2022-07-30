@@ -856,7 +856,7 @@ void  System_Decimal_init__Int64(System_Decimal that, System_Int64 int64) {
     System_Decimal_init__UInt64(that, uinteger);
 }
 
-void  System_Decimal_toString8__stack(System_Decimal that, System_Char8 array[System_Decimal_Capacity_DEFAULT + 1]) {
+void  stack_System_Decimal_toString8(System_Decimal that, System_Char8 array[System_Decimal_Capacity_DEFAULT + 1]) {
     System_UInt8 * string = that->value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 array_string = array + System_Decimal_Capacity_DEFAULT - 1;
 

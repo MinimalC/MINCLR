@@ -17,3 +17,9 @@ struct System_Type  System_ELF32AssemblyType = { .base = { .type = typeof(System
 struct System_Type  System_ELF64AssemblyType = { .base = { .type = typeof(System_Type), }, .name = "System.ELF64Assembly", };
 
 #endif
+#if !defined(code_System_ELFAssembly)
+#define code_System_ELFAssembly
+
+System_STRING8 System_ELFAssembly_Magic = System_ELFAssembly_Magic_VALUE;
+
+#endif
