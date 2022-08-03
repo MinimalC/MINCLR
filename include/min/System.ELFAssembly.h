@@ -30,7 +30,6 @@ enum {
 
 typedef unsigned System_ELFAssembly_ABI;
 enum {
-    System_ELFAssembly_ABI_None,
     System_ELFAssembly_ABI_SysV,
     System_ELFAssembly_ABI_HPUX,
     System_ELFAssembly_ABI_NetBSD,
@@ -48,6 +47,8 @@ enum {
     System_ELFAssembly_ABI_Standalone = 255,
 };
 
+export struct System_Type  System_ELFAssembly_ABIType;
+
 typedef unsigned System_ELFAssembly_AssemblyType;
 enum {
     System_ELFAssembly_AssemblyType_None,
@@ -60,6 +61,8 @@ enum {
     System_ELFAssembly_AssemblyType_ProcessorSpecificLow = 0xff00,
     System_ELFAssembly_AssemblyType_ProcessorSpecificHigh = 0xffff,
 };
+
+export struct System_Type  System_ELFAssembly_AssemblyTypeType;
 
 typedef unsigned System_ELFAssembly_Machine;
 enum {
@@ -257,6 +260,8 @@ enum {
     System_ELFAssembly_Machine_ALPHA = 0x9026,
 };
 
+export struct System_Type  System_ELFAssembly_MachineType;
+
 typedef unsigned System_ELFAssembly_ProgramType;
 enum {
     System_ELFAssembly_ProgramType_Null,
@@ -274,6 +279,8 @@ enum {
     System_ELFAssembly_ProgramType_GNU_ReadOnlyRelocation = 0x6474e552,
 };
 
+export struct System_Type  System_ELFAssembly_ProgramTypeType;
+
 typedef unsigned System_ELFAssembly_ProgramFlags;
 enum {
     System_ELFAssembly_ProgramFlags_None,
@@ -283,6 +290,50 @@ enum {
     System_ELFAssembly_ProgramFlags_OSSpecific = 0x0ff00000,  /* OS-specific */
     System_ELFAssembly_ProgramFlags_ProcessorSpecific = 0xf0000000,  /* Processor-specific */
 };
+
+export struct System_Type  System_ELFAssembly_ProgramFlagsType;
+
+typedef unsigned System_ELFAssembly_SectionType;
+enum {
+    System_ELFAssembly_SectionType_NULL = 0, /* Section header table entry unused */
+    System_ELFAssembly_SectionType_PROGBITS = 1, /* Program data */
+    System_ELFAssembly_SectionType_SYMTAB = 2, /* Symbol table */
+    System_ELFAssembly_SectionType_STRTAB = 3, /* String table */
+    System_ELFAssembly_SectionType_RELA = 4, /* Relocation entries with addends */
+    System_ELFAssembly_SectionType_HASH = 5, /* Symbol hash table */
+    System_ELFAssembly_SectionType_DYNAMIC = 6, /* Dynamic linking information */
+    System_ELFAssembly_SectionType_NOTE = 7, /* Notes */
+    System_ELFAssembly_SectionType_NOBITS = 8, /* Program space with no data (bss) */
+    System_ELFAssembly_SectionType_REL = 9, /* Relocation entries, no addends */
+    System_ELFAssembly_SectionType_SHLIB = 10, /* Reserved */
+    System_ELFAssembly_SectionType_DYNSYM = 11, /* Dynamic linker symbol table */
+    System_ELFAssembly_SectionType_INIT_ARRAY = 14, /* Array of constructors */
+    System_ELFAssembly_SectionType_FINI_ARRAY = 15, /* Array of destructors */
+    System_ELFAssembly_SectionType_PREINIT_ARRAY = 16, /* Array of pre-constructors */
+    System_ELFAssembly_SectionType_GROUP = 17, /* Section group */
+    System_ELFAssembly_SectionType_SYMTAB_SHNDX = 18, /* Extended section indeces */
+    System_ELFAssembly_SectionType_NUM = 19, /* Number of defined types.  */
+    System_ELFAssembly_SectionType_LOOS = 0x60000000, /* Start OS-specific.  */
+    System_ELFAssembly_SectionType_GNU_ATTRIBUTES = 0x6ffffff5, /* Object attributes.  */
+    System_ELFAssembly_SectionType_GNU_HASH = 0x6ffffff6, /* GNU-style hash table.  */
+    System_ELFAssembly_SectionType_GNU_LIBLIST = 0x6ffffff7, /* Prelink library list */
+    System_ELFAssembly_SectionType_CHECKSUM = 0x6ffffff8, /* Checksum for DSO content.  */
+    System_ELFAssembly_SectionType_LOSUNW = 0x6ffffffa, /* Sun-specific low bound.  */
+    System_ELFAssembly_SectionType_SUNW_move = 0x6ffffffa, 
+    System_ELFAssembly_SectionType_SUNW_COMDAT = 0x6ffffffb, 
+    System_ELFAssembly_SectionType_SUNW_syminfo = 0x6ffffffc, 
+    System_ELFAssembly_SectionType_GNU_verdef = 0x6ffffffd, /* Version definition section.  */
+    System_ELFAssembly_SectionType_GNU_verneed = 0x6ffffffe, /* Version needs section.  */
+    System_ELFAssembly_SectionType_GNU_versym = 0x6fffffff, /* Version symbol table.  */
+    System_ELFAssembly_SectionType_HISUNW = 0x6fffffff, /* Sun-specific high bound.  */
+    System_ELFAssembly_SectionType_HIOS = 0x6fffffff, /* End OS-specific type */
+    System_ELFAssembly_SectionType_LOPROC = 0x70000000, /* Start of processor-specific */
+    System_ELFAssembly_SectionType_HIPROC = 0x7fffffff, /* End of processor-specific */
+    System_ELFAssembly_SectionType_LOUSER = 0x80000000, /* Start of application-specific */
+    System_ELFAssembly_SectionType_HIUSER = 0x8fffffff, /* End of application-specific */
+};
+
+export struct System_Type  System_ELFAssembly_SectionTypeType;
 
 typedef unsigned System_ELFAssembly_DynamicType;
 enum {
@@ -391,6 +442,8 @@ enum {
     System_ELFAssembly_DynamicType_EXTRANUM = 3,
 };
 
+export struct System_Type  System_ELFAssembly_DynamicTypeType;
+
 typedef unsigned System_ELFAssembly_AuxType;
 enum {
     System_ELFAssembly_AuxType_NULL = 0,
@@ -440,6 +493,8 @@ enum {
 
     System_ELFAssembly_AuxType_MINSIGSTKSZ = 51,
 };
+
+export struct System_Type  System_ELFAssembly_AuxTypeType;
 
 #endif
 #if !defined(have_System_ELF32Assembly)
