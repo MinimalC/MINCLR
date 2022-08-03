@@ -2,6 +2,8 @@
 #include <min/System.values.auto.h>
 #include <min/System.Console.h>
 
+#define main  System_Runtime_main
+
 // main(test50_System_values, args) {
 int main(int argc, char * argv[]) {
 

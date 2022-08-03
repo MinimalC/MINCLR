@@ -1,9 +1,10 @@
 #define using_System
 #define using_Crypto
 #include <min/System.h>
-
 STRING8  HalloWelt = "HelloWorld";
 UInt64 SipHash48_HalloWelt = 0x1648223A11BB3707;
+
+#define main  System_Runtime_main
 
 //main(test21_Crypto_SipHash, args) {
 int main(int argc, char * argv[]) {

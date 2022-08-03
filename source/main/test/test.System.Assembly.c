@@ -9,6 +9,8 @@ STRING8  sharedObjectName = "/lib/arm-linux-gnueabihf/libc.so.6";
 
 STRING8  symbolName = "malloc";
 
+#define main  System_Runtime_main
+
 //main(test47_System_Assembly, args) {
 int main(int argc, char * argv[]) {
 

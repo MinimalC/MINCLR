@@ -6,6 +6,8 @@ STRING8  command  = "./home/test01_System_String8";
 STRING8  final_name  = "main_test01_System_String8";
 STRING8  empty  = "";
 
+#define main  System_Runtime_main
+
 //main(test01_System_String8, args){
 int main(int argc, char * argv[]) {
 

@@ -75,7 +75,7 @@ export System_Exception  base_System_Exception_init(System_Exception that, Syste
 #define System_catch  if (inline_System_Exception_tryNot()) goto __finally00;\
 __catch00: ;
 
-#define System_catch_class(TYPE,THAT,ACTION)  do { struct TYPE ff(struct,THAT) = { 0 }; TYPE THAT = &ff(struct,THAT);\
+#define System_catch_class(TYPE,THAT,ACTION)  do { struct TYPE ff(struct,THAT); TYPE THAT = &ff(struct,THAT);\
 if (stack_System_Exception_catch((System_Exception)THAT, typeof(TYPE))) { ACTION ; } goto __finally00; } while (0);
 
 #define System_throw(EXCEPTION)  System_Exception_throw((System_Exception)EXCEPTION); return;

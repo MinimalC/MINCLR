@@ -2,12 +2,9 @@
 #if !defined(have_System_Type)
 #include <min/System.Type.h>
 #endif
-
 #if !defined(have_System_ELFAssembly)
-#define have_System_ELFAssembly
 
-export System_STRING8 System_ELFAssembly_Magic;
-#define System_ELFAssembly_Magic_VALUE  "\177ELF"
+#define System_ELFAssembly_Magic  "\177ELF"
 
 #define System_ELFAssembly_Header_MaxSize  262144
 
@@ -58,8 +55,8 @@ enum {
     System_ELFAssembly_AssemblyType_Executable,
     System_ELFAssembly_AssemblyType_Shared,
     System_ELFAssembly_AssemblyType_Core,
-    System_ELFAssembly_AssemblyType_OperatingSystemSpecificLow = 0xfe00,
-    System_ELFAssembly_AssemblyType_OperatingSystemSpecificHigh = 0xfeff,
+    System_ELFAssembly_AssemblyType_OSSpecificLow = 0xfe00,
+    System_ELFAssembly_AssemblyType_OSSpecificHigh = 0xfeff,
     System_ELFAssembly_AssemblyType_ProcessorSpecificLow = 0xff00,
     System_ELFAssembly_AssemblyType_ProcessorSpecificHigh = 0xffff,
 };
@@ -279,35 +276,171 @@ enum {
 
 typedef unsigned System_ELFAssembly_ProgramFlags;
 enum {
-    None,
-    Executable,  /* Segment is executable */
-    Writable,  /* Segment is writable */
-    Readable = 4,  /* Segment is readable */
-    OSSpecific = 0x0ff00000,  /* OS-specific */
-    ProcessorSpecific = 0xf0000000,  /* Processor-specific */
+    System_ELFAssembly_ProgramFlags_None,
+    System_ELFAssembly_ProgramFlags_Executable,  /* Segment is executable */
+    System_ELFAssembly_ProgramFlags_Writable,  /* Segment is writable */
+    System_ELFAssembly_ProgramFlags_Readable = 4,  /* Segment is readable */
+    System_ELFAssembly_ProgramFlags_OSSpecific = 0x0ff00000,  /* OS-specific */
+    System_ELFAssembly_ProgramFlags_ProcessorSpecific = 0xf0000000,  /* Processor-specific */
 };
 
-#if System_Size_Width == 32
-#define System_ELFAssembly  System_ELF32Assembly
-#define System_ELFAssemblyType  System_ELF32AssemblyType
-#define System_ELFAssembly_Header  System_ELF32Assembly_Header
-#define System_ELFAssembly_ProgramHeader  System_ELF32Assembly_ProgramHeader
-#define System_ELFAssembly_SectionHeader  System_ELF32Assembly_SectionHeader
+typedef unsigned System_ELFAssembly_DynamicType;
+enum {
+    System_ELFAssembly_DynamicType_NULL = 0,    /* Marks end of dynamic section */
+    System_ELFAssembly_DynamicType_NEEDED = 1,    /* Name of needed library */
+    System_ELFAssembly_DynamicType_PLTRELSZ = 2,    /* Size in bytes of PLT relocs */
+    System_ELFAssembly_DynamicType_PLTGOT = 3,    /* Processor defined value */
+    System_ELFAssembly_DynamicType_HASH = 4,    /* Address of symbol hash table */
+    System_ELFAssembly_DynamicType_STRTAB = 5,    /* Address of string table */
+    System_ELFAssembly_DynamicType_SYMTAB = 6,    /* Address of symbol table */
+    System_ELFAssembly_DynamicType_RELA = 7,    /* Address of Rela relocs */
+    System_ELFAssembly_DynamicType_RELASZ = 8,    /* Total size of Rela relocs */
+    System_ELFAssembly_DynamicType_RELAENT = 9,    /* Size of one Rela reloc */
+    System_ELFAssembly_DynamicType_STRSZ = 10,    /* Size of string table */
+    System_ELFAssembly_DynamicType_SYMENT = 11,    /* Size of one symbol table entry */
+    System_ELFAssembly_DynamicType_INIT = 12,    /* Address of init function */
+    System_ELFAssembly_DynamicType_FINI = 13,    /* Address of termination function */
+    System_ELFAssembly_DynamicType_SONAME = 14,    /* Name of shared object */
+    System_ELFAssembly_DynamicType_RPATH = 15,    /* Library search path (deprecated) */
+    System_ELFAssembly_DynamicType_SYMBOLIC = 16,    /* Start symbol search here */
+    System_ELFAssembly_DynamicType_REL = 17,    /* Address of Rel relocs */
+    System_ELFAssembly_DynamicType_RELSZ = 18,    /* Total size of Rel relocs */
+    System_ELFAssembly_DynamicType_RELENT = 19,    /* Size of one Rel reloc */
+    System_ELFAssembly_DynamicType_PLTREL = 20,    /* Type of reloc in PLT */
+    System_ELFAssembly_DynamicType_DEBUG = 21,    /* For debugging; unspecified */
+    System_ELFAssembly_DynamicType_TEXTREL = 22,    /* Reloc might modify .text */
+    System_ELFAssembly_DynamicType_JMPREL = 23,    /* Address of PLT relocs */
+    System_ELFAssembly_DynamicType_BIND_NOW = 24,    /* Process relocations of object */
+    System_ELFAssembly_DynamicType_INIT_ARRAY = 25,    /* Array with addresses of init fct */
+    System_ELFAssembly_DynamicType_FINI_ARRAY = 26,    /* Array with addresses of fini fct */
+    System_ELFAssembly_DynamicType_INIT_ARRAYSZ = 27,    /* Size in bytes of DT_INIT_ARRAY */
+    System_ELFAssembly_DynamicType_FINI_ARRAYSZ = 28,    /* Size in bytes of DT_FINI_ARRAY */
+    System_ELFAssembly_DynamicType_RUNPATH = 29,    /* Library search path */
+    System_ELFAssembly_DynamicType_FLAGS = 30,    /* Flags for the object being loaded */
+    System_ELFAssembly_DynamicType_ENCODING = 32,    /* Start of encoded range */
+    System_ELFAssembly_DynamicType_PREINIT_ARRAY = 32,    /* Array with addresses of preinit fct*/
+    System_ELFAssembly_DynamicType_PREINIT_ARRAYSZ = 33,    /* size in bytes of DT_PREINIT_ARRAY */
+    System_ELFAssembly_DynamicType_SYMTAB_SHNDX = 34,    /* Address of SYMTAB_SHNDX section */
+    System_ELFAssembly_DynamicType_NUM = 35,    /* Number used */
+    System_ELFAssembly_DynamicType_LOOS = 0x6000000d,  /* Start of OS-specific */
+    System_ELFAssembly_DynamicType_HIOS = 0x6ffff000,  /* End of OS-specific */
+    System_ELFAssembly_DynamicType_LOPROC = 0x70000000,  /* Start of processor-specific */
+    System_ELFAssembly_DynamicType_HIPROC = 0x7fffffff,  /* End of processor-specific */
+    System_ELFAssembly_DynamicType_MIPSNUM = 0x37,  /* Most used by any processor */
+    System_ELFAssembly_DynamicType_PROCNUM = System_ELFAssembly_DynamicType_MIPSNUM,
+/* DT_* entries which fall between DT_VALRNGHI & DT_VALRNGLO use the
+   Dyn.d_un.d_val field of the Elf*_Dyn structure.  This follows Sun's
+   approach.  */
+    System_ELFAssembly_DynamicType_VALRNGLO = 0x6ffffd00,
+    System_ELFAssembly_DynamicType_GNU_PRELINKED = 0x6ffffdf5,  /* Prelinking timestamp */
+    System_ELFAssembly_DynamicType_GNU_CONFLICTSZ = 0x6ffffdf6,  /* Size of conflict section */
+    System_ELFAssembly_DynamicType_GNU_LIBLISTSZ = 0x6ffffdf7,  /* Size of library list */
+    System_ELFAssembly_DynamicType_CHECKSUM = 0x6ffffdf8,
+    System_ELFAssembly_DynamicType_PLTPADSZ = 0x6ffffdf9,
+    System_ELFAssembly_DynamicType_MOVEENT = 0x6ffffdfa,
+    System_ELFAssembly_DynamicType_MOVESZ = 0x6ffffdfb,
+    System_ELFAssembly_DynamicType_FEATURE_1 = 0x6ffffdfc,  /* Feature selection (DTF_*).  */
+    System_ELFAssembly_DynamicType_POSFLAG_1 = 0x6ffffdfd,  /* Flags for DT_* entries, effecting
+             the following DT_* entry.  */
+    System_ELFAssembly_DynamicType_SYMINSZ = 0x6ffffdfe,  /* Size of syminfo table (in bytes) */
+    System_ELFAssembly_DynamicType_SYMINENT = 0x6ffffdff,  /* Entry size of syminfo */
+    System_ELFAssembly_DynamicType_VALRNGHI = 0x6ffffdff,
+#define  System_ELFAssembly_DynamicType_VALTAGINDEX(tag)  (System_ELFAssembly_DynamicType_VALRNGHI - (tag))  /* Reverse order! */
+    System_ELFAssembly_DynamicType_VALNUM = 12,
 
-#else /* if System_Size_Width == 64 */
-#define System_ELFAssembly  System_ELF64Assembly
-#define System_ELFAssemblyType  System_ELF64AssemblyType
-#define System_ELFAssembly_Header  System_ELF64Assembly_Header
-#define System_ELFAssembly_ProgramHeader  System_ELF64Assembly_ProgramHeader
-#define System_ELFAssembly_SectionHeader  System_ELF64Assembly_SectionHeader
-#endif
+/* DT_* entries which fall between DT_ADDRRNGHI & DT_ADDRRNGLO use the
+   Dyn.d_un.d_ptr field of the Elf*_Dyn structure.
 
-#if defined(using_System)
-#define ELFAssembly  System_ELFAssembly
-#define ELFAssemblyType  System_ELFAssemblyType
-#define ELFAssembly_Header  System_ELFAssembly_Header
-#define ELFAssembly_HeaderType  System_ELFAssembly_HeaderType
-#endif
+   If any adjustment is made to the ELF object after it has been
+   built these entries will need to be adjusted.  */
+    System_ELFAssembly_DynamicType_ADDRRNGLO = 0x6ffffe00,
+    System_ELFAssembly_DynamicType_GNU_HASH = 0x6ffffef5,  /* GNU-style hash table.  */
+    System_ELFAssembly_DynamicType_TLSDESC_PLT = 0x6ffffef6,
+    System_ELFAssembly_DynamicType_TLSDESC_GOT = 0x6ffffef7,
+    System_ELFAssembly_DynamicType_GNU_CONFLICT = 0x6ffffef8,  /* Start of conflict section */
+    System_ELFAssembly_DynamicType_GNU_LIBLIST = 0x6ffffef9,  /* Library list */
+    System_ELFAssembly_DynamicType_CONFIG = 0x6ffffefa,  /* Configuration information.  */
+    System_ELFAssembly_DynamicType_DEPAUDIT = 0x6ffffefb,  /* Dependency auditing.  */
+    System_ELFAssembly_DynamicType_AUDIT = 0x6ffffefc,  /* Object auditing.  */
+    System_ELFAssembly_DynamicType_PLTPAD = 0x6ffffefd,  /* PLT padding.  */
+    System_ELFAssembly_DynamicType_MOVETAB = 0x6ffffefe,  /* Move table.  */
+    System_ELFAssembly_DynamicType_SYMINFO = 0x6ffffeff,  /* Syminfo table.  */
+    System_ELFAssembly_DynamicType_ADDRRNGHI = 0x6ffffeff,
+#define System_ELFAssembly_DynamicType_ADDRTAGIDX(tag)  (System_ELFAssembly_DynamicType_ADDRRNGHI - (tag))  /* Reverse order! */
+    System_ELFAssembly_DynamicType_ADDRNUM = 11,
+
+/* The versioning entry types.  The next are defined as part of the GNU extension.  */
+    System_ELFAssembly_DynamicType_VERSYM = 0x6ffffff0,
+
+    System_ELFAssembly_DynamicType_RELACOUNT = 0x6ffffff9,
+    System_ELFAssembly_DynamicType_RELCOUNT = 0x6ffffffa,
+
+/* These were chosen by Sun.  */
+    System_ELFAssembly_DynamicType_FLAGS_1 = 0x6ffffffb,  /* State flags, see DF_1_* below.  */
+    System_ELFAssembly_DynamicType_VERDEF = 0x6ffffffc,  /* Address of version definition table */
+    System_ELFAssembly_DynamicType_VERDEFNUM = 0x6ffffffd,  /* Number of version definitions */
+    System_ELFAssembly_DynamicType_VERNEED = 0x6ffffffe,  /* Address of table with needed versions */
+    System_ELFAssembly_DynamicType_VERNEEDNUM = 0x6fffffff,  /* Number of needed versions */
+#define System_ELFAssembly_DynamicType_VERSIONTAGIDX(tag)  (System_ELFAssembly_DynamicType_VERNEEDNUM - (tag))  /* Reverse order! */
+    System_ELFAssembly_DynamicType_VERSIONTAGNUM = 16,
+
+/* Sun added these machine-independent extensions in the "processor-specific" range.  Be compatible.  */
+    System_ELFAssembly_DynamicType_AUXILIARY = 0x7ffffffd,      /* Shared object to load before self */
+    System_ELFAssembly_DynamicType_FILTER = 0x7fffffff,      /* Shared object to get values from */
+#define System_ELFAssembly_DynamicType_EXTRATAGIDX(tag)  ((System_UInt32) - ((System_UInt32)(tag) << 1 >> 1) - 1)
+    System_ELFAssembly_DynamicType_EXTRANUM = 3,
+};
+
+typedef unsigned System_ELFAssembly_AuxType;
+enum {
+    System_ELFAssembly_AuxType_NULL = 0,
+    System_ELFAssembly_AuxType_IGNORE = 1,
+    System_ELFAssembly_AuxType_EXECFD = 2,
+    System_ELFAssembly_AuxType_PHDR = 3,
+    System_ELFAssembly_AuxType_PHENT = 4,
+    System_ELFAssembly_AuxType_PHNUM = 5,
+    System_ELFAssembly_AuxType_PAGESZ = 6,
+    System_ELFAssembly_AuxType_BASE = 7,
+    System_ELFAssembly_AuxType_FLAGS = 8,
+    System_ELFAssembly_AuxType_ENTRY = 9,
+    System_ELFAssembly_AuxType_NOTELF = 10,
+    System_ELFAssembly_AuxType_UID = 11,
+    System_ELFAssembly_AuxType_EUID = 12,
+    System_ELFAssembly_AuxType_GID = 13,
+    System_ELFAssembly_AuxType_EGID = 14,
+    System_ELFAssembly_AuxType_CLKTCK = 17,
+    System_ELFAssembly_AuxType_PLATFORM = 15,
+    System_ELFAssembly_AuxType_HWCAP = 16,
+    System_ELFAssembly_AuxType_FPUCW = 18,
+    System_ELFAssembly_AuxType_DCACHEBSIZE = 19,
+    System_ELFAssembly_AuxType_ICACHEBSIZE = 20,
+    System_ELFAssembly_AuxType_UCACHEBSIZE = 21,
+    System_ELFAssembly_AuxType_IGNOREPPC = 22,
+    System_ELFAssembly_AuxType_SECURE = 23,
+    System_ELFAssembly_AuxType_BASE_PLATFORM = 24,
+    System_ELFAssembly_AuxType_RANDOM = 25,
+    System_ELFAssembly_AuxType_HWCAP2 = 26,
+    System_ELFAssembly_AuxType_EXECFN = 31,
+    System_ELFAssembly_AuxType_SYSINFO = 32,
+    System_ELFAssembly_AuxType_SYSINFO_EHDR = 33,
+    System_ELFAssembly_AuxValue_Current_Length_VALUE = System_ELFAssembly_AuxType_SYSINFO_EHDR,
+
+    System_ELFAssembly_AuxType_L1I_CACHESHAPE = 34,
+    System_ELFAssembly_AuxType_L1D_CACHESHAPE = 35,
+    System_ELFAssembly_AuxType_L2_CACHESHAPE = 36,
+    System_ELFAssembly_AuxType_L3_CACHESHAPE = 37,
+    System_ELFAssembly_AuxType_L1I_CACHESIZE = 40,
+    System_ELFAssembly_AuxType_L1I_CACHEGEOMETRY = 41,
+    System_ELFAssembly_AuxType_L1D_CACHESIZE = 42,
+    System_ELFAssembly_AuxType_L1D_CACHEGEOMETRY = 43,
+    System_ELFAssembly_AuxType_L2_CACHESIZE = 44,
+    System_ELFAssembly_AuxType_L2_CACHEGEOMETRY = 45,
+    System_ELFAssembly_AuxType_L3_CACHESIZE = 46,
+    System_ELFAssembly_AuxType_L3_CACHEGEOMETRY = 47,
+
+    System_ELFAssembly_AuxType_MINSIGSTKSZ = 51,
+};
+
 #endif
 #if !defined(have_System_ELF32Assembly)
 #define have_System_ELF32Assembly
@@ -369,6 +502,48 @@ typedef struct System_ELF32Assembly_SectionHeader {
 
 export struct System_Type  System_ELF32Assembly_SectionHeaderType;
 
+typedef struct System_ELF32Assembly_AuxValue {
+    System_UInt32 type;
+    System_UInt32 value;
+} * System_ELF32Assembly_AuxValue;
+
+export struct System_Type  System_ELF32Assembly_AuxValueType;
+
+typedef struct System_ELF32Assembly_Symbol {
+    System_UInt32  name;    /* Symbol name (string tbl index) */
+    System_UInt32  value;    /* Symbol value */
+    System_UInt32  size;    /* Symbol size */
+    System_Char8  info;    /* Symbol type and binding */
+    System_Char8  other;    /* Symbol visibility */
+    System_UInt16  sectionIndex;    /* Section index */
+} * System_ELF32Assembly_Symbol;
+
+export struct System_Type  System_ELF32Assembly_SymbolType;
+
+typedef struct System_ELF32Assembly_VersionDefinition {
+    System_UInt16  version;    /* Version revision */
+    System_UInt16  flags;    /* Version information */
+    System_UInt16  index;      /* Version Index */
+    System_UInt16  count;      /* Number of associated aux entries */
+    System_UInt32  hash;    /* Version name hash value */
+    System_UInt32  aux;      /* Offset in bytes to verdaux array */
+    System_UInt32  next;    /* Offset in bytes to next verdef entry */
+} * System_ELF32Assembly_VersionDefinition;
+
+export struct System_Type  System_ELF32Assembly_VersionDefinitionType;
+
+typedef struct System_ELF32Assembly_DynamicEntry {
+    System_Int32  tag;      /* Dynamic entry type */
+    System_UInt32  value;      /* value */
+} * System_ELF32Assembly_DynamicEntry;
+
+export struct System_Type  System_ELF32Assembly_DynamicEntryType;
+
+typedef struct System_ELF32Assembly_Verdaux {
+    System_UInt32  name;    /* Version or dependency names */
+    System_UInt32  next;    /* Offset in bytes to next verdaux entry */
+} * System_ELF32Assembly_Verdaux;
+
 #endif
 #if !defined(have_System_ELF64Assembly)
 #define have_System_ELF64Assembly
@@ -419,7 +594,7 @@ typedef struct System_ELF64Assembly_SectionHeader {
   System_UInt32  name;        /* Section name (string tbl index) */
   System_UInt32  type;        /* Section type */
   System_UInt64  flags;        /* Section flags */
-  System_UInt64  address;        /* Section virtual address at execution */
+  System_UInt64  virtualAddress;        /* Section virtual address at execution */
   System_UInt64  offset;     /* Section file offset */
   System_UInt64  sectionSize;        /* Section size in bytes */
   System_UInt32  link;        /* Link to another section */
@@ -430,4 +605,84 @@ typedef struct System_ELF64Assembly_SectionHeader {
 
 export struct System_Type  System_ELF64Assembly_SectionHeaderType;
 
+typedef struct System_ELF64Assembly_AuxValue {
+    System_UInt64 type;
+    System_UInt64 value;
+} * System_ELF64Assembly_AuxValue;
+
+export struct System_Type  System_ELF64Assembly_AuxValueType;
+
+typedef struct System_ELF64Assembly_Symbol {
+    System_UInt32  name;    /* Symbol name (string tbl index) */
+    System_Char8  info;    /* Symbol type and binding */
+    System_Char8  other;    /* Symbol visibility */
+    System_UInt16  sectionIndex;    /* Section index */
+    System_UInt64  value;    /* Symbol value */
+    System_UInt64  size;    /* Symbol size */
+} * System_ELF64Assembly_Symbol;
+
+export struct System_Type  System_ELF64Assembly_SymbolType;
+
+typedef struct System_ELF64Assembly_VersionDefinition {
+    System_UInt16  version;    /* Version revision */
+    System_UInt16  flags;    /* Version information */
+    System_UInt16  index;      /* Version Index */
+    System_UInt16  count;      /* Number of associated aux entries */
+    System_UInt32  hash;    /* Version name hash value */
+    System_UInt32  aux;      /* Offset in bytes to verdaux array */
+    System_UInt32  next;    /* Offset in bytes to next verdef entry */
+} * System_ELF64Assembly_VersionDefinition;
+
+export struct System_Type  System_ELF64Assembly_VersionDefinitionType;
+
+typedef struct System_ELF64Assembly_Verdaux {
+    System_UInt32  name;    /* Version or dependency names */
+    System_UInt32  next;    /* Offset in bytes to next verdaux entry */
+} * System_ELF64Assembly_Verdaux;
+
+
+typedef struct System_ELF64Assembly_DynamicEntry {
+    System_Int64  tag;      /* Dynamic entry type */
+    System_UInt64  value;      /* value */
+} * System_ELF64Assembly_DynamicEntry;
+
+export struct System_Type  System_ELF64Assembly_DynamicEntryType;
+
+#endif
+#if !defined(have_System_ELFAssembly)
+#define have_System_ELFAssembly
+
+#if System_Size_Width == 32
+#define System_ELFAssembly  System_ELF32Assembly
+#define System_ELFAssemblyType  System_ELF32AssemblyType
+#define System_ELFAssembly_Header  System_ELF32Assembly_Header
+#define System_ELFAssembly_ProgramHeader  System_ELF32Assembly_ProgramHeader
+#define System_ELFAssembly_SectionHeader  System_ELF32Assembly_SectionHeader
+#define System_ELFAssembly_AuxValue  System_ELF32Assembly_AuxValue
+#define System_ELFAssembly_Symbol  System_ELF32Assembly_Symbol
+#define System_ELFAssembly_VersionDefinition  System_ELF32Assembly_VersionDefinition
+#define System_ELFAssembly_Verdaux  System_ELF32Assembly_Verdaux
+#define System_ELFAssembly_DynamicEntry  System_ELF32Assembly_DynamicEntry
+
+#else /* if System_Size_Width == 64 */
+#define System_ELFAssembly  System_ELF64Assembly
+#define System_ELFAssemblyType  System_ELF64AssemblyType
+#define System_ELFAssembly_Header  System_ELF64Assembly_Header
+#define System_ELFAssembly_ProgramHeader  System_ELF64Assembly_ProgramHeader
+#define System_ELFAssembly_SectionHeader  System_ELF64Assembly_SectionHeader
+#define System_ELFAssembly_AuxValue  System_ELF64Assembly_AuxValue
+#define System_ELFAssembly_Symbol  System_ELF64Assembly_Symbol
+#define System_ELFAssembly_VersionDefinition  System_ELF64Assembly_VersionDefinition
+#define System_ELFAssembly_Verdaux  System_ELF64Assembly_Verdaux
+#define System_ELFAssembly_DynamicEntry  System_ELF64Assembly_DynamicEntry
+#endif
+
+export struct System_ELFAssembly_AuxValue System_ELFAssembly_AuxValue_Current[System_ELFAssembly_AuxValue_Current_Length_VALUE];
+
+#if defined(using_System)
+#define ELFAssembly  System_ELFAssembly
+#define ELFAssemblyType  System_ELFAssemblyType
+#define ELFAssembly_Header  System_ELFAssembly_Header
+#define ELFAssembly_HeaderType  System_ELFAssembly_HeaderType
+#endif
 #endif

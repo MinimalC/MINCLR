@@ -4,6 +4,8 @@
 
 STRING8  String8_System_Object = "System.Object";
 
+#define main  System_Runtime_main
+
 //main(test02_System_Object, args) {
 int main(int argc, char * argv[]) {
 

@@ -4,6 +4,8 @@
 STRING8  HALLO = "HaLLo";
 STRING8  HALLOtxt = "./.test.txt";
 
+#define main  System_Runtime_main
+
 //main(test42_System_File, args) {
 int main(int argc, char * argv[]) {
 

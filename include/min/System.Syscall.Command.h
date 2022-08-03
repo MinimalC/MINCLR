@@ -12,15 +12,14 @@ export struct System_Type  System_Syscall_CommandType;
 #endif
 
 #if defined(have_Linux)
-
-#if defined(have_ARM)
-#include "ARM32/GNU.Linux/System.Syscall.Command.asm.h"
-
-#elif defined(have_AMD64)
+#if defined(have_AMD64)
 #include "AMD64/GNU.Linux/System.Syscall.Command.asm.h"
 
 #elif defined(have_X86)
 #include "X86/GNU.Linux/System.Syscall.Command.asm.h"
+
+#elif defined(have_ARM)
+#include "ARM32/GNU.Linux/System.Syscall.Command.asm.h"
 
 #else
 #error Architecture not implemented
@@ -29,5 +28,4 @@ export struct System_Type  System_Syscall_CommandType;
 #else
 #error Platform not implemented
 #endif
-
 #endif

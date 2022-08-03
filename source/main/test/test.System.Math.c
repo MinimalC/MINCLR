@@ -1,7 +1,9 @@
-/* #include <math.h> */
-
 #define using_System
 #include <min/System.h>
+
+/* #include <math.h> */
+
+#define main  System_Runtime_main
 
 //main(test61_System_Math, args) {
 int main(int argc, char * argv[]) {

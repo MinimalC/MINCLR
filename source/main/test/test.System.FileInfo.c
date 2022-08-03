@@ -4,6 +4,8 @@
 STRING8  HALLOtxt = "./.test.txt";
 STRING8  FILENOTFOUND = "FileNotFound";
 
+#define main  System_Runtime_main
+
 //main(test43_System_FileInfo, args) {
 int main(int argc, char * argv[]) {
 

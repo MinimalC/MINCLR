@@ -47,6 +47,7 @@ enum { false, true } ;
 #define noreturn  __declspec(noreturn)
 #define nothrow  __declspec(nothrow)
 /* #define thread  __declspec(thread) */
+#define weak  __declspec(weak)
 
 #else /* if GNUCC */
 #define import  extern
@@ -55,15 +56,16 @@ enum { false, true } ;
 #else
 #define export  import
 #endif
-#define align(x)  __attribute__((__aligned__(x)))
-#define artificial  __attribute__((__artificial__))
+#define align(x)  __attribute__((aligned(x)))
+#define artificial  __attribute__((artificial))
 #define asm  __asm__
 /* #define const  __attribute__ ((__const__)) */
-#define deprecated(msg)  __attribute__((__deprecated__(msg)))
+#define deprecated(msg)  __attribute__((deprecated(msg)))
 #define used  __attribute__((used))
-#define noreturn  __attribute__((__noreturn__))
-#define nothrow  __attribute__((__nothrow__))
+#define noreturn  __attribute__((noreturn))
+#define nothrow  __attribute__((nothrow))
 /* #define thread  _Thread_local */
+#define weak  __attribute__((weak))
 #endif
 
 #if !defined(noreturn)

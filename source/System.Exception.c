@@ -20,7 +20,7 @@ typedef struct System_ReservedException {
     System_Size __reserved[8];
 } * System_ReservedException;
 
-thread struct System_ReservedException System_ReservedException_current = { 0 };
+thread struct System_ReservedException System_ReservedException_current;
 
 thread System_Exception System_Exception_current = null;
 

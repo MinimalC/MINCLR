@@ -9,6 +9,8 @@ IntPtr Beispiel(IntPtr a, IntPtr b, IntPtr c, IntPtr d, IntPtr e, IntPtr f, IntP
     return a + b + c + d + e + f + g;
 }
 
+#define main  System_Runtime_main
+
 //main(test40_System_syscall, args) {
 int main(int argc, char * argv[]) {
 

@@ -189,7 +189,7 @@ void System_Debug_assert__String8(const System_String8 expression, const System_
 void System_Debug_writeLine__message(const System_String8 format, ...) {
     arguments args;
     arguments_start(args, format);
-    Var argv[System_arguments_Limit_VALUE] = { 0 };
+    Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
     System_IStream_writeLine__arguments((System_IStream)&System_Console_StdErr, format, argc, argv);

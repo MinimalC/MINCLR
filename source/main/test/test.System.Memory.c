@@ -4,6 +4,8 @@
 internal Size  Test00_size = 8;
 internal UInt8  Test00_Check[] = "\x01\x01\x03\x01\x01\x01\x01\x01";
 
+#define main  System_Runtime_main
+
 //main(test00_System_Memory, args) {
 int main(int argc, char * argv[]) {
     // UInt8 *arg1; Size arg1size;

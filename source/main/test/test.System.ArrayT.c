@@ -3,6 +3,8 @@
 
 STRING8  STRING8_Hallo = "Hallo";
 
+#define main  System_Runtime_main
+
 //main(test04_System_ArrayT, args) {
 int main(int argc, char * argv[]) {
     Size i = 0, length = 0, good = 0, good1 = 0, good2 = 0;

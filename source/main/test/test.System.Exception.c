@@ -29,6 +29,8 @@ Bool main_try() {
     return true;
 }
 
+#define main  System_Runtime_main
+
 //main(test41_System_Exception, args) {
 int main(int argc, char * argv[]) {
 
