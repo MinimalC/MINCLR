@@ -98,6 +98,10 @@ export void  System_Syscall_munmap(System_Var address, System_Size length);
 #define Syscall_close  System_Syscall_close
 #define Syscall_mmap  System_Syscall_mmap
 #define Syscall_munmap  System_Syscall_munmap
-#endif
 
+#define Syscall_StandardFile  System_Syscall_StandardFile
+#define Syscall_StandardFile_STDIN  System_Syscall_StandardFile_STDIN
+#define Syscall_StandardFile_STDOUT  System_Syscall_StandardFile_STDOUT
+#define Syscall_StandardFile_STDERR  System_Syscall_StandardFile_STDERR
+#endif
 #endif

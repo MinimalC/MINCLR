@@ -60,15 +60,16 @@ typedef System_fixed struct System_File {
 
     System_Var filePtr;
 
-    System_FileInfo info;
-
     System_Size position;
+
+    struct System_FileInfo info;
 
 }  * System_File;
 
 export struct System_Type  System_FileType;
 
 export System_File  System_File_open(System_String8 filename, System_File_Mode flags);
+export System_Bool  stack_System_File_open(System_File that, System_String8 filename, System_File_Mode flags);
 
 typedef System_File  delegate(System_File_init)(System_File that);
 typedef void  delegate(System_File_free)(System_File that);
@@ -78,6 +79,7 @@ typedef System_Size  delegate(System_File_read)(System_File that, System_String8
 typedef void  delegate(System_File_seek)(System_File that, System_SSize offset, System_origin origin);
 typedef System_IntPtr  delegate(System_File_get_Position)(System_File that);
 typedef void  delegate(System_File_set_Position)(System_File that, System_Size value);
+typedef void  delegate(System_File_close)(System_File that);
 
 export System_File  base_System_File_init(System_File that);
 export void  base_System_File_free(System_File that);
@@ -87,6 +89,7 @@ export void  base_System_File_seek(System_File that, System_SSize offset, System
 export System_Size  base_System_File_read(System_File that, System_String8 value, System_Size count);
 export System_IntPtr  base_System_File_get_Position(System_File that);
 export void  base_System_File_set_Position(System_File that, System_Size value);
+export void  base_System_File_close(System_File that);
 
 #define System_File_free(o)  ((function_System_File_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_File_init(o)  ((function_System_File_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
@@ -96,6 +99,7 @@ export void  base_System_File_set_Position(System_File that, System_Size value);
 #define System_File_seek(o,...)  ((function_System_File_seek)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_seek))(o, __VA_ARGS__)
 #define System_File_get_Position(o)  ((function_System_File_get_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_get_Position))(o)
 #define System_File_set_Position(o,...)  ((function_System_File_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
+#define System_File_close(o)  ((function_System_File_close)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_File_close))(o)
 
 #define stack_System_File() { .base = stack_System_Object(System_File) }
 #define new_System_File()  (base_System_File_init((System_File)System_Memory_allocClass(typeof(System_File))))
@@ -113,16 +117,11 @@ export void  base_System_File_set_Position(System_File that, System_Size value);
 #define File_Mode_closeOnExecute  System_File_Mode_closeOnExecute
 #define File_Mode_syncd  System_File_Mode_syncd
 
-#define Syscall_StandardFile  System_Syscall_StandardFile
-#define Syscall_StandardFile_STDIN  System_Syscall_StandardFile_STDIN
-#define Syscall_StandardFile_STDOUT  System_Syscall_StandardFile_STDOUT
-#define Syscall_StandardFile_STDERR  System_Syscall_StandardFile_STDERR
-
-
 #define File  System_File
 #define FileType  System_FileType
 
 #define new_File  new_System_File
+#define stack_File  stack_System_File
 
 #define File_free  System_File_free
 #define File_init  System_File_init
@@ -133,6 +132,7 @@ export void  base_System_File_set_Position(System_File that, System_Size value);
 #define File_get_Position  System_File_get_Position
 #define File_set_Position  System_File_set_Position
 #define File_sync  System_File_sync
+#define File_close  System_File_close
 
 #define base_File_free  base_System_File_free
 #define base_File_init  base_System_File_init
@@ -142,7 +142,6 @@ export void  base_System_File_set_Position(System_File that, System_Size value);
 #define base_File_get_Position  base_System_File_get_Position
 #define base_File_set_Position  base_System_File_set_Position
 #define base_File_sync  base_System_File_sync
+#define base_File_close  base_System_File_close
 #endif
-
-
 #endif

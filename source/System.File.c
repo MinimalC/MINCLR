@@ -18,6 +18,18 @@
 
 File  System_File_open(String8 filename, File_Mode flags) {
 
+    File that = new_File();
+    if (stack_System_File_open(that, filename, flags)) {
+        return that;
+    }
+    Memory_free(that);
+    return null;
+}
+
+System_Bool  stack_System_File_open(System_File that, System_String8 filename, System_File_Mode flags) {
+
+    if (that->filePtr) return false; /* TODO */
+
 /*  System_Var filePtr = ISO_fopen(filename, modes); */
     System_Var filePtr = System_Syscall_openat((System_Var)System_Syscall_StandardFile_CurrentWorkingDirectory, filename,
         System_File_Mode_noControllingTerminal | flags,
@@ -29,11 +41,12 @@ File  System_File_open(String8 filename, File_Mode flags) {
         throw_return(&exception);
     }
 
-    File that = new_System_File();
     that->filePtr = filePtr;
-    System_FileInfo info = new_System_FileInfo(filename);
-    that->info = (System_FileInfo)System_Memory_addReference((System_Object)info);
-    return that;
+
+/*    System_FileInfo info = new_System_FileInfo(filename);
+    that->info = (System_FileInfo)System_Memory_addReference((System_Object)info); */
+
+    return true;
 }
 
 File  base_System_File_init(File that) {
@@ -42,11 +55,15 @@ File  base_System_File_init(File that) {
     return that;
 }
 
-void  base_System_File_free(File that) {
-
+void  base_System_File_close(File that) {
+    if (!that->filePtr) return;
 /*  ISO_fclose((ISO_File)that->filePtr); */
-    if (that->filePtr) System_Syscall_close(that->filePtr);
+    System_Syscall_close(that->filePtr);
+    that->filePtr = null;
+}
 
+void  base_System_File_free(File that) {
+    base_System_File_close(that);
 	base_System_Object_free((Object)that);
 }
 
@@ -90,6 +107,7 @@ struct System_Type_FunctionInfo  System_FileTypeFunctions[] = {
     [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = base_System_File_seek },
     [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_get_Position, .value = base_System_File_get_Position },
     [7] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = base_System_File_set_Position },
+    [8] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_File_close, .value = base_System_File_close },
 };
 
 struct System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {
