@@ -87,6 +87,9 @@ System_Size  System_String8_get_Length__max(System_String8 that, System_Size lim
     Debug_assert(that);
     Size i = 0;
     while (limit && that[i]) { --limit; ++i; }
+#if DEBUG
+    if (!limit) System_Console_writeLine__string("WARNING: System_String8_getLength exceeding String8_MaxLength");
+#endif
     return i;
 }
 

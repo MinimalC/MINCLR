@@ -6,8 +6,6 @@
 
 #define System_ELFAssembly_Magic  "\177ELF"
 
-#define System_ELFAssembly_Header_MaxSize  262144
-
 typedef unsigned System_ELFAssembly_Class;
 enum {
     System_ELFAssembly_Class_None,
@@ -548,7 +546,7 @@ typedef struct System_ELF32Assembly_SectionHeader {
   System_UInt32  flags;        /* Section flags */
   System_UInt32  address;        /* Section virtual address at execution */
   System_UInt32  offset;     /* Section file offset */
-  System_UInt32  sectionSize;        /* Section size in bytes */
+  System_UInt32  size;        /* Section size in bytes */
   System_UInt32  link;        /* Link to another section */
   System_UInt32  info;        /* Additional section information */
   System_UInt32  alignment;        /* Section alignment */
@@ -564,16 +562,16 @@ typedef struct System_ELF32Assembly_AuxValue {
 
 export struct System_Type  System_ELF32Assembly_AuxValueType;
 
-typedef struct System_ELF32Assembly_Symbol {
+typedef struct System_ELF32Assembly_SymbolEntry {
     System_UInt32  name;    /* Symbol name (string tbl index) */
     System_UInt32  value;    /* Symbol value */
     System_UInt32  size;    /* Symbol size */
     System_Char8  info;    /* Symbol type and binding */
     System_Char8  other;    /* Symbol visibility */
-    System_UInt16  sectionIndex;    /* Section index */
-} * System_ELF32Assembly_Symbol;
+    System_UInt16  index;    /* Section index */
+} * System_ELF32Assembly_SymbolEntry;
 
-export struct System_Type  System_ELF32Assembly_SymbolType;
+export struct System_Type  System_ELF32Assembly_SymbolEntryType;
 
 typedef struct System_ELF32Assembly_VersionDefinition {
     System_UInt16  version;    /* Version revision */
@@ -651,7 +649,7 @@ typedef struct System_ELF64Assembly_SectionHeader {
   System_UInt64  flags;        /* Section flags */
   System_UInt64  virtualAddress;        /* Section virtual address at execution */
   System_UInt64  offset;     /* Section file offset */
-  System_UInt64  sectionSize;        /* Section size in bytes */
+  System_UInt64  size;        /* Section size in bytes */
   System_UInt32  link;        /* Link to another section */
   System_UInt32  info;        /* Additional section information */
   System_UInt64  alignment;        /* Section alignment */
@@ -667,16 +665,16 @@ typedef struct System_ELF64Assembly_AuxValue {
 
 export struct System_Type  System_ELF64Assembly_AuxValueType;
 
-typedef struct System_ELF64Assembly_Symbol {
+typedef struct System_ELF64Assembly_SymbolEntry {
     System_UInt32  name;    /* Symbol name (string tbl index) */
     System_Char8  info;    /* Symbol type and binding */
     System_Char8  other;    /* Symbol visibility */
-    System_UInt16  sectionIndex;    /* Section index */
+    System_UInt16  index;    /* Section index */
     System_UInt64  value;    /* Symbol value */
     System_UInt64  size;    /* Symbol size */
-} * System_ELF64Assembly_Symbol;
+} * System_ELF64Assembly_SymbolEntry;
 
-export struct System_Type  System_ELF64Assembly_SymbolType;
+export struct System_Type  System_ELF64Assembly_SymbolEntryType;
 
 typedef struct System_ELF64Assembly_VersionDefinition {
     System_UInt16  version;    /* Version revision */
@@ -714,7 +712,7 @@ export struct System_Type  System_ELF64Assembly_DynamicEntryType;
 #define System_ELFAssembly_ProgramHeader  System_ELF32Assembly_ProgramHeader
 #define System_ELFAssembly_SectionHeader  System_ELF32Assembly_SectionHeader
 #define System_ELFAssembly_AuxValue  System_ELF32Assembly_AuxValue
-#define System_ELFAssembly_Symbol  System_ELF32Assembly_Symbol
+#define System_ELFAssembly_SymbolEntry  System_ELF32Assembly_SymbolEntry
 #define System_ELFAssembly_VersionDefinition  System_ELF32Assembly_VersionDefinition
 #define System_ELFAssembly_Verdaux  System_ELF32Assembly_Verdaux
 #define System_ELFAssembly_DynamicEntry  System_ELF32Assembly_DynamicEntry
@@ -726,7 +724,7 @@ export struct System_Type  System_ELF64Assembly_DynamicEntryType;
 #define System_ELFAssembly_ProgramHeader  System_ELF64Assembly_ProgramHeader
 #define System_ELFAssembly_SectionHeader  System_ELF64Assembly_SectionHeader
 #define System_ELFAssembly_AuxValue  System_ELF64Assembly_AuxValue
-#define System_ELFAssembly_Symbol  System_ELF64Assembly_Symbol
+#define System_ELFAssembly_SymbolEntry  System_ELF64Assembly_SymbolEntry
 #define System_ELFAssembly_VersionDefinition  System_ELF64Assembly_VersionDefinition
 #define System_ELFAssembly_Verdaux  System_ELF64Assembly_Verdaux
 #define System_ELFAssembly_DynamicEntry  System_ELF64Assembly_DynamicEntry

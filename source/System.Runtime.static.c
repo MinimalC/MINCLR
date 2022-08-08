@@ -1,16 +1,17 @@
 /* Gemeinfrei. Public Domain. */
 #if !defined(code_System_Runtime)
 asm(".text\n"
+".global System_Runtime_start\n"
 ".global _start\n"
 ".type _start,@function\n"
 "_start:\n"
-    "xor %rbp,%rbp\n"
-    "mov %rsp,%rdi\n"
-".weak System_Runtime_START\n"
-".hidden System_Runtime_START\n"
-    "lea System_Runtime_START(%rip),%rsi\n"
-    "and $-16,%rsp\n"
-    "jmp System_Runtime_start\n"
+"    xor %rbp,%rbp\n"
+"    mov %rsp,%rdi\n"
+".weak _DYNAMIC\n"
+".hidden _DYNAMIC\n"
+"    lea _DYNAMIC(%rip),%rsi\n"
+"    and $-16,%rsp\n"
+"    jmp System_Runtime_start\n"
 );
 #endif
 #if !defined(internal_System)
@@ -25,11 +26,13 @@ asm(".text\n"
 #if !defined(code_System_Runtime)
 #define code_System_Runtime
 
-void System_Runtime_start(Var  * stack) {
+void System_Runtime_start(Var * stack) {
 
     Size argc = (Size)*stack;
-    String8 * argv = (String8 *)(stack + 1);
-    String8 * envp = (argv + argc + 1);
+    String8 * argv = (String8 *)(++stack);
+    Size envc = 0;
+    String8 * envp = (String8 *)(stack =+ argc + 1);
+    while (*stack) { ++envc; ++stack; }
 
     int reture = false;
 
