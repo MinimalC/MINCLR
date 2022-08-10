@@ -26,6 +26,9 @@ asm(".text\n"
 #if !defined(have_System_Console)
 #include <min/System.Console.h>
 #endif
+#if !defined(have_System_Environment)
+#include <min/System.Environment.h>
+#endif
 #if !defined(code_System_Runtime)
 #define code_System_Runtime
 
@@ -43,6 +46,11 @@ void System_Runtime_start(Var * stack) {
     for (Size i = 0; i < envc; ++i)
         System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}", 2, i, envv[i]);
 #endif
+
+    for (Size i = 0; i < argc && i < System_Console_Arguments_Length; ++i)
+        System_Console_Arguments[i] = argv[i];
+    for (Size i = 0; i < envc && i < System_Environment_Arguments_Length; ++i)
+        System_Environment_Arguments[i] = envv[i];
 
     int reture = false;
     

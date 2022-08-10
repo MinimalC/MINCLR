@@ -195,4 +195,6 @@ void System_Debug_writeLine__message(const System_String8 format, ...) {
     System_IStream_writeLine__arguments((System_IStream)&System_Console_StdErr, format, argc, argv);
 }
 
+System_String8 System_Console_Arguments[System_Console_Arguments_Length] = { };
+
 #endif

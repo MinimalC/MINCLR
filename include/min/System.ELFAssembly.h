@@ -442,58 +442,6 @@ enum {
 
 export struct System_Type  System_ELFAssembly_DynamicTypeType;
 
-typedef unsigned System_ELFAssembly_AuxType;
-enum {
-    System_ELFAssembly_AuxType_NULL = 0,
-    System_ELFAssembly_AuxType_IGNORE = 1,
-    System_ELFAssembly_AuxType_EXECFD = 2,
-    System_ELFAssembly_AuxType_PHDR = 3,
-    System_ELFAssembly_AuxType_PHENT = 4,
-    System_ELFAssembly_AuxType_PHNUM = 5,
-    System_ELFAssembly_AuxType_PAGESZ = 6,
-    System_ELFAssembly_AuxType_BASE = 7,
-    System_ELFAssembly_AuxType_FLAGS = 8,
-    System_ELFAssembly_AuxType_ENTRY = 9,
-    System_ELFAssembly_AuxType_NOTELF = 10,
-    System_ELFAssembly_AuxType_UID = 11,
-    System_ELFAssembly_AuxType_EUID = 12,
-    System_ELFAssembly_AuxType_GID = 13,
-    System_ELFAssembly_AuxType_EGID = 14,
-    System_ELFAssembly_AuxType_CLKTCK = 17,
-    System_ELFAssembly_AuxType_PLATFORM = 15,
-    System_ELFAssembly_AuxType_HWCAP = 16,
-    System_ELFAssembly_AuxType_FPUCW = 18,
-    System_ELFAssembly_AuxType_DCACHEBSIZE = 19,
-    System_ELFAssembly_AuxType_ICACHEBSIZE = 20,
-    System_ELFAssembly_AuxType_UCACHEBSIZE = 21,
-    System_ELFAssembly_AuxType_IGNOREPPC = 22,
-    System_ELFAssembly_AuxType_SECURE = 23,
-    System_ELFAssembly_AuxType_BASE_PLATFORM = 24,
-    System_ELFAssembly_AuxType_RANDOM = 25,
-    System_ELFAssembly_AuxType_HWCAP2 = 26,
-    System_ELFAssembly_AuxType_EXECFN = 31,
-    System_ELFAssembly_AuxType_SYSINFO = 32,
-    System_ELFAssembly_AuxType_SYSINFO_EHDR = 33,
-    System_ELFAssembly_AuxValue_Current_Length_VALUE = System_ELFAssembly_AuxType_SYSINFO_EHDR,
-
-    System_ELFAssembly_AuxType_L1I_CACHESHAPE = 34,
-    System_ELFAssembly_AuxType_L1D_CACHESHAPE = 35,
-    System_ELFAssembly_AuxType_L2_CACHESHAPE = 36,
-    System_ELFAssembly_AuxType_L3_CACHESHAPE = 37,
-    System_ELFAssembly_AuxType_L1I_CACHESIZE = 40,
-    System_ELFAssembly_AuxType_L1I_CACHEGEOMETRY = 41,
-    System_ELFAssembly_AuxType_L1D_CACHESIZE = 42,
-    System_ELFAssembly_AuxType_L1D_CACHEGEOMETRY = 43,
-    System_ELFAssembly_AuxType_L2_CACHESIZE = 44,
-    System_ELFAssembly_AuxType_L2_CACHEGEOMETRY = 45,
-    System_ELFAssembly_AuxType_L3_CACHESIZE = 46,
-    System_ELFAssembly_AuxType_L3_CACHEGEOMETRY = 47,
-
-    System_ELFAssembly_AuxType_MINSIGSTKSZ = 51,
-};
-
-export struct System_Type  System_ELFAssembly_AuxTypeType;
-
 #endif
 #if !defined(have_System_ELF32Assembly)
 #define have_System_ELF32Assembly
@@ -555,12 +503,6 @@ typedef struct System_ELF32Assembly_SectionHeader {
 
 export struct System_Type  System_ELF32Assembly_SectionHeaderType;
 
-typedef struct System_ELF32Assembly_AuxValue {
-    System_UInt32 type;
-    System_UInt32 value;
-} * System_ELF32Assembly_AuxValue;
-
-export struct System_Type  System_ELF32Assembly_AuxValueType;
 
 typedef struct System_ELF32Assembly_SymbolEntry {
     System_UInt32  name;    /* Symbol name (string tbl index) */
@@ -658,13 +600,6 @@ typedef struct System_ELF64Assembly_SectionHeader {
 
 export struct System_Type  System_ELF64Assembly_SectionHeaderType;
 
-typedef struct System_ELF64Assembly_AuxValue {
-    System_UInt64 type;
-    System_UInt64 value;
-} * System_ELF64Assembly_AuxValue;
-
-export struct System_Type  System_ELF64Assembly_AuxValueType;
-
 typedef struct System_ELF64Assembly_SymbolEntry {
     System_UInt32  name;    /* Symbol name (string tbl index) */
     System_Char8  info;    /* Symbol type and binding */
@@ -711,7 +646,6 @@ export struct System_Type  System_ELF64Assembly_DynamicEntryType;
 #define System_ELFAssembly_Header  System_ELF32Assembly_Header
 #define System_ELFAssembly_ProgramHeader  System_ELF32Assembly_ProgramHeader
 #define System_ELFAssembly_SectionHeader  System_ELF32Assembly_SectionHeader
-#define System_ELFAssembly_AuxValue  System_ELF32Assembly_AuxValue
 #define System_ELFAssembly_SymbolEntry  System_ELF32Assembly_SymbolEntry
 #define System_ELFAssembly_VersionDefinition  System_ELF32Assembly_VersionDefinition
 #define System_ELFAssembly_Verdaux  System_ELF32Assembly_Verdaux
@@ -723,14 +657,11 @@ export struct System_Type  System_ELF64Assembly_DynamicEntryType;
 #define System_ELFAssembly_Header  System_ELF64Assembly_Header
 #define System_ELFAssembly_ProgramHeader  System_ELF64Assembly_ProgramHeader
 #define System_ELFAssembly_SectionHeader  System_ELF64Assembly_SectionHeader
-#define System_ELFAssembly_AuxValue  System_ELF64Assembly_AuxValue
 #define System_ELFAssembly_SymbolEntry  System_ELF64Assembly_SymbolEntry
 #define System_ELFAssembly_VersionDefinition  System_ELF64Assembly_VersionDefinition
 #define System_ELFAssembly_Verdaux  System_ELF64Assembly_Verdaux
 #define System_ELFAssembly_DynamicEntry  System_ELF64Assembly_DynamicEntry
 #endif
-
-export struct System_ELFAssembly_AuxValue System_ELFAssembly_AuxValue_Current[System_ELFAssembly_AuxValue_Current_Length_VALUE];
 
 #if defined(using_System)
 #define ELFAssembly  System_ELFAssembly

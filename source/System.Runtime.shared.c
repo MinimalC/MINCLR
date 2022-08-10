@@ -32,6 +32,9 @@ asm(".text\n"
 #if !defined(have_System_String8)
 #include <min/System.String8.h>
 #endif
+#if !defined(have_System_Environment)
+#include <min/System.Environment.h>
+#endif
 #if !defined(code_System_Runtime)
 #define code_System_Runtime
 
@@ -158,9 +161,6 @@ System_Console_writeLine("vDSO ELF_DynamicEntry({0:uint}): tag {1:string}, value
     return info->valid = true;
 }
 
-struct System_ELFAssembly_AuxValue System_ELFAssembly_AuxValue_Current[System_ELFAssembly_AuxValue_Current_Length_VALUE] = { };
-
-
 void System_Runtime_start(Var  * stack) {
 
     Size argc = (Size)*stack;
@@ -176,46 +176,51 @@ void System_Runtime_start(Var  * stack) {
         System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}", 2, i, envv[i]);
 #endif
 
-    System_ELFAssembly_AuxValue auxv = (System_ELFAssembly_AuxValue)(++stack);
+    for (Size i = 0; i < argc && i < System_Console_Arguments_Length; ++i)
+        System_Console_Arguments[i] = argv[i];
+    for (Size i = 0; i < envc && i < System_Environment_Arguments_Length; ++i)
+        System_Environment_Arguments[i] = envv[i];
+
+    System_Environment_AuxValue auxv = (System_Environment_AuxValue)(++stack);
     /*System_Var base = null;
     System_Size programHeader = 0, programHeaderSize = 0, programHeaderCount = 0, entryPoint = 0; */
-    struct vdso_info info = { .valid = false };
+    /* struct vdso_info info = { .valid = false }; */
     Size auxc = 0;
-    for (Size i = 0; i < 64 && auxv[i].type != System_ELFAssembly_AuxType_NULL; ++i) {
+    for (Size i = 0; i < System_Environment_AuxValues_Length && auxv[i].type != System_Environment_AuxType_NULL; ++i) {
         ++auxc;
-        System_ELFAssembly_AuxValue_Current[i].type = auxv[i].type;
-        System_ELFAssembly_AuxValue_Current[i].value = auxv[i].value;
-        if (auxv[i].type == System_ELFAssembly_AuxType_SYSINFO_EHDR) {
+        System_Environment_AuxValues[i].type = auxv[i].type;
+        System_Environment_AuxValues[i].value = auxv[i].value;
+        /*if (auxv[i].type == System_Environment_AuxType_SYSINFO_EHDR) {
             vdso_init_from_sysinfo_ehdr(&info, (System_ELFAssembly_Header)auxv[i].value);
             continue;
-        }
+        }*/
 #if DEBUG == DEBUG_System_Runtime
 System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i,
-    System_enum_getName(typeof(System_ELFAssembly_AuxType), auxv[i].type),
+    System_enum_getName(typeof(System_Environment_AuxType), auxv[i].type),
     auxv[i].value);
 #endif
         /*switch (auxv[i].type) {
-        case System_ELFAssembly_AuxType_BASE:
+        case System_Environment_AuxType_BASE:
             base = (System_Var)(auxv[i].value);
             break;
-        case System_ELFAssembly_AuxType_ENTRY:
+        case System_Environment_AuxType_ENTRY:
             entryPoint = (System_Size)(auxv[i].value);
             break;
-        **case System_ELFAssembly_AuxType_PAGESZ:
+        **case System_Environment_AuxType_PAGESZ:
             pageSize = (System_Size)(auxv[i].value);
             break;**
-        case System_ELFAssembly_AuxType_PHDR:
+        case System_Environment_AuxType_PHDR:
             programHeader = (System_Size)(auxv[i].value); 
             break;
-        case System_ELFAssembly_AuxType_PHENT:
+        case System_Environment_AuxType_PHENT:
             programHeaderSize = (System_Size)(auxv[i].value);
             break;
-        case System_ELFAssembly_AuxType_PHNUM:
+        case System_Environment_AuxType_PHNUM:
             programHeaderCount = (System_Size)(auxv[i].value); 
             break;
         } */
     }
-    int reture = info.valid;  /* info.valid; */
+    int reture = false; /* info.valid; */
 
 #if DEBUG == DEBUG_System_Runtime
     if (!reture) System_Console_writeLine__string("System_Runtime_start: No vDSO");

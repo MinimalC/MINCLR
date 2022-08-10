@@ -16,7 +16,7 @@
 #endif
 #if !defined(RELEASE)
 /* for developers */
-#define DEBUG  DEBUG_System_Console_Environment_Arguments
+#define DEBUG  1
 #else
 /* for users: release */
 #define DEBUG  0
