@@ -568,7 +568,7 @@ typedef struct System_ELF32Assembly_SymbolEntry {
     System_UInt32  size;    /* Symbol size */
     System_Char8  info;    /* Symbol type and binding */
     System_Char8  other;    /* Symbol visibility */
-    System_UInt16  index;    /* Section index */
+    System_UInt16  sectionIndex;    /* Section index */
 } * System_ELF32Assembly_SymbolEntry;
 
 export struct System_Type  System_ELF32Assembly_SymbolEntryType;
@@ -669,7 +669,7 @@ typedef struct System_ELF64Assembly_SymbolEntry {
     System_UInt32  name;    /* Symbol name (string tbl index) */
     System_Char8  info;    /* Symbol type and binding */
     System_Char8  other;    /* Symbol visibility */
-    System_UInt16  index;    /* Section index */
+    System_UInt16  sectionIndex;    /* Section index */
     System_UInt64  value;    /* Symbol value */
     System_UInt64  size;    /* Symbol size */
 } * System_ELF64Assembly_SymbolEntry;

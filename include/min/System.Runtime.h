@@ -7,7 +7,7 @@
 
 typedef int delegate(System_Runtime_main)(int argc, char * argv[]);
 
-import function(System_Runtime_main) System_Runtime_main;
+import int System_Runtime_main(int argc, char * argv[]);
 
 export void System_Runtime_start(System_Var  * stack);
 

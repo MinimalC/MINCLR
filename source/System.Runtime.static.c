@@ -23,6 +23,9 @@ asm(".text\n"
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>
 #endif
+#if !defined(have_System_Console)
+#include <min/System.Console.h>
+#endif
 #if !defined(code_System_Runtime)
 #define code_System_Runtime
 
@@ -31,19 +34,20 @@ void System_Runtime_start(Var * stack) {
     Size argc = (Size)*stack;
     String8 * argv = (String8 *)(++stack);
     Size envc = 0;
-    String8 * envp = (String8 *)(stack =+ argc + 1);
+    String8 * envv = (String8 *)(stack = stack + argc + 1);
     while (*stack) { ++envc; ++stack; }
 
-    int reture = false;
+#if DEBUG == DEBUG_System_Console_Environment_Arguments
+    for (Size i = 0; i < argc; ++i)
+        System_Console_writeLine("System_Console_Arguments({0:uint}): {1:string}", 2, i, argv[i]);
+    for (Size i = 0; i < envc; ++i)
+        System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}", 2, i, envv[i]);
+#endif
 
-    if (!System_Runtime_main) {
-        System_Debug_writeLine("System_Runtime_main not found.", 0);
-        goto termin;
-    }
+    int reture = false;
     
     reture = System_Runtime_main(argc, argv);
 
-termin:
     System_Syscall_terminate(reture);
 }
 
