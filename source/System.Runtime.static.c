@@ -53,8 +53,8 @@ void System_Runtime_start(Var * stack) {
         System_Environment_Arguments[i] = envv[i];
 
     int reture = false;
-    
-    reture = System_Runtime_main(argc, argv);
+
+    reture = System_Runtime_main(argc, argv, envv);
 
     System_Syscall_terminate(reture);
 }

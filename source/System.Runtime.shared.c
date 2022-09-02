@@ -77,11 +77,11 @@ Bool vdso_init_from_sysinfo_ehdr(vdso_info info, System_ELFAssembly_Header heade
         return false;  /* Wrong ELF class -- check ELF_BITS */
     }
 #if DEBUG == DEBUG_System_Runtime
-System_Console_write("vDSO ELF_Header: type {0:string}, machine {1:string}, version {2:uint}, entryPoint 0x{3:uint:hex}, size {4:uint}", 5, 
+System_Console_write("vDSO ELF_Header: type {0:string}, machine {1:string}, version {2:uint}, entryPoint 0x{3:uint:hex}, size {4:uint}", 5,
     System_enum_getName(typeof(System_ELFAssembly_AssemblyType), header->type),
     System_enum_getName(typeof(System_ELFAssembly_Machine), header->machine),
     header->version, header->entryPoint, header->size);
-System_Console_writeLine(", class {0:uint}, endianess {1:uint}, elfVersion {2:uint}, abi {3:string}", 4, 
+System_Console_writeLine(", class {0:uint}, endianess {1:uint}, elfVersion {2:uint}, abi {3:string}", 4,
     header->class, header->endianess, header->elfVersion,
     System_enum_getName(typeof(System_ELFAssembly_ABI), header->abi));
 #endif
@@ -100,7 +100,7 @@ System_Console_writeLine(", class {0:uint}, endianess {1:uint}, elfVersion {2:ui
             using = true;
         }
 #if DEBUG == DEBUG_System_Runtime
-System_Console_writeLine("vDSO ELF_ProgramHeader({0:uint}): used {1:bool}, type {2:string}, offset {3:uint}, virtualAddress {4:uint}, physicalAddress {5:uint}, fileSize {6:uint}, memorySize {7:uint}", 8, i, 
+System_Console_writeLine("vDSO ELF_ProgramHeader({0:uint}): used {1:bool}, type {2:string}, offset {3:uint}, virtualAddress {4:uint}, physicalAddress {5:uint}, fileSize {6:uint}, memorySize {7:uint}", 8, i,
     using, System_enum_getName(typeof(System_ELFAssembly_ProgramType), info->program[i].type),
     info->program[i].offset, info->program[i].virtualAddress, info->program[i].physicalAddress, info->program[i].fileSize, info->program[i].memorySize);
 #endif
@@ -142,7 +142,7 @@ System_Console_writeLine("vDSO ELF_ProgramHeader({0:uint}): used {1:bool}, type 
             break;
         }
 #if DEBUG == DEBUG_System_Runtime
-System_Console_writeLine("vDSO ELF_DynamicEntry({0:uint}): tag {1:string}, value {2:uint}", 3, i, 
+System_Console_writeLine("vDSO ELF_DynamicEntry({0:uint}): tag {1:string}, value {2:uint}", 3, i,
     System_enum_getName(typeof(System_ELFAssembly_DynamicType), info->dynamic[i].tag),
     info->dynamic[i].value);
 #endif
@@ -160,6 +160,9 @@ System_Console_writeLine("vDSO ELF_DynamicEntry({0:uint}): tag {1:string}, value
     /* That's all we need. */
     return info->valid = true;
 }
+
+
+import Var _DYNAMIC;
 
 void System_Runtime_start(Var  * stack) {
 
@@ -182,8 +185,8 @@ void System_Runtime_start(Var  * stack) {
         System_Environment_Arguments[i] = envv[i];
 
     System_Environment_AuxValue auxv = (System_Environment_AuxValue)(++stack);
-    /*System_Var base = null;
-    System_Size programHeader = 0, programHeaderSize = 0, programHeaderCount = 0, entryPoint = 0; */
+    System_Var base = null;
+    System_Size pageSize = 0, programHeader = 0, programHeaderSize = 0, programHeaderCount = 0, entryPoint = 0;
     /* struct vdso_info info = { .valid = false }; */
     Size auxc = 0;
     for (Size i = 0; i < System_Environment_AuxValues_Length && auxv[i].type != System_Environment_AuxType_NULL; ++i) {
@@ -199,57 +202,58 @@ System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}
     System_enum_getName(typeof(System_Environment_AuxType), auxv[i].type),
     auxv[i].value);
 #endif
-        /*switch (auxv[i].type) {
+        switch (auxv[i].type) {
         case System_Environment_AuxType_BASE:
             base = (System_Var)(auxv[i].value);
             break;
         case System_Environment_AuxType_ENTRY:
             entryPoint = (System_Size)(auxv[i].value);
             break;
-        **case System_Environment_AuxType_PAGESZ:
+        case System_Environment_AuxType_PAGESZ:
             pageSize = (System_Size)(auxv[i].value);
-            break;**
+            break;
         case System_Environment_AuxType_PHDR:
-            programHeader = (System_Size)(auxv[i].value); 
+            programHeader = (System_Size)(auxv[i].value);
             break;
         case System_Environment_AuxType_PHENT:
             programHeaderSize = (System_Size)(auxv[i].value);
             break;
         case System_Environment_AuxType_PHNUM:
-            programHeaderCount = (System_Size)(auxv[i].value); 
+            programHeaderCount = (System_Size)(auxv[i].value);
             break;
-        } */
+        }
     }
     int reture = false; /* info.valid; */
 
 #if DEBUG == DEBUG_System_Runtime
-    if (!reture) System_Console_writeLine__string("System_Runtime_start: No vDSO");
+    /* if (!reture) System_Console_writeLine__string("System_Runtime_start: No vDSO"); */
 
     /* TODO */
     System_ELFAssembly_Header header = (System_ELFAssembly_Header)base;
 
-System_Console_write("my ELF_Header: type {0:string}, machine {1:string}, version {2:uint}, entryPoint 0x{3:uint:hex}, size {4:uint}", 5, 
+System_Console_write("my ELF_Header: type {0:string}, machine {1:string}, version {2:uint}, entryPoint 0x{3:uint:hex}, size {4:uint}", 5,
     System_enum_getName(typeof(System_ELFAssembly_AssemblyType), header->type),
     System_enum_getName(typeof(System_ELFAssembly_Machine), header->machine),
     header->version, header->entryPoint, header->size);
-System_Console_writeLine(", class {0:uint}, endianess {1:uint}, elfVersion {2:uint}, abi {3:string}", 4, 
+System_Console_writeLine(", class {0:uint}, endianess {1:uint}, elfVersion {2:uint}, abi {3:string}", 4,
     header->class, header->endianess, header->elfVersion,
     System_enum_getName(typeof(System_ELFAssembly_ABI), header->abi));
 
     System_ELFAssembly_ProgramHeader program = (System_ELFAssembly_ProgramHeader)programHeader;
 
     for (Size using = false, i = 0; i < programHeaderCount; using = false, ++i) {
-System_Console_writeLine("my ELF_ProgramHeader({0:uint}): used {1:bool}, type {2:string}, offset {3:uint}, virtualAddress {4:uint}, physicalAddress {5:uint}, fileSize {6:uint}, memorySize {7:uint}", 8, i, 
+System_Console_writeLine("my ELF_ProgramHeader({0:uint}): used {1:bool}, type {2:string}, offset {3:uint}, virtualAddress {4:uint}, physicalAddress {5:uint}, fileSize {6:uint}, memorySize {7:uint}", 8, i,
     using, System_enum_getName(typeof(System_ELFAssembly_ProgramType), program[i].type),
     program[i].offset, program[i].virtualAddress, program[i].physicalAddress, program[i].fileSize, program[i].memorySize);
     }
 #endif
 
     function_System_Runtime_main entry = &System_Runtime_main;
+    System_Var dynamic = &_DYNAMIC;
 #if DEBUG == DEBUG_System_Runtime
-System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}, return {3:uint}, entry 0x{4:uint:hex}", 5, argc, envc, auxc, reture, entry);
+System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}, return {3:uint}, entry 0x{4:uint:hex}, dynamic 0x{5:uint:hex}", 6, argc, envc, auxc, reture, entry, dynamic);
 #endif
-    reture = entry(argc, argv);
+    reture = entry(argc, argv, envv);
 
     System_Syscall_terminate(reture);
 }

@@ -3,10 +3,10 @@
 
 const Size sizeof_knownPrimes = 0x7FFFFFU;
 
-internal UInt64 * knownPrimes;
-internal UInt64 * knownPrimes_hoch2;
+UInt64 * knownPrimes;
+UInt64 * knownPrimes_hoch2;
 
-internal Size knownPrimesL = 0U;
+Size knownPrimesL = 0U;
 
 Bool Eratosthenes_IsPrime(UInt64 n, UInt64 * minimalquotient, UInt64 * quotient) {
 

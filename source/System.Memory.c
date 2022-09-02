@@ -196,10 +196,8 @@ System_Console_writeLine("new System_VarArray: length {0:uint}", 1, mem64k->leng
 #if DEBUG == DEBUG_System_Memory
                 mem64h->type = typeof(System_Memory_Page);
 System_Console_writeLine("new System_Memory_Page: pageSize {0:uint}, payload {1:uint}", 2, mem64h->pageSize, mem64h->payload);
-#endif
             }
             else {
-#if DEBUG == DEBUG_System_Memory
 System_Console_writeLine("using System_Memory_Page: pageSize {0:uint}, payload {1:uint}", 2, mem64h->pageSize, mem64h->payload);
 #endif
             }
@@ -284,7 +282,7 @@ Bool System_Memory_isAllocated(Var that) {
     Debug_assert(that);
 
     static const Size memory_length = sizeof_array(System_Memory_ProcessVars);
-    
+
     System_VarArray memory;
     for (Size i = 0; i < memory_length; ++i) {
         memory = System_Memory_ProcessVars[i];

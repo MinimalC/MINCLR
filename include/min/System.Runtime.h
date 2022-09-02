@@ -5,9 +5,9 @@
 #if !defined(have_System_Runtime)
 #define have_System_Runtime
 
-typedef int delegate(System_Runtime_main)(int argc, char * argv[]);
+typedef int delegate(System_Runtime_main)(int argc, char * argv[], char * envv[]);
 
-import int System_Runtime_main(int argc, char * argv[]);
+import int System_Runtime_main(int argc, char * argv[], char * envv[]);
 
 export void System_Runtime_start(System_Var  * stack);
 
