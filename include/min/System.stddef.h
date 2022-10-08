@@ -33,11 +33,6 @@ enum { false, true } ;
 
 #if defined(MSVCC)
 #define import  extern __declspec(dllimport)
-#if defined(internal_System)
-#define export  __declspec(dllexport)
-#else
-#define export  import
-#endif
 #define align(x)  __declspec(align(x))
 #define artificial /* artificial */
 #define asm /* asm */
@@ -51,11 +46,6 @@ enum { false, true } ;
 
 #else /* if GNUCC */
 #define import  extern
-#if defined(internal_System)
-#define export  __attribute__((visibility("default")))
-#else
-#define export  import
-#endif
 #define align(x)  __attribute__((aligned(x)))
 #define artificial  __attribute__((artificial))
 #define asm  __asm__
@@ -66,6 +56,10 @@ enum { false, true } ;
 #define nothrow  __attribute__((nothrow))
 /* #define thread  _Thread_local */
 #define weak  __attribute__((weak))
+#endif
+
+#if !defined(export)
+#define export  import
 #endif
 
 #if !defined(noreturn)

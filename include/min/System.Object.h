@@ -5,16 +5,9 @@
 #if !defined(have_System_Object)
 #define have_System_Object
 
-/* struct System_Object_BitConfig {
-
-    unsigned  toBeDisposed : 1;
-}; */
-
 typedef System_fixed struct System_Object {
 
     System_Type  type;
-
-    /* struct System_Object_BitConfig  bitConfig; */
 
 } * System_Object;
 

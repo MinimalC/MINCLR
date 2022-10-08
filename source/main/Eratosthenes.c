@@ -58,7 +58,7 @@ FALSE:
 STRING8 text_n = " n";
 STRING8 text_P = " P";
 
-int main(int argc, char *argv[]) {
+int System_Runtime_main(int argc, char *argv[]) {
 /* System_main(Eratosthenes,args) { */
 
 	knownPrimes = (UInt64 *)Memory_allocArray(typeof(UInt64), sizeof_knownPrimes);
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 	knownPrimesL = 4U;
 
     System_Char8 nP[] = "n                    P                     \n";
-    System_Char8 decimol[System_UInt64_String8base10Length_DEFAULT - 1] = { };
+    System_Char8 decimol[System_UInt64_String8base10Length_DEFAULT + 1] = { };
 
 	UInt64 n = 5U;
 	UInt64 minimalquotient = 0, quotient = 0; /* knownPrimesL_remainder = 0; */

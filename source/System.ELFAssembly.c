@@ -23,6 +23,14 @@ struct System_Type  System_ELF64AssemblyType = { .base = { .type = typeof(System
 #if !defined(code_System_ELFAssembly)
 #define code_System_ELFAssembly
 
+
+
+
+System_String8  System_Environment_Arguments[System_Environment_Arguments_Length] = { };
+
+struct System_Environment_AuxValue  System_Environment_AuxValues[System_Environment_AuxValues_Length] = { };
+
+
 struct System_Type_FieldInfo  System_ELFAssembly_ABITypeFields[] = {
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "SysV", .value = System_ELFAssembly_ABI_SysV },
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "HPUX", .value = System_ELFAssembly_ABI_HPUX },
@@ -494,9 +502,5 @@ struct System_Type  System_Environment_AuxTypeType = { .base = { .type = typeof(
     },
 };
 
-
-System_String8  System_Environment_Arguments[System_Environment_Arguments_Length] = { };
-
-struct System_Environment_AuxValue  System_Environment_AuxValues[System_Environment_AuxValues_Length] = { };
 
 #endif

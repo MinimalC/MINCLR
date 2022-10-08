@@ -16,7 +16,7 @@
 #endif
 #if !defined(RELEASE)
 /* for developers */
-#define DEBUG  DEBUG_System_Runtime
+#define DEBUG  1
 #else
 /* for users: release */
 #define DEBUG  0
@@ -26,3 +26,5 @@
 #if !defined(have_System_config)
 #warning have_System_config is undefined. Run make.sh to implicitly build this project using config.sh and including config.h.
 #endif */
+
+#include <min/import.h>

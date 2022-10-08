@@ -20,16 +20,9 @@
 #if !defined(have_System_Type)
 #define have_System_Type
 
-/* static class System.Type */
-
-
-
 typedef System_fixed struct System_Type  * System_Type;
 
 #include "System.Object.h"
-
-/* static class System.Type.FunctionInfo */
-
 
 typedef System_fixed struct System_Type_FunctionInfo {
 	struct System_Object  base;
@@ -42,9 +35,6 @@ typedef System_fixed struct System_Type_FunctionInfo {
 
 }  * System_Type_FunctionInfo;
 
-/* static class System.Type.FunctionInfoArray */
-
-
 typedef System_fixed struct System_Type_FunctionInfoArray {
 	struct System_Object base;
 
@@ -53,9 +43,6 @@ typedef System_fixed struct System_Type_FunctionInfoArray {
 	struct System_Type_FunctionInfo  (* value)[];
 
 }  * System_Type_FunctionInfoArray;
-
-/* static class System.Type.InterfaceInfo */
-
 
 typedef System_fixed struct System_Type_InterfaceInfo {
 	struct System_Object  base;
@@ -68,9 +55,6 @@ typedef System_fixed struct System_Type_InterfaceInfo {
 
 }  * System_Type_InterfaceInfo;
 
-/* static class System.Type.InterfaceInfoArray */
-
-
 typedef System_fixed struct System_Type_InterfaceInfoArray {
 	struct System_Object base;
 
@@ -80,10 +64,6 @@ typedef System_fixed struct System_Type_InterfaceInfoArray {
 
 }  * System_Type_InterfaceInfoArray;
 
-
-/* static class System.Type.FieldInfo */
-
-
 typedef System_fixed struct System_Type_FieldInfo {
 	struct System_Object  base;
 
@@ -92,9 +72,6 @@ typedef System_fixed struct System_Type_FieldInfo {
     System_IntPtr  value;
 
 }  * System_Type_FieldInfo;
-
-/* static class System.Type.FieldInfoArray */
-
 
 typedef System_fixed struct System_Type_FieldInfoArray {
 	struct System_Object base;
