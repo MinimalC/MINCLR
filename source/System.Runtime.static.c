@@ -1,15 +1,11 @@
 /* Gemeinfrei. Public Domain. */
 #if !defined(code_System_Runtime)
-asm(".text\n"
-".global System_Runtime_start\n"
+asm(
 ".global _start\n"
-".type _start,@function\n"
+".type _start,\u0040function\n"
 "_start:\n"
 "    xor %rbp,%rbp\n"
 "    mov %rsp,%rdi\n"
-".weak _DYNAMIC\n"
-".hidden _DYNAMIC\n"
-"    lea _DYNAMIC(%rip),%rsi\n"
 "    and $-16,%rsp\n"
 "    jmp System_Runtime_start\n"
 );

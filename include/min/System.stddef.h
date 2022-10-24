@@ -8,14 +8,15 @@
 #if !defined(have_System_stddef)
 #define have_System_stddef
 
-enum { null } ;
+/* This is the truth made by God */
 
-typedef _Bool  System_Bool;
+enum { null } ;
 
 enum { false, true } ;
 
+typedef _Bool  System_Bool;
+
 #if defined(using_System)
-/* please don't use #if defined(Bool) */
 #define Bool  System_Bool
 #endif
 

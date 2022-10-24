@@ -6,27 +6,27 @@
 
 #define System_ELFAssembly_Magic  "\177ELF"
 
-typedef unsigned System_ELFAssembly_Class;
+typedef System_UInt8 System_ELFAssembly_Class;
 enum {
     System_ELFAssembly_Class_None,
     System_ELFAssembly_Class_32,
     System_ELFAssembly_Class_64,
 };
 
-typedef unsigned System_ELFAssembly_Endianess;
+typedef System_UInt8 System_ELFAssembly_Endianess;
 enum {
     System_ELFAssembly_Endianess_None,
     System_ELFAssembly_Endianess_Little,
     System_ELFAssembly_Endianess_Big,
 };
 
-typedef unsigned System_ELFAssembly_Version;
+typedef System_UInt8 System_ELFAssembly_Version;
 enum {
     System_ELFAssembly_Version_None,
     System_ELFAssembly_Version_Current,
 };
 
-typedef unsigned System_ELFAssembly_ABI;
+typedef System_UInt8 System_ELFAssembly_ABI;
 enum {
     System_ELFAssembly_ABI_SysV,
     System_ELFAssembly_ABI_HPUX,
@@ -47,12 +47,12 @@ enum {
 
 export struct System_Type  System_ELFAssembly_ABIType;
 
-typedef unsigned System_ELFAssembly_AssemblyType;
+typedef System_UInt16 System_ELFAssembly_AssemblyType;
 enum {
     System_ELFAssembly_AssemblyType_None,
     System_ELFAssembly_AssemblyType_Relocatable,
     System_ELFAssembly_AssemblyType_Executable,
-    System_ELFAssembly_AssemblyType_Shared,
+    System_ELFAssembly_AssemblyType_Dynamic,
     System_ELFAssembly_AssemblyType_Core,
     System_ELFAssembly_AssemblyType_OSSpecificLow = 0xfe00,
     System_ELFAssembly_AssemblyType_OSSpecificHigh = 0xfeff,
@@ -62,7 +62,7 @@ enum {
 
 export struct System_Type  System_ELFAssembly_AssemblyTypeType;
 
-typedef unsigned System_ELFAssembly_Machine;
+typedef System_UInt16 System_ELFAssembly_Machine;
 enum {
     System_ELFAssembly_Machine_None,
     System_ELFAssembly_Machine_M32 = 1,    /* AT&T WE 32100 */
@@ -260,7 +260,7 @@ enum {
 
 export struct System_Type  System_ELFAssembly_MachineType;
 
-typedef unsigned System_ELFAssembly_ProgramType;
+typedef System_UInt32 System_ELFAssembly_ProgramType;
 enum {
     System_ELFAssembly_ProgramType_Null,
     System_ELFAssembly_ProgramType_Loadable,
@@ -279,7 +279,7 @@ enum {
 
 export struct System_Type  System_ELFAssembly_ProgramTypeType;
 
-typedef unsigned System_ELFAssembly_ProgramFlags;
+typedef System_UInt32 System_ELFAssembly_ProgramFlags;
 enum {
     System_ELFAssembly_ProgramFlags_None,
     System_ELFAssembly_ProgramFlags_Executable,  /* Segment is executable */
@@ -291,7 +291,7 @@ enum {
 
 export struct System_Type  System_ELFAssembly_ProgramFlagsType;
 
-typedef unsigned System_ELFAssembly_SectionType;
+typedef System_UInt32 System_ELFAssembly_SectionType;
 enum {
     System_ELFAssembly_SectionType_NULL = 0, /* Section header table entry unused */
     System_ELFAssembly_SectionType_PROGBITS = 1, /* Program data */
@@ -333,7 +333,7 @@ enum {
 
 export struct System_Type  System_ELFAssembly_SectionTypeType;
 
-typedef unsigned System_ELFAssembly_DynamicType;
+typedef System_UInt32 System_ELFAssembly_DynamicType;
 enum {
     System_ELFAssembly_DynamicType_NULL = 0,    /* Marks end of dynamic section */
     System_ELFAssembly_DynamicType_NEEDED = 1,    /* Name of needed library */
@@ -442,6 +442,57 @@ enum {
 
 export struct System_Type  System_ELFAssembly_DynamicTypeType;
 
+/* AMD x86-64 relocations.  */
+typedef System_UInt32 System_ELFAssembly_AMD64Relocation;
+enum {
+    System_ELFAssembly_AMD64Relocation_NONE = 0,  /* No reloc */
+    System_ELFAssembly_AMD64Relocation_64 = 1,  /* Direct 64 bit  */
+    System_ELFAssembly_AMD64Relocation_PC32 = 2,  /* PC relative 32 bit signed */
+    System_ELFAssembly_AMD64Relocation_GOT32 = 3,  /* 32 bit GOT entry */
+    System_ELFAssembly_AMD64Relocation_PLT32 = 4,  /* 32 bit PLT address */
+    System_ELFAssembly_AMD64Relocation_COPY = 5,  /* Copy symbol at runtime */
+    System_ELFAssembly_AMD64Relocation_GLOB_DAT = 6,  /* Create GOT entry */
+    System_ELFAssembly_AMD64Relocation_JUMP_SLOT = 7,  /* Create PLT entry */
+    System_ELFAssembly_AMD64Relocation_RELATIVE = 8,  /* Adjust by program base */
+    System_ELFAssembly_AMD64Relocation_GOTPCREL = 9,  /* 32 bit signed PC relative offset to GOT */
+    System_ELFAssembly_AMD64Relocation_32 = 10,  /* Direct 32 bit zero extended */
+    System_ELFAssembly_AMD64Relocation_32S = 11,  /* Direct 32 bit sign extended */
+    System_ELFAssembly_AMD64Relocation_16 = 12,  /* Direct 16 bit zero extended */
+    System_ELFAssembly_AMD64Relocation_PC16 = 13,  /* 16 bit sign extended pc relative */
+    System_ELFAssembly_AMD64Relocation_8 = 14,  /* Direct 8 bit sign extended  */
+    System_ELFAssembly_AMD64Relocation_PC8 = 15,  /* 8 bit sign extended pc relative */
+    System_ELFAssembly_AMD64Relocation_DTPMOD64 = 16,  /* ID of module containing symbol */
+    System_ELFAssembly_AMD64Relocation_DTPOFF64 = 17,  /* Offset in module's TLS block */
+    System_ELFAssembly_AMD64Relocation_TPOFF64 = 18,  /* Offset in initial TLS block */
+    System_ELFAssembly_AMD64Relocation_TLSGD = 19,  /* 32 bit signed PC relative offset to two GOT entries for GD symbol */
+    System_ELFAssembly_AMD64Relocation_TLSLD = 20,  /* 32 bit signed PC relative offset to two GOT entries for LD symbol */
+    System_ELFAssembly_AMD64Relocation_DTPOFF32 = 21,  /* Offset in TLS block */
+    System_ELFAssembly_AMD64Relocation_GOTTPOFF = 22,  /* 32 bit signed PC relative offset to GOT entry for IE symbol */
+    System_ELFAssembly_AMD64Relocation_TPOFF32 = 23,  /* Offset in initial TLS block */
+    System_ELFAssembly_AMD64Relocation_PC64 = 24,  /* PC relative 64 bit */
+    System_ELFAssembly_AMD64Relocation_GOTOFF64 = 25,  /* 64 bit offset to GOT */
+    System_ELFAssembly_AMD64Relocation_GOTPC32 = 26,  /* 32 bit signed pc relative offset to GOT */
+    System_ELFAssembly_AMD64Relocation_GOT64 = 27,  /* 64-bit GOT entry offset */
+    System_ELFAssembly_AMD64Relocation_GOTPCREL64 = 28,  /* 64-bit PC relative offset to GOT entry */
+    System_ELFAssembly_AMD64Relocation_GOTPC64 = 29,  /* 64-bit PC relative offset to GOT */
+    System_ELFAssembly_AMD64Relocation_GOTPLT64 = 30,  /* like GOT64, says PLT entry needed */
+    System_ELFAssembly_AMD64Relocation_PLTOFF64 = 31,  /* 64-bit GOT relative offset to PLT entry */
+    System_ELFAssembly_AMD64Relocation_SIZE32 = 32,  /* Size of symbol plus 32-bit addend */
+    System_ELFAssembly_AMD64Relocation_SIZE64 = 33,  /* Size of symbol plus 64-bit addend */
+    System_ELFAssembly_AMD64Relocation_GOTPC32_TLSDESC = 34,  /* GOT offset for TLS descriptor.  */
+    System_ELFAssembly_AMD64Relocation_TLSDESC_CALL = 35,  /* Marker for call through TLS descriptor.  */
+    System_ELFAssembly_AMD64Relocation_TLSDESC = 36,  /* TLS descriptor.  */
+    System_ELFAssembly_AMD64Relocation_IRELATIVE = 37,  /* Adjust indirectly by program base */
+    System_ELFAssembly_AMD64Relocation_RELATIVE64 = 38,  /* 64-bit adjust by program base */
+    /* 39 Reserved was R_X86_64_PC32_BND */
+    /* 40 Reserved was R_X86_64_PLT32_BND */
+    System_ELFAssembly_AMD64Relocation_GOTPCRELX = 41,  /* Load from 32 bit signed pc relative offset to GOT entry without REX prefix, relaxable.  */
+    System_ELFAssembly_AMD64Relocation_REX_GOTPCRELX = 42,  /* Load from 32 bit signed pc relative offset to GOT entry with REX prefix, relaxable.  */
+    /* System_ELFAssembly_AMD64Relocation_NUM = 43 */
+};
+
+export struct System_Type  System_ELFAssembly_AMD64RelocationType;
+
 #endif
 #if !defined(have_System_ELF32Assembly)
 #define have_System_ELF32Assembly
@@ -450,13 +501,13 @@ export struct System_Type  System_ELF32AssemblyType;
 
 typedef struct System_ELF32Assembly_Header {
     struct {
-        System_Char8  magic[4];
-        System_Char8  class;
-        System_Char8  endianess;
-        System_Char8  elfVersion;
-        System_Char8  abi;
-        System_Char8  abiVersion;
-        System_Char8  __reserved[7];
+        System_UInt8  magic[4];
+        System_UInt8  class;
+        System_UInt8  endianess;
+        System_UInt8  elfVersion;
+        System_UInt8  abi;
+        System_UInt8  abiVersion;
+        System_UInt8  __reserved[7];
     };
     System_UInt16    type;               /* Object file type */
     System_UInt16    machine;            /* Architecture */
@@ -508,8 +559,8 @@ typedef struct System_ELF32Assembly_SymbolEntry {
     System_UInt32  name;    /* Symbol name (string tbl index) */
     System_UInt32  value;    /* Symbol value */
     System_UInt32  size;    /* Symbol size */
-    System_Char8  info;    /* Symbol type and binding */
-    System_Char8  other;    /* Symbol visibility */
+    System_UInt8  info;    /* Symbol type and binding */
+    System_UInt8  other;    /* Symbol visibility */
     System_UInt16  sectionIndex;    /* Section index */
 } * System_ELF32Assembly_SymbolEntry;
 
@@ -543,17 +594,15 @@ typedef struct System_ELF32Assembly_Verdaux {
 #if !defined(have_System_ELF64Assembly)
 #define have_System_ELF64Assembly
 
-export struct System_Type  System_ELF64AssemblyType;
-
 typedef struct System_ELF64Assembly_Header {
     struct {
-        System_Char8  magic[4];
-        System_Char8  class;
-        System_Char8  endianess;
-        System_Char8  elfVersion;
-        System_Char8  abi;
-        System_Char8  abiVersion;
-        System_Char8  __reserved[7];
+        System_UInt8  magic[4];
+        System_UInt8  class;
+        System_UInt8  endianess;
+        System_UInt8  elfVersion;
+        System_UInt8  abi;
+        System_UInt8  abiVersion;
+        System_UInt8  __reserved[7];
     };
     System_UInt16    type;               /* Object file type */
     System_UInt16    machine;            /* Architecture */
@@ -602,8 +651,8 @@ export struct System_Type  System_ELF64Assembly_SectionHeaderType;
 
 typedef struct System_ELF64Assembly_SymbolEntry {
     System_UInt32  name;    /* Symbol name (string tbl index) */
-    System_Char8  info;    /* Symbol type and binding */
-    System_Char8  other;    /* Symbol visibility */
+    System_UInt8  info;    /* Symbol type and binding */
+    System_UInt8  other;    /* Symbol visibility */
     System_UInt16  sectionIndex;    /* Section index */
     System_UInt64  value;    /* Symbol value */
     System_UInt64  size;    /* Symbol size */
@@ -635,6 +684,45 @@ typedef struct System_ELF64Assembly_DynamicEntry {
 } * System_ELF64Assembly_DynamicEntry;
 
 export struct System_Type  System_ELF64Assembly_DynamicEntryType;
+
+typedef struct System_ELF64Assembly_Relocation {
+    System_UInt64  offset;
+    System_UInt32  info;
+    System_UInt32  type;
+} * System_ELF64Assembly_Relocation;
+
+export struct System_Type  System_ELF64Assembly_RelocationType;
+
+typedef struct System_ELF64Assembly_AddendRelocation {
+    System_UInt64  offset;
+    System_UInt32  type;
+    System_UInt32  info;
+    System_Int64  addend;
+} * System_ELF64Assembly_AddendRelocation;
+
+export struct System_Type  System_ELF64Assembly_AddendRelocationType;
+
+typedef struct System_ELF64Assembly {
+    struct System_Object base;
+
+    struct System_ELF64Assembly_Header header;
+
+    struct System_ELF64Assembly_ProgramHeader programs[32];
+
+    struct System_ELF64Assembly_DynamicEntry dynamics[32];
+
+    struct System_ELF64Assembly_SectionHeader sections[32];
+
+    System_Char8 strings[System_UInt16_Max];
+
+} * System_ELF64Assembly;
+
+export struct System_Type  System_ELF64AssemblyType;
+
+export void  System_ELF64Assembly_load(System_ELF64Assembly assembly, System_String8 name);
+export void  System_ELF64Assembly_link(System_ELF64Assembly assembly, System_String8 name);
+export void System_ELF64Assembly_linkDynamic(System_Var base, System_ELF64Assembly_DynamicEntry dynamics, System_Size dynamicsCount, System_UInt32 dynamicFlags);
+export void System_ELF64Assembly_applyRelocations(System_Var base, System_ELF64Assembly_AddendRelocation relocation, System_Size relocationCount, System_ELF64Assembly_SymbolEntry symbols, System_String8 strings);
 
 #endif
 #if !defined(have_System_ELFAssembly)

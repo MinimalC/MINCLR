@@ -1,15 +1,14 @@
 /* Gemeinfrei. Public Domain. */
 #if !defined(code_System_Runtime)
-asm(".text\n"
-".global System_Runtime_start\n"
+asm(
 ".global _start\n"
-".type _start,@function\n"
+".type _start,\u0040function\n"
 "_start:\n"
 "    xor %rbp,%rbp\n"
 "    mov %rsp,%rdi\n"
-".weak _DYNAMIC\n"
+/*".weak _DYNAMIC\n"
 ".hidden _DYNAMIC\n"
-"    lea _DYNAMIC(%rip),%rsi\n"
+"    lea _DYNAMIC(%rip),%rsi\n"*/
 "    and $-16,%rsp\n"
 "    jmp System_Runtime_start\n"
 );
@@ -76,7 +75,7 @@ Bool vdso_init_from_sysinfo_ehdr(vdso_info info, System_ELFAssembly_Header heade
     if (header->class != (System_Size_Width == 32 ? System_ELFAssembly_Class_32 : System_ELFAssembly_Class_64)) {
         return false;  /* Wrong ELF class -- check ELF_BITS */
     }
-#if DEBUG == DEBUG_System_Runtime
+#if DEBUG
 System_Console_write("vDSO ELF_Header: type {0:string}, machine {1:string}, version {2:uint}, entryPoint 0x{3:uint:hex}, size {4:uint}", 5,
     System_enum_getName(typeof(System_ELFAssembly_AssemblyType), header->type),
     System_enum_getName(typeof(System_ELFAssembly_Machine), header->machine),
@@ -99,7 +98,7 @@ System_Console_writeLine(", class {0:uint}, endianess {1:uint}, elfVersion {2:ui
             info->dynamicCount = info->program[i].memorySize / sizeof(struct System_ELFAssembly_DynamicEntry);
             using = true;
         }
-#if DEBUG == DEBUG_System_Runtime
+#if DEBUG
 System_Console_writeLine("vDSO ELF_ProgramHeader({0:uint}): used {1:bool}, type {2:string}, offset {3:uint}, virtualAddress {4:uint}, physicalAddress {5:uint}, fileSize {6:uint}, memorySize {7:uint}", 8, i,
     using, System_enum_getName(typeof(System_ELFAssembly_ProgramType), info->program[i].type),
     info->program[i].offset, info->program[i].virtualAddress, info->program[i].physicalAddress, info->program[i].fileSize, info->program[i].memorySize);
@@ -141,7 +140,7 @@ System_Console_writeLine("vDSO ELF_ProgramHeader({0:uint}): used {1:bool}, type 
             info->verdef = (System_ELFAssembly_VersionDefinition)((System_Size)info->dynamic[i].value + info->load_offset);
             break;
         }
-#if DEBUG == DEBUG_System_Runtime
+#if DEBUG
 System_Console_writeLine("vDSO ELF_DynamicEntry({0:uint}): tag {1:string}, value {2:uint}", 3, i,
     System_enum_getName(typeof(System_ELFAssembly_DynamicType), info->dynamic[i].tag),
     info->dynamic[i].value);
@@ -163,6 +162,14 @@ System_Console_writeLine("vDSO ELF_DynamicEntry({0:uint}): tag {1:string}, value
 
 
 import Var _DYNAMIC;
+
+#define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
+
+Size Environment_GetGlobalOffsetTable() {
+    Size reture;
+    asm("lea _GLOBAL_OFFSET_TABLE_(%%rip),%0" : "=r"(reture) );
+    return reture;
+}
 
 void System_Runtime_start(Var  * stack) {
 
@@ -197,7 +204,7 @@ void System_Runtime_start(Var  * stack) {
             vdso_init_from_sysinfo_ehdr(&info, (System_ELFAssembly_Header)auxv[i].value);
             continue;
         }*/
-#if DEBUG == DEBUG_System_Runtime
+#if DEBUG == DEBUG_System_Console_Environment_Arguments
 System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i,
     System_enum_getName(typeof(System_Environment_AuxType), auxv[i].type),
     auxv[i].value);
@@ -225,10 +232,10 @@ System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}
     }
     int reture = false; /* info.valid; */
 
-#if DEBUG == DEBUG_System_Runtime
+#if DEBUG
     /* if (!reture) System_Console_writeLine__string("System_Runtime_start: No vDSO"); */
 
-    /* TODO */
+    /* TODO
     System_ELFAssembly_Header header = (System_ELFAssembly_Header)base;
 
 System_Console_write("my ELF_Header: type {0:string}, machine {1:string}, version {2:uint}, entryPoint 0x{3:uint:hex}, size {4:uint}", 5,
@@ -237,20 +244,116 @@ System_Console_write("my ELF_Header: type {0:string}, machine {1:string}, versio
     header->version, header->entryPoint, header->size);
 System_Console_writeLine(", class {0:uint}, endianess {1:uint}, elfVersion {2:uint}, abi {3:string}", 4,
     header->class, header->endianess, header->elfVersion,
-    System_enum_getName(typeof(System_ELFAssembly_ABI), header->abi));
+    System_enum_getName(typeof(System_ELFAssembly_ABI), header->abi)); */
 
     System_ELFAssembly_ProgramHeader program = (System_ELFAssembly_ProgramHeader)programHeader;
+    base = (Var)ROUNDDOWN(programHeader, 4096);
+    System_ELF64Assembly_DynamicEntry dynamics = null;
+    System_Size dynamicsCount = 0;
+    System_UInt32 dynamicFlags = 0;
 
-    for (Size using = false, i = 0; i < programHeaderCount; using = false, ++i) {
-System_Console_writeLine("my ELF_ProgramHeader({0:uint}): used {1:bool}, type {2:string}, offset {3:uint}, virtualAddress {4:uint}, physicalAddress {5:uint}, fileSize {6:uint}, memorySize {7:uint}", 8, i,
-    using, System_enum_getName(typeof(System_ELFAssembly_ProgramType), program[i].type),
+    for (Size i = 0; i < programHeaderCount; ++i) {
+System_Console_writeLine("my ELF_ProgramHeader({0:uint}): type {1:string}, offset {2:uint}, virtualAddress {3:uint}, physicalAddress {4:uint}, fileSize {5:uint}, memorySize {6:uint}", 7, i,
+    System_enum_getName(typeof(System_ELFAssembly_ProgramType), program[i].type),
     program[i].offset, program[i].virtualAddress, program[i].physicalAddress, program[i].fileSize, program[i].memorySize);
+
+        if (program[i].type == System_ELFAssembly_ProgramType_Interpreter) {
+System_Console_writeLine("my ELF_ProgramHeader Interpreter: {0:string}", 1, base + program[i].offset);
+        }    
+        if (program[i].type == System_ELFAssembly_ProgramType_Dynamic) {
+            dynamics = (System_ELF64Assembly_DynamicEntry)(base + program[i].virtualAddress);
+            dynamicsCount = program[i].fileSize / sizeof(struct System_ELFAssembly_DynamicEntry);
+            dynamicFlags = program[i].flags;
+        }    
     }
+
+    System_String8 strings = null;
+    System_Size stringsSize = 0, symbolSize = 0, PLT_relocationCount = 0, GOT_relocationCount = 0, neededCount = 0;
+    System_ELF64Assembly_SymbolEntry symbols = null;
+    System_ELF64Assembly_AddendRelocation PLT_relocation = null;
+    System_ELF64Assembly_AddendRelocation GOT_relocation = null;
+    System_String8 needed[8];
+
+    for (System_Size i = 0; i < dynamicsCount; ++i) {
+        if (dynamics[i].tag == System_ELFAssembly_DynamicType_NULL) break;
+System_Console_writeLine("my ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, System_enum_getName(typeof(System_ELFAssembly_DynamicType), dynamics[i].tag), dynamics[i].value);
+
+        switch(dynamics[i].tag) {
+        case System_ELFAssembly_DynamicType_STRTAB: strings = (System_String8)(dynamics[i].value); break;
+        case System_ELFAssembly_DynamicType_STRSZ: stringsSize = dynamics[i].value; break;
+        case System_ELFAssembly_DynamicType_SYMTAB: symbols = (System_ELF64Assembly_SymbolEntry)(dynamics[i].value); break;
+        case System_ELFAssembly_DynamicType_SYMENT: symbolSize = dynamics[i].value; break;
+
+        /* case System_ELFAssembly_DynamicType_PLTREL: break; */
+        case System_ELFAssembly_DynamicType_JMPREL: PLT_relocation = (System_ELF64Assembly_AddendRelocation)(dynamics[i].value); break;
+        case System_ELFAssembly_DynamicType_RELA: GOT_relocation = (System_ELF64Assembly_AddendRelocation)(dynamics[i].value); break;
+        /* case System_ELFAssembly_DynamicType_RELAENT: relocationSize = dynamics[i].value; break; */
+        }
+    }
+    for (System_Size i = 0; i < dynamicsCount; ++i) {
+        if (dynamics[i].tag == System_ELFAssembly_DynamicType_NULL) break;
+
+        switch(dynamics[i].tag) {
+        case System_ELFAssembly_DynamicType_NEEDED: 
+            needed[neededCount++] = (System_String8)(strings + dynamics[i].value); 
+System_Console_writeLine("ELFAssembly name: {0:string}", 1, (System_String8)(strings + dynamics[i].value));
+            break;
+
+        case System_ELFAssembly_DynamicType_PLTRELSZ: PLT_relocationCount = dynamics[i].value / sizeof(struct System_ELF64Assembly_AddendRelocation); break;
+        case System_ELFAssembly_DynamicType_RELASZ: GOT_relocationCount = dynamics[i].value / sizeof(struct System_ELF64Assembly_AddendRelocation); break;
+        }
+    }
+
+    for (System_Size i = 0; i < PLT_relocationCount; ++i) {
+System_Console_write("my ELFRelocation: offset {0:uint:hex}, info {1:uint32:hex}, type {2:string}, addend {3:uint:hex}", 4,
+    PLT_relocation[i].offset, PLT_relocation[i].info, System_enum_getName(typeof(System_ELFAssembly_AMD64Relocation), PLT_relocation[i].type), PLT_relocation[i].addend);
+
+        if (PLT_relocation[i].type == System_ELFAssembly_AMD64Relocation_NONE) continue;
+
+        System_Size * address = (System_Size *)(base + PLT_relocation[i].offset);
+
+        if (PLT_relocation[i].type == System_ELFAssembly_AMD64Relocation_RELATIVE) {
+System_Console_writeLine("; address {0:uint:hex}", 1, *address);
+            continue;
+        }
+        System_ELF64Assembly_SymbolEntry symbol = &symbols[PLT_relocation[i].info];
+
+System_Console_write(", ELFSymbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6, 
+    strings + symbol->name, symbol->info, symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
+
+System_Console_writeLine("; address {0:uint:hex}", 1, *address);
+    }
+    for (System_Size i = 0; i < GOT_relocationCount; ++i) {
+System_Console_write("my ELFRelocation: offset {0:uint:hex}, info {1:uint32:hex}, type {2:string}, addend {3:uint:hex}", 4,
+    GOT_relocation[i].offset, GOT_relocation[i].info, System_enum_getName(typeof(System_ELFAssembly_AMD64Relocation), GOT_relocation[i].type), GOT_relocation[i].addend);
+
+        if (GOT_relocation[i].type == System_ELFAssembly_AMD64Relocation_NONE) continue;
+
+        System_Size * address = (System_Size *)(base + GOT_relocation[i].offset);
+
+        if (GOT_relocation[i].type == System_ELFAssembly_AMD64Relocation_RELATIVE) {
+System_Console_writeLine("; address {0:uint:hex}", 1, *address);
+            continue;
+        }
+        System_ELF64Assembly_SymbolEntry symbol = &symbols[GOT_relocation[i].info];
+
+System_Console_write(", ELFSymbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6, 
+    strings + symbol->name, symbol->info, symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
+
+System_Console_writeLine("; address {0:uint:hex}", 1, *address);
+    }
+
 #endif
 
     function_System_Runtime_main entry = &System_Runtime_main;
-    System_Var dynamic = &_DYNAMIC;
-#if DEBUG == DEBUG_System_Runtime
+#if DEBUG
+System_Console_writeLine("AddressOf String8_Empty: {0:uint:hex}", 1, System_String8_Empty);
+
+System_ELF64Assembly_DynamicEntry GOT = (System_ELF64Assembly_DynamicEntry)Environment_GetGlobalOffsetTable();
+System_Console_writeLine("AddressOf _GLOBAL_OFFSET_TABLE_: {0:uint:hex}", 1, GOT);
+
+System_Var dynamic = &_DYNAMIC;
+
 System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}, return {3:uint}, entry 0x{4:uint:hex}, dynamic 0x{5:uint:hex}", 6, argc, envc, auxc, reture, entry, dynamic);
 #endif
     reture = entry(argc, argv, envv);
