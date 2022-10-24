@@ -6,8 +6,8 @@
 #endif
 /* Type1 required */
 /* GENERIC */
-#if !defined(internal_Generic)
-#include "internal.Generic.h"
+#if !defined(Generic_internal)
+#include "Generic.internal.h"
 #endif
 #if !defined(have_Generic_T0)
 #include <min/Generic.T0.h>

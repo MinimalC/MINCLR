@@ -9,8 +9,8 @@
 #endif
 /* FileName Generic.T0ArrayEnumerator */
 /* GENERIC */
-#if !defined(internal_Generic)
-#include "internal.Generic.h"
+#if !defined(Generic_internal)
+#include "Generic.internal.h"
 #endif
 #if !defined(have_Generic_T0ArrayEnumerator)
 #include <min/Generic.T0ArrayEnumerator.h>

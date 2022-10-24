@@ -8,8 +8,8 @@
 /* FileName Generic.T0Array */
 /* seeAlso valueArrayEnumeratorT */
 /* GENERIC */
-#if !defined(internal_Generic)
-#include "internal.Generic.h"
+#if !defined(Generic_internal)
+#include "Generic.internal.h"
 #endif
 #if !defined(have_Generic_T0Array)
 #include <min/System.valueArrays.auto.h>

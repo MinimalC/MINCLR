@@ -1,8 +1,8 @@
 /* Gemeinfrei. Public Domain. */
 #define Generic_T0  System_Int8
 /* GENERIC */
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_Generic_T0)
 #include <min/System.values.auto.h>

@@ -13,8 +13,8 @@ asm(
 "    jmp System_Runtime_start\n"
 );
 #endif
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_System_Runtime)
 #include <min/System.Runtime.h>

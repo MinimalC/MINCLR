@@ -1,4 +1,8 @@
 /* Gemeinfrei. Public Domain. */
+/* GENERIC */
+#if !defined(Generic_internal)
+#include "Generic.internal.h"
+#endif
 #if !defined(have_Generic_T0)
 #include <min/Generic.T0.h>
 #endif

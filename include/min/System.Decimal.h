@@ -42,7 +42,7 @@ export void System_Decimal_multiply(System_Decimal that, System_Decimal other); 
         while (*(string - i) > 9) { *(string - i - 1) += 1; *(string - i) -= 10; } }
 
 #if defined(using_System)
-#if !defined(internal_System)
+#if !defined(System_internal)
 #define System_Decimal_carryOver  inline_System_Decimal_carryOver
 #endif
 #define Decimal  System_Decimal

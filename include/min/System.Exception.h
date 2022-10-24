@@ -47,7 +47,7 @@ export System_Exception  base_System_Exception_init(System_Exception that, Syste
 #define inline_System_Exception_tryNot() (!System_Exception_current || !System_Exception_current->base.type)
 
 #if defined(using_System)
-#if !defined(internal_System)
+#if !defined(System_internal)
 #endif
 #define Exception  System_Exception
 #define ExceptionType  System_ExceptionType

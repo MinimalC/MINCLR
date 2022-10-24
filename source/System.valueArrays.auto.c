@@ -1,7 +1,7 @@
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_System_UInt8Array)
 #include <min/System.valueArrays.auto.h>
@@ -80,8 +80,8 @@ struct System_Type  System_UInt8ArrayType = { .base = { .type = typeof(System_Ty
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_System_UInt16Array)
 #include <min/System.UInt16Array.h>
@@ -160,8 +160,8 @@ struct System_Type  System_UInt16ArrayType = { .base = { .type = typeof(System_T
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_System_UInt32Array)
 #include <min/System.UInt32Array.h>
@@ -240,8 +240,8 @@ struct System_Type  System_UInt32ArrayType = { .base = { .type = typeof(System_T
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_System_UInt64Array)
 #include <min/System.UInt64Array.h>
@@ -320,8 +320,8 @@ struct System_Type  System_UInt64ArrayType = { .base = { .type = typeof(System_T
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_System_Int8Array)
 #include <min/System.Int8Array.h>
@@ -400,8 +400,8 @@ struct System_Type  System_Int8ArrayType = { .base = { .type = typeof(System_Typ
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_System_Int16Array)
 #include <min/System.Int16Array.h>
@@ -480,8 +480,8 @@ struct System_Type  System_Int16ArrayType = { .base = { .type = typeof(System_Ty
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_System_Int32Array)
 #include <min/System.Int32Array.h>
@@ -560,8 +560,8 @@ struct System_Type  System_Int32ArrayType = { .base = { .type = typeof(System_Ty
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
-#if !defined(internal_System)
-#include "internal.System.h"
+#if !defined(System_internal)
+#include "System.internal.h"
 #endif
 #if !defined(have_System_Int64Array)
 #include <min/System.Int64Array.h>

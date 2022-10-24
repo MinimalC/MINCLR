@@ -1,7 +1,7 @@
-#if defined(internal_System)
-#error "Multiple inclusion of internal.System.h !"
+#if defined(System_internal)
+#error "Multiple inclusion of System.internal.h !"
 #endif
-#define internal_System
+#define System_internal
 #define using_System
 
 #define DEBUG_System_Object  2

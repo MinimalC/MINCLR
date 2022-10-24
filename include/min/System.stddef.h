@@ -81,7 +81,7 @@ typedef _Bool  System_Bool;
 
 #define final  /* final */
 
-#if defined(internal_System)
+#if defined(System_internal)
 #define System_fixed  /* noconst */
 #else
 #define System_fixed  const
