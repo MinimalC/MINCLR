@@ -14,7 +14,7 @@ asm(
 );
 #endif
 #if !defined(System_internal)
-#include "System.internal.h"
+#include "../System.internal.h"
 #endif
 #if !defined(have_System_Runtime)
 #include <min/System.Runtime.h>
@@ -259,12 +259,12 @@ System_Console_writeLine("my ELF_ProgramHeader({0:uint}): type {1:string}, offse
 
         if (program[i].type == System_ELFAssembly_ProgramType_Interpreter) {
 System_Console_writeLine("my ELF_ProgramHeader Interpreter: {0:string}", 1, base + program[i].offset);
-        }    
+        }
         if (program[i].type == System_ELFAssembly_ProgramType_Dynamic) {
             dynamics = (System_ELF64Assembly_DynamicEntry)(base + program[i].virtualAddress);
             dynamicsCount = program[i].fileSize / sizeof(struct System_ELFAssembly_DynamicEntry);
             dynamicFlags = program[i].flags;
-        }    
+        }
     }
 
     System_String8 strings = null;
@@ -294,8 +294,8 @@ System_Console_writeLine("my ELFDynamicEntry: tag {0:string}, value {1:uint}", 2
         if (dynamics[i].tag == System_ELFAssembly_DynamicType_NULL) break;
 
         switch(dynamics[i].tag) {
-        case System_ELFAssembly_DynamicType_NEEDED: 
-            needed[neededCount++] = (System_String8)(strings + dynamics[i].value); 
+        case System_ELFAssembly_DynamicType_NEEDED:
+            needed[neededCount++] = (System_String8)(strings + dynamics[i].value);
 System_Console_writeLine("ELFAssembly name: {0:string}", 1, (System_String8)(strings + dynamics[i].value));
             break;
 
@@ -318,7 +318,7 @@ System_Console_writeLine("; address {0:uint:hex}", 1, *address);
         }
         System_ELF64Assembly_SymbolEntry symbol = &symbols[PLT_relocation[i].info];
 
-System_Console_write(", ELFSymbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6, 
+System_Console_write(", ELFSymbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6,
     strings + symbol->name, symbol->info, symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
 
 System_Console_writeLine("; address {0:uint:hex}", 1, *address);
@@ -337,7 +337,7 @@ System_Console_writeLine("; address {0:uint:hex}", 1, *address);
         }
         System_ELF64Assembly_SymbolEntry symbol = &symbols[GOT_relocation[i].info];
 
-System_Console_write(", ELFSymbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6, 
+System_Console_write(", ELFSymbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6,
     strings + symbol->name, symbol->info, symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
 
 System_Console_writeLine("; address {0:uint:hex}", 1, *address);
