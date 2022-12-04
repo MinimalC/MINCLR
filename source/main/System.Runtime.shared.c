@@ -356,7 +356,7 @@ System_Var dynamic = &_DYNAMIC;
 
 System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}, return {3:uint}, entry 0x{4:uint:hex}, dynamic 0x{5:uint:hex}", 6, argc, envc, auxc, reture, entry, dynamic);
 #endif
-    reture = entry(argc, argv, envv);
+    reture = entry(argc, argv);
 
     System_Syscall_terminate(reture);
 }

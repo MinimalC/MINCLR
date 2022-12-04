@@ -136,11 +136,16 @@ System_Console_writeLine("ELF_DynamicEntry({0:uint}): tag {1:string}, value {2:u
 
 int System_Runtime_main(int argc, char  * argv[]) {
 
+    if (argc < 2) {
+        System_Console_writeLine__string("ELFAssembly_read <file>");
+        return false;
+    }
+
     /* ELFAssembly_read(".make/libSystem.so"); */
-    ELFAssembly_read(".make/libExtension.so");
+    ELFAssembly_read(argv[1]);
 
     struct System_ELF64Assembly assembly; //{ .base = { .type = typeof(System_ELF64Assembly) } };
-    System_ELF64Assembly_link(&assembly, ".make/libExtension.so");
+    System_ELF64Assembly_link(&assembly, argv[1]);
 
     return true;
 }

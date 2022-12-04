@@ -1,6 +1,6 @@
 /* Gemeinfrei. Public Domain. */
-#if !defined(have_System_stddef)
-#include <min/System.stddef.h>
+#if !defined(have_System_Type)
+#include <min/System.Type.h>
 #endif
 #if !defined(have_System_Environment)
 #define have_System_Environment
