@@ -16,15 +16,12 @@
 String8 System_enum_getName(Type type, IntPtr value) {
     Debug_assert(type);
 
+    System_Type_FieldInfo info;
     for (Size i = 0; i < type->fields.length; ++i) {
-
-        struct System_Type_FieldInfo info = array(type->fields.value)[i];
-
-        if (info.value == value) {
-            return info.name;
-        }
+        info = &array(type->fields.value)[i];
+        if (info && info->value == value && info->name)
+            return info->name;
     }
-
     return String8_Empty;
 }
 
@@ -102,7 +99,7 @@ System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
     System_Type_FunctionInfo info;
     for (System_Size f = 0; f < that->functions.length; ++f) {
         info = &array(that->functions.value)[f];
-        if (fun == info->function) return info->value;
+        if (info && fun == info->function) return info->value;
     }
 
     if (that->baseType) return System_Type_tryMethod(that->baseType, fun);

@@ -2,6 +2,9 @@
 #if !defined(have_System_Type)
 #include <min/System.Type.h>
 #endif
+#if !defined(have_System_File)
+#include <min/System.File.h>
+#endif
 #if !defined(have_System_ELFAssembly)
 
 #define System_ELFAssembly_Magic  "\177ELF"
@@ -705,13 +708,15 @@ export struct System_Type  System_ELF64Assembly_AddendRelocationType;
 typedef struct System_ELF64Assembly {
     struct System_Object base;
 
+    System_String8 name;
+
     struct System_ELF64Assembly_Header header;
 
     struct System_ELF64Assembly_ProgramHeader programs[32];
 
-    struct System_ELF64Assembly_DynamicEntry dynamics[32];
-
     struct System_ELF64Assembly_SectionHeader sections[32];
+
+    struct System_ELF64Assembly_DynamicEntry dynamics[32];
 
     System_Char8 strings[System_UInt16_Max];
 
@@ -719,9 +724,12 @@ typedef struct System_ELF64Assembly {
 
 export struct System_Type  System_ELF64AssemblyType;
 
-export void  System_ELF64Assembly_load(System_ELF64Assembly assembly, System_String8 name);
-export void  System_ELF64Assembly_link(System_ELF64Assembly assembly, System_String8 name);
-export void System_ELF64Assembly_linkDynamic(System_Var base, System_ELF64Assembly_DynamicEntry dynamics, System_Size dynamicsCount, System_UInt32 dynamicFlags);
+export void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 name);
+export void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print);
+export void System_ELF64Assembly_read__file_print(System_ELF64Assembly assembly, System_String8 name, System_File file, System_Bool print);
+export void System_ELF64Assembly_link(System_ELF64Assembly assembly);
+export void System_ELF64Assembly_link__print(System_ELF64Assembly assembly, System_Bool print);
+export void System_ELF64Assembly_dynamic(System_Var base, System_ELF64Assembly_DynamicEntry dynamics, System_Size dynamicsCount, System_UInt32 dynamicFlags);
 export void System_ELF64Assembly_applyRelocations(System_Var base, System_ELF64Assembly_AddendRelocation relocation, System_Size relocationCount, System_ELF64Assembly_SymbolEntry symbols, System_String8 strings);
 
 #endif

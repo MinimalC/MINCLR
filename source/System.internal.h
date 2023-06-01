@@ -9,6 +9,7 @@
 #define DEBUG_System_Memory 4
 #define DEBUG_System_Runtime 5
 #define DEBUG_System_Console_Environment_Arguments 6
+#define DEBUG_System_ELFAssembly_vDSO 7
 
 #if defined(NDEBUG)
 #undef NDEBUG

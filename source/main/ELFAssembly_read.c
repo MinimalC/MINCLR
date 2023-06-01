@@ -6,6 +6,23 @@
 #include <min/System.File.h>
 #include <min/System.ELFAssembly.h>
 
+int System_Runtime_main(int argc, char  * argv[]) {
+
+    if (argc < 2) {
+        System_Console_writeLine__string("Usage: ELFAssembly_read <file>");
+        return false;
+    }
+
+    /* ELFAssembly_read(".make/libSystem.so"); */
+
+    struct System_ELF64Assembly assembly;
+    System_ELF64Assembly_read__print(&assembly, argv[1], true);
+
+    return true;
+}
+
+#if 0
+
 #define ROUND(X,ALIGN)  (((X) + (ALIGN - 1)) & ~(ALIGN - 1))
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
 
@@ -16,7 +33,6 @@ void ELFAssembly_read(System_String8 name) {
     System_Char8 section_names[4096];
     for (System_Size i = 0; i < System_UInt16_Max; ++i) buffer[i] = 0;
     for (System_Size i = 0; i < System_UInt16_Max; ++i) strings[i] = 0;
-    for (System_Size i = 0; i < 4096; ++i) section_names[i] = 0;
 
     struct System_File file = stack_System_File();
     if (!stack_System_File_open(&file, name, System_File_Mode_readOnly)) return;
@@ -31,7 +47,6 @@ void ELFAssembly_read(System_String8 name) {
         System_Console_writeLine__string("NOELF");
         return;
     }
-
     System_Console_write("ELF_Header: type {0:string}, machine {1:string}, version {2:uint}, entryPoint 0x{3:uint:hex}, size {4:uint}", 5,
         System_enum_getName(typeof(System_ELFAssembly_AssemblyType), header.type),
         System_enum_getName(typeof(System_ELFAssembly_Machine), header.machine),
@@ -47,7 +62,6 @@ void ELFAssembly_read(System_String8 name) {
 
     for (System_Size i = 0; i < 32 && i < header.programHeaderCount; ++i) {
         System_ELFAssembly_ProgramHeader program = (System_ELFAssembly_ProgramHeader)((System_Var)buffer + (i * header.programHeaderSize));
-
         System_Memory_copyTo(program, sizeof(struct System_ELFAssembly_ProgramHeader), &programs[i]);
 
         System_Console_writeLine("ELF_ProgramHeader({0:uint}): type {1:string}, offset {2:uint}, virtualAddress {3:uint}, physicalAddress {4:uint}, fileSize {5:uint}, memorySize {6:uint}", 7, i,
@@ -84,8 +98,6 @@ System_Console_writeLine("ELF_DynamicEntry({0:uint}): tag {1:string}, value {2:u
             }
         }
     }
-
-
 
     /* Read all ELFAssembly_SectionHeaders */
     System_File_seek(&file, header.sectionHeaderOffset, System_origin_Begin);
@@ -133,19 +145,4 @@ System_Console_writeLine("ELF_DynamicEntry({0:uint}): tag {1:string}, value {2:u
 
     System_File_close(&file);
 }
-
-int System_Runtime_main(int argc, char  * argv[]) {
-
-    if (argc < 2) {
-        System_Console_writeLine__string("ELFAssembly_read <file>");
-        return false;
-    }
-
-    /* ELFAssembly_read(".make/libSystem.so"); */
-    ELFAssembly_read(argv[1]);
-
-    struct System_ELF64Assembly assembly; //{ .base = { .type = typeof(System_ELF64Assembly) } };
-    System_ELF64Assembly_link(&assembly, argv[1]);
-
-    return true;
-}
+#endif

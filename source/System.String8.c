@@ -150,10 +150,23 @@ Bool  System_String8_isNullOrEmpty(String8 that) {
     return !that || that[0] == '\0';
 }
 
+Bool  System_String8_startsWith(String8 that, String8 other) {
+    Size length1 = String8_get_Length(other);
+    return System_String8_equalsSubstring(that, other, length1);
+}
+
+Bool  System_String8_endsWith(String8 that, String8 other) {
+    Size length1 = String8_get_Length(other);
+    SSize diff = String8_get_Length(that) - length1;
+    if (diff < 1) return false;
+    return System_String8_equalsSubstring(that + diff, other, length1);
+}
+
+
+
 #if DEBUG
 STRING8 WARNING = "WARNING  ";
 #endif
-
 
 Size  stack_System_String8_format(String8 format, Char8 message[System_String8_formatLimit_VALUE], ...) {
     arguments args;

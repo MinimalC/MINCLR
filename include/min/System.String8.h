@@ -50,7 +50,8 @@ export System_Bool  System_String8_equals(System_String8 that, System_String8 ot
 export System_Size  System_String8_compareSubstring(System_String8 that, System_String8 other, System_Size count);
 export System_Bool  System_String8_equalsSubstring(System_String8 that, System_String8 other, System_Size count);
 export System_Bool  System_String8_isNullOrEmpty(System_String8 that);
-//export System_Bool  System_String8_startsWith(System_String8 that, String_String8 other);
+export System_Bool  System_String8_startsWith(System_String8 that, System_String8 other);
+export System_Bool  System_String8_endsWith(System_String8 that, System_String8 other);
 
 #define inline_System_String8_equals(chars0, chars1)  (0 == System_String8_compare(chars0, chars1))
 #define inline_System_String8_equalsSubstring(chars0, chars1, n)  (0 == System_String8_compareSubstring(chars0, chars1, n))
@@ -81,6 +82,8 @@ export System_Size  stack_System_String8_formatEnd__limit_arguments(System_Strin
 #define String8_compareIgnoreCase  System_String8_compareIgnoreCase
 #define String8_compareSubstring  System_String8_compareSubstring
 #define String8_isNullOrEmpty  System_String8_isNullOrEmpty
+#define String8_startsWith  System_String8_startsWith
+#define String8_endsWith  System_String8_endsWith
 
 #define String8_formatLimit_VALUE  System_String8_formatLimit_VALUE
 #define String8_format  System_String8_format

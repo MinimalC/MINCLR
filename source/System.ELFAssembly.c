@@ -31,93 +31,88 @@ struct System_Type  System_ELF32AssemblyType = { .base = { .type = typeof(System
 
 struct System_Type  System_ELF64AssemblyType = { .base = { .type = typeof(System_Type), }, .name = "System.ELF64Assembly", };
 
-void System_ELF64Assembly_load(System_ELF64Assembly assembly, System_String8 name) {
+#define ROUND(X,ALIGN)  (((X) + (ALIGN - 1)) & ~(ALIGN - 1))
+
+void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 name) {
+    System_ELF64Assembly_read__print(assembly, name, false);
+}
+
+void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print) {
+    struct System_File file = stack_System_File();
+    System_ELF64Assembly_read__file_print(assembly, name, &file, print);
+}
+
+void System_ELF64Assembly_read__file_print(System_ELF64Assembly assembly, System_String8 name, System_File file, System_Bool print) {
 
     System_Char8 buffer[System_UInt16_Max];
     System_Char8 strings[System_UInt16_Max];
     for (System_Size i = 0; i < System_UInt16_Max; ++i) buffer[i] = 0;
     for (System_Size i = 0; i < System_UInt16_Max; ++i) strings[i] = 0;
 
-    struct System_File file = stack_System_File();
-    if (!stack_System_File_open(&file, name, System_File_Mode_readOnly)) return;
+    if (!stack_System_File_open(file, name, System_File_Mode_readOnly)) return;
 
     /* Read ELFAssembly_Header */
-    System_File_read(&file, buffer, System_UInt16_Max);
+    base_System_File_read(file, buffer, System_UInt16_Max);
     System_Memory_copyTo(buffer, sizeof(struct System_ELFAssembly_Header), &assembly->header);
 
-    if (!System_String8_equals(assembly->header.magic, System_ELFAssembly_Magic)) return; /* TODO throw */
-
+    if (!System_String8_equals(assembly->header.magic, System_ELFAssembly_Magic)) {
+        if (print) System_Console_writeLine__string("NOELF");
+        return; /* TODO throw */
+    }
+    if (print) {
+        System_Console_write("ELF_Header: type {0:string}, machine {1:string}, version {2:uint}, entryPoint 0x{3:uint:hex}, size {4:uint}", 5,
+            System_enum_getName(typeof(System_ELFAssembly_AssemblyType), assembly->header.type),
+            System_enum_getName(typeof(System_ELFAssembly_Machine), assembly->header.machine),
+            assembly->header.version, assembly->header.entryPoint, assembly->header.size);
+        System_Console_writeLine(", class {0:uint}, endianess {1:uint}, elfVersion {2:uint}, abi {3:string}", 4,
+            assembly->header.class, assembly->header.endianess, assembly->header.elfVersion,
+            System_enum_getName(typeof(System_ELFAssembly_ABI), assembly->header.abi));
+    }
+    
     /* Read ELFAssembly_ProgramHeaders */
-    System_File_seek(&file, assembly->header.programHeaderOffset, System_origin_Begin);
-    System_File_read(&file, buffer, System_UInt16_Max);
+    base_System_File_seek(file, assembly->header.programHeaderOffset, System_origin_Begin);
+    base_System_File_read(file, buffer, System_UInt16_Max);
 
     for (System_Size i = 0; i < 32 && i < assembly->header.programHeaderCount; ++i) {
         System_ELFAssembly_ProgramHeader program = (System_ELFAssembly_ProgramHeader)((System_Var)buffer + (i * assembly->header.programHeaderSize));
-
         System_Memory_copyTo(program, sizeof(struct System_ELFAssembly_ProgramHeader), &assembly->programs[i]);
+
+        if (print) {
+        System_Console_writeLine("ELF_ProgramHeader({0:uint}): type {1:string}, offset {2:uint:hex}, virtualAddress {3:uint:hex}, physicalAddress {4:uint:hex}, fileSize {5:uint}, memorySize {6:uint}", 7, i,
+            System_enum_getName(typeof(System_ELFAssembly_ProgramType), program->type),
+            program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
+        }
     }
 
-    /* Read all ELFAssembly_SectionHeaders */
-    System_File_seek(&file, assembly->header.sectionHeaderOffset, System_origin_Begin);
-    System_File_read(&file, buffer, System_UInt16_Max);
 
-    struct System_ELFAssembly_SectionHeader  sections[32];
+    /* Read all ELFAssembly_SectionHeaders */
+    base_System_File_seek(file, assembly->header.sectionHeaderOffset, System_origin_Begin);
+    base_System_File_read(file, buffer, System_UInt16_Max);
     for (System_Size i = 0; i < assembly->header.sectionHeaderCount; ++i) {
         System_ELFAssembly_SectionHeader section = (System_ELFAssembly_SectionHeader)((System_Var)buffer + (i * assembly->header.sectionHeaderSize));
         System_Memory_copyTo(section, sizeof(struct System_ELFAssembly_SectionHeader), &assembly->sections[i]);
     }
 
     /* Read the ELFAssembly Strings Section */
-    for (System_Size i = 0; i < System_UInt16_Max; ++i) assembly->strings[i] = 0;
-    System_Size strings_position = sections[assembly->header.stringSectionIndex].size;
-    System_File_seek(&file, sections[assembly->header.stringSectionIndex].offset, System_origin_Begin);
-    System_File_read(&file, assembly->strings, strings_position);
+    System_Size stringsSize = assembly->sections[assembly->header.stringSectionIndex].size;
+    base_System_File_seek(file, assembly->sections[assembly->header.stringSectionIndex].offset, System_origin_Begin);
+    base_System_File_read(file, strings, stringsSize);
+    
+    if (print) {
+    /* Write all ELFAssembly_SectionHeaders */
+    for (System_Size i = 0; i < assembly->header.sectionHeaderCount; ++i) {
+        System_Console_writeLine("ELF_SectionHeader({0:uint}){1:string}: name {2:string}, type {3:string}, size {4:uint}, link {5:uint}", 6, i,
+            (i == assembly->header.stringSectionIndex ? " Strings" : ""), &strings[assembly->sections[i].name],
+            System_enum_getName(typeof(System_ELFAssembly_SectionType), assembly->sections[i].type),
+            assembly->sections[i].size, assembly->sections[i].link);
+    } }
 
-}
-
-#define ROUND(X,ALIGN)  (((X) + (ALIGN - 1)) & ~(ALIGN - 1))
-
-void System_ELF64Assembly_link(System_ELF64Assembly assembly, System_String8 name) {
-
-    System_Char8 buffer[System_UInt16_Max];
-    System_Char8 strings[System_UInt16_Max];
-    for (System_Size i = 0; i < System_UInt16_Max; ++i) buffer[i] = 0;
-    for (System_Size i = 0; i < System_UInt16_Max; ++i) strings[i] = 0;
-
-    struct System_File file = stack_System_File();
-    if (!stack_System_File_open(&file, name, System_File_Mode_readOnly)) return;
-
-    /* Read ELFAssembly_Header */
-    System_File_read(&file, buffer, System_UInt16_Max);
-    System_Memory_copyTo(buffer, sizeof(struct System_ELFAssembly_Header), &assembly->header);
-
-    if (!System_String8_equals(assembly->header.magic, System_ELFAssembly_Magic)) return; /* TODO throw */
-
-    /* Read ELFAssembly_ProgramHeaders */
-    System_File_seek(&file, assembly->header.programHeaderOffset, System_origin_Begin);
-    System_File_read(&file, buffer, System_UInt16_Max);
-
-    for (System_Size i = 0; i < 32 && i < assembly->header.programHeaderCount; ++i) {
-        System_ELFAssembly_ProgramHeader program = (System_ELFAssembly_ProgramHeader)((System_Var)buffer + (i * assembly->header.programHeaderSize));
-
-        System_Memory_copyTo(program, sizeof(struct System_ELFAssembly_ProgramHeader), &assembly->programs[i]);
-    }
-
-    System_Size load_size = 0;
-    for (System_Size i = 0; i < 32 && i < assembly->header.programHeaderCount; ++i) {
-        if (assembly->programs[i].type != System_ELFAssembly_ProgramType_Loadable) continue;
-        load_size = assembly->programs[i].virtualAddress + assembly->programs[i].memorySize;
-    }
-    load_size = ROUND(load_size, 4096);
-System_Console_writeLine("load_size: {0:uint}", 1, load_size);
-
-    System_Var base = System_Syscall_mmap(load_size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write | System_Memory_PageFlags_Execute, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous, null, 0);
-    if (!base) return; // TODO: throw
-
-    System_ELF64Assembly_ProgramHeader programHeader = null, loadable0 = null;
-    System_ELF64Assembly_DynamicEntry dynamics = null;
-    System_Size dynamicsCount = 0;
-    System_UInt32 dynamicFlags = 0;
+    base_System_File_seek(file, 0, System_origin_Begin);
+    base_System_File_read(file, buffer, System_UInt16_Max);
+    
+    System_Var base = (System_Var)buffer;
+    System_ELF64Assembly_ProgramHeader programHeader = null, loadable0 = null; 
+    System_ELF64Assembly_DynamicEntry dynamics = null; System_Size dynamicsCount = 0; System_UInt32 dynamicFlags = 0;
     for (System_Size i = 0; i < 32 && i < assembly->header.programHeaderCount; ++i) {
         if (!programHeader && assembly->programs[i].type == System_ELFAssembly_ProgramType_ProgramHeader) programHeader = &assembly->programs[i];
         if (!dynamics && assembly->programs[i].type == System_ELFAssembly_ProgramType_Dynamic) {
@@ -129,25 +124,43 @@ System_Console_writeLine("load_size: {0:uint}", 1, load_size);
         if (!loadable0) loadable0 = &assembly->programs[i];
 
         System_Var target = (System_Var)base + assembly->programs[i].virtualAddress;
-System_Console_writeLine("ELFLoadable: fileSize {0:uint}, target {1:uint:hex}", 2, assembly->programs[i].fileSize, target);
+        if (print) System_Console_writeLine("ELFLoadable: fileSize {0:uint}, target {1:uint:hex}", 2, assembly->programs[i].fileSize, target);
 
         /* Read ELFAssembly_Program */
-        System_File_seek(&file, assembly->programs[i].offset, System_origin_Begin);
-        System_File_read(&file, target, assembly->programs[i].fileSize);
+        System_File_seek(file, assembly->programs[i].offset, System_origin_Begin);
+        System_File_read(file, target, assembly->programs[i].fileSize);
     }
     if (!programHeader && loadable0) programHeader = loadable0;
     if (!programHeader) return; // TODO: throw
 
     System_Var entry = base + assembly->header.entryPoint;
-System_Console_writeLine("ELFEntryPoint: {0:uint}", 1, entry);
+    if (print) System_Console_writeLine("ELFEntryPoint: {0:uint:hex}", 1, entry);
     
-    if (dynamics) {
-        System_ELF64Assembly_linkDynamic(base, dynamics, dynamicsCount, dynamicFlags);
-    }
-
 }
 
-void System_ELF64Assembly_linkDynamic(System_Var base, System_ELF64Assembly_DynamicEntry dynamics, System_Size dynamicsCount, System_UInt32 dynamicFlags) {
+void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
+    System_ELF64Assembly_link__print(assembly, false);
+}
+
+void System_ELF64Assembly_link__print(System_ELF64Assembly assembly, System_Bool print) {
+    System_Size load_size = 0;
+    for (System_Size i = 0; i < 32 && i < assembly->header.programHeaderCount; ++i) {
+        if (assembly->programs[i].type != System_ELFAssembly_ProgramType_Loadable) continue;
+        load_size = assembly->programs[i].virtualAddress + assembly->programs[i].memorySize;
+    }
+    load_size = ROUND(load_size, 4096);
+    if (print) System_Console_writeLine("load_size: {0:uint}", 1, load_size);
+
+    System_Var base = System_Syscall_mmap(load_size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write | System_Memory_PageFlags_Execute, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous, null, 0);
+    if (!base) return; // TODO: throw
+
+    /* System_ELF64Assembly_DynamicEntry dynamics = null; 
+    if (dynamics) {
+        System_ELF64Assembly_dynamic(base, dynamics, dynamicsCount, dynamicFlags);
+    } */
+}
+
+void System_ELF64Assembly_dynamic(System_Var base, System_ELF64Assembly_DynamicEntry dynamics, System_Size dynamicsCount, System_UInt32 dynamicFlags) {
 
     System_String8 strings = null;
     System_Size stringsSize = 0, symbolSize = 0, PLT_relocationCount = 0, GOT_relocationCount = 0, neededCount = 0;

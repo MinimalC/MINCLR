@@ -74,6 +74,7 @@ export System_Bool  stack_System_File_open(System_File that, System_String8 file
 typedef System_File  delegate(System_File_init)(System_File that);
 typedef void  delegate(System_File_free)(System_File that);
 typedef void  delegate(System_File_write__string_size)(System_File that, System_String8 value, System_Size count);
+typedef void  delegate(System_File_writeEnd__arguments)(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 typedef void  delegate(System_File_sync)(System_File that);
 typedef System_Size  delegate(System_File_read)(System_File that, System_String8 value, System_Size count);
 typedef void  delegate(System_File_seek)(System_File that, System_SSize offset, System_origin origin);
@@ -84,6 +85,7 @@ typedef void  delegate(System_File_close)(System_File that);
 export System_File  base_System_File_init(System_File that);
 export void  base_System_File_free(System_File that);
 export void  base_System_File_write__string_size(System_File that, System_String8 value, System_Size count);
+export void  base_System_File_writeEnd__arguments(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 export void  base_System_File_sync(System_File that);
 export void  base_System_File_seek(System_File that, System_SSize offset, System_origin origin);
 export System_Size  base_System_File_read(System_File that, System_String8 value, System_Size count);
@@ -94,6 +96,7 @@ export void  base_System_File_close(System_File that);
 #define System_File_free(o)  ((function_System_File_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_File_init(o)  ((function_System_File_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
 #define System_File_write__string_size(o,...)  ((function_System_File_write__string_size)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write__string_size))(o, __VA_ARGS__)
+#define System_File_writeEnd__arguments(o,...)  ((function_System_File_writeEnd__arguments)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_writeEnd__arguments))(o, __VA_ARGS__)
 #define System_File_sync(o)  ((function_System_File_sync)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_sync))(o)
 #define System_File_read(o,...)  ((function_System_File_read)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_read))(o, __VA_ARGS__)
 #define System_File_seek(o,...)  ((function_System_File_seek)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_seek))(o, __VA_ARGS__)

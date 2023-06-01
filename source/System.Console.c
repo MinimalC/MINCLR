@@ -86,7 +86,7 @@ void  System_Console_write(String8 format, ...) {
     Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    System_IStream_writeEnd__arguments((System_IStream)&System_Console_StdOut, format, 0, argc, argv);
+    base_System_File_writeEnd__arguments(&System_Console_StdOut, format, 0, argc, argv);
 }
 
 void  System_Console_writeLine__string(String8 string) {
@@ -101,7 +101,7 @@ void  System_Console_writeLine(String8 format, ...) {
     Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    System_IStream_writeEnd__arguments((System_IStream)&System_Console_StdOut, format, '\n', argc, argv);
+    base_System_File_writeEnd__arguments(&System_Console_StdOut, format, '\n', argc, argv);
 }
 
 

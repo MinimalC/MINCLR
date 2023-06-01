@@ -55,9 +55,6 @@ FALSE:
 	return false;
 }
 
-STRING8 text_n = " n";
-STRING8 text_P = " P";
-
 int System_Runtime_main(int argc, char *argv[]) {
 /* System_main(Eratosthenes,args) { */
 
@@ -69,7 +66,8 @@ int System_Runtime_main(int argc, char *argv[]) {
 	knownPrimes[3] = 5U; knownPrimes_hoch2[3] = 25U;
 	knownPrimesL = 4U;
 
-    System_Char8 nP[] = "n                    P                     \n";
+    //System_Char8 nP[] = "n                    P                     \n";
+    System_Char8 P[] = "                       \n";
     System_Char8 decimol[System_UInt64_String8base10Length_DEFAULT + 1] = { };
 
 	UInt64 n = 5U;
@@ -95,14 +93,10 @@ int System_Runtime_main(int argc, char *argv[]) {
 				goto FALSE;
 			} */
 
-            numbers = stack_System_UInt64_toString8base10(knownPrimesL, decimol);
-            System_String8_copySubstringTo(decimol, numbers, (nP + 1));
-
             numbers = stack_System_UInt64_toString8base10(n, decimol);
-            System_String8_copySubstringTo(decimol, numbers, (nP + 22));
+            System_String8_copySubstringTo(decimol, numbers, P);
 
-            Syscall_write(Syscall_StandardFile_STDOUT, nP, sizeof(nP) - 1);
-            // Console_write__string(nP);
+            Syscall_write(Syscall_StandardFile_STDOUT, P, sizeof(P) - 1);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {
             Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);
@@ -125,14 +119,10 @@ int System_Runtime_main(int argc, char *argv[]) {
 				goto FALSE;
 			} */
 
-            numbers = stack_System_UInt64_toString8base10(knownPrimesL, decimol);
-            System_String8_copySubstringTo(decimol, numbers, (nP + 1));
-
             numbers = stack_System_UInt64_toString8base10(n, decimol);
-            System_String8_copySubstringTo(decimol, numbers, (nP + 22));
+            System_String8_copySubstringTo(decimol, numbers, P);
 
-            Syscall_write(Syscall_StandardFile_STDOUT, nP, sizeof(nP) - 1);
-            // Console_write__string(nP);
+            Syscall_write(Syscall_StandardFile_STDOUT, P, sizeof(P) - 1);
 		}
 		/* if (minimalquotient > 1 && n < 65538U) {
             Console_writeLine("       \t {0:uint} == {1:uint} · {2:uint}", 3, n, minimalquotient, quotient);

@@ -27,11 +27,12 @@ void  base_System_IStream_set_Position(IStream that, Size value) { }
 
 struct System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_IStream_write__string_size", .function = base_System_IStream_write__string_size, .value = null },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = null },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = null },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = null },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_get_Position, .value = null },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = null },
+    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_IStream_writeEnd__arguments", .function = base_System_IStream_writeEnd__arguments, .value = null },
+    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = null },
+    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = null },
+    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = null },
+    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_get_Position, .value = null },
+    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = null },
 };
 
 struct System_Type  System_IStreamType = { .base = stack_System_Object(System_Type),
@@ -48,11 +49,11 @@ void  System_IStream_write(IStream stream, String8 format, ...) {
     Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    System_IStream_writeEnd__arguments(stream, format, 0, argc, argv);
+    base_System_IStream_writeEnd__arguments(stream, format, 0, argc, argv);
 }
 
 void  System_IStream_write__arguments(IStream stream, String8 format, Size argc, Var argv[]) {
-    System_IStream_writeEnd__arguments(stream, format, 0, argc, argv);
+    base_System_IStream_writeEnd__arguments(stream, format, 0, argc, argv);
 }
 
 void  System_IStream_writeLine(IStream stream, String8 format, ...) {
@@ -61,11 +62,11 @@ void  System_IStream_writeLine(IStream stream, String8 format, ...) {
     Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    System_IStream_writeEnd__arguments(stream, format, '\n', argc, argv);
+    base_System_IStream_writeEnd__arguments(stream, format, '\n', argc, argv);
 }
 
 void  System_IStream_writeLine__arguments(IStream stream, String8 format, Size argc, Var argv[]) {
-    System_IStream_writeEnd__arguments(stream, format, '\n', argc, argv);
+    base_System_IStream_writeEnd__arguments(stream, format, '\n', argc, argv);
 }
 
 void  System_IStream_writeEnd(IStream stream, String8 format, Char8 suffix, ...) {
@@ -74,10 +75,10 @@ void  System_IStream_writeEnd(IStream stream, String8 format, Char8 suffix, ...)
     Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    System_IStream_writeEnd__arguments(stream, format, suffix, argc, argv);
+    base_System_IStream_writeEnd__arguments(stream, format, suffix, argc, argv);
 }
 
-void  System_IStream_writeEnd__arguments(IStream stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
+void  base_System_IStream_writeEnd__arguments(IStream stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
     Char8  message[System_String8_formatLimit_VALUE];
     for (Size i = 0; i < System_String8_formatLimit_VALUE; ++i) message[i] = 0;
     Size message_length = stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);

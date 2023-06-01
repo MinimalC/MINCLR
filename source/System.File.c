@@ -80,6 +80,13 @@ void  base_System_File_write__string_size(File that, String8 value, Size count) 
     that->position += length;
 }
 
+void  base_System_File_writeEnd__arguments(File stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
+    Char8  message[System_String8_formatLimit_VALUE];
+    for (Size i = 0; i < System_String8_formatLimit_VALUE; ++i) message[i] = 0;
+    Size message_length = stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);
+    base_System_File_write__string_size(stream, message, message_length);
+}
+
 void  base_System_File_seek(File that, SSize offset, origin origin) {
 /*  ISO_fseek((ISO_File)that->filePtr, offset, origin); */
     that->position = System_Syscall_lseek(that->filePtr, offset, origin);
@@ -98,16 +105,17 @@ void  base_System_File_sync(File that) {
     System_Syscall_fsync(that->filePtr);
 }
 
-struct System_Type_FunctionInfo  System_FileTypeFunctions[] = {
+struct System_Type_FunctionInfo  System_FileTypeFunctions[] = { 
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_File_init },
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_File_free },
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_write__string_size", .function = base_System_IStream_write__string_size, .value = base_System_File_write__string_size },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = base_System_File_sync },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = base_System_File_read },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = base_System_File_seek },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_get_Position, .value = base_System_File_get_Position },
-    [7] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = base_System_File_set_Position },
-    [8] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_File_close, .value = base_System_File_close },
+    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_writeEnd__arguments", .function = base_System_IStream_writeEnd__arguments, .value = base_System_File_write__string_size },
+    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = base_System_File_sync },
+    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = base_System_File_read },
+    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = base_System_File_seek },
+    [7] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_get_Position, .value = base_System_File_get_Position },
+    [8] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = base_System_File_set_Position },
+    [9] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_File_close, .value = base_System_File_close },
 };
 
 struct System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {

@@ -50,7 +50,7 @@ void System_Runtime_start(Var * stack) {
 
     int reture = false;
 
-    reture = System_Runtime_main(argc, argv, envv);
+    reture = System_Runtime_main(argc, argv);
 
     System_Syscall_terminate(reture);
 }
