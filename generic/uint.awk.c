@@ -16,7 +16,7 @@
 
 /*# Generic_T0 #*/
 
-struct System_Type  Generic_T0Type  = { .base = stack_System_Object(System_Type), .name = "Generic.T0", .size = sizeof(Generic_T0) };
+struct System_Type Generic_T0Type  = { .base = stack_System_Object(System_Type), .name = "Generic.T0", .size = sizeof(Generic_T0) };
 
 System_Bool  Generic_T0_isPrintable(Generic_T0 that) {
     return inline_Generic_T0_isPrintable(that);

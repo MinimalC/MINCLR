@@ -37,8 +37,8 @@ System_Console_writeLine("my ELF_ProgramHeader Interpreter: {0:string}", 1, base
     System_String8 strings = null;
     System_Size stringsSize = 0, symbolSize = 0, PLT_relocationCount = 0, GOT_relocationCount = 0, neededCount = 0;
     System_ELF64Assembly_SymbolEntry symbols = null;
-    System_ELF64Assembly_AddendRelocation PLT_relocation = null;
-    System_ELF64Assembly_AddendRelocation GOT_relocation = null;
+    System_ELF64Assembly_RelocationAddend PLT_relocation = null;
+    System_ELF64Assembly_RelocationAddend GOT_relocation = null;
     System_String8 needed[8];
 
     for (System_Size i = 0; i < dynamicsCount; ++i) {
@@ -52,8 +52,8 @@ System_Console_writeLine("my ELFDynamicEntry: tag {0:string}, value {1:uint}", 2
         case System_ELFAssembly_DynamicType_SYMENT: symbolSize = dynamics[i].value; break;
 
         /* case System_ELFAssembly_DynamicType_PLTREL: break; */
-        case System_ELFAssembly_DynamicType_JMPREL: PLT_relocation = (System_ELF64Assembly_AddendRelocation)(dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_RELA: GOT_relocation = (System_ELF64Assembly_AddendRelocation)(dynamics[i].value); break;
+        case System_ELFAssembly_DynamicType_JMPREL: PLT_relocation = (System_ELF64Assembly_RelocationAddend)(dynamics[i].value); break;
+        case System_ELFAssembly_DynamicType_RELA: GOT_relocation = (System_ELF64Assembly_RelocationAddend)(dynamics[i].value); break;
         /* case System_ELFAssembly_DynamicType_RELAENT: relocationSize = dynamics[i].value; break; */
         }
     }
@@ -66,8 +66,8 @@ System_Console_writeLine("my ELFDynamicEntry: tag {0:string}, value {1:uint}", 2
 System_Console_writeLine("ELFAssembly name: {0:string}", 1, (System_String8)(strings + dynamics[i].value));
             break;
 
-        case System_ELFAssembly_DynamicType_PLTRELSZ: PLT_relocationCount = dynamics[i].value / sizeof(struct System_ELF64Assembly_AddendRelocation); break;
-        case System_ELFAssembly_DynamicType_RELASZ: GOT_relocationCount = dynamics[i].value / sizeof(struct System_ELF64Assembly_AddendRelocation); break;
+        case System_ELFAssembly_DynamicType_PLTRELSZ: PLT_relocationCount = dynamics[i].value / sizeof(struct System_ELF64Assembly_RelocationAddend); break;
+        case System_ELFAssembly_DynamicType_RELASZ: GOT_relocationCount = dynamics[i].value / sizeof(struct System_ELF64Assembly_RelocationAddend); break;
         }
     }
 

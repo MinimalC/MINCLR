@@ -56,7 +56,7 @@ struct System_Type_FieldInfo  System_Environment_AuxTypeTypeFields[] = {
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "MINSIGSTKSZ", .value = System_Environment_AuxType_MINSIGSTKSZ },
 };
 
-struct System_Type  System_Environment_AuxTypeType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_Environment_AuxTypeType = { .base = { .type = typeof(System_Type) },
     .name = "AuxType",
     .size = sizeof(System_Environment_AuxType),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),

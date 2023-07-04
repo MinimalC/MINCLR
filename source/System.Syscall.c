@@ -31,7 +31,7 @@ struct System_Type_FieldInfo  System_Syscall_CommandTypeFields[] = {
 #endif
 };
 
-struct System_Type  System_Syscall_CommandType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_Syscall_CommandType = { .base = { .type = typeof(System_Type) },
     .name = "Syscall.Command",
     .size = sizeof(System_Syscall_Command),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
@@ -49,7 +49,7 @@ struct System_Type_FieldInfo  System_ErrorTypeFields[] = {
 #include <min/System.Error.generic.asm.h>
 };
 
-struct System_Type  System_ErrorType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ErrorType = { .base = { .type = typeof(System_Type) },
     .name = "Error",
     .size = sizeof(System_Error),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),
@@ -63,7 +63,7 @@ struct System_Type  System_ErrorType = { .base = { .type = typeof(System_Type) }
 
 /*# System_Syscall #*/
 
-struct System_Type  System_SyscallType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_SyscallType = { .base = { .type = typeof(System_Type) },
     .name = "Syscall",
 };
 
@@ -123,6 +123,10 @@ System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_I
 
 void  System_Syscall_munmap(System_Var address, System_Size length) {
     (void)System_Syscall_call02(System_Syscall_Command_munmap, (System_IntPtr)address, length);
+}
+
+void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags) {
+    (void)System_Syscall_call03(System_Syscall_Command_mprotect, (System_IntPtr)address, length, flags);
 }
 
 #endif

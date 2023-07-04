@@ -10,7 +10,7 @@
 
 /*# System_Math #*/
 
-struct System_Type  System_MathType = { .base = stack_System_Object(System_Type),
+struct System_Type System_MathType = { .base = stack_System_Object(System_Type),
     .name = "Math",
 };
 

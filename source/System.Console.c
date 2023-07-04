@@ -25,7 +25,7 @@
 #if !defined(code_System_Console)
 #define code_System_Console
 
-struct System_Type  System_ConsoleType = { .base = stack_System_Object(System_Type),
+struct System_Type System_ConsoleType = { .base = stack_System_Object(System_Type),
 	.name = "Console",
 };
 
@@ -68,15 +68,15 @@ void System_Console_exit(const Size code)  {
 
 void  System_Console_write__string(String8 string) {
     Debug_assert(string);
-    System_File_write__string_size(&System_Console_StdOut, string, String8_get_Length(string));
+    base_System_File_write__string_size(&System_Console_StdOut, string, String8_get_Length(string));
 }
 
 void  System_Console_write__char(Char8 character) {
-    System_File_write__string_size(&System_Console_StdOut, &character, 1);
+    base_System_File_write__string_size(&System_Console_StdOut, &character, 1);
 }
 
 void  System_Console_writeLineEmpty(void) {
-    System_File_write__string_size(&System_Console_StdOut, "\n", 1);
+    base_System_File_write__string_size(&System_Console_StdOut, "\n", 1);
 }
 
 void  System_Console_write(String8 format, ...) {

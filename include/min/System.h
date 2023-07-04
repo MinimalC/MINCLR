@@ -29,6 +29,8 @@
 #include "System.ListEnumerator.h"
 #include "System.Dictionary.h"
 /* #include "System.Directory.h" */
+#include "System.Environment.h"
+#include "System.Runtime.h"
 #include "System.ELFAssembly.h"
 /* #include "System.Signals.h" */
 /* #include "System.Thread.h" */

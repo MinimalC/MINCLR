@@ -96,7 +96,7 @@ struct System_Type_InterfaceInfo  System_ListTypeInterfaces[] = {
     [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type  System_ListType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ListType = { .base = { .type = typeof(System_Type) },
     .name = "List",
     .size = sizeof(struct System_List),
     .baseType = typeof(System_Object),

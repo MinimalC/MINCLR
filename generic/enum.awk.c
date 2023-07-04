@@ -12,7 +12,7 @@ struct System_Type_FieldInfo  Generic_T0TypeFields[] = {
     [0] = { .base = stack_System_Object(System_Type_FieldInfo), .name = "T0.Null", .value = Generic_T0_Null },
 };
 
-struct System_Type  Generic_T0Type = { .base = { .type = typeof(System_Type) },
+struct System_Type Generic_T0Type = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0",
     .size = sizeof(Generic_T0),
 	.fields = { .base = stack_System_Object(System_Type_FieldInfoArray),

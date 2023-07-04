@@ -6,9 +6,9 @@ asm(
 "_start:\n"
 "    xor %rbp,%rbp\n"
 "    mov %rsp,%rdi\n"
-/*".weak _DYNAMIC\n"
+//".weak _DYNAMIC\n"
 ".hidden _DYNAMIC\n"
-"    lea _DYNAMIC(%rip),%rsi\n"*/
+//"    lea _DYNAMIC(%rip),%rsi\n"
 "    and $-16,%rsp\n"
 "    jmp System_Runtime_start\n"
 );
@@ -39,11 +39,12 @@ asm(
 
 
 import Var _DYNAMIC;
+import Var _GLOBAL_OFFSET_TABLE_;
 
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
 
-Size Environment_GetGlobalOffsetTable() {
-    Size reture;
+Var Environment_GetGlobalOffsetTable() {
+    Var reture;
     asm("lea _GLOBAL_OFFSET_TABLE_(%%rip),%0" : "=r"(reture) );
     return reture;
 }
@@ -75,8 +76,8 @@ void System_Runtime_start(Var  * stack) {
     Size auxc = 0;
     for (Size i = 0; i < System_Environment_AuxValues_Length && auxv[i].type != System_Environment_AuxType_NULL; ++i) {
         ++auxc;
-        System_Environment_AuxValues[i].type = auxv[i].type;
-        System_Environment_AuxValues[i].value = auxv[i].value;
+        System_Environment_AuxValues[auxv[i].type].type = auxv[i].type;
+        System_Environment_AuxValues[auxv[i].type].value = auxv[i].value;
         /*if (auxv[i].type == System_Environment_AuxType_SYSINFO_EHDR) {
             vdso_init_from_sysinfo_ehdr(&info, (System_ELFAssembly_Header)auxv[i].value);
             continue;
@@ -88,76 +89,70 @@ System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}
 #endif*/
         switch (auxv[i].type) {
         case System_Environment_AuxType_HWCAP:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "HWCAP", auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "HWCAP", auxv[i].value); break;
         case System_Environment_AuxType_PAGESZ:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "PAGESZ", auxv[i].value);
-            pageSize = (System_Size)(auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "PAGESZ", auxv[i].value); break;
         case System_Environment_AuxType_CLKTCK:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "CLKTCK", auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "CLKTCK", auxv[i].value); break;
         case System_Environment_AuxType_PHDR:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "PHDR", auxv[i].value);
-            programHeader = (System_Size)(auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "PHDR", auxv[i].value); break;
         case System_Environment_AuxType_PHENT:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "PHENT", auxv[i].value);
-            programHeaderSize = (System_Size)(auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "PHENT", auxv[i].value); break;
         case System_Environment_AuxType_PHNUM:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "PHNUM", auxv[i].value);
-            programHeaderCount = (System_Size)(auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "PHNUM", auxv[i].value); break;
         case System_Environment_AuxType_BASE:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "BASE", auxv[i].value);
-            base = (System_Var)(auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "BASE", auxv[i].value); break;
         case System_Environment_AuxType_FLAGS:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "FLAGS", auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "FLAGS", auxv[i].value); break;
         case System_Environment_AuxType_ENTRY:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "ENTRY", auxv[i].value);
-            entryPoint = (System_Size)(auxv[i].value);
-            break;
-/* System_Environment_AuxType_UID
-System_Environment_AuxType_EUID
-System_Environment_AuxType_GID
-System_Environment_AuxType_EGID
-System_Environment_AuxType_SECURE */
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "ENTRY", auxv[i].value);  break;
+        /* System_Environment_AuxType_UID
+        System_Environment_AuxType_EUID
+        System_Environment_AuxType_GID
+        System_Environment_AuxType_EGID
+        System_Environment_AuxType_SECURE */
         case System_Environment_AuxType_RANDOM:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "RANDOM", auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "RANDOM", auxv[i].value); break;
         case System_Environment_AuxType_HWCAP2:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "HWCAP2", auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "HWCAP2", auxv[i].value); break;
         case System_Environment_AuxType_EXECFN:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value {2:string}", 3, i, "EXECFN", auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value {2:string}", 3, i, "EXECFN", auxv[i].value); break;
         case System_Environment_AuxType_PLATFORM:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value {2:string}", 3, i, "PLATFORM", auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value {2:string}", 3, i, "PLATFORM", auxv[i].value); break;
         default:
-System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:uint}), value 0x{2:uint:hex}", 3, i, 
-            auxv[i].type, auxv[i].value);
-            break;
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:uint}), value 0x{2:uint:hex}", 3, i, auxv[i].type, auxv[i].value); break;
+        }
+        
+        switch (auxv[i].type) {
+        case System_Environment_AuxType_PAGESZ:
+            pageSize = (System_Size)(auxv[i].value); break;
+        case System_Environment_AuxType_PHDR:
+            programHeader = (System_Size)(auxv[i].value); break;
+        case System_Environment_AuxType_PHENT:
+            programHeaderSize = (System_Size)(auxv[i].value); break;
+        case System_Environment_AuxType_PHNUM:
+            programHeaderCount = (System_Size)(auxv[i].value); break;
+        case System_Environment_AuxType_BASE:
+            base = (System_Var)(auxv[i].value); break;
+        case System_Environment_AuxType_ENTRY:
+            entryPoint = (System_Size)(auxv[i].value); break;
         }
     }
-    int reture = false;
 
+//System_ELF64Assembly_watch();
 
     function_System_Runtime_main entry = &System_Runtime_main;
 #if DEBUG
 System_Console_writeLine("AddressOf System_Runtime_main: {0:uint:hex}", 1, entry);
 System_Console_writeLine("AddressOf String8_Empty: {0:uint:hex}", 1, System_String8_Empty);
-System_ELF64Assembly_DynamicEntry GOT = (System_ELF64Assembly_DynamicEntry)Environment_GetGlobalOffsetTable();
-System_Console_writeLine("AddressOf _GLOBAL_OFFSET_TABLE_: {0:uint:hex}", 1, GOT);
+System_Var GOT = Environment_GetGlobalOffsetTable();
+System_Console_writeLine("AddressOf GOT: {0:uint:hex}", 1, GOT);
 System_Var dynamic = &_DYNAMIC;
-System_Console_writeLine("AddressOf _DYNAMIC: {0:uint:hex}", 1, dynamic);
+System_Console_writeLine("AddressOf _DYNAMIC: {0:uint:hex}, AddressOf &_DYNAMIC: {1:uint:hex}", 2, dynamic, &dynamic);
 System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}: {3:string}", 4, argc, envc, auxc, argv[0]);
 #endif
 
-    reture = entry(argc, argv);
+    int reture = entry(argc, argv);
 #if DEBUG
 System_Console_writeLine("System_Runtime_start: return {0:uint}", 1, reture);
 #endif

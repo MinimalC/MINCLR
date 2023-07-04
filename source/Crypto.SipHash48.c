@@ -102,7 +102,7 @@ struct System_Type_FunctionInfo  Crypto_SipHash48TypeFunctions[] = {
     [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_Crypto_SipHash48_init },
 };
 
-struct System_Type  Crypto_SipHash48Type = {
+struct System_Type Crypto_SipHash48Type = {
 	.base = { .type = typeof(System_Type) },
 	.name = "Crypto.SipHash48",
 	.size = sizeof(struct Crypto_SipHash48),

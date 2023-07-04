@@ -5,7 +5,10 @@ if [ PWD != '${HOME}/FIKTIV/MINCLR' ]; then
 fi
 
 # System
-run.awk ~/FIKTIV/make.awk/make.awk -std +shared project=System +debug precompile include/ source/AMD64/GNU.Linux/GAS/System.Syscall.gas.S source/AMD64/GNU.Linux/GAS/System.Math.gas.S source/System.core.c source/System.ELFAssembly.c  compile library executable  source/main/System.Runtime.shared.c source/main/System.Interpreter.c source/main/Eratosthenes.c source/main/ELFAssembly_read.c source/main/test/test.System.values.c source/main/test/test.Crypto.SipHash.c source/main/test/test.System.File.c source/main/test/test.System.FileInfo.c source/main/test/test.System.Exception.c source/main/test/test.System.Memory.c 2>.System...report
+run.awk ~/FIKTIV/make.awk/make.awk -std +shared +debug project=System precompile include/ source/AMD64/GNU.Linux/GAS/System.Syscall.gas.S source/AMD64/GNU.Linux/GAS/System.Math.gas.S source/System.core.c source/System.ELFAssembly.c  compile library executable  source/main/System.Runtime.shared.c source/main/System.Interpreter.c source/main/Eratosthenes.c source/main/ELFAssembly_read.c source/main/test/test.System.values.c source/main/test/test.Crypto.SipHash.c source/main/test/test.System.File.c source/main/test/test.System.FileInfo.c source/main/test/test.System.Exception.c source/main/test/test.System.Memory.c 2>.System...report
 
 # Extension
-run.awk ~/FIKTIV/make.awk/make.awk -std +shared project=Extension +debug precompile include/ .Extension.c compile library System.so 2>.Extension...report
+run.awk ~/FIKTIV/make.awk/make.awk -std +shared +debug project=Extension precompile include/ .Extension.c compile library executable System.so .HelloELF.c 2>.Extension...report
+
+cd .make
+./test.System.File > test.System.File.read

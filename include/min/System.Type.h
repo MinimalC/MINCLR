@@ -180,8 +180,12 @@ export System_String8  System_enum_getName(System_Type type, System_IntPtr value
 
 #define inline_System_enum_getName(CLASS, VALUE)  System_enum_getName(typeof(CLASS), (System_IntPtr)(VALUE))
 
+/* TODO: inline_System_enum_toString is running into enum_System_Origin_toString(value), possibly returning a string for that value */
+#define inline_System_enum_toString(ENUM, VALUE)  ccc(enum_,ENUM,_toString)(VALUE)
+
 #if defined(using_System)
 #define enum_getName  System_enum_getName
 #define inline_enum_getName  inline_System_enum_getName
+#define inline_enum_toString  inline_System_enum_toString
 #endif
 #endif

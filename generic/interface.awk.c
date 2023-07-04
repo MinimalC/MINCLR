@@ -15,7 +15,7 @@ struct System_Type_FunctionInfo  Generic_T0TypeFunctions[] = {
 /*    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0_method, .value = base_Generic_T0_method }, */
 };
 
-struct System_Type  Generic_T0Type = { .base = stack_System_Object(System_Type),
+struct System_Type Generic_T0Type = { .base = stack_System_Object(System_Type),
 	.name = "Generic.T0",
     .size = sizeof(struct Generic_T0),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),

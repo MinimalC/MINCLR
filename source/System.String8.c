@@ -17,6 +17,9 @@
 #if !defined(code_System_Char8)
 #define code_System_Char8
 /*# System_Char8 #*/
+
+struct System_Type System_Char8Type = { .base = stack_System_Object(System_Type), .name = "Char8", .size = 1 };
+
 System_Bool  System_Char8_isNumber(System_Char8 that) {
     return (that >= 0x30 && that <= 0x39);
 }
@@ -55,9 +58,7 @@ System_Bool  System_Char8_isPrintable(System_Char8 that) {
 
 /* static class System.String8 */
 
-struct System_Type  System_String8Type = { .base = stack_System_Object(System_Type),
-    .name = "String8"
-};
+struct System_Type System_String8Type = { .base = stack_System_Object(System_Type), .name = "String8", .size = 1 };
 
 System_STRING8  System_String8_Empty = "";
 

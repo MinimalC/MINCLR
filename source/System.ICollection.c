@@ -10,7 +10,7 @@
 
 /*# System_ICollection #*/
 
-struct System_Type  System_ICollectionType = { .base = stack_System_Object(System_Type),
+struct System_Type System_ICollectionType = { .base = stack_System_Object(System_Type),
 	.name = "ICollection",
 };
 

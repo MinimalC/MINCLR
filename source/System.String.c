@@ -40,7 +40,7 @@ struct System_Type_FunctionInfo  System_StringTypeFunctions[] = {
     [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_getSipHash, .value = base_System_String_getSipHash },
 };
 
-struct System_Type  System_StringType = { .base = stack_System_Object(System_Type),
+struct System_Type System_StringType = { .base = stack_System_Object(System_Type),
     .name = "String",
     .Size = sizeof(struct System_String),
     .baseType = typeof(System_Object),

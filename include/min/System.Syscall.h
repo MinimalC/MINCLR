@@ -84,6 +84,7 @@ export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String
 
 export System_Var  System_Syscall_mmap(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
 export void  System_Syscall_munmap(System_Var address, System_Size length);
+export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
 
 #if defined(using_System)
 #define SyscallType  System_SyscallType

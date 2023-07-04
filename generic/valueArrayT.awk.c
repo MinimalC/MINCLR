@@ -76,7 +76,7 @@ struct System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
     [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type  Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
+struct System_Type Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0Array",
     .size = sizeof(struct Generic_T0Array),
     .baseType = typeof(System_Object),

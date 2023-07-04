@@ -117,7 +117,7 @@ struct System_Type_InterfaceInfo System_ArrayTypeInterfaces[] = {
     [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type  System_ArrayType = {
+struct System_Type System_ArrayType = {
     .base = stack_System_Object(System_Type),
 	.name = "Array",
 	.size = sizeof(struct System_Array),
@@ -182,7 +182,7 @@ struct System_Type_FunctionInfo  System_ArrayEnumeratorTypeFunctions[] = {
     [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_ArrayEnumerator_moveNext },
 };
 
-struct System_Type  System_ArrayEnumeratorType = {
+struct System_Type System_ArrayEnumeratorType = {
     .base = { .type = typeof(System_Type) },
     .name = "ArrayEnumerator",
     .size = sizeof(struct System_ArrayEnumerator),

@@ -15,7 +15,7 @@
 
 /*# System_UInt8 #*/
 
-struct System_Type  System_UInt8Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt8", .size = sizeof(System_UInt8) };
+struct System_Type System_UInt8Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt8", .size = sizeof(System_UInt8) };
 
 System_Bool  System_UInt8_isPrintable(System_UInt8 that) {
     return inline_System_UInt8_isPrintable(that);
@@ -172,7 +172,7 @@ System_UInt8  System_UInt8_parsebase10(System_String8 that) {
 
 /*# System_UInt16 #*/
 
-struct System_Type  System_UInt16Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt16", .size = sizeof(System_UInt16) };
+struct System_Type System_UInt16Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt16", .size = sizeof(System_UInt16) };
 
 System_Bool  System_UInt16_isPrintable(System_UInt16 that) {
     return inline_System_UInt16_isPrintable(that);
@@ -331,7 +331,7 @@ System_UInt16  System_UInt16_parsebase10(System_String8 that) {
 
 /*# System_UInt32 #*/
 
-struct System_Type  System_UInt32Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt32", .size = sizeof(System_UInt32) };
+struct System_Type System_UInt32Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt32", .size = sizeof(System_UInt32) };
 
 System_Bool  System_UInt32_isPrintable(System_UInt32 that) {
     return inline_System_UInt32_isPrintable(that);
@@ -495,7 +495,7 @@ System_UInt32  System_UInt32_parsebase10(System_String8 that) {
 
 /*# System_UInt64 #*/
 
-struct System_Type  System_UInt64Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt64", .size = sizeof(System_UInt64) };
+struct System_Type System_UInt64Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt64", .size = sizeof(System_UInt64) };
 
 System_Bool  System_UInt64_isPrintable(System_UInt64 that) {
     return inline_System_UInt64_isPrintable(that);
@@ -666,7 +666,7 @@ System_UInt64  System_UInt64_parsebase10(System_String8 that) {
 /*# System_Int8 #*/
 
 
-struct System_Type  System_Int8Type  = { .base = stack_System_Object(System_Type), .name = "System.Int8", .size = sizeof(System_Int8) };
+struct System_Type System_Int8Type  = { .base = stack_System_Object(System_Type), .name = "System.Int8", .size = sizeof(System_Int8) };
 
 System_Bool  System_Int8_isPrintable(System_Int8 that) {
     return inline_System_Int8_isPrintable(that);
@@ -824,7 +824,7 @@ System_Size  stack_System_Int8_toString8base10(System_Int8 that, System_Char8 ar
 /*# System_Int16 #*/
 
 
-struct System_Type  System_Int16Type  = { .base = stack_System_Object(System_Type), .name = "System.Int16", .size = sizeof(System_Int16) };
+struct System_Type System_Int16Type  = { .base = stack_System_Object(System_Type), .name = "System.Int16", .size = sizeof(System_Int16) };
 
 System_Bool  System_Int16_isPrintable(System_Int16 that) {
     return inline_System_Int16_isPrintable(that);
@@ -982,7 +982,7 @@ System_Size  stack_System_Int16_toString8base10(System_Int16 that, System_Char8 
 /*# System_Int32 #*/
 
 
-struct System_Type  System_Int32Type  = { .base = stack_System_Object(System_Type), .name = "System.Int32", .size = sizeof(System_Int32) };
+struct System_Type System_Int32Type  = { .base = stack_System_Object(System_Type), .name = "System.Int32", .size = sizeof(System_Int32) };
 
 System_Bool  System_Int32_isPrintable(System_Int32 that) {
     return inline_System_Int32_isPrintable(that);
@@ -1140,7 +1140,7 @@ System_Size  stack_System_Int32_toString8base10(System_Int32 that, System_Char8 
 /*# System_Int64 #*/
 
 
-struct System_Type  System_Int64Type  = { .base = stack_System_Object(System_Type), .name = "System.Int64", .size = sizeof(System_Int64) };
+struct System_Type System_Int64Type  = { .base = stack_System_Object(System_Type), .name = "System.Int64", .size = sizeof(System_Int64) };
 
 System_Bool  System_Int64_isPrintable(System_Int64 that) {
     return inline_System_Int64_isPrintable(that);

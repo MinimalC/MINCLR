@@ -14,7 +14,7 @@ enum { null } ;
 
 enum { false, true } ;
 
-typedef _Bool  System_Bool;
+typedef unsigned  System_Bool;
 
 #if defined(using_System)
 #define Bool  System_Bool
@@ -49,7 +49,7 @@ typedef _Bool  System_Bool;
 #define import  extern
 #define align(x)  __attribute__((aligned(x)))
 #define artificial  __attribute__((artificial))
-#define asm  __asm__
+#define asm  __asm__ __volatile__
 /* #define const  __attribute__ ((__const__)) */
 #define deprecated(msg)  __attribute__((deprecated(msg)))
 #define used  __attribute__((used))

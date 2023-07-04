@@ -70,7 +70,7 @@ struct System_Type_InterfaceInfo  System_VarArrayTypeInterfaces[] = {
     [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type  System_VarArrayType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_VarArrayType = { .base = { .type = typeof(System_Type) },
     .name = "VarArray",
     .size = sizeof(struct System_VarArray),
     .baseType = typeof(System_Object),
@@ -136,7 +136,7 @@ struct System_Type_FunctionInfo  System_VarArrayEnumeratorTypeFunctions[] = {
     [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_VarArrayEnumerator_moveNext },
 };
 
-struct System_Type  System_VarArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_VarArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "VarArrayEnumerator",
     .size = sizeof(struct System_VarArrayEnumerator),
     .baseType = typeof(System_Object),

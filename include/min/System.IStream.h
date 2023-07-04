@@ -34,7 +34,7 @@ typedef void  delegate(System_IStream_write__string_size)(System_IStream that, S
 typedef void  delegate(System_IStream_writeEnd__arguments)(System_IStream stream, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 typedef void  delegate(System_IStream_sync)(System_IStream that);
 typedef System_Size  delegate(System_IStream_read)(System_IStream that, System_String8 value, System_Size count);
-typedef void  delegate(System_IStream_seek)(System_IStream that, System_SSize offset, System_origin origin);
+typedef System_Size  delegate(System_IStream_seek)(System_IStream that, System_SSize offset, System_origin origin);
 typedef System_IntPtr  delegate(System_IStream_get_Position)(System_IStream that);
 typedef void  delegate(System_IStream_set_Position)(System_IStream that, System_Size value);
 
@@ -42,7 +42,7 @@ export void  base_System_IStream_write__string_size(System_IStream that, System_
 export void  base_System_IStream_writeEnd__arguments(System_IStream stream, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 export void  base_System_IStream_sync(System_IStream that);
 export System_Size  base_System_IStream_read(System_IStream that, System_String8 value, System_Size count);
-export void  base_System_IStream_seek(System_IStream that, System_SSize offset, System_origin origin);
+export System_Size  base_System_IStream_seek(System_IStream that, System_SSize offset, System_origin origin);
 export System_IntPtr  base_System_IStream_get_Position(System_IStream that);
 export void  base_System_IStream_set_Position(System_IStream that, System_Size value);
 

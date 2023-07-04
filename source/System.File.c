@@ -87,17 +87,24 @@ void  base_System_File_writeEnd__arguments(File stream, String8 format, Char8 su
     base_System_File_write__string_size(stream, message, message_length);
 }
 
-void  base_System_File_seek(File that, SSize offset, origin origin) {
+Size  base_System_File_seek(File that, SSize offset, origin origin) {
 /*  ISO_fseek((ISO_File)that->filePtr, offset, origin); */
-    that->position = System_Syscall_lseek(that->filePtr, offset, origin);
+    return that->position = System_Syscall_lseek(that->filePtr, offset, origin);
 }
 
-IntPtr  base_System_File_get_Position(File that) {
+Size  base_System_File_get_Position(File that) {
 /*  return ISO_ftell((ISO_File)that->filePtr); */
     return that->position;
 }
 void  base_System_File_set_Position(File that, Size value) {
     base_System_File_seek(that, value, origin_Begin);
+}
+
+Size  base_System_File_get_Length(File that) {
+    Size position = base_System_File_seek(that, 0, origin_Current);
+    Size reture = base_System_File_seek(that, 0, origin_End);
+    base_System_File_seek(that, position, origin_Begin);
+    return reture;
 }
 
 void  base_System_File_sync(File that) {
@@ -122,7 +129,7 @@ struct System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {
     [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IStreamType },
 };
 
-struct System_Type  System_FileType = {
+struct System_Type System_FileType = {
     .base = stack_System_Object(System_Type),
 	.name = "File",
     .size = sizeof(struct System_File),

@@ -17,7 +17,7 @@
 
 /*# Generic_T0 #*/
 
-struct System_Type  Generic_T0Type = { .base = { .type = typeof(System_Type) },
+struct System_Type Generic_T0Type = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0",
     .size = sizeof(struct Generic_T0),
     .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
@@ -46,7 +46,7 @@ struct System_Type_FunctionInfo  Generic1_T1TypeFunctions[] = {
     [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_Generic1_T1_free },
 };
 
-struct System_Type  Generic1_T1Type = { .base = { .type = typeof(System_Type) },
+struct System_Type Generic1_T1Type = { .base = { .type = typeof(System_Type) },
     .name = "Generic1.T1",
     .size = sizeof(struct Generic1_T1),
     .baseType = typeof(System_Object),

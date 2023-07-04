@@ -27,7 +27,7 @@
 
 /*# System_Memory #*/
 
-struct System_Type  System_MemoryType = { .base = stack_System_Object(System_Type),
+struct System_Type System_MemoryType = { .base = stack_System_Object(System_Type),
 	.name = "Memory",
 };
 
@@ -150,11 +150,11 @@ typedef struct System_Memory_Header {
 } * System_Memory_Header;
 
 #if DEBUG == DEBUG_System_Memory
-struct System_Type System_Memory_PageType = {
+struct System_TypeSystem_Memory_PageType = {
     .base = { .type = typeof(System_Type) },
     .name = "Memory.Page",
 };
-struct System_Type System_Memory_HeaderType = {
+struct System_TypeSystem_Memory_HeaderType = {
     .base = { .type = typeof(System_Type) },
     .name = "Memory.Header",
 };
