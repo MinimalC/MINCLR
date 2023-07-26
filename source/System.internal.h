@@ -7,9 +7,8 @@
 #define DEBUG_System_Object  2
 #define DEBUG_System_String8_format  3
 #define DEBUG_System_Memory 4
-#define DEBUG_System_Runtime 5
-#define DEBUG_System_Console_Environment_Arguments 6
-#define DEBUG_System_ELFAssembly_vDSO 7
+#define DEBUG_System_Console_Environment_Arguments 5
+#define DEBUG_System_ELFAssembly 6
 
 #if defined(NDEBUG)
 #undef NDEBUG
@@ -17,7 +16,7 @@
 #endif
 #if !defined(RELEASE)
 /* for developers */
-#define DEBUG  DEBUG_System_Runtime
+#define DEBUG  1
 #else
 /* for users: release */
 #define DEBUG  0

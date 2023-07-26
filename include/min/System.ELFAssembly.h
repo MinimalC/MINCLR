@@ -348,7 +348,7 @@ enum {
 
 export struct System_Type  System_ELFAssembly_SectionFlagsType;
 
-typedef System_UInt32 System_ELFAssembly_DynamicType;
+typedef System_Size System_ELFAssembly_DynamicType;
 enum {
     System_ELFAssembly_DynamicType_NULL = 0,    /* Marks end of dynamic section */
     System_ELFAssembly_DynamicType_NEEDED = 1,    /* Name of needed library */
@@ -791,7 +791,7 @@ typedef struct System_ELF64Assembly {
 
 } * System_ELF64Assembly;
 
-#define stack_System_ELF64Assembly()  (struct System_ELF64Assembly){ .base = stack_System_Object(System_ELF64Assembly), }
+#define stack_System_ELF64Assembly()  (struct System_ELF64Assembly){ .base = stack_System_Object(System_ELF64Assembly), .name = 0, .buffer = 0, .link = 0 }
 #define new_System_ELF64Assembly()  (base_System_ELF64Assembly_init((System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly))))
 
 export struct System_Type  System_ELF64AssemblyType;
@@ -810,16 +810,14 @@ export System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getSymbol(System_St
 export System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
 export System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64Assembly assembly, System_String8 name);
 
-export void System_ELF64Assembly_DynamicEntry_toString(System_ELF64Assembly_DynamicEntry dynamics, System_Size dynamicsCount, System_String8 strings);
 export System_String8 System_ELFAssembly_AMD64Relocation_toString(System_UInt32 value);
 export System_String8 System_ELFAssembly_SymbolBinding_toString(System_UInt8 value);
 export System_String8 System_ELFAssembly_SymbolType_toString(System_UInt8 value);
+export System_String8 System_ELFAssembly_DynamicType_toString(System_ELFAssembly_DynamicType value);
 
 export void System_ELF64Assembly_watchAll();
 export void System_ELF64Assembly_watch(System_Var base);
 export void System_ELF64Assembly_watchRelocate(System_Var base, System_ELF64Assembly_RelocationAddend relocation, System_Size relocationCount, System_ELF64Assembly_SymbolEntry symbols, System_String8 symbolsStrings);
-
-export void System_Interpreter_start(System_ELF64Assembly assemblys[], System_Size assemblysCount, System_Var stack);
 
 #endif
 #if !defined(have_System_ELFAssembly)

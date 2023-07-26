@@ -12,10 +12,9 @@ run.awk ~/FIKTIV/make.awk/make.awk -std +shared +debug project=Extension precomp
 
 cd .make
 
-#INTERP=
-INTERP=./System.Interpreter
+INTERP=
+#INTERP=./System.Interpreter
 
-# INTERP ./try.ELFAssembly > try.ELFAssembly.read 2>&1
 $INTERP ./ELFAssembly.read > ELFAssembly.read...report 2>&1
 $INTERP ./test.Crypto.SipHash > test.Crypto.SipHash...report 2>&1
 $INTERP ./test.System.Exception > test.System.Exception...report 2>&1

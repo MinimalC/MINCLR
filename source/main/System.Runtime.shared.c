@@ -52,7 +52,7 @@ void System_Runtime_start(Var  * stack) {
     String8 * envv = (String8 *)(stack = stack + argc + 1);
     while (*stack) { ++envc; ++stack; }
 
-#if DEBUG == DEBUG_System_Console_Environment_Arguments
+#if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
     for (Size i = 0; i < argc; ++i)
         System_Console_writeLine("System_Console_Arguments({0:uint}): {1:string}", 2, i, argv[i]);
     for (Size i = 0; i < envc; ++i)
@@ -82,6 +82,7 @@ System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}
     System_enum_getName(typeof(System_Environment_AuxType), auxv[i].type),
     auxv[i].value);
 #endif*/
+#if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
         switch (auxv[i].type) {
         case System_Environment_AuxType_HWCAP:
             System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}, value 0x{2:uint:hex}", 3, i, "HWCAP", auxv[i].value); break;
@@ -117,6 +118,7 @@ System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}
         default:
             System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:uint}), value 0x{2:uint:hex}", 3, i, auxv[i].type, auxv[i].value); break;
         }
+#endif
         
         switch (auxv[i].type) {
         case System_Environment_AuxType_PAGESZ:
@@ -136,19 +138,18 @@ System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}
 
 
     function_System_Runtime_main entry = &System_Runtime_main;
-#if DEBUG
-System_Console_writeLine("AddressOf System_Runtime_main: {0:uint:hex}", 1, entry);
+#if DEBUG == DEBUG_System_ELFAssembly
 extern System_Size _DYNAMIC;
-System_Size * dynamic = &_DYNAMIC;
-System_Console_writeLine("AddressOf _DYNAMIC: {0:uint:hex}, AddressOf dynamic: {1:uint:hex}", 2, dynamic, &dynamic);
+System_Console_writeLine("AddressOf _DYNAMIC: {0:uint:hex}", 2, &_DYNAMIC);
 //System_Console_writeLine("_DYNAMIC: {0:uint:hex}, AddressOf _DYNAMIC: {1:uint:hex}, AddressOf dynamic: {2:uint:hex}", 3, !dynamic ? null : *dynamic, dynamic, &dynamic);
 //System_Console_writeLine("_DYNAMIC: {0:uint:hex}, AddressOf _DYNAMIC: {1:uint:hex}, AddressOf dynamic: {2:uint:hex}", 3, !dynamic ? null : _DYNAMIC, dynamic, &dynamic);
-System_Console_writeLine("AddressOf stack: {0:uint:hex}", 1, System_Runtime_stack);
+System_Console_writeLine("AddressOf System_Runtime_stack: {0:uint:hex}", 1, System_Runtime_stack);
+System_Console_writeLine("AddressOf System_Runtime_main: {0:uint:hex}", 1, entry);
 System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}: {3:string}", 4, argc, envc, auxc, argv[0]);
 #endif
 
     int reture = entry(argc, argv);
-#if DEBUG
+#if DEBUG == DEBUG_System_ELFAssembly
 System_Console_writeLine("System_Runtime_start: return {0:uint}", 1, reture);
 #endif
 

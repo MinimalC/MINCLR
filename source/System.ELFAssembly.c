@@ -121,7 +121,7 @@ System_Console_writeLine("WATCH: base {0:uint:hex}, count {1:uint}, size {2:uint
         case System_ELFAssembly_DynamicType_SYMENT: dynamicSymbolsCount = dynamics[i].value; break;
         }
 
-    System_ELF64Assembly_DynamicEntry_toString(dynamics, dynamicsCount, dynamicSymbolsStrings);
+
 
     System_Console_writeLine__string("SYMBOLS");
     for (System_Size i = 0; i < dynamicSymbolsCount; ++i) {
@@ -183,7 +183,9 @@ void System_ELF64Assembly_watchRelocation(System_Var base, System_ELF64Assembly_
 
 void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print) {
 
-    assembly->name = null;
+    if (assembly->name) return; // throw
+
+    assembly->name = name;
 
     if (!assembly->buffer) {
         struct System_File file = stack_System_File();
@@ -280,11 +282,7 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
         for (System_Size i = 0; i < assembly->dynamicsCount; ++i)
             if (assembly->dynamics[i].tag == System_ELFAssembly_DynamicType_NEEDED)
                 assembly->needed[assembly->neededCount++] = assembly->dynamicSymbolsStrings + assembly->dynamics[i].value; 
-
-        // if (print) System_ELF64Assembly_DynamicEntry_toString(assembly->dynamics, assembly->dynamicsCount, assembly->dynamicSymbolsStrings);
     }
-
-    assembly->name = name;
 }
 
 void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 name) {
@@ -404,7 +402,19 @@ void System_ELF64Assembly_link__print(System_ELF64Assembly assembly, System_Bool
         }
 
         if (print) {
-            System_ELF64Assembly_DynamicEntry_toString(assembly->dynamics, assembly->dynamicsCount, assembly->dynamicSymbolsStrings);
+            for (System_Size i = 0; i < assembly->dynamicsCount; ++i)
+                switch(assembly->dynamics[i].tag) {
+                case System_ELFAssembly_DynamicType_NEEDED:
+                case System_ELFAssembly_DynamicType_SONAME:
+                    if (!assembly->dynamicSymbolsStrings)
+                        System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, System_ELFAssembly_DynamicType_toString(assembly->dynamics[i].tag), assembly->dynamics[i].value);
+                    else
+                        System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:string}", 2, System_ELFAssembly_DynamicType_toString(assembly->dynamics[i].tag), assembly->dynamicSymbolsStrings + assembly->dynamics[i].value);
+                    break;
+                default:
+                    System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, System_ELFAssembly_DynamicType_toString(assembly->dynamics[i].tag), assembly->dynamics[i].value);
+                    break;
+                }
 
             System_Console_writeLine__string("SYMBOLS");
             for (System_Size i = 0; i < assembly->symbolsCount; ++i) {
@@ -424,9 +434,9 @@ void System_ELF64Assembly_link__print(System_ELF64Assembly assembly, System_Bool
             }
         }
 
-        System_Console_writeLine__string("GOT");
+        if (print) System_Console_writeLine__string("GOT");
         System_ELF64Assembly_relocate(assembly, assembly->GOT_relocation, assembly->GOT_relocationCount, print);
-        System_Console_writeLine__string("PLT");
+        if (print) System_Console_writeLine__string("PLT");
         System_ELF64Assembly_relocate(assembly, assembly->PLT_relocation, assembly->PLT_relocationCount, print);
 
         if (assembly->PLT) {
@@ -483,7 +493,9 @@ System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_UI
 
     *address = assembly->link + symbol->value;
 
+#if DEBUG == DEBUG_System_ELFAssembly
     System_Console_writeLine("ELFAssembly_resolve: {0:string}, {1:uint:hex} old => new {2:uint:hex}", 3, name, old, *address);
+#endif
 
     return *address;
 }
@@ -502,10 +514,12 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
 
         switch (relocation[i].type) {
         case System_ELFAssembly_AMD64Relocation_RELATIVE: 
-            *address = (System_Size)assembly->link + relocation[i].addend; 
+            if (relocation[i].addend)
+                *address = (System_Size)assembly->link + relocation[i].addend; 
             break;
         case System_ELFAssembly_AMD64Relocation_64: 
-            *address = (System_Size)assembly->link + symbol->value + relocation->addend; 
+            if (symbol->value)
+                *address = (System_Size)assembly->link + symbol->value + relocation->addend; 
             break;
         case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:
             if (symbol->sectionIndex && symbol->value && *address) {
@@ -514,17 +528,16 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
             }
         case System_ELFAssembly_AMD64Relocation_GLOB_DAT: 
             symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicSymbolsStrings + symbol->name, &assembly1);
-            if (symbol1) 
+            if (symbol1 && symbol1->value) 
                 *address = (System_Size)assembly1->link + symbol1->value;
-            // else if (*address)  *address += (System_Size)assembly->link;
             else if (symbol->value)
                 *address = (System_Size)assembly->link + symbol->value; 
             break;
         case System_ELFAssembly_AMD64Relocation_COPY: 
             symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicSymbolsStrings + symbol->name, &assembly1);
-            if (symbol1) 
+            if (symbol1 && symbol1->value && symbol1->size) 
                 System_Memory_copyTo(assembly1->link + symbol1->value, symbol1->size, address);
-            else
+            else if (symbol->value && symbol->size)
                 System_Memory_copyTo(assembly->link + symbol->value, symbol->size, address);
             break;
         case System_ELFAssembly_AMD64Relocation_32: 
@@ -585,88 +598,95 @@ System_String8 System_ELFAssembly_SymbolType_toString(System_UInt8 value) {
     }    
 }
 
-void System_ELF64Assembly_DynamicEntry_toString(System_ELF64Assembly_DynamicEntry dynamics, System_Size dynamicsCount, System_String8 strings) {
-    for (System_Size i = 0; i < dynamicsCount; ++i)
-        switch(dynamics[i].tag) {
-        case System_ELFAssembly_DynamicType_NEEDED:
-            if (!strings)
-                System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "NEEDED", dynamics[i].value);
-            else
-                System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:string}", 2, "NEEDED", strings + dynamics[i].value);
-            break;
-        case System_ELFAssembly_DynamicType_PLTRELSZ:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "PLTRELSZ", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_PLTGOT:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint:hex}", 2, "PLTGOT", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_HASH:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint:hex}", 2, "HASH", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_STRTAB:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint:hex}", 2, "STRTAB", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_SYMTAB:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint:hex}", 2, "SYMTAB", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_RELA:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint:hex}", 2, "RELA", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_RELASZ:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "RELASZ", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_RELAENT:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "RELAENT", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_STRSZ:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "STRSZ", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_SYMENT:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "SYMENT", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_INIT:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "INIT", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_FINI:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "FINI", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_SONAME:
-            if (!strings)
-                System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "SONAME", dynamics[i].value);
-            else
-                System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:string}", 2, "SONAME", strings + dynamics[i].value); 
-            break;
-        case System_ELFAssembly_DynamicType_RPATH:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "RPATH", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_SYMBOLIC:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "SYMBOLIC", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_REL:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint:hex}", 2, "REL", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_RELSZ:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "RELSZ", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_RELENT:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "RELENT", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_PLTREL:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "PLTREL", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_DEBUG:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint:hex}", 2, "DEBUG", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_TEXTREL:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "TEXTREL", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_JMPREL:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint:hex}", 2, "JMPREL", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_BIND_NOW:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "BIND_NOW", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_INIT_ARRAY:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "INIT_ARRAY", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_FINI_ARRAY:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "FINI_ARRAY", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_INIT_ARRAYSZ:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "INIT_ARRAYSZ", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_FINI_ARRAYSZ:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "FINI_ARRAYSZ", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_RUNPATH:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "RUNPATH", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_FLAGS:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "FLAGS", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_ENCODING:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "ENCODING", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_PREINIT_ARRAY:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "PREINIT_ARRAY", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_PREINIT_ARRAYSZ:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "PREINIT_ARRAYSZ", dynamics[i].value); break;
-        case System_ELFAssembly_DynamicType_SYMTAB_SHNDX:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value {1:uint}", 2, "SYMTAB_SHNDX", dynamics[i].value); break;
-        default:
-            System_Console_writeLine("ELFDynamicEntry: tag {0:uint}, value {1:uint}", 2, dynamics[i].tag, dynamics[i].value); break;
-        }
+System_String8 System_ELFAssembly_DynamicType_toString(System_ELFAssembly_DynamicType value) {
+    switch (value) {
+    case System_ELFAssembly_DynamicType_NULL: return "NULL";
+    case System_ELFAssembly_DynamicType_NEEDED: return "NEEDED";
+    case System_ELFAssembly_DynamicType_PLTRELSZ: return "PLTRELSZ";
+    case System_ELFAssembly_DynamicType_PLTGOT: return "PLTGOT";
+    case System_ELFAssembly_DynamicType_HASH: return "HASH";
+    case System_ELFAssembly_DynamicType_STRTAB: return "STRTAB";
+    case System_ELFAssembly_DynamicType_SYMTAB: return "SYMTAB";
+    case System_ELFAssembly_DynamicType_RELA: return "RELA";
+    case System_ELFAssembly_DynamicType_RELASZ: return "RELASZ";
+    case System_ELFAssembly_DynamicType_RELAENT: return "RELAENT";
+    case System_ELFAssembly_DynamicType_STRSZ: return "STRSZ";
+    case System_ELFAssembly_DynamicType_SYMENT: return "SYMENT";
+    case System_ELFAssembly_DynamicType_INIT: return "INIT";
+    case System_ELFAssembly_DynamicType_FINI: return "FINI";
+    case System_ELFAssembly_DynamicType_SONAME: return "SONAME";
+    case System_ELFAssembly_DynamicType_RPATH: return "RPATH";
+    case System_ELFAssembly_DynamicType_SYMBOLIC: return "SYMBOLIC";
+    case System_ELFAssembly_DynamicType_REL: return "REL";
+    case System_ELFAssembly_DynamicType_RELSZ: return "RELSZ";
+    case System_ELFAssembly_DynamicType_RELENT: return "RELENT";
+    case System_ELFAssembly_DynamicType_PLTREL: return "PLTREL";
+    case System_ELFAssembly_DynamicType_DEBUG: return "DEBUG";
+    case System_ELFAssembly_DynamicType_TEXTREL: return "TEXTREL";
+    case System_ELFAssembly_DynamicType_JMPREL: return "JMPREL";
+    case System_ELFAssembly_DynamicType_BIND_NOW: return "BIND_NOW";
+    case System_ELFAssembly_DynamicType_INIT_ARRAY: return "INIT_ARRAY";
+    case System_ELFAssembly_DynamicType_FINI_ARRAY: return "FINI_ARRAY";
+    case System_ELFAssembly_DynamicType_INIT_ARRAYSZ: return "INIT_ARRAYSZ";
+    case System_ELFAssembly_DynamicType_FINI_ARRAYSZ: return "FINI_ARRAYSZ";
+    case System_ELFAssembly_DynamicType_RUNPATH: return "RUNPATH";
+    case System_ELFAssembly_DynamicType_FLAGS: return "FLAGS";
+    case System_ELFAssembly_DynamicType_ENCODING: return "ENCODING";
+    case System_ELFAssembly_DynamicType_PREINIT_ARRAY: return "PREINIT_ARRAY";
+    case System_ELFAssembly_DynamicType_PREINIT_ARRAYSZ: return "PREINIT_ARRAYSZ";
+    case System_ELFAssembly_DynamicType_SYMTAB_SHNDX: return "SYMTAB_SHNDX";
+
+    case System_ELFAssembly_DynamicType_NUM: return "NUM";
+
+    case System_ELFAssembly_DynamicType_LOOS: return "LOOS";
+    case System_ELFAssembly_DynamicType_HIOS: return "HIOS";
+    case System_ELFAssembly_DynamicType_LOPROC: return "LOPROC";
+    case System_ELFAssembly_DynamicType_HIPROC: return "HIPROC";
+
+/*    case System_ELFAssembly_DynamicType_MIPSNUM: return "MIPSNUM";
+    case System_ELFAssembly_DynamicType_VALRNGLO: return "VALRNGLO";
+    case System_ELFAssembly_DynamicType_GNU_PRELINKED: return "GNU_PRELINKED";
+    case System_ELFAssembly_DynamicType_GNU_CONFLICTSZ: return "GNU_CONFLICTSZ";
+    case System_ELFAssembly_DynamicType_GNU_LIBLISTSZ: return "GNU_LIBLISTSZ";
+    case System_ELFAssembly_DynamicType_CHECKSUM: return "CHECKSUM";
+    case System_ELFAssembly_DynamicType_PLTPADSZ: return "PLTPADSZ";
+    case System_ELFAssembly_DynamicType_MOVEENT: return "MOVEENT";
+    case System_ELFAssembly_DynamicType_MOVESZ: return "MOVESZ";
+    case System_ELFAssembly_DynamicType_FEATURE_1: return "FEATURE_1";
+    case System_ELFAssembly_DynamicType_POSFLAG_1: return "POSFLAG_1";
+    case System_ELFAssembly_DynamicType_SYMINSZ: return "SYMINSZ";
+    case System_ELFAssembly_DynamicType_SYMINENT: return "SYMINENT";
+    case System_ELFAssembly_DynamicType_VALRNGHI: return "VALRNGHI";
+    case System_ELFAssembly_DynamicType_VALNUM: return "VALNUM";
+    case System_ELFAssembly_DynamicType_ADDRRNGLO: return "ADDRRNGLO";
+    case System_ELFAssembly_DynamicType_GNU_HASH: return "GNU_HASH";
+    case System_ELFAssembly_DynamicType_TLSDESC_PLT: return "TLSDESC_PLT";
+    case System_ELFAssembly_DynamicType_TLSDESC_GOT: return "TLSDESC_GOT";
+    case System_ELFAssembly_DynamicType_GNU_CONFLICT: return "GNU_CONFLICT";
+    case System_ELFAssembly_DynamicType_GNU_LIBLIST: return "GNU_LIBLIST";
+    case System_ELFAssembly_DynamicType_CONFIG: return "CONFIG";
+    case System_ELFAssembly_DynamicType_DEPAUDIT: return "DEPAUDIT";
+    case System_ELFAssembly_DynamicType_AUDIT: return "AUDIT";
+    case System_ELFAssembly_DynamicType_PLTPAD: return "PLTPAD";
+    case System_ELFAssembly_DynamicType_MOVETAB: return "MOVETAB";
+    case System_ELFAssembly_DynamicType_SYMINFO: return "SYMINFO";
+    case System_ELFAssembly_DynamicType_ADDRRNGHI: return "ADDRRNGHI";
+    case System_ELFAssembly_DynamicType_ADDRNUM: return "ADDRNUM";
+    case System_ELFAssembly_DynamicType_VERSYM: return "VERSYM";
+    case System_ELFAssembly_DynamicType_RELACOUNT: return "RELACOUNT";
+    case System_ELFAssembly_DynamicType_RELCOUNT: return "RELCOUNT";
+    case System_ELFAssembly_DynamicType_FLAGS_1: return "FLAGS_1";
+    case System_ELFAssembly_DynamicType_VERDEF: return "VERDEF";
+    case System_ELFAssembly_DynamicType_VERDEFNUM: return "VERDEFNUM";
+    case System_ELFAssembly_DynamicType_VERNEED: return "VERNEED";
+    case System_ELFAssembly_DynamicType_VERNEEDNUM: return "VERNEEDNUM";
+    case System_ELFAssembly_DynamicType_VERSIONTAGNUM: return "VERSIONTAGNUM";
+    case System_ELFAssembly_DynamicType_AUXILIARY: return "AUXILIARY";
+    case System_ELFAssembly_DynamicType_FILTER: return "FILTER";
+    case System_ELFAssembly_DynamicType_EXTRANUM: return "EXTRANUM";*/
+
+    default: return "UNKNOWN";
+    }    
 }
 
 #endif
