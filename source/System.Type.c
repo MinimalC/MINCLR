@@ -93,17 +93,18 @@ System_Var System_Type_getMethod(System_Type  that, System_Var fun) {
 }
 
 System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
-    System_Debug_assert(that);
-    System_Debug_assert(fun);
+    Debug_assert(that);
+    Debug_assert(fun);
 
+    System_Type they = that;
     System_Type_FunctionInfo info;
-    for (System_Size f = 0; f < that->functions.length; ++f) {
-        info = &array(that->functions.value)[f];
-        if (info && fun == info->function) return info->value;
+    while (they && they->baseType) {
+        for (System_Size f = 0; f < they->functions.length; ++f) {
+            info = !they->functions.value ? null : *(they->functions.value) + f;
+            if (info && fun == info->function) return info->value;
+        }
+        they = they->baseType;
     }
-
-    if (that->baseType) return System_Type_tryMethod(that->baseType, fun);
-
     return null;
 }
 
@@ -116,8 +117,10 @@ System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other)
     while (they) {
         if (other == they) return true;
         for (System_Size f = 0; f < they->interfaces.length; ++f) {
-            info = &array(they->interfaces.value)[f];
-            if (other == info->interfaceType) return true;
+            if (they->interfaces.value) {
+                info = !they->interfaces.value ? null : *(they->interfaces.value) + f;
+                if (info && other == info->interfaceType) return true;
+            }
         }
         they = they->baseType;
     }

@@ -250,14 +250,14 @@ export System_Char8  System_String8_Empty[1];
 #define String8_Empty  System_String8_Empty
 #endif
 
-export void  System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Unsigned line);
+export void  System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Size line);
 export void  System_Debug_writeLine__message(const System_String8 message, ...);
 
 #if !DEBUG
 #define System_Debug_assert(expression) (void)(expression)
 #define System_Debug_writeLine(message,...) (void)(message, __VA_ARGS__)
 #else
-#define System_Debug_assert(expression)  (void)(!(expression) ? System_Debug_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Unsigned)__LINE__) : 0)
+#define System_Debug_assert(expression)  (void)(!(expression) ? System_Debug_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Size)__LINE__) : 0)
 #define System_Debug_writeLine(message,...)  (void)System_Debug_writeLine__message((System_String8)message, __VA_ARGS__)
 #endif
 #if defined(using_System)

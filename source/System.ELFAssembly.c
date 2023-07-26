@@ -29,7 +29,11 @@
 #if !defined(code_System_ELF64Assembly)
 #define code_System_ELF64Assembly
 
-struct System_Type System_ELF64AssemblyType = { .base = { .type = typeof(System_Type), }, .name = "System.ELF64Assembly", .size = sizeof(struct System_ELF64Assembly), };
+struct System_Type System_ELF64AssemblyType = { .base = { .type = typeof(System_Type), }, 
+    .name = "System.ELF64Assembly", 
+    .size = sizeof(struct System_ELF64Assembly), 
+    .baseType = typeof(System_Object),
+};
 
 #define ROUND(X,ALIGN)  (((X) + (ALIGN - 1)) & ~(ALIGN - 1))
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
@@ -288,6 +292,7 @@ void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 nam
 }
 
 System_ELF64Assembly System_ELF64Assembly_loaded[64];
+
 System_Size System_ELF64Assembly_loadedCount = 0;
 
 System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64Assembly assembly, System_String8 name) {

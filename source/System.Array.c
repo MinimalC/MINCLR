@@ -33,7 +33,7 @@ void  base_System_Array_free(System_Array that) {
     Size i;
 
 #if DEBUG == DEBUG_System_Object
-	System_Type type = ((System_Object)that)->Type;
+	System_Type type = ((System_Object)that)->type;
     Size start_null = 0;
 #endif
 
@@ -48,11 +48,11 @@ void  base_System_Array_free(System_Array that) {
 #if DEBUG == DEBUG_System_Object
             if (start_null > 0) {
                 if (start_null == i - 1)
-                     Console_writeLine("{0:string}_free: [{1:uint}] is null", 2, type->name->value, start_null);
-                else Console_writeLine("{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name->value, start_null, i - 1);
+                     Console_writeLine("{0:string}_free: [{1:uint}] is null", 2, type->name, start_null);
+                else Console_writeLine("{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name, start_null, i - 1);
                 start_null = 0;
             }
-            /* Console_writeLine("{0:string}_free: [{1:uint}]: {2:string}_free", 3, type->name->value, i, object->Type->name->value); */
+            /* Console_writeLine("{0:string}_free: [{1:uint}]: {2:string}_free", 3, type->name, i, object->type->name); */
 #endif
 
             Memory_free(object);
@@ -66,8 +66,8 @@ void  base_System_Array_free(System_Array that) {
 
 #if DEBUG == DEBUG_System_Object
     if (start_null > 0) {
-        if (start_null == i - 1) Console_writeLine("{0:string}_free: [{1:uint}] is null", 2, type->name->value, start_null);
-        else Console_writeLine("{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name->value, start_null, i - 1);
+        if (start_null == i - 1) Console_writeLine("{0:string}_free: [{1:uint}] is null", 2, type->name, start_null);
+        else Console_writeLine("{0:string}_free: [{1:uint}..{2:uint}] are null", 3, type->name, start_null, i - 1);
         start_null = 0;
     }
 #endif

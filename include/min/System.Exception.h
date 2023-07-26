@@ -35,7 +35,7 @@ export System_Bool  System_Exception_try(void);
 export System_Bool  System_Exception_tryNot(void);
 export void  System_Exception_throw(System_Exception that);
 export void  System_Exception_terminate(System_Exception that) noreturn;
-export System_Bool  stack_System_Exception_catch(System_Exception that, System_Type type);
+export System_Bool  stack_System_Exception_catch(System_Exception * that, System_Type type);
 
 export System_Exception  base_System_Exception_init(System_Exception that, System_String8 message);
 /* export void  base_System_Exception_free(System_Exception that); */
@@ -75,8 +75,8 @@ export System_Exception  base_System_Exception_init(System_Exception that, Syste
 #define System_catch  if (inline_System_Exception_tryNot()) goto __finally00;\
 __catch00: ;
 
-#define System_catch_class(TYPE,THAT,ACTION)  do { struct TYPE ff(struct,THAT); TYPE THAT = &ff(struct,THAT);\
-if (stack_System_Exception_catch((System_Exception)THAT, typeof(TYPE))) { ACTION ; } goto __finally00; } while (0);
+#define System_catch_class(TYPE,THAT,ACTION)  do { TYPE THAT;\
+if (stack_System_Exception_catch((System_Exception *)&THAT, typeof(TYPE))) { ACTION ; } goto __finally00; } while (0);
 
 #define System_throw(EXCEPTION) { System_Exception_throw((System_Exception)EXCEPTION); return; }
 

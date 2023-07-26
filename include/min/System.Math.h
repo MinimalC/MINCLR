@@ -7,10 +7,10 @@
 
 export struct System_Type  System_MathType;
 
+
+export System_UInt64  System_Math_divRem__UInt64__generic(System_UInt64 divident, System_UInt64 divisor, System_UInt64 ref remainder);
+
 #define System_Math_divRem__UInt64  System_Math_divRem__UInt64__generic
-
-export System_UInt64  System_Math_divRem__UInt64(System_UInt64 divident, System_UInt64 divisor, System_UInt64 ref remainder);
-
 #define inline_System_Math_addInt8(a, b)  ((a) == 0 ? (b) : ((b) == 0 ? (a) : ((b) > 0 ? (System_Int8_Max - (b) > (a) ? (a) + (b) : 0) : ((System_Int8_Min - (b) < (a)) ? (a) + (b) : 0))))
 
 #if defined(using_System)

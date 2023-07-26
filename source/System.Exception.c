@@ -14,17 +14,17 @@
 #if !defined(code_System_Exception)
 #define code_System_Exception
 
-typedef struct System_ReservedException {
+/*typedef struct System_ReservedException {
     struct System_Exception base;
 
     System_Size __reserved[8];
 } * System_ReservedException;
 
-thread struct System_ReservedException System_ReservedException_current;
+thread struct System_ReservedException System_ReservedException_current;*/
 
 thread System_Exception System_Exception_current = null;
 
-thread System_Char8 System_Exception_message[4096] = "";
+//thread System_Char8 System_Exception_message[4096] = "";
 
 Bool  System_Exception_try() {
     return (System_Exception_current && System_Exception_current->base.type) ? true : false;
@@ -35,31 +35,23 @@ Bool  System_Exception_tryNot() {
 }
 
 void  System_Exception_throw(System_Exception that) {
-    Type that_type = that->base.type;
-    Debug_assert(System_Type_isAssignableFrom(that_type, typeof(System_Exception)));
-    Debug_assert(that_type->size);
+    Debug_assert(that);
 
-    if (!System_Exception_current) System_Exception_current = (System_Exception)&System_ReservedException_current;
+    System_Exception_current = that;
 
-    Memory_copyTo(that, that_type->size, System_Exception_current);
 #if DEBUG
+    Type type = that->base.type;
+    if (!type) type = typeof(System_Exception);
+
     if (that->message && that->error)
-        Console_writeLine("throws {0:string}: error {1:uint} ({2:string}): {3:string}", 4, that_type->name, that->error, enum_getName(typeof(System_Error), that->error), that->message);
+        Console_writeLine("throws {0:string}: error {1:uint} ({2:string}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_Error), that->error), that->message);
     else if (that->message)
-        Console_writeLine("throws {0:string}: {1:string}", 2, that_type->name, that->message);
+        Console_writeLine("throws {0:string}: {1:string}", 2, type->name, that->message);
     else if (that->error)
-        Console_writeLine("throws {0:string}: error {1:uint} ({2:string})", 3, that_type->name, that->error, enum_getName(typeof(System_Error), that->error));
+        Console_writeLine("throws {0:string}: error {1:uint} ({2:string})", 3, type->name, that->error, enum_getName(typeof(System_Error), that->error));
     else
-        Console_writeLine("throws {0:string}", 1, that_type->name);
+        Console_writeLine("throws {0:string}", 1, type->name);
 #endif
-    if (that->message && Memory_isAllocated(that->message)) {
-        for (Size i = 0; i < 4096; ++i) System_Exception_message[i] = 0;
-        System_Size message_length = String8_get_Length(that->message);
-        Memory_copyTo(that->message, message_length, System_Exception_message);
-        System_Exception_current->message = System_Exception_message;
-    }
-    else System_Exception_message[0] = 0;
-    if (Memory_isAllocated(that)) Memory_free(that);
 }
 
 void  System_Exception_terminate(System_Exception that) {
@@ -72,16 +64,17 @@ void  System_Exception_terminate(System_Exception that) {
     System_Syscall_terminate(false);
 }
 
-Bool  stack_System_Exception_catch(System_Exception that, System_Type type) {
-
+Bool  stack_System_Exception_catch(System_Exception * that, System_Type type) {
+    Debug_assert(that);
+    Debug_assert(type);
+    
     if (!System_Exception_current) return false;
 
-    if (System_Type_isAssignableFrom(System_Exception_current->base.type, type)) {
+    if (!System_Type_isAssignableFrom(System_Exception_current->base.type, type)) return false;
         
-        Memory_moveTo(System_Exception_current, type->size, that);
-        return true;
-    }
-    return false;
+    *that = System_Exception_current;
+    System_Exception_current = null;
+    return true;    
 }
 
 System_Exception  base_System_Exception_init(System_Exception that, System_String8 message) {

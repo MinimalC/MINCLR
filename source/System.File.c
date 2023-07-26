@@ -37,8 +37,9 @@ System_Bool  stack_System_File_open(System_File that, System_String8 filename, S
 
     System_Error error = System_Syscall_get_Error();
     if (error || !filePtr) { /* TODO */
-        struct System_Exception exception = stack_System_Exception__error(error, "FileNotFound");
-        throw_return(&exception);
+        System_Exception exception = new_System_Exception("FileNotFound");
+        exception->error = error;
+        throw_return(exception);
     }
 
     that->filePtr = filePtr;

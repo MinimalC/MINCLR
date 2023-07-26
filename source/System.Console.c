@@ -51,16 +51,16 @@ void  System_Console_sync() {
 
 void System_Console_exit(const Size code)  {
 #if DEBUG || !DEBUG
-    struct System_Exception exception;
+    System_Exception exception = null;
     if (stack_System_Exception_catch(&exception, typeof(System_Exception))) {
-        if (exception.message && exception.error)
-            Console_writeLine("{0:string}: error {1:uint} ({2:string}): {3:string}", 4, exception.base.type->name, exception.error, enum_getName(typeof(System_Error), exception.error), exception.message);
-        else if (exception.message)
-            Console_writeLine("{0:string}: {1:string}", 2, exception.base.type->name, exception.message);
-        else if (exception.error)
-            Console_writeLine("{0:string}: error {1:uint} ({2:string})", 3, exception.base.type->name, exception.error, enum_getName(typeof(System_Error), exception.error));
+        if (exception->message && exception->error)
+            Console_writeLine("{0:string}: error {1:uint} ({2:string}): {3:string}", 4, exception->base.type->name, exception->error, enum_getName(typeof(System_Error), exception->error), exception->message);
+        else if (exception->message)
+            Console_writeLine("{0:string}: {1:string}", 2, exception->base.type->name, exception->message);
+        else if (exception->error)
+            Console_writeLine("{0:string}: error {1:uint} ({2:string})", 3, exception->base.type->name, exception->error, enum_getName(typeof(System_Error), exception->error));
         else
-            Console_writeLine("{0:string}", 1, exception.base.type->name);
+            Console_writeLine("{0:string}", 1, exception->base.type->name);
     }
 #endif
     System_Syscall_terminate(code);
@@ -182,8 +182,13 @@ void System_Debug_writeHex(Size length, void  * value) {
 #undef hexdump_Columns
 #undef hexdump_Space_VALUE
 
-void System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 fileName, const System_UInt32 line) {
-    System_IStream_writeLine((System_IStream)&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", 4, expression, functionName, fileName, line);
+void System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 fileName, const System_Size line) {
+    Var argv[4];
+    argv[0] = (Var)expression;
+    argv[1] = (Var)functionName;
+    argv[2] = (Var)fileName;
+    argv[3] = (Var)line;
+    base_System_File_writeEnd__arguments(&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", '\n', 4, argv);
 }
 
 void System_Debug_writeLine__message(const System_String8 format, ...) {
@@ -192,7 +197,7 @@ void System_Debug_writeLine__message(const System_String8 format, ...) {
     Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    System_IStream_writeLine__arguments((System_IStream)&System_Console_StdErr, format, argc, argv);
+    base_System_File_writeEnd__arguments(&System_Console_StdErr, format, '\n', argc, argv);
 }
 
 System_String8 System_Console_Arguments[System_Console_Arguments_Length] = { };

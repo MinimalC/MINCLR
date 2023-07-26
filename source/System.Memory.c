@@ -150,13 +150,15 @@ typedef struct System_Memory_Header {
 } * System_Memory_Header;
 
 #if DEBUG == DEBUG_System_Memory
-struct System_TypeSystem_Memory_PageType = {
+struct System_Type  System_Memory_PageType = {
     .base = { .type = typeof(System_Type) },
     .name = "Memory.Page",
+    .size = sizeof(struct System_Memory_Page),
 };
-struct System_TypeSystem_Memory_HeaderType = {
+struct System_Type  System_Memory_HeaderType = {
     .base = { .type = typeof(System_Type) },
     .name = "Memory.Header",
+    .size = sizeof(struct System_Memory_Header),
 };
 #endif
 
@@ -174,9 +176,9 @@ System_Var  System_Memory_alloc__internal_min_i_max(System_Type type, System_Siz
         mem64k->base.type = typeof(System_VarArray);
         mem64k->length = (min - sizeof(struct System_VarArray)) / sizeof(System_Var);
         mem64k->value = ((System_Var)mem64k + sizeof(struct System_VarArray));
-        System_Memory_ProcessVars[0] = mem64k;
+        System_Memory_ProcessVars[index] = mem64k;
 #if DEBUG == DEBUG_System_Memory
-System_Console_writeLine("new System_VarArray: length {0:uint}", 1, mem64k->length);
+System_Console_writeLine("new System_Memory_ProcessVars({0:uint}): length {1:uint}", 2, index, mem64k->length);
 #endif
     }
     System_Memory_Page mem64h = null;
@@ -194,10 +196,10 @@ System_Console_writeLine("new System_VarArray: length {0:uint}", 1, mem64k->leng
             array(mem64k->value)[i] = mem64h;
 #if DEBUG == DEBUG_System_Memory
             mem64h->type = typeof(System_Memory_Page);
-System_Console_writeLine("new System_Memory_Page: pageSize {0:uint}, payload {1:uint}", 2, mem64h->pageSize, mem64h->payload);
+System_Console_writeLine("new System_Memory_Page({0:uint}): pageSize {1:uint}, payload {2:uint}", 3, i, mem64h->pageSize, mem64h->payload);
         }
         else {
-System_Console_writeLine("using System_Memory_Page: pageSize {0:uint}, payload {1:uint}", 2, mem64h->pageSize, mem64h->payload);
+System_Console_writeLine("using System_Memory_Page({0:uint}): pageSize {1:uint}, payload {2:uint}", 3, i, mem64h->pageSize, mem64h->payload);
 #endif
         }
 
@@ -205,7 +207,7 @@ System_Console_writeLine("using System_Memory_Page: pageSize {0:uint}, payload {
 
         Size index = 0;
         Var position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
-        while (++index, position < ((System_Var)mem64h + (max - mem64h->payload))) {
+        while (position < ((System_Var)mem64h + (max - mem64h->payload))) {
             System_Memory_Header header = (System_Memory_Header)position;
 
             /* expect first if this is unfree, move next */
@@ -216,12 +218,14 @@ System_Console_writeLine("using System_Memory_Page: pageSize {0:uint}, payload {
                 Debug_assert(header->length);
                 Debug_assert(header->elementType);
                 position += header->length;
+                ++index;
                 continue;
             }
             /* expect second if this is free, if there is not enough space, move next */
             if (header->length && !header->elementType) {
                 if (header->length != real_size && header->length < real_size + sizeof(struct System_Memory_Header)) {
                     position += header->length;
+                    ++index;
                     continue;
                 }
                 /* create a new free header for empty space, change lengths */
@@ -271,11 +275,9 @@ System_Var  System_Memory_allocClass(System_Type type) {
 	Console_writeLine("System_Memory_allocClass: type {0:string}, size {1:uint}", 2, type->name, type->size);
 #endif
 
-	Var that = System_Memory_alloc__internal(type, 1);
-    if (System_Type_isAssignableFrom(type, typeof(System_Object))) {
-        System_Object object = (System_Object)that;
-        object->type = type;
-    }
+	System_Object that = System_Memory_alloc__internal(type, 1);
+    if (System_Type_isAssignableFrom(type, typeof(System_Object)))
+        that->type = type;
 	return that;
 }
 
