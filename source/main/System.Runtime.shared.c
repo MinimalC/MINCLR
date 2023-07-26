@@ -2,15 +2,17 @@
 #if !defined(code_System_Runtime)
 asm(
 ".global _start\n"
+".hidden _start\n"
 ".type _start,\u0040function\n"
 "_start:\n"
 "    xor %rbp,%rbp\n"
 "    mov %rsp,%rdi\n"
-//".weak _DYNAMIC\n"
+".weak _DYNAMIC\n"
 ".hidden _DYNAMIC\n"
-//"    lea _DYNAMIC(%rip),%rsi\n"
-"    and $-16,%rsp\n"
+"    lea _DYNAMIC(%rip),%rsi\n"
+//"    and $-16,%rsp\n"
 "    jmp System_Runtime_start\n"
+".size _start,.-_start\n"
 );
 #endif
 #if !defined(System_internal)
@@ -37,20 +39,13 @@ asm(
 #if !defined(code_System_Runtime)
 #define code_System_Runtime
 
-
-import Var _DYNAMIC;
-import Var _GLOBAL_OFFSET_TABLE_;
-
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
 
-Var Environment_GetGlobalOffsetTable() {
-    Var reture;
-    asm("lea _GLOBAL_OFFSET_TABLE_(%%rip),%0" : "=r"(reture) );
-    return reture;
-}
+System_Var System_Runtime_stack = null;
 
 void System_Runtime_start(Var  * stack) {
 
+    System_Runtime_stack = (Var)stack;
     Size argc = (Size)*stack;
     String8 * argv = (String8 *)(++stack);
     Size envc = 0;
@@ -139,16 +134,16 @@ System_Console_writeLine("System_Environment_AuxValue({0:uint}): type {1:string}
         }
     }
 
-//System_ELF64Assembly_watch();
 
     function_System_Runtime_main entry = &System_Runtime_main;
 #if DEBUG
 System_Console_writeLine("AddressOf System_Runtime_main: {0:uint:hex}", 1, entry);
-System_Console_writeLine("AddressOf String8_Empty: {0:uint:hex}", 1, System_String8_Empty);
-System_Var GOT = Environment_GetGlobalOffsetTable();
-System_Console_writeLine("AddressOf GOT: {0:uint:hex}", 1, GOT);
-System_Var dynamic = &_DYNAMIC;
-System_Console_writeLine("AddressOf _DYNAMIC: {0:uint:hex}, AddressOf &_DYNAMIC: {1:uint:hex}", 2, dynamic, &dynamic);
+extern System_Size _DYNAMIC;
+System_Size * dynamic = &_DYNAMIC;
+System_Console_writeLine("AddressOf _DYNAMIC: {0:uint:hex}, AddressOf dynamic: {1:uint:hex}", 2, dynamic, &dynamic);
+//System_Console_writeLine("_DYNAMIC: {0:uint:hex}, AddressOf _DYNAMIC: {1:uint:hex}, AddressOf dynamic: {2:uint:hex}", 3, !dynamic ? null : *dynamic, dynamic, &dynamic);
+//System_Console_writeLine("_DYNAMIC: {0:uint:hex}, AddressOf _DYNAMIC: {1:uint:hex}, AddressOf dynamic: {2:uint:hex}", 3, !dynamic ? null : _DYNAMIC, dynamic, &dynamic);
+System_Console_writeLine("AddressOf stack: {0:uint:hex}", 1, System_Runtime_stack);
 System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}: {3:string}", 4, argc, envc, auxc, argv[0]);
 #endif
 

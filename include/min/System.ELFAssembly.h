@@ -756,6 +756,8 @@ typedef struct System_ELF64Assembly {
 
     System_String8 name;
 
+    System_String8 buffer;
+
     System_ELF64Assembly_Header header;
 
     System_ELF64Assembly_ProgramHeader programs;
@@ -763,12 +765,16 @@ typedef struct System_ELF64Assembly {
     System_ELF64Assembly_SectionHeader sections;
     System_String8 sectionsStrings;
 
-    System_Size dynamicsCount;
-    System_ELF64Assembly_DynamicEntry dynamics;
-
     System_Size symbolsCount;
     System_ELF64Assembly_SymbolEntry symbols;
     System_String8 symbolsStrings;
+
+    System_Size dynamicsCount;
+    System_ELF64Assembly_DynamicEntry dynamics;
+
+    System_Size dynamicSymbolsCount;
+    System_ELF64Assembly_SymbolEntry dynamicSymbols;
+    System_String8 dynamicSymbolsStrings;
 
     System_Size neededCount;
     System_String8 needed[8];
@@ -780,6 +786,8 @@ typedef struct System_ELF64Assembly {
 
     System_Size PLT_relocationCount;
     System_ELF64Assembly_RelocationAddend PLT_relocation;
+
+    System_Size * PLT;
 
 } * System_ELF64Assembly;
 
@@ -793,9 +801,22 @@ export void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, Syst
 export void System_ELF64Assembly_link(System_ELF64Assembly assembly);
 export void System_ELF64Assembly_link__print(System_ELF64Assembly assembly, System_Bool print);
 export void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64Assembly_RelocationAddend relocation, System_Size relocationCount, System_Bool print);
+import System_Var System_ELF64Assembly_jump(System_ELF64Assembly assembly, System_UInt64 relocationOffset);
+export System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_UInt64 relocationOffset);
+export System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
+export System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
+export System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64Assembly assembly, System_String8 name);
 
-export void System_ELF64Assembly_watch();
+export void System_ELF64Assembly_DynamicEntry_toString(System_ELF64Assembly_DynamicEntry dynamics, System_Size dynamicsCount, System_String8 strings);
+export System_String8 System_ELFAssembly_AMD64Relocation_toString(System_UInt32 value);
+export System_String8 System_ELFAssembly_SymbolBinding_toString(System_UInt8 value);
+export System_String8 System_ELFAssembly_SymbolType_toString(System_UInt8 value);
+
+export void System_ELF64Assembly_watchAll();
+export void System_ELF64Assembly_watch(System_Var base);
 export void System_ELF64Assembly_watchRelocate(System_Var base, System_ELF64Assembly_RelocationAddend relocation, System_Size relocationCount, System_ELF64Assembly_SymbolEntry symbols, System_String8 symbolsStrings);
+
+export void System_Interpreter_start(System_ELF64Assembly assemblys[], System_Size assemblysCount, System_Var stack);
 
 #endif
 #if !defined(have_System_ELFAssembly)

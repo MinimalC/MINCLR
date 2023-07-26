@@ -131,8 +131,10 @@ Size  System_String8_compare(String8 that, String8 other) {
 }
 
 Bool  System_String8_equals(String8 that, String8 other) {
-    Size length = String8_get_Length(other);
-    return length == String8_compare(that, other);
+    Size length0 = String8_get_Length(that);
+    Size length1 = String8_get_Length(other);
+    if (length0 != length1) return false;
+    return length0 == String8_compare(that, other);
 }
 
 Size  System_String8_compareSubstring(String8 that, String8 other, Size length) {

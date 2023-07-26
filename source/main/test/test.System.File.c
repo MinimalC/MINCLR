@@ -9,6 +9,8 @@ STRING8  HALLOtxt = "./.test.txt";
 //main(test42_System_File, args) {
 int main(int argc, char * argv[]) {
 
+    //System_ELF64Assembly_watchAll();
+
 	/* Test00: Open a File */
     File file = File_open(HALLOtxt, System_File_Mode_readWrite | System_File_Mode_create | System_File_Mode_truncate);
 

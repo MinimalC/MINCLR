@@ -78,11 +78,11 @@ __catch00: ;
 #define System_catch_class(TYPE,THAT,ACTION)  do { struct TYPE ff(struct,THAT); TYPE THAT = &ff(struct,THAT);\
 if (stack_System_Exception_catch((System_Exception)THAT, typeof(TYPE))) { ACTION ; } goto __finally00; } while (0);
 
-#define System_throw(EXCEPTION)  System_Exception_throw((System_Exception)EXCEPTION); return;
+#define System_throw(EXCEPTION) { System_Exception_throw((System_Exception)EXCEPTION); return; }
 
-#define System_throw_return(EXCEPTION)  System_Exception_throw((System_Exception)EXCEPTION); return null;
+#define System_throw_return(EXCEPTION)  { System_Exception_throw((System_Exception)EXCEPTION); return null; }
 
-#define System_rethrow(THAT)  System_Exception_throw((System_Exception)THAT); goto __finally00;
+#define System_rethrow(THAT)  { System_Exception_throw((System_Exception)THAT); goto __finally00; }
 
 #define System_terminate(EXCEPTION)  System_Exception_terminate((System_Exception)EXCEPTION);
 
