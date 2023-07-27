@@ -4,16 +4,10 @@
 STRING8  HALLO = "HaLLo";
 STRING8  HALLOtxt = "./.test.txt";
 
-#define main  System_Runtime_main
-
-//main(test42_System_File, args) {
-int main(int argc, char * argv[]) {
-
-    //System_ELF64Assembly_watchAll();
+int System_Runtime_main(int argc, char * argv[]) {
 
 	/* Test00: Open a File */
     File file = File_open(HALLOtxt, System_File_Mode_readWrite | System_File_Mode_create | System_File_Mode_truncate);
-
 
 	/* Test01: Write to the File and flush */
     File_write__string_size(file, HALLO, sizeof(HALLO) - 1);
@@ -28,7 +22,6 @@ int main(int argc, char * argv[]) {
     else
         Console_writeLine("Position {0:uint} is NOT correct", 1, position);
 
-
 	/* Test03: set Position */
     File_set_Position(file, 0);
 
@@ -42,7 +35,6 @@ int main(int argc, char * argv[]) {
         Console_writeLine("{0:string} is correct, {1:uint} bytes read", 2, text, count);
     else
         Console_writeLine("{0:string} is NOT correct, {1:uint} bytes read", 2, text, count);
-
 
 	/* Test02: Close the File */
     Memory_free(file);

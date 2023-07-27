@@ -767,14 +767,14 @@ typedef struct System_ELF64Assembly {
 
     System_Size symbolsCount;
     System_ELF64Assembly_SymbolEntry symbols;
-    System_String8 symbolsStrings;
+    System_String8 symbolStrings;
 
     System_Size dynamicsCount;
     System_ELF64Assembly_DynamicEntry dynamics;
 
     System_Size dynamicSymbolsCount;
     System_ELF64Assembly_SymbolEntry dynamicSymbols;
-    System_String8 dynamicSymbolsStrings;
+    System_String8 dynamicStrings;
 
     System_Size neededCount;
     System_String8 needed[8];
@@ -802,8 +802,7 @@ export System_Size System_ELF64Assembly_loadedCount;
 export void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 name);
 export void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print);
 export void System_ELF64Assembly_link(System_ELF64Assembly assembly);
-export void System_ELF64Assembly_link__print(System_ELF64Assembly assembly, System_Bool print);
-export void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64Assembly_RelocationAddend relocation, System_Size relocationCount, System_Bool print);
+export void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64Assembly_RelocationAddend relocation);
 import System_Var System_ELF64Assembly_jump(System_ELF64Assembly assembly, System_UInt64 relocationOffset);
 export System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_UInt64 relocationOffset);
 export System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
@@ -814,10 +813,6 @@ export System_String8 System_ELFAssembly_AMD64Relocation_toString(System_UInt32 
 export System_String8 System_ELFAssembly_SymbolBinding_toString(System_UInt8 value);
 export System_String8 System_ELFAssembly_SymbolType_toString(System_UInt8 value);
 export System_String8 System_ELFAssembly_DynamicType_toString(System_ELFAssembly_DynamicType value);
-
-export void System_ELF64Assembly_watchAll();
-export void System_ELF64Assembly_watch(System_Var base);
-export void System_ELF64Assembly_watchRelocate(System_Var base, System_ELF64Assembly_RelocationAddend relocation, System_Size relocationCount, System_ELF64Assembly_SymbolEntry symbols, System_String8 symbolsStrings);
 
 #endif
 #if !defined(have_System_ELFAssembly)
