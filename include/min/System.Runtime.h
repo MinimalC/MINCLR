@@ -11,6 +11,6 @@ import int System_Runtime_main(int argc, char * argv[]);
 
 export void System_Runtime_start(System_Var  * stack);
 
-export System_Var System_Runtime_stack;
+export System_Size * System_Runtime_stack;
 
 #endif

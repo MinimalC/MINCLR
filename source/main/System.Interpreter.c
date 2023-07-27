@@ -24,6 +24,8 @@ int System_Runtime_main(int argc, char  * argv[]) {
         name = argv[1];
         base = (System_Var)ROUNDDOWN(System_Environment_AuxValues[System_Environment_AuxType_PHDR].value, 4096);
 
+        *(++System_Runtime_stack) = --argc;
+        
 #if DEBUG == DEBUG_System_ELFAssembly
         System_Console_writeLine__string("This is System.Interpreter as command");
 #endif
@@ -176,6 +178,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
     System_ELF64Assembly_read__print(assembly, name, false);
 #endif
     System_ELF64Assembly_link(assembly);
+
 
     //System_ELF64Assembly assembly1;
     //System_ELF64Assembly_SymbolEntry entrySymbol = System_ELF64Assembly_getSymbol("System_Runtime_main", &assembly1);

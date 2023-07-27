@@ -56,6 +56,55 @@ struct System_Type_FieldInfo  System_Environment_AuxTypeTypeFields[] = {
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "MINSIGSTKSZ", .value = System_Environment_AuxType_MINSIGSTKSZ },
 };
 
+System_String8 System_Environment_AuxType_toString(System_Environment_AuxType value) {
+    switch (value) {
+    case System_Environment_AuxType_NULL: return "NULL";
+    case System_Environment_AuxType_IGNORE: return "IGNORE";
+    case System_Environment_AuxType_EXECFD: return "EXECFD";
+    case System_Environment_AuxType_PHDR: return "PHDR";
+    case System_Environment_AuxType_PHENT: return "PHENT";
+    case System_Environment_AuxType_PHNUM: return "PHNUM";
+    case System_Environment_AuxType_PAGESZ: return "PAGESZ";
+    case System_Environment_AuxType_BASE: return "BASE";
+    case System_Environment_AuxType_FLAGS: return "FLAGS";
+    case System_Environment_AuxType_ENTRY: return "ENTRY";
+    case System_Environment_AuxType_NOTELF: return "NOTELF";
+    case System_Environment_AuxType_UID: return "UID";
+    case System_Environment_AuxType_EUID: return "EUID";
+    case System_Environment_AuxType_GID: return "GID";
+    case System_Environment_AuxType_EGID: return "EGID";
+    case System_Environment_AuxType_CLKTCK: return "CLKTCK";
+    case System_Environment_AuxType_PLATFORM: return "PLATFORM";
+    case System_Environment_AuxType_HWCAP: return "HWCAP";
+    case System_Environment_AuxType_FPUCW: return "FPUCW";
+    case System_Environment_AuxType_DCACHEBSIZE: return "DCACHEBSIZE";
+    case System_Environment_AuxType_ICACHEBSIZE: return "ICACHEBSIZE";
+    case System_Environment_AuxType_UCACHEBSIZE: return "UCACHEBSIZE";
+    case System_Environment_AuxType_IGNOREPPC: return "IGNOREPPC";
+    case System_Environment_AuxType_SECURE: return "SECURE";
+    case System_Environment_AuxType_BASE_PLATFORM: return "BASE_PLATFORM";
+    case System_Environment_AuxType_RANDOM: return "RANDOM";
+    case System_Environment_AuxType_HWCAP2: return "HWCAP2";
+    case System_Environment_AuxType_EXECFN: return "EXECFN";
+    case System_Environment_AuxType_SYSINFO: return "SYSINFO";
+    case System_Environment_AuxType_SYSINFO_EHDR: return "SYSINFO_EHDR";
+    case System_Environment_AuxType_L1I_CACHESHAPE: return "L1I_CACHESHAPE";
+    case System_Environment_AuxType_L1D_CACHESHAPE: return "L1D_CACHESHAPE";
+    case System_Environment_AuxType_L2_CACHESHAPE: return "L2_CACHESHAPE";
+    case System_Environment_AuxType_L3_CACHESHAPE: return "L3_CACHESHAPE";
+    case System_Environment_AuxType_L1I_CACHESIZE: return "L1I_CACHESIZE";
+    case System_Environment_AuxType_L1I_CACHEGEOMETRY: return "L1I_CACHEGEOMETRY";
+    case System_Environment_AuxType_L1D_CACHESIZE: return "L1D_CACHESIZE";
+    case System_Environment_AuxType_L1D_CACHEGEOMETRY: return "L1D_CACHEGEOMETRY";
+    case System_Environment_AuxType_L2_CACHESIZE: return "L2_CACHESIZE";
+    case System_Environment_AuxType_L2_CACHEGEOMETRY: return "L2_CACHEGEOMETRY";
+    case System_Environment_AuxType_L3_CACHESIZE: return "L3_CACHESIZE";
+    case System_Environment_AuxType_L3_CACHEGEOMETRY: return "L3_CACHEGEOMETRY";
+    case System_Environment_AuxType_MINSIGSTKSZ: return "MINSIGSTKSZ";
+    default: return "UNKNOWN";
+    }
+}
+
 struct System_Type System_Environment_AuxTypeType = { .base = { .type = typeof(System_Type) },
     .name = "AuxType",
     .size = sizeof(System_Environment_AuxType),

@@ -59,6 +59,8 @@ enum {
     System_Environment_AuxType_MINSIGSTKSZ = 51,
 };
 
+export System_String8 System_Environment_AuxType_toString(System_Environment_AuxType value);
+
 export struct System_Type  System_Environment_AuxTypeType;
 
 typedef struct System_Environment32_AuxValue {
