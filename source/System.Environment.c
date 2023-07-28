@@ -8,7 +8,7 @@
 
 System_String8  System_Environment_Arguments[System_Environment_Arguments_Length] = { };
 
-struct System_Environment_AuxValue  System_Environment_AuxValues[System_Environment_AuxValues_Length] = { };
+System_Size  System_Environment_AuxValues[System_Environment_AuxValues_Length] = { };
 
 struct System_Type_FieldInfo  System_Environment_AuxTypeTypeFields[] = {
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "NULL", .value = System_Environment_AuxType_NULL },
@@ -38,6 +38,7 @@ struct System_Type_FieldInfo  System_Environment_AuxTypeTypeFields[] = {
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "BASE_PLATFORM", .value = System_Environment_AuxType_BASE_PLATFORM },
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "RANDOM", .value = System_Environment_AuxType_RANDOM },
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "HWCAP2", .value = System_Environment_AuxType_HWCAP2 },
+    { .base = stack_System_Object(System_Type_FieldInfo), .name = "INTERP", .value = System_Environment_AuxType_INTERP },
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "EXECFN", .value = System_Environment_AuxType_EXECFN },
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "SYSINFO", .value = System_Environment_AuxType_SYSINFO },
     { .base = stack_System_Object(System_Type_FieldInfo), .name = "SYSINFO_EHDR", .value = System_Environment_AuxType_SYSINFO_EHDR },
@@ -85,6 +86,7 @@ System_String8 System_Environment_AuxType_toString(System_Environment_AuxType va
     case System_Environment_AuxType_BASE_PLATFORM: return "BASE_PLATFORM";
     case System_Environment_AuxType_RANDOM: return "RANDOM";
     case System_Environment_AuxType_HWCAP2: return "HWCAP2";
+    case System_Environment_AuxType_INTERP: return "INTERP";
     case System_Environment_AuxType_EXECFN: return "EXECFN";
     case System_Environment_AuxType_SYSINFO: return "SYSINFO";
     case System_Environment_AuxType_SYSINFO_EHDR: return "SYSINFO_EHDR";

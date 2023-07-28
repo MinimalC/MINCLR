@@ -33,6 +33,9 @@ asm(
 #if !defined(have_System_String8)
 #include <min/System.String8.h>
 #endif
+#if !defined(have_System_Memory)
+#include <min/System.Memory.h>
+#endif
 #if !defined(have_System_Environment)
 #include <min/System.Environment.h>
 #endif
@@ -43,46 +46,52 @@ asm(
 
 System_Size * System_Runtime_stack = null;
 
-void System_Runtime_start(Var  * stack) {
+System_Size System_Runtime_pageSize = 0;
 
-    System_Runtime_stack = (Size *)stack;
-    Size argc = (Size)*stack;
-    String8 * argv = (String8 *)(++stack);
-    Size envc = 0;
-    String8 * envv = (String8 *)(stack = stack + argc + 1);
+void System_Runtime_start(System_Var  * stack) {
+
+    System_Size i;
+    System_Runtime_stack = (System_Size *)stack;
+    System_Size argc = (System_Size)*stack;
+    System_String8 * argv = (System_String8 *)(++stack);
+    System_Size envc = 0;
+    System_String8 * envv = (System_String8 *)(stack += argc + 1);
     while (*stack) { ++envc; ++stack; }
-
-#if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
-    for (Size i = 0; i < argc; ++i)
-        System_Console_writeLine("System_Console_Arguments({0:uint}): {1:string}", 2, i, argv[i]);
-    for (Size i = 0; i < envc; ++i)
-        System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}", 2, i, envv[i]);
-#endif
-
-    for (Size i = 0; i < argc && i < System_Console_Arguments_Length; ++i)
-        System_Console_Arguments[i] = argv[i];
-    for (Size i = 0; i < envc && i < System_Environment_Arguments_Length; ++i)
-        System_Environment_Arguments[i] = envv[i];
-
-    System_Environment_AuxValue auxv = (System_Environment_AuxValue)(++stack);
-    System_Var base = null;
-    /* struct vdso_info info = { .valid = false }; */
     System_Size auxc = 0;
-    for (Size i = 0; auxv[i].type && i < System_Environment_AuxValues_Length; ++i) {
-        ++auxc;
-        System_Environment_AuxValues[auxv[i].type].type = auxv[i].type;
-        System_Environment_AuxValues[auxv[i].type].value = auxv[i].value;
+    System_Environment_AuxValue auxv = (System_Environment_AuxValue)(++stack);
+    System_String8 name = null;
+    System_Var base = null, exec = null;
+    System_Size random = 0;
+    System_Bool interp = false;
+    do {
+        System_Environment_AuxValue aux = auxv + auxc;
 
-        switch (auxv[i].type) {
-        case System_Environment_AuxType_BASE:
-            base = (System_Var)(auxv[i].value); break;
-        }
-        /*if (auxv[i].type == System_Environment_AuxType_SYSINFO_EHDR) {
-            vdso_init_from_sysinfo_ehdr(&info, (System_ELFAssembly_Header)auxv[i].value);
-            continue;
-        }*/
+        if (aux->type == System_Environment_AuxType_PAGESZ) 
+            System_Runtime_pageSize = aux->value;
 
-#if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
+        if (aux->type == System_Environment_AuxType_EXECFN)
+            name = (System_String8)aux->value;
+
+        if (aux->type == System_Environment_AuxType_BASE)
+            base = (System_Var)aux->value;
+
+        if (aux->type == System_Environment_AuxType_PHDR)
+            exec = (System_Var)ROUNDDOWN(aux->value, 4096);
+
+        if (aux->type == System_Environment_AuxType_INTERP)
+            interp = aux->value;
+
+        if (aux->type == System_Environment_AuxType_RANDOM) 
+            random = aux->value;
+
+    } while (auxv[auxc].type && (++auxc, stack += 2));
+
+    #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
+    for (i = 0; i < argc; ++i)
+        System_Console_writeLine("System_Console_Arguments({0:uint}): {1:string}", 2, i, argv[i]);
+    for (i = 0; i < envc; ++i)
+        System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}", 2, i, envv[i]);
+    for (i = 0; i < auxc; ++i)
         switch (auxv[i].type) {
         case System_Environment_AuxType_EXECFN:
         case System_Environment_AuxType_PLATFORM:
@@ -92,24 +101,35 @@ void System_Runtime_start(Var  * stack) {
             System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:string}), value 0x{2:uint:hex}", 3, i, System_Environment_AuxType_toString(auxv[i].type), auxv[i].value); 
             break;
         }
-#endif
-    }
+    #endif
+
+    for (i = 0; i < argc && i < System_Console_Arguments_Length; ++i)
+        System_Console_Arguments[i] = argv[i];
+    for (i = 0; i < envc && i < System_Environment_Arguments_Length; ++i)
+        System_Environment_Arguments[i] = envv[i];
+    for (i = 0; i < auxc && i < System_Environment_AuxValues_Length; ++i)
+        System_Environment_AuxValues[auxv[i].type] = auxv[i].value;
+
+    /* struct vdso_info info = { .valid = false }; */
+
+    /*if (auxv[i].type == System_Environment_AuxType_SYSINFO_EHDR) {
+        vdso_init_from_sysinfo_ehdr(&info, (System_ELFAssembly_Header)auxv[i].value);
+        continue;
+    }*/
 
     function_System_Runtime_main entry = &System_Runtime_main;
-#if DEBUG == DEBUG_System_ELFAssembly
-extern System_Size _DYNAMIC;
-System_Console_writeLine("AddressOf _DYNAMIC: {0:uint:hex}", 2, &_DYNAMIC);
-System_Console_writeLine("AddressOf System_Runtime_stack: {0:uint:hex}", 1, System_Runtime_stack);
-System_Console_writeLine("AddressOf System_Runtime_main: {0:uint:hex}", 1, entry);
-System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}: {3:string}", 4, argc, envc, auxc, argv[0]);
-#endif
+    #if DEBUG == DEBUG_System_ELFAssembly
+    if (interp) System_Console_writeLine__string("This is INTERP");
+    System_Console_writeLine("AddressOf System_Runtime_stack: {0:uint:hex}", 1, System_Runtime_stack);
+    System_Console_writeLine("AddressOf System_Runtime_main: {0:uint:hex}", 1, entry);
+    System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}: {3:string}", 4, argc, envc, auxc, argv[0]);
+    #endif
 
     int reture = entry(argc, argv);
-#if DEBUG == DEBUG_System_ELFAssembly
-System_Console_writeLine("System_Runtime_start: return {0:uint}", 1, reture);
-#endif
-
-    System_Syscall_terminate(reture);
+    #if DEBUG == DEBUG_System_ELFAssembly
+    System_Console_writeLine("System_Runtime_start: return {0:uint}", 1, reture);
+    #endif
+    System_Console_exit(reture);
 }
 
 #endif

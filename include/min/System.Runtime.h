@@ -13,4 +13,6 @@ export void System_Runtime_start(System_Var  * stack);
 
 export System_Size * System_Runtime_stack;
 
+export System_Size System_Runtime_pageSize;
+
 #endif

@@ -39,6 +39,7 @@ enum {
     System_Environment_AuxType_BASE_PLATFORM = 24,
     System_Environment_AuxType_RANDOM = 25,
     System_Environment_AuxType_HWCAP2 = 26,
+    System_Environment_AuxType_INTERP = 27, // new
     System_Environment_AuxType_EXECFN = 31,
     System_Environment_AuxType_SYSINFO = 32,
     System_Environment_AuxType_SYSINFO_EHDR = 33,
@@ -85,6 +86,6 @@ export struct System_Type  System_Environment64_AuxValueType;
 #endif
 
 enum { System_Environment_AuxValues_Length = System_Environment_AuxType_MINSIGSTKSZ };
-export struct System_Environment_AuxValue System_Environment_AuxValues[System_Environment_AuxValues_Length];
+export System_Size System_Environment_AuxValues[System_Environment_AuxValues_Length];
 
 #endif
