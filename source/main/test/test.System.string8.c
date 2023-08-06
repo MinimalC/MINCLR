@@ -2,19 +2,17 @@
 #include <min/System.h>
 
 STRING8  prefix  = "main_";
-STRING8  command  = "./home/test01_System_String8";
+STRING8  name  = "test01_System_String8";
 STRING8  final_name  = "main_test01_System_String8";
+STRING8  command  = "./home/test01_System_String8";
 STRING8  empty  = "";
 
-#define main  System_Runtime_main
+int System_Runtime_main(int argc, char * argv[]) {
 
-//main(test01_System_String8, args){
-int main(int argc, char * argv[]) {
-
-    if (!String8_isNullOrEmpty(null) || !String8_isNullOrEmpty(empty) || String8_isNullOrEmpty(prefix))
-        Console_writeLine__string("Test00: ERROR: String8_isNullOrEmpty");
-    else
+    if (String8_isNullOrEmpty(null) && String8_isNullOrEmpty(empty) && !String8_isNullOrEmpty(prefix))
         Console_writeLine__string("Test00: SUCCESS: String8_isNullOrEmpty");
+    else
+        Console_writeLine__string("Test00: ERROR: String8_isNullOrEmpty");
 
 
     Size command_length = String8_get_Length(command);
@@ -35,17 +33,29 @@ int main(int argc, char * argv[]) {
     else
         Console_writeLine__string("Test03: SUCCESS: String8_lastIndexOf");
 
-    Size prefix_length = String8_get_Length(prefix);
-    String8  name  = Memory_allocArray(typeof(System_Char8), prefix_length + command_length + 1);
-    String8_copySubstringTo(prefix, prefix_length, name);
-    String8_copySubstringTo(command + command_i1, command_length, name + prefix_length);
-
-    if (!String8_equals(name, final_name))
-        Console_writeLine__string("Test04: ERROR: String8_copySubstringTo");
+    String8 prefix_name = System_String8_concat(prefix, name);
+    if (!String8_equals(prefix_name, final_name))
+        Console_writeLine("Test04: ERROR: String8_concat: {0:string}", 1, prefix_name);
     else
-        Console_writeLine__string("Test04: SUCCESS: String8_copySubstringTo");
+        Console_writeLine__string("Test04: SUCCESS: String8_concat");
+    Memory_free(prefix_name);
 
-    Memory_free(name);
+
+    String8  command_directory = System_Path_getDirectoryName(command);
+    if (!command_directory)
+        Console_writeLine__string("Test05: ERROR: Path_getDirectoryName");
+    else {
+        Console_writeLine("Test05: SUCCESS: Path_getDirectoryName: {0:string}", 1, command_directory);
+        Memory_free(command_directory);
+    }
+
+    String8  command_filename = System_Path_getFileName(command);
+    if (!command_filename)
+        Console_writeLine__string("Test06: ERROR: Path_getDirectoryName");
+    else {
+        Console_writeLine("Test06: SUCCESS: Path_getFileName: {0:string}", 1, command_filename);
+        Memory_free(command_filename);
+    }
 
     return true;
 }

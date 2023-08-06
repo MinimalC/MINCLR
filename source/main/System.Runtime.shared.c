@@ -39,6 +39,9 @@ asm(
 #if !defined(have_System_Environment)
 #include <min/System.Environment.h>
 #endif
+#if !defined(have_System_Path)
+#include <min/System.Path.h>
+#endif
 #if !defined(code_System_Runtime)
 #define code_System_Runtime
 
@@ -50,20 +53,19 @@ System_Size System_Runtime_pageSize = 0;
 
 void System_Runtime_start(System_Var  * stack) {
 
-    System_Size i;
     System_Runtime_stack = (System_Size *)stack;
     System_Size argc = (System_Size)*stack;
     System_String8 * argv = (System_String8 *)(++stack);
     System_Size envc = 0;
     System_String8 * envv = (System_String8 *)(stack += argc + 1);
     while (*stack) { ++envc; ++stack; }
-    System_Size auxc = 0;
-    System_Environment_AuxValue auxv = (System_Environment_AuxValue)(++stack);
     System_String8 name = null;
     System_Var base = null, exec = null;
     System_Size random = 0;
     System_Bool interp = false;
-    do {
+    System_Size auxc = 0;
+    System_Environment_AuxValue auxv = (System_Environment_AuxValue)(++stack);
+    for (; auxv[auxc].type; ++auxc, stack += 2) {
         System_Environment_AuxValue aux = auxv + auxc;
 
         if (aux->type == System_Environment_AuxType_PAGESZ) 
@@ -83,8 +85,9 @@ void System_Runtime_start(System_Var  * stack) {
 
         if (aux->type == System_Environment_AuxType_RANDOM) 
             random = aux->value;
+    }
 
-    } while (auxv[auxc].type && (++auxc, stack += 2));
+    System_Size i;
 
     #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
     for (i = 0; i < argc; ++i)
@@ -118,12 +121,56 @@ void System_Runtime_start(System_Var  * stack) {
     }*/
 
     function_System_Runtime_main entry = &System_Runtime_main;
+    System_String8 entryName = "System_Runtime_main";
+    if (interp) {
+        System_String8 fileName = System_Path_getFileName(name);
+        for (System_String8 n = fileName; *n; ++n) {
+            switch (*n) {
+            // case TODO
+            case '.':
+                *n = '_';
+                break;
+            }
+        }
+        System_ELF64Assembly assembly1 = null;
+        System_ELF64Assembly_SymbolEntry symbol1 = System_ELF64Assembly_getSymbol(fileName, &assembly1);
+        System_Size * symbol1_value = null;
+        if (symbol1) {
+            symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+            entry = (function_System_Runtime_main)(symbol1_value);
+            entryName = (System_String8)System_Memory_addReference((System_Var)fileName);
+        }
+        else {
+            System_String8 fileName2 = System_String8_concat(fileName, "_main");
+            symbol1 = System_ELF64Assembly_getSymbol(fileName2, &assembly1);
+            if (symbol1) {
+                symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+                entry = (function_System_Runtime_main)(symbol1_value);
+                entryName = (System_String8)System_Memory_addReference((System_Var)fileName2);
+            }
+            else {
+                System_Memory_free(fileName2);
+                fileName2 = System_String8_concat("main_", fileName);
+                symbol1 = System_ELF64Assembly_getSymbol(fileName2, &assembly1);
+                if (symbol1) {
+                    symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+                    entry = (function_System_Runtime_main)(symbol1_value);
+                    entryName = (System_String8)System_Memory_addReference((System_Var)fileName2);
+                }
+            }
+            System_Memory_free(fileName2);
+        }
+        System_Memory_free(fileName);
+    }
+
     #if DEBUG == DEBUG_System_ELFAssembly
     if (interp) System_Console_writeLine__string("This is INTERP");
     System_Console_writeLine("AddressOf System_Runtime_stack: {0:uint:hex}", 1, System_Runtime_stack);
-    System_Console_writeLine("AddressOf System_Runtime_main: {0:uint:hex}", 1, entry);
+    System_Console_writeLine("AddressOf {0:string}: {1:uint:hex}", 2, entryName, entry);
     System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}: {3:string}", 4, argc, envc, auxc, argv[0]);
     #endif
+
+    System_Memory_free(entryName);
 
     int reture = entry(argc, argv);
     #if DEBUG == DEBUG_System_ELFAssembly

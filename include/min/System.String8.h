@@ -44,7 +44,11 @@ export void  System_String8_copyTo(System_String8 src, System_String8 dest);
 export void  System_String8_copyToAt(System_String8 src, System_String8 dest, System_Size at);
 export void  System_String8_copySubstringTo(System_String8 src, System_Size count, System_String8 dest);
 export void  System_String8_copySubstringToAt(System_String8 src, System_Size count, System_String8 dest, System_Size at);
-export System_String8  System_String8_clone(System_String8 that);
+export System_String8  System_String8_copy(System_String8 that);
+export System_String8  System_String8_copyFrom(System_String8 that, System_Size from);
+export System_String8  System_String8_copySubstring(System_String8 that, System_Size count);
+export System_String8  System_String8_copyFromSubstring(System_String8 that, System_Size from, System_Size count);
+export System_String8  System_String8_concat(System_String8 that, System_String8 other);
 export System_Size  System_String8_compare(System_String8 that, System_String8 other);
 export System_Bool  System_String8_equals(System_String8 that, System_String8 other);
 export System_Size  System_String8_compareSubstring(System_String8 that, System_String8 other, System_Size count);
@@ -75,7 +79,7 @@ export System_Size  stack_System_String8_formatEnd__limit_arguments(System_Strin
 #define String8_copyToAt  System_String8_copyToAt
 #define String8_copySubstringTo  System_String8_copySubstringTo
 #define String8_copySubstringToAt  System_String8_copySubstringToAt
-#define String8_clone  System_String8_clone
+#define String8_copy  System_String8_copy
 #define String8_compare  System_String8_compare
 #define String8_equals  System_String8_equals
 #define String8_equalsSubstring  System_String8_equalsSubstring

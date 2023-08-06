@@ -32,6 +32,7 @@
 #include "System.Environment.h"
 #include "System.Runtime.h"
 #include "System.ELFAssembly.h"
+#include "System.Path.h"
 /* #include "System.Signals.h" */
 /* #include "System.Thread.h" */
 /* #include "System.Socket.h" */

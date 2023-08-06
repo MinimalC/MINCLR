@@ -155,10 +155,16 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
             }
         }
         if (print) {
-#if DEBUG != DEBUG_System_ELFAssembly
             for (System_Size i = 0; i < assembly->dynamicsCount; ++i) {
                 System_ELF64Assembly_DynamicEntry dynamic = assembly->dynamics + i;
                 switch(dynamic->tag) {
+                case System_ELFAssembly_DynamicType_STRTAB:
+                case System_ELFAssembly_DynamicType_SYMTAB:
+                case System_ELFAssembly_DynamicType_PLTGOT:
+                case System_ELFAssembly_DynamicType_JMPREL:
+                case System_ELFAssembly_DynamicType_RELA:
+                    System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value 0x{1:uint:hex}", 2, System_ELFAssembly_DynamicType_toString(dynamic->tag), dynamic->value);
+                    break;                
                 case System_ELFAssembly_DynamicType_NEEDED:
                 case System_ELFAssembly_DynamicType_SONAME:
                     if (assembly->dynamicStrings) {
@@ -170,7 +176,6 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
                     break;
                 }
             }
-#endif
             System_Console_writeLine__string("DYNAMIC SYMBOLS");
             for (System_Size i = 0; i < assembly->dynamicSymbolsCount; ++i) {
                 System_ELF64Assembly_SymbolEntry symbol = assembly->dynamicSymbols + i;
@@ -181,7 +186,6 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
             }
         }
     }
-
     if (print) {
         System_Console_writeLine__string("SYMBOLS");
         for (System_Size i = 0; i < assembly->symbolsCount; ++i) {
@@ -329,6 +333,13 @@ void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
         for (System_Size i = 0; i < assembly->dynamicsCount; ++i) {
             System_ELF64Assembly_DynamicEntry dynamic = assembly->dynamics + i;
             switch(dynamic->tag) {
+            case System_ELFAssembly_DynamicType_STRTAB:
+            case System_ELFAssembly_DynamicType_SYMTAB:
+            case System_ELFAssembly_DynamicType_PLTGOT:
+            case System_ELFAssembly_DynamicType_JMPREL:
+            case System_ELFAssembly_DynamicType_RELA:
+                System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value 0x{1:uint:hex}", 2, System_ELFAssembly_DynamicType_toString(dynamic->tag), dynamic->value);
+                break;                
             case System_ELFAssembly_DynamicType_NEEDED:
             case System_ELFAssembly_DynamicType_SONAME:
                 if (assembly->dynamicStrings) {
@@ -373,6 +384,7 @@ System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getSymbol(System_String8 n
         System_ELF64Assembly assembly = System_ELF64Assembly_loaded[l];
     for (System_Size i = 0; i < assembly->symbolsCount; ++i) {
         System_ELF64Assembly_SymbolEntry symbol = assembly->symbols + i;
+        if (!symbol->sectionIndex || !symbol->value) continue;
         if (System_String8_equals(assembly->symbolStrings + symbol->name, name)) {
             *out_assembly = assembly;
             return symbol;
@@ -388,6 +400,7 @@ System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getDynamicSymbol(System_St
         System_ELF64Assembly assembly = System_ELF64Assembly_loaded[l];
     for (System_Size i = 0; i < assembly->dynamicSymbolsCount; ++i) {
         System_ELF64Assembly_SymbolEntry symbol = assembly->dynamicSymbols + i;
+        if (!symbol->sectionIndex || !symbol->value) continue;
         if (System_String8_equals(assembly->dynamicStrings + symbol->name, name)) {
             *out_assembly = assembly;
             return symbol;
@@ -435,7 +448,7 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
             *address = (System_Size)assembly->link + symbol->value + relocation->addend; 
         break;
     case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:
-        if (symbol->sectionIndex && symbol->value && *address) {
+        if ((symbol->sectionIndex || symbol->value) && *address) {
             *address += (System_Size)assembly->link;
             break;
         }
@@ -456,9 +469,10 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
     case System_ELFAssembly_AMD64Relocation_32: 
         *address = (System_Size)assembly->link + (symbol->value & 0xFFFFFFFFUL); 
         break;
-#if DEBUG == DEBUG_System_ELFAssembly
+#if DEBUG
     default:
-        System_Console_write__string("UNLINKED ");
+        System_Console_writeLine("UNLINKED ELFRelocation: offset {0:uint:hex}, type {1:string}, symbol {2:uint32}, addend {3:uint:hex}, old {4:uint:hex}", 5,
+            relocation->offset, System_ELFAssembly_AMD64Relocation_toString(relocation->type), relocation->symbol, relocation->addend, old);
         break;
 #endif    
     }

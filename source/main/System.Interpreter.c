@@ -81,6 +81,13 @@ void System_Runtime_selflink(System_Var base) {
     for (i = 0; i < dynamicsCount; ++i) {
         System_ELF64Assembly_DynamicEntry dynamic = dynamics + i;
         switch(dynamic->tag) {
+        case System_ELFAssembly_DynamicType_STRTAB:
+        case System_ELFAssembly_DynamicType_SYMTAB:
+        case System_ELFAssembly_DynamicType_PLTGOT:
+        case System_ELFAssembly_DynamicType_JMPREL:
+        case System_ELFAssembly_DynamicType_RELA:
+            System_Console_writeLine("ELFDynamicEntry: tag {0:string}, value 0x{1:uint:hex}", 2, System_ELFAssembly_DynamicType_toString(dynamic->tag), dynamic->value);
+            break;                
         case System_ELFAssembly_DynamicType_NEEDED:
         case System_ELFAssembly_DynamicType_SONAME:
             if (dynamicStrings) {
@@ -113,7 +120,7 @@ void System_Runtime_selflink(System_Var base) {
                 *address = (System_Size)base + symbol->value + relocation->addend; 
             break;
         case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:
-            if (symbol->sectionIndex && symbol->value && *address) {
+            if ((symbol->sectionIndex || symbol->value) && *address) {
                 *address += (System_Size)base;
                 break;
             }
@@ -128,7 +135,7 @@ void System_Runtime_selflink(System_Var base) {
         case System_ELFAssembly_AMD64Relocation_32: 
             *address = (System_Size)base + (symbol->value & 0xFFFFFFFFUL); 
             break;
-#if DEBUG == DEBUG_System_ELFAssembly
+#if DEBUG
         default:
             System_Console_write__string("UNLINKED ");
 
@@ -143,26 +150,26 @@ void System_Runtime_selflink(System_Var base) {
         }
     }
 #if DEBUG == DEBUG_System_ELFAssembly
-    if (!PLT) PLT = Environment_GetGlobalOffsetTable();
-    if (PLT) System_Console_writeLine("INTERP GLOBAL_OFFSET_TABLE: {0:uint:hex}, [0] {1:uint:hex}, [1] {2:uint:hex}, [2] {3:uint:hex}", 4, PLT, PLT[0], PLT[1], PLT[2]);
-    
     extern System_Size _DYNAMIC;
     System_Console_writeLine("INTERP AddressOf _DYNAMIC: {0:uint:hex}", 1, &_DYNAMIC);
+
+    if (!PLT) PLT = Environment_GetGlobalOffsetTable();
+    if (PLT) System_Console_writeLine("INTERP GLOBAL_OFFSET_TABLE: {0:uint:hex}, [0] {1:uint:hex}, [1] {2:uint:hex}, [2] {3:uint:hex}", 4, PLT, PLT[0], PLT[1], PLT[2]);
 #endif
 }
 
 int System_Runtime_main(int argc, char  * argv[]) {
-    System_Size i;
-    System_String8 name = null;
-    System_Var base = null, exec = null;
 
-    /* Modify AUXV on stack */
+    /* Modify auxv on stack */
     System_Size * stack = System_Runtime_stack;
     stack += argc + 2;
     while (*stack) ++stack;
+
+    System_String8 name = null;
+    System_Var base = null, exec = null;
     System_Size auxc = 0;
     System_Environment_AuxValue auxv = (System_Environment_AuxValue)(++stack);
-    do {
+    for (; auxv[auxc].type; ++auxc, stack += 2) {
         System_Environment_AuxValue aux = auxv + auxc;
 
         if (aux->type == System_Environment_AuxType_PAGESZ) 
@@ -173,14 +180,15 @@ int System_Runtime_main(int argc, char  * argv[]) {
 
         if (aux->type == System_Environment_AuxType_BASE)
             base = (System_Var)aux->value;
-            
+
         if (aux->type == System_Environment_AuxType_PHDR)
             exec = (System_Var)ROUNDDOWN(aux->value, 4096);
 
-        if (aux->type == System_Environment_AuxType_RANDOM)
-            aux->type = System_Environment_AuxType_INTERP;
-            
-    } while (auxv[auxc].type && (++auxc, stack += 2));
+        if (aux->type == System_Environment_AuxType_RANDOM) {
+            aux->type = System_Environment_AuxType_INTERP;   
+            aux->value = true;
+        }
+    }
 
     if (!base) {
         if (argc == 1) {
@@ -213,14 +221,25 @@ int System_Runtime_main(int argc, char  * argv[]) {
 #endif
     System_ELF64Assembly_link(assembly);
 
+    System_ELF64Assembly assembly1;
+    System_ELF64Assembly_SymbolEntry symbol1;
+    System_Size * symbol1_value;
+
+    symbol1 = System_ELF64Assembly_getSymbol("System_ELF64Assembly_loadedCount", &assembly1);
+    if (symbol1) {
+        symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+        *symbol1_value = System_ELF64Assembly_loadedCount;
+    }
+
+    symbol1 = System_ELF64Assembly_getSymbol("System_ELF64Assembly_loaded", &assembly1);
+    if (symbol1) {
+        symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+        for (System_Size i = 0; i < System_ELF64Assembly_loadedCount; ++i, ++symbol1_value)
+            *symbol1_value = (System_Size)System_ELF64Assembly_loaded[i];
+    }
 
     System_Var entry = assembly->link + assembly->header->entryPoint;
     // System_Var entry = (System_Var)System_Environment_AuxValues[System_Environment_AuxType_ENTRY];
-    /*
-    System_ELF64Assembly assembly1;
-    System_ELF64Assembly_SymbolEntry entrySymbol = System_ELF64Assembly_getSymbol("System_Runtime_main", &assembly1);
-    System_Var entry = assembly1->link + entrySymbol->value;
-    */
 #if DEBUG == DEBUG_System_ELFAssembly
     System_Console_writeLine("INTERP JUMPING to 0x{0:uint:hex}, with stack on 0x{1:uint:hex}", 2, entry, System_Runtime_stack);
 #endif

@@ -64,20 +64,20 @@ System_STRING8  System_String8_Empty = "";
 
 Size  System_String8_indexOf(String8 that, UInt8 character){
     Size i = 0, len = String8_get_Length(that);
-    if (len == 0) return 0;
+    if (len == 0) return -1;
     do {
         if (that[i] == character) return i + 1;
     } while ( ++i < len );
-    return 0;
+    return -1;
 }
 
 Size  System_String8_lastIndexOf(String8 that, UInt8 character) {
     Size i = String8_get_Length(that);
-    if (i == 0) return 0;
+    if (i == 0) return -1;
     do {
         if (that[--i] == character) return i + 1;
     } while ( i );
-    return 0;
+    return -1;
 }
 
 Size  System_String8_get_Length(String8 that) {
@@ -101,7 +101,7 @@ void  System_String8_copyTo(String8 src, String8 dest) {
 
 void  System_String8_copyToAt(String8 src, String8 dest, Size at) {
     Size count = String8_get_Length(src);
-    if (at) dest += at;
+    dest += at;
     while ( count && ( *dest++ = *src++ ) ) --count;
 }
 
@@ -110,15 +110,44 @@ void  System_String8_copySubstringTo(String8 src, Size count, String8 dest) {
 }
 
 void  System_String8_copySubstringToAt(String8 src, Size count, String8 dest, Size at) {
-    if (at) dest += at;
+    dest += at;
     while ( count && ( *dest++ = *src++ ) ) --count;
 }
 
-String8  System_String8_clone(String8 that) {
+String8  System_String8_copy(String8 that) {
     Size count = String8_get_Length(that);
-    if (!count) return null;
-    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), count);
+    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), count + 1);
     String8_copyTo(that, dest);
+    return dest;
+}
+
+String8  System_String8_copyFrom(String8 that, Size from) {
+    that += from;
+    Size count = String8_get_Length(that);
+    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), count + 1);
+    String8_copyTo(that, dest);
+    return dest;
+}
+
+String8  System_String8_copySubstring(String8 that, Size count) {
+    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), count + 1);
+    String8_copySubstringTo(that, count, dest);
+    return dest;
+}
+
+String8  System_String8_copyFromSubstring(String8 that, Size from, Size count) {
+    that += from;
+    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), count + 1);
+    String8_copySubstringTo(that, count, dest);
+    return dest;
+}
+
+String8  System_String8_concat(String8 that, String8 other) {
+    Size length0 = System_String8_get_Length(that);
+    Size length1 = System_String8_get_Length(other);
+    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), length0 + length1 + 1);
+    String8_copyTo(that, dest);
+    String8_copyToAt(other, dest, length0);
     return dest;
 }
 
