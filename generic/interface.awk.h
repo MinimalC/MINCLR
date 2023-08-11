@@ -10,9 +10,9 @@ typedef System_fixed struct Generic_T0 { } * Generic_T0;
 
 export struct System_Type  Generic_T0Type;
 
-/* typedef void  delegate(Generic_T0_method)(Generic_T0 that, System_String arg1); */
+/* typedef void  delegate(Generic_T0_method)(Generic_T0 that, System_String8 arg1); */
 
-/* export void  base_Generic_T0_method(Generic_T0 that, System_String arg1); */
+/* export void  base_Generic_T0_method(Generic_T0 that, System_String8 arg1); */
 
 /* #define Generic_T0_method(o,...)  ((function_Generic_T0_method)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_Generic_T0_method))(o, __VA_ARGS__) */
 

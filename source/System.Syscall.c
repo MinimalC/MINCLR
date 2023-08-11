@@ -129,4 +129,24 @@ void  System_Syscall_mprotect(System_Var address, System_Size length, System_Int
     (void)System_Syscall_call03(System_Syscall_Command_mprotect, (System_IntPtr)address, length, flags);
 }
 
+void  System_Syscall_nanosleep(struct System_Syscall_timespec * request, struct System_Syscall_timespec * remain) {
+    (void)System_Syscall_call02(System_Syscall_Command_nanosleep, (System_IntPtr)request, (System_IntPtr)remain);
+}
+
+System_SIntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack) {
+    return (System_SIntPtr)System_Syscall_call02(System_Syscall_Command_clone, flags, (System_IntPtr)stack);
+}
+
+void  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage) {
+    (void)System_Syscall_call04(System_Syscall_Command_wait4, id, (System_IntPtr)status, flags, (System_IntPtr)usage);
+}
+
+void  System_Syscall_sigaction(System_SIntPtr signal, System_Var action, System_Var old) {
+    (void)System_Syscall_call03(System_Syscall_Command_rt_sigaction, signal, (System_IntPtr)action, (System_IntPtr)old);
+}
+
+void  System_Syscall_sigprocmask(System_SIntPtr how, System_Var set, System_Var old, System_IntPtr setsize) {
+    (void)System_Syscall_call04(System_Syscall_Command_rt_sigprocmask, how, (System_IntPtr)set, (System_IntPtr)old, setsize);
+}
+
 #endif

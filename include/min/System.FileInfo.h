@@ -48,9 +48,9 @@ typedef System_fixed struct System_FileInfo {
     System_Int64 size;
     System_Int64 bulkSize;
     System_Int64 blocks;
-    struct System_Syscall_stat_timestamp lastAccessTime;
-    struct System_Syscall_stat_timestamp lastWriteTime;
-    struct System_Syscall_stat_timestamp changeTime;
+    struct System_Syscall_timespec lastAccessTime;
+    struct System_Syscall_timespec lastWriteTime;
+    struct System_Syscall_timespec changeTime;
 
 }  * System_FileInfo;
 

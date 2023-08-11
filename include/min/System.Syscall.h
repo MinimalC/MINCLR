@@ -38,7 +38,7 @@ export System_Error  System_Syscall_get_Error();
 export void  System_Syscall_terminate(System_Size code)  noreturn;
 
 
-struct System_Syscall_stat_timestamp {
+struct System_Syscall_timespec {
 
     System_Int64 sec;
     System_IntPtr nsec;
@@ -59,9 +59,9 @@ struct System_Syscall_stat {
     System_Int64 size;
     System_Int64 bulkSize;
     System_Int64 blocks;
-    struct System_Syscall_stat_timestamp accessTime;
-    struct System_Syscall_stat_timestamp modifyTime;
-    struct System_Syscall_stat_timestamp changeTime;
+    struct System_Syscall_timespec accessTime;
+    struct System_Syscall_timespec modifyTime;
+    struct System_Syscall_timespec changeTime;
     System_IntPtr __reserved[3];
 
 };
@@ -85,6 +85,14 @@ export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String
 export System_Var  System_Syscall_mmap(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
 export void  System_Syscall_munmap(System_Var address, System_Size length);
 export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
+
+export void  System_Syscall_nanosleep(struct System_Syscall_timespec * request, struct System_Syscall_timespec * remain);
+
+export System_SIntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack);
+export void  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage);
+
+export void  System_Syscall_sigaction(System_SIntPtr signal, System_Var action, System_Var old);
+export void  System_Syscall_sigprocmask(System_SIntPtr how, System_Var set, System_Var old, System_IntPtr setsize);
 
 #if defined(using_System)
 #define SyscallType  System_SyscallType

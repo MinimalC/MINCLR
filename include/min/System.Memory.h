@@ -42,6 +42,7 @@ enum {
     System_Memory_MapFlags_Private = 2,
     System_Memory_MapFlags_Fixed = 0x10,
     System_Memory_MapFlags_Anonymous = 0x20,
+    System_Memory_MapFlags_GrowsDown = 0x100,
     System_Memory_MapFlags_Stack = 0x20000,
 };
 

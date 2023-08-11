@@ -23,6 +23,6 @@ struct System_Type Generic_T0Type = { .base = stack_System_Object(System_Type),
     },
 };
 
-/* void  base_Generic_T0_method(Generic_T0 that, System_String arg1) {  } */
+/* void  base_Generic_T0_method(Generic_T0 that, System_String8 arg1) {  } */
 
 #endif

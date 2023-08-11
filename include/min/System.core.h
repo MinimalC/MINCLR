@@ -1,6 +1,10 @@
 /* Gemeinfrei. Public Domain. */
+#if defined(have_System_core)
+#warning Multiple inclusion of System.core.h
+#else
+#define have_System_core
 
-#include "System.Type.h"
+#include "System.Type.h" /* see System.Type.h */
 #include "System.Memory.h"
 #include "System.String8.h"
 #include "System.Decimal.h"
@@ -14,6 +18,9 @@
 #include "System.File.h"
 #include "System.Console.h"
 #include "System.Exception.h"
-
 #include "System.Environment.h"
+#include "System.Thread.h"
+
 #include "Crypto.SipHash48.h"
+
+#endif

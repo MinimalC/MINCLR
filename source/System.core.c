@@ -34,3 +34,6 @@
 #include "System.Console.c"
 
 #include "System.Path.c"
+
+#include "System.Signal.c"
+#include "System.Thread.c"

@@ -1,0 +1,90 @@
+/* Gemeinfrei. Public Domain. */
+#if !defined(System_internal)
+#include "System.internal.h"
+#endif
+#if !defined(have_System_Syscall)
+#include <min/System.Syscall.h>
+#endif
+#if !defined(have_System_Thread)
+#include <min/System.Thread.h>
+#endif
+#if !defined(code_System_Thread)
+#define code_System_Thread
+
+struct System_Type System_ThreadType = { .base = stack_System_Object(System_Type), .name = "Thread", };
+
+#define STACK_SIZE  8 * 1024 * 1024
+
+enum {
+    CLONE_VM = 0x00000100,
+    CLONE_FS = 0x00000200,
+    CLONE_FILES = 0x00000400,
+    CLONE_SIGHAND = 0x00000800,
+    CLONE_PARENT = 0x00008000,
+    CLONE_THREAD = 0x00010000,
+    CLONE_IO = 0x80000000,
+};
+
+System_Bool sigiset = false;
+
+System_SIntPtr System_Thread_create(System_Var function, System_Size argc, System_Var argv[]) {
+
+    System_Var stack = System_Syscall_mmap(STACK_SIZE, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
+        System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown, null, 0);
+
+    if (!stack) return 0; // throw
+
+    System_Size * stack_top = stack + STACK_SIZE;
+
+    if (!argc) --stack_top;
+    else
+        for (System_Size i = argc; i > 0; --i)
+            *(--stack_top) = (System_Size)argv[i - 1];
+
+    *(--stack_top) = (System_Size)argc;
+    *(--stack_top) = (System_Size)function;
+    *(--stack_top) = (System_Size)System_Thread_start;
+
+    if (!sigiset) {
+        struct System_Signal_Set procmask;
+        System_Signal_getProcMask(&procmask);
+        procmask.signal[0] |= (1 << (System_Signal_Code_SIGCHILD - 1));
+        System_Signal_setProcMask(1, &procmask);
+        System_Signal_signal(System_Signal_Code_SIGCHILD, function_System_Signal_handler_DEFAULT);
+        sigiset = true;
+    }
+
+    //  | CLONE_THREAD | CLONE_SIGHAND | CLONE_PARENT
+    System_SIntPtr reture = System_Syscall_clone(CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | System_Signal_Code_SIGCHILD, stack_top);
+    System_Error errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("System_Thread_create Error: {0:uint}", 1, errno);
+    return reture;
+}
+
+void System_Thread_sleep(System_Size seconds) {
+    
+    struct System_Syscall_timespec request = { .sec = seconds, .nsec = 0, };
+    struct System_Syscall_timespec remain = { .sec = 0, .nsec = 0, };
+    System_Syscall_nanosleep(&request, &remain);
+}
+
+#define	WNOHANG     1 /* Don't block waiting.  */
+#define WSTOPPED    2 /* Report stopped child (same as WUNTRACED). */
+
+#define WCONTINUED	8 /* Report continued child.  */
+
+#define WALL   0x40000000 /* Wait for any child.  */
+#define WCLONE 0x80000000 /* Wait for cloned process.  */
+
+System_Bool System_Thread_join(System_SIntPtr id) {
+    System_IntPtr status = 0;
+    System_Syscall_wait(id, &status, 0, null);
+    System_Error errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("System_Thread_join Error: {0:uint}", 1, errno);
+    // if (!(status & 0x7f)) return (status & 0xff00) >> 8;
+    // System_Console_writeLine("join__dontwait status: {0:uint:hex}", 1, status);
+    if (!(status & 0x7f)) return true;
+    return false;
+}
+
+#endif
