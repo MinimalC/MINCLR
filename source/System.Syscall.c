@@ -149,4 +149,8 @@ void  System_Syscall_sigprocmask(System_SIntPtr how, System_Var set, System_Var 
     (void)System_Syscall_call04(System_Syscall_Command_rt_sigprocmask, how, (System_IntPtr)set, (System_IntPtr)old, setsize);
 }
 
+void  System_Syscall_sched_yield(void) {
+    (void)System_Syscall_call00(System_Syscall_Command_sched_yield);
+}
+
 #endif

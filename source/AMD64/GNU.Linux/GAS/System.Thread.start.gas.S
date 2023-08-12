@@ -4,12 +4,12 @@
 .type   System_Thread_start,@function
 System_Thread_start:
 
-	movq (%rsp),%r11
-	movq 8(%rsp),%rdi
-	leaq 16(%rsp),%rsi
+	movq (%rsp),%r11	/* function */
+	movq 8(%rsp),%rdi	/* argc */
+	leaq 16(%rsp),%rsi	/* argv */
 	call *%r11
 
-	movq %rax,%rdi
+	movq $1,%rdi	/* true */
 	movq $60,%rax	/* System_Syscall_Command_exit */
 	syscall
 

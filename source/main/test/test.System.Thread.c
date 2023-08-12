@@ -2,31 +2,26 @@
 #include <min/System.h>
 
 
-System_IntPtr Dummy0(System_Size argc, System_Var argv[]) {
+void Dummy0(System_Size argc, System_Var argv[]) {
 
     System_Thread_sleep(4);
     System_Console_writeLine("This is Child{0:uint}", 1, argv[0]);
-    return true;
 }
-System_IntPtr Dummy1(System_Size argc, System_Var argv[]) {
+void Dummy1(System_Size argc, System_Var argv[]) {
 
     System_Console_writeLine("This is Child{0:uint}", 1, argv[1]);
-    return true;
 }
-System_IntPtr Dummy2(System_Size argc, System_Var argv[]) {
+void Dummy2(System_Size argc, System_Var argv[]) {
 
     System_Console_writeLine("This is Child{0:uint}", 1, argv[2]);
-    return true;
 }
-System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
+void Dummy3(System_Size argc, System_Var argv[]) {
 
     System_Console_writeLine("This is Child{0:uint}", 1, argv[3]);
-    return true;
 }
-System_IntPtr Dummy4(System_Size argc, System_Var argv[]) {
+void Dummy4(System_Size argc, System_Var argv[]) {
 
     System_Console_writeLine("This is Child{0:uint}", 1, argv[4]);
-    return true;
 }
 
 int System_Runtime_main(int argc, char * argv[]) {
@@ -40,8 +35,14 @@ int System_Runtime_main(int argc, char * argv[]) {
     System_Thread_create(Dummy3, argc1, (System_Var *)argv1);
     System_Thread_create(Dummy4, argc1, (System_Var *)argv1);
 
-    System_Console_writeLine__string("Wait on Child0");
-    System_Bool reture = System_Thread_join(dummy0);
+    /*System_Console_writeLine__string("Wait on Child0");
+    System_Bool reture = System_Thread_join(dummy0);*/
+
+    System_Bool reture = false;
+    while (!(reture = System_Thread_join__dontwait(dummy0, true))) {
+        System_Console_writeLine__string("Wait on Child0");
+        System_Thread_sleep(1);
+    }
     
     System_Console_writeLine("This is Parent: {0:bool}", 1, reture);
 

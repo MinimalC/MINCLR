@@ -27,7 +27,7 @@ enum {
 
 System_Bool sigiset = false;
 
-System_SIntPtr System_Thread_create(System_Var function, System_Size argc, System_Var argv[]) {
+System_SIntPtr System_Thread_create(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
 
     System_Var stack = System_Syscall_mmap(STACK_SIZE, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
         System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown, null, 0);
@@ -62,10 +62,8 @@ System_SIntPtr System_Thread_create(System_Var function, System_Size argc, Syste
 }
 
 void System_Thread_sleep(System_Size seconds) {
-    
-    struct System_Syscall_timespec request = { .sec = seconds, .nsec = 0, };
-    struct System_Syscall_timespec remain = { .sec = 0, .nsec = 0, };
-    System_Syscall_nanosleep(&request, &remain);
+    struct System_Syscall_timespec time = { .sec = seconds, .nsec = 0, };
+    System_Syscall_nanosleep(&time, &time);
 }
 
 #define	WNOHANG     1 /* Don't block waiting.  */
@@ -77,14 +75,22 @@ void System_Thread_sleep(System_Size seconds) {
 #define WCLONE 0x80000000 /* Wait for cloned process.  */
 
 System_Bool System_Thread_join(System_SIntPtr id) {
+    return System_Thread_join__dontwait(id, false);
+}
+
+System_Bool System_Thread_join__dontwait(System_SIntPtr id, System_Bool dontwait) {
     System_IntPtr status = 0;
-    System_Syscall_wait(id, &status, 0, null);
+    System_Syscall_wait(id, &status, dontwait, null);
     System_Error errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("System_Thread_join Error: {0:uint}", 1, errno);
+    // System_Console_writeLine("System_Thread_join status: {0:uint:hex}", 1, status);
     // if (!(status & 0x7f)) return (status & 0xff00) >> 8;
-    // System_Console_writeLine("join__dontwait status: {0:uint:hex}", 1, status);
-    if (!(status & 0x7f)) return true;
+    if (status & 0xff00) return true;
     return false;
+}
+
+void System_Thread_yield(void) {
+    System_Syscall_sched_yield();
 }
 
 #endif

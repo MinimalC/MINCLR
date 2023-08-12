@@ -25,7 +25,6 @@ export void  System_Console_writeLineEmpty(void);
 export void  System_Console_writeLine__string(System_String8 string);
 export void  System_Console_writeLine(System_String8 format, ...);
 export void  System_Console_write__char(System_Char8 character);
-export void  System_Console_writeSuffix__arguments(System_String8 format, System_Char8 suffix, System_arguments args);
 export void  System_Debug_writeHex(System_Size length, System_Var value);
 
 #if defined(using_System)
@@ -38,7 +37,6 @@ export void  System_Debug_writeHex(System_Size length, System_Var value);
 #define Console_writeLine__string  System_Console_writeLine__string
 #define Console_writeLine  System_Console_writeLine
 #define Console_write__char  System_Console_write__char
-#define Console_writeSuffix__arguments  System_Console_writeSuffix__arguments
 #define Debug_writeHex  System_Debug_writeHex
 #endif
 #endif

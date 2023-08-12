@@ -90,6 +90,7 @@ export void  System_Syscall_nanosleep(struct System_Syscall_timespec * request, 
 
 export System_SIntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack);
 export void  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage);
+export void  System_Syscall_sched_yield(void);
 
 export void  System_Syscall_sigaction(System_SIntPtr signal, System_Var action, System_Var old);
 export void  System_Syscall_sigprocmask(System_SIntPtr how, System_Var set, System_Var old, System_IntPtr setsize);
