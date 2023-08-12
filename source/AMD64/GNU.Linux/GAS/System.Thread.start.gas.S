@@ -6,7 +6,8 @@ System_Thread_start:
 
 	movq (%rsp),%r11	/* function */
 	movq 8(%rsp),%rdi	/* argc */
-	leaq 16(%rsp),%rsi	/* argv */
+	movq %rsp,%rsi		/* argv */
+	addq $16,%rsi
 	call *%r11
 
 	movq $1,%rdi	/* true */
