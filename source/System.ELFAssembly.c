@@ -268,7 +268,7 @@ void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
     } */
     load_size = ROUND(load_size, 4096);
 
-    assembly->link = System_Syscall_mmap(load_size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous, null, 0);
+    assembly->link = System_Syscall_mmap(load_size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
     if (!assembly->link) return; // TODO: throw
 #if DEBUG == DEBUG_System_ELFAssembly
     System_Console_writeLine("final load_size: {0:uint:hex} linked at: {1:uint:hex}", 2, load_size, assembly->link);

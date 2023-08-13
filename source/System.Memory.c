@@ -169,7 +169,7 @@ System_Var  System_Memory_alloc__internal_min_i_max(System_Type type, System_Siz
     System_Var map;
     System_VarArray mem64k = System_Memory_ProcessVars[index];
     if (!mem64k) {
-        map = System_Syscall_mmap(min, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous, null, 0);
+        map = System_Syscall_mmap(min, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
         if (!map) return null;
 
         mem64k = (System_VarArray)map;
@@ -185,7 +185,7 @@ System_Console_writeLine("new System_Memory_ProcessVars({0:uint}): length {1:uin
     for (Size i = 0; i < mem64k->length; ++i) {
         mem64h = (System_Memory_Page)array(mem64k->value)[i];
         if (!mem64h) {
-            map = System_Syscall_mmap(max, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous, null, 0);
+            map = System_Syscall_mmap(max, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
             if (!map) return null;
 
             mem64h = (System_Memory_Page)map;

@@ -30,7 +30,7 @@ System_Bool sigiset = false;
 System_SIntPtr System_Thread_create(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
 
     System_Var stack = System_Syscall_mmap(STACK_SIZE, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
-        System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown, null, 0);
+        System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown);
 
     if (!stack) return 0; // throw
 
