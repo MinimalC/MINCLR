@@ -71,6 +71,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     }
     System_Thread that = System_Memory_allocClass(typeof(System_Thread));
     that->threadId = reture;
+    that->isRunning = true;
     return that;
 }
 
@@ -87,18 +88,21 @@ void System_Thread_sleep(System_Size seconds) {
 #define WALL   0x40000000 /* Wait for any child.  */
 #define WCLONE 0x80000000 /* Wait for cloned process.  */
 
-System_IntPtr System_Thread_join(System_Thread that) {
+System_Bool System_Thread_join(System_Thread that) {
     return System_Thread_join__dontwait(that, false);
 }
 
-System_IntPtr System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
+System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
     Debug_assert(that);
     System_IntPtr status = 0;
     System_Syscall_wait(that->threadId, &status, dontwait, null);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("System_Thread_join Error: {0:uint}", 1, errno);
     // System_Console_writeLine("System_Thread_join status: {0:uint:hex}", 1, status);
-    return status >>= 8;
+    that->returnValue = status >>= 8;
+    that->isRunning = that->returnValue ? true : false;
+    that->returnValue = that->returnValue == 0xFF ? 0 : that->returnValue;
+    return that->isRunning;
 }
 
 void System_Thread_yield(void) {

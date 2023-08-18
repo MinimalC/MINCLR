@@ -2,11 +2,11 @@
 #include "../System.internal.h"
 #include <min/System.h>
 
-void WebService_serve(Size argc, Var argv[]) {
-    if (argc < 1) return;
+IntPtr WebService_serve(Size argc, Var argv[]) {
+    if (argc < 1) return false;
     Network_TCPSocket tcp = argv[0];
 
-
+    return true;
 }
 
 int System_Runtime_main(int argc, char  * argv[]) {
@@ -40,15 +40,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
         System_Thread thread1 = System_Thread_create(WebService_serve, 1, tcp1);
         if (!thread1) return false; // throw
 
-        // now cleanup old threads ...
-        for (Size i = 0; i < 512; ++i) {
-            if (!threads[i]) continue;
-            if (!threads[i]->status) {
-                System_Memory_freeClass(&threads[i]);
-                // Network_TCPSocket_close(tcp1)
-            }
-        }
-        
+        // for (Size i = 0; i < 512; ++i) { }
 
         for (Size i = 0; i < 512; ++i) {
             if (!sockets[i] && !threads[i]) {

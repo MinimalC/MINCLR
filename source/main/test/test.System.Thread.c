@@ -24,9 +24,7 @@ void Dummy3(System_Size argc, System_Var argv[]) {
     System_Console_writeLine("This is Child{0:uint}", 1, argv[0]);
 }
 
-
 int System_Runtime_main(int argc, char * argv[]) {
-
 
     System_Thread dummy0 = System_Thread_create((function_System_Thread_main)Dummy0, 1, 0);
     System_Thread dummy1 = System_Thread_create(Dummy1, 1, 1);
@@ -37,27 +35,27 @@ int System_Runtime_main(int argc, char * argv[]) {
     /*System_Console_writeLine__string("Wait on Child0");
     System_Bool reture = System_Thread_join(dummy0);*/
 
-    System_IntPtr reture0 = false, reture1 = false,reture2 = false;
     while (1) {
+        System_Bool reture0 = false, reture1 = false, reture2 = false;
+
         if (!reture0) reture0 = System_Thread_join__dontwait(dummy0, true);
         if (!reture0) System_Console_writeLine__string("Wait on Child0");
+        else System_Console_writeLine("Wait on Child0. Returning {0:uint:hex}", 1, dummy0->returnValue);
 
         if (!reture1) reture1 = System_Thread_join__dontwait(dummy1, true);
         if (!reture1) System_Console_writeLine__string("Wait on Child1");
+        else System_Console_writeLine("Wait on Child1. Returning {0:uint:hex}", 1, dummy1->returnValue);
 
         if (!reture2) reture2 = System_Thread_join__dontwait(dummy2, true);
         if (!reture2) System_Console_writeLine__string("Wait on Child2");
+        else System_Console_writeLine("Wait on Child2. Returning {0:uint:hex}", 1, dummy2->returnValue);
 
         if (reture0 && reture1 && reture2) break;
 
         System_Thread_sleep(1);
     }
-
-    if (reture0) System_Console_writeLine("Wait on Child0. Returning {0:uint:hex}", 1, reture0);
-    if (reture1) System_Console_writeLine("Wait on Child1. Returning {0:uint:hex}", 1, reture1);
-    if (reture2) System_Console_writeLine("Wait on Child2. Returning {0:uint:hex}", 1, reture2);
     
-    System_Console_writeLine("This is Parent: {0:bool}", 1, reture0);
+    System_Console_writeLine__string("This is Parent");
 
     return true;
 }
