@@ -12,13 +12,13 @@
 /*# interface Generic.T0 #*/
 
 struct System_Type_FunctionInfo  Generic_T0TypeFunctions[] = {
-/*    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0_method, .value = base_Generic_T0_method }, */
+/*    [0] = { .function = base_Generic_T0_method, .value = base_Generic_T0_method }, */
 };
 
 struct System_Type Generic_T0Type = { .base = stack_System_Object(System_Type),
 	.name = "Generic.T0",
     .size = sizeof(struct Generic_T0),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&Generic_T0TypeFunctions), .value = &Generic_T0TypeFunctions
     },
 };

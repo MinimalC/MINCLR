@@ -1,8 +1,8 @@
 # Gemeinfrei. Public Domain.
 .text
-.global System_Thread_start
-.type   System_Thread_start,@function
-System_Thread_start:
+.global System_Thread_boot
+.type   System_Thread_boot,@function
+System_Thread_boot:
 
 	movq (%rsp),%r11	/* function */
 	movq 8(%rsp),%rdi	/* argc */
@@ -14,4 +14,4 @@ System_Thread_start:
 	movq $60,%rax	/* System_Syscall_Command_exit */
 	syscall
 
-.size System_Thread_start,.-System_Thread_start
+.size System_Thread_boot,.-System_Thread_boot

@@ -2,8 +2,8 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
-#if !defined(have_System_Error)
-#include "System.Error.h"
+#if !defined(have_System_ErrorCode)
+#include "System.ErrorCode.h"
 #endif
 #if !defined(have_System_Syscall_Command)
 #include "System.Syscall.Command.h"
@@ -31,10 +31,10 @@ import System_IntPtr  System_Syscall_call06(System_Syscall_Command number, Syste
 #define Syscall_call06  System_Syscall_call06
 #endif
 
-export thread System_Error System_Syscall_error;
+export thread System_ErrorCode System_Syscall_error;
 
-export void  System_Syscall_set_Error(System_Error error);
-export System_Error  System_Syscall_get_Error();
+export void  System_Syscall_set_Error(System_ErrorCode error);
+export System_ErrorCode  System_Syscall_get_Error();
 export void  System_Syscall_terminate(System_Size code)  noreturn;
 
 
@@ -84,7 +84,7 @@ export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String
 
 export System_Var  System_Syscall_mmap(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags);
 export System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
-export System_Var  System_Syscall_mmap__full(System_IntPtr initialAdress, System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
+export System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
 export void  System_Syscall_munmap(System_Var address, System_Size length);
 export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
 
@@ -96,6 +96,19 @@ export void  System_Syscall_sched_yield(void);
 
 export void  System_Syscall_sigaction(System_SIntPtr signal, System_Var action, System_Var old);
 export void  System_Syscall_sigprocmask(System_SIntPtr how, System_Var set, System_Var old, System_IntPtr setsize);
+
+export System_IntPtr  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol);
+export void  System_Syscall_bind(System_IntPtr socketId, System_Var socketAddress, System_Size socketAddressLength);
+export void  System_Syscall_listen(System_IntPtr socketId, System_Size backlog);
+export System_IntPtr  System_Syscall_accept(System_IntPtr socketId, System_Var socketAddress, System_Size * addressLength, System_IntPtr flags);
+export void  System_Syscall_getsockname(System_IntPtr socketId, System_Var socketAddress, System_Size * addressLength);
+export void  System_Syscall_getpeername(System_IntPtr socketId, System_Var socketAddress, System_Size * addressLength);
+export void  System_Syscall_getsockopt(System_IntPtr socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size * optionLength);
+export void  System_Syscall_setsockopt(System_IntPtr socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size optionLength);
+export void  System_Syscall_send(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags);
+export void  System_Syscall_sendto(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
+export System_IntPtr  System_Syscall_recv(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags);
+export System_IntPtr  System_Syscall_recvfrom(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
 
 #if defined(using_System)
 #define SyscallType  System_SyscallType

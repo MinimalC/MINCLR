@@ -35,7 +35,7 @@ System_Bool  stack_System_File_open(System_File that, System_String8 filename, S
         System_File_Mode_noControllingTerminal | flags,
         System_File_Permission_UserReadWrite | System_File_Permission_GroupReadWrite | System_File_Permission_EverybodyRead);
 
-    System_Error error = System_Syscall_get_Error();
+    System_ErrorCode error = System_Syscall_get_Error();
     if (error || !filePtr) { /* TODO */
         System_Exception exception = new_System_Exception("FileNotFound");
         exception->error = error;
@@ -114,20 +114,20 @@ void  base_System_File_sync(File that) {
 }
 
 struct System_Type_FunctionInfo  System_FileTypeFunctions[] = { 
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_File_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_File_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_write__string_size", .function = base_System_IStream_write__string_size, .value = base_System_File_write__string_size },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_File_writeEnd__arguments", .function = base_System_IStream_writeEnd__arguments, .value = base_System_File_write__string_size },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = base_System_File_sync },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = base_System_File_read },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = base_System_File_seek },
-    [7] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_get_Position, .value = base_System_File_get_Position },
-    [8] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = base_System_File_set_Position },
-    [9] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_File_close, .value = base_System_File_close },
+    [0] = { .function = base_System_Object_init, .value = base_System_File_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_File_free },
+    [2] = { .name = "base_System_File_write__string_size", .function = base_System_IStream_write__string_size, .value = base_System_File_write__string_size },
+    [3] = { .name = "base_System_File_writeEnd__arguments", .function = base_System_IStream_writeEnd__arguments, .value = base_System_File_write__string_size },
+    [4] = { .function = base_System_IStream_sync, .value = base_System_File_sync },
+    [5] = { .function = base_System_IStream_read, .value = base_System_File_read },
+    [6] = { .function = base_System_IStream_seek, .value = base_System_File_seek },
+    [7] = { .function = base_System_IStream_get_Position, .value = base_System_File_get_Position },
+    [8] = { .function = base_System_IStream_set_Position, .value = base_System_File_set_Position },
+    [9] = { .function = base_System_File_close, .value = base_System_File_close },
 };
 
 struct System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IStreamType },
+    [0] = { .interfaceType = &System_IStreamType },
 };
 
 struct System_Type System_FileType = {
@@ -135,10 +135,10 @@ struct System_Type System_FileType = {
 	.name = "File",
     .size = sizeof(struct System_File),
 	.baseType = &System_ObjectType,
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(System_FileTypeFunctions), .value = &System_FileTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(System_FileTypeInterfaces), .value = &System_FileTypeInterfaces
     },
 };

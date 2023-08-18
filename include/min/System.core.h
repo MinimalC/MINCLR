@@ -19,6 +19,7 @@
 #include "System.Console.h"
 #include "System.Exception.h"
 #include "System.Environment.h"
+#include "System.Signal.h"
 #include "System.Thread.h"
 
 #include "Crypto.SipHash48.h"

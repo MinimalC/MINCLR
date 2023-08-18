@@ -26,19 +26,19 @@ System_Size  base_System_IStream_get_Position(IStream that) { return 0; }
 void  base_System_IStream_set_Position(IStream that, Size value) { }
 
 struct System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_IStream_write__string_size", .function = base_System_IStream_write__string_size, .value = null },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .name = "base_System_IStream_writeEnd__arguments", .function = base_System_IStream_writeEnd__arguments, .value = null },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_sync, .value = null },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_read, .value = null },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_seek, .value = null },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_get_Position, .value = null },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IStream_set_Position, .value = null },
+    [0] = { .name = "base_System_IStream_write__string_size", .function = base_System_IStream_write__string_size, .value = null },
+    [1] = { .name = "base_System_IStream_writeEnd__arguments", .function = base_System_IStream_writeEnd__arguments, .value = null },
+    [2] = { .function = base_System_IStream_sync, .value = null },
+    [3] = { .function = base_System_IStream_read, .value = null },
+    [4] = { .function = base_System_IStream_seek, .value = null },
+    [5] = { .function = base_System_IStream_get_Position, .value = null },
+    [6] = { .function = base_System_IStream_set_Position, .value = null },
 };
 
 struct System_Type System_IStreamType = { .base = stack_System_Object(System_Type),
 	.name = "IStream",
     .size = sizeof(struct System_IStream),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(System_IStreamTypeFunctions), .value = &System_IStreamTypeFunctions
     },
 };

@@ -2,8 +2,8 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
-#if !defined(have_System_Error)
-#include "System.Error.h"
+#if !defined(have_System_ErrorCode)
+#include "System.ErrorCode.h"
 #endif
 #if !defined(have_System_String8)
 #include "System.String8.h"
@@ -14,7 +14,7 @@
 typedef System_fixed struct System_Exception {
     struct System_Object base;
 
-    System_Error error;
+    System_ErrorCode error;
 
     System_String8  message;
 

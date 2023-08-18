@@ -35,8 +35,8 @@ function_System_Signal_handler System_Signal_signal(System_Signal_Code signal, f
     new.mask.signal[__word] |= __mask;
 
     System_Syscall_sigaction(signal, &new, null);
-    System_Error errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Signal_signal Error: {0:uint}", 1, errno);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("System_Signal_signal Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 
     return null;
 }
@@ -52,16 +52,16 @@ void System_Signal_getProcMask(System_Signal_Set old) {
 
     System_Syscall_sigprocmask(0, null, old, sizeof(struct System_Signal_Set));
 
-    System_Error errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Signal_getProcMask Error: {0:uint}", 1, errno);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("System_Signal_getProcMask Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
 void System_Signal_setProcMask(System_IntPtr how, System_Signal_Set new) {
 
     System_Syscall_sigprocmask(how, new, null, sizeof(struct System_Signal_Set));
 
-    System_Error errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Signal_setProcMask Error: {0:uint}", 1, errno);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("System_Signal_setProcMask Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
 #endif

@@ -19,7 +19,7 @@
 #include "System.Runtime.h"
 #include "System.ELFAssembly.h"
 #include "System.Path.h"
-/* #include "System.Signals.h" */
-/* #include "System.Socket.h" */
+
+#include "Network.TCPSocket.h"
 
 #endif

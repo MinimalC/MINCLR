@@ -19,7 +19,7 @@ System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 
     struct System_Syscall_stat stat;
     System_Syscall_fstatat(System_Syscall_StandardFile_CurrentWorkingDirectory, fileName, &stat, 0);
 
-    System_Error error = System_Syscall_get_Error();
+    System_ErrorCode error = System_Syscall_get_Error();
     if (error) { /* TODO */
         return that;
     }
@@ -50,8 +50,8 @@ System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 
 } */
 
 struct System_Type_FunctionInfo  System_FileInfoTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_FileInfo_init, .value = base_System_FileInfo_init },
-/*    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_FileInfo_free }, */
+    [0] = { .function = base_System_FileInfo_init, .value = base_System_FileInfo_init },
+/*    [1] = { .function = base_System_Object_free, .value = base_System_FileInfo_free }, */
 };
 
 struct System_Type System_FileInfoType = {
@@ -59,7 +59,7 @@ struct System_Type System_FileInfoType = {
     .name = "FileInfo",
     .size = sizeof(struct System_FileInfo),
     .baseType = &System_ObjectType,
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(System_FileInfoTypeFunctions), .value = &System_FileInfoTypeFunctions
     },
 };

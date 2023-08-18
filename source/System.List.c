@@ -81,29 +81,29 @@ void  base_System_List_add(System_List that, System_Object object) {
 }
 
 struct System_Type_FunctionInfo  System_ListTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_List_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_List_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_List_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_List_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_List_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_List_getEnumerator },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_List_contains, .value = base_System_List_contains },
-    [7] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_List_add, .value = base_System_List_add },
+    [0] = { .function = base_System_Object_init, .value = base_System_List_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_List_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_List_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_List_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_List_set_index },
+    [5] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_List_getEnumerator },
+    [6] = { .function = base_System_List_contains, .value = base_System_List_contains },
+    [7] = { .function = base_System_List_add, .value = base_System_List_add },
 };
 
 struct System_Type_InterfaceInfo  System_ListTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_ListType = { .base = { .type = typeof(System_Type) },
     .name = "List",
     .size = sizeof(struct System_List),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(System_ListTypeFunctions), .value = &System_ListTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(System_ListTypeInterfaces), .value = &System_ListTypeInterfaces
     },
 };

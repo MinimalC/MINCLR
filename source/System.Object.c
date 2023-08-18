@@ -60,16 +60,16 @@ System_UInt64 base_System_Object_getSipHash(System_Object that) {
 }
 
 struct System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_Object_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Object_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_getSipHash, .value = base_System_Object_getSipHash },
+    [0] = { .function = base_System_Object_init, .value = base_System_Object_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Object_free },
+    [2] = { .function = base_System_Object_getSipHash, .value = base_System_Object_getSipHash },
 };
 
 struct System_Type System_ObjectType = { .base = { .type = typeof(System_Type) },
 	.name = "Object",
 	.size = sizeof(struct System_Object),
 	.baseType = null, /* this is System_Object */
-	.functions  = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+	.functions  = { 
         .length = sizeof_array(System_ObjectTypeFunctions), .value = &System_ObjectTypeFunctions
     },
 };

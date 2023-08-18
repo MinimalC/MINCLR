@@ -44,11 +44,11 @@ void  System_Exception_throw(System_Exception that) {
     if (!type) type = typeof(System_Exception);
 
     if (that->message && that->error)
-        Console_writeLine("throws {0:string}: error {1:uint} ({2:string}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_Error), that->error), that->message);
+        Console_writeLine("throws {0:string}: error {1:uint} ({2:string}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error), that->message);
     else if (that->message)
         Console_writeLine("throws {0:string}: {1:string}", 2, type->name, that->message);
     else if (that->error)
-        Console_writeLine("throws {0:string}: error {1:uint} ({2:string})", 3, type->name, that->error, enum_getName(typeof(System_Error), that->error));
+        Console_writeLine("throws {0:string}: error {1:uint} ({2:string})", 3, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error));
     else
         Console_writeLine("throws {0:string}", 1, type->name);
 #endif
@@ -90,8 +90,8 @@ System_Exception  base_System_Exception_init(System_Exception that, System_Strin
 } */
 
 struct System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Exception_init, .value = base_System_Exception_init },
-/*    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Exception_free }, */
+    [0] = { .function = base_System_Exception_init, .value = base_System_Exception_init },
+/*    [1] = { .function = base_System_Object_free, .value = base_System_Exception_free }, */
 };
 
 struct System_Type System_ExceptionType = {
@@ -99,7 +99,7 @@ struct System_Type System_ExceptionType = {
     .name = "Exception",
     .size = sizeof(struct System_Exception),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(System_ExceptionTypeFunctions), .value = &System_ExceptionTypeFunctions
     },
 };

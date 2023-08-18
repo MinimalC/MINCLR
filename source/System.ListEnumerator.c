@@ -50,17 +50,17 @@ System_Bool  base_System_ListEnumerator_moveNext(System_ListEnumerator that) {
 }
 
 struct System_Type_FunctionInfo  System_ListEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ListEnumerator_init, .value = base_System_ListEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_ListEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_ListEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_ListEnumerator_moveNext },
+    [0] = { .function = base_System_ListEnumerator_init, .value = base_System_ListEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_ListEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_ListEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_ListEnumerator_moveNext },
 };
 
 struct System_Type System_ListEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "ListEnumerator",
     .size = sizeof(struct System_ListEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(System_ListEnumeratorTypeFunctions), .value = &System_ListEnumeratorTypeFunctions
     },
 };

@@ -62,28 +62,28 @@ System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array that) {
 }
 
 struct System_Type_FunctionInfo  Generic_T0ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0Array_init, .value = base_Generic_T0Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_Generic_T0Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_Generic_T0Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_Generic_T0Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_Generic_T0Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_Generic_T0Array_resize, .value = base_Generic_T0Array_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_Generic_T0Array_getEnumerator },
+    [0] = { .function = base_Generic_T0Array_init, .value = base_Generic_T0Array_init },
+    [1] = { .function = base_System_Object_free, .value = base_Generic_T0Array_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_Generic_T0Array_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_Generic_T0Array_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_Generic_T0Array_set_index },
+    [5] = { .function = base_Generic_T0Array_resize, .value = base_Generic_T0Array_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_Generic_T0Array_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0Array",
     .size = sizeof(struct Generic_T0Array),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&Generic_T0ArrayTypeInterfaces), .value = &Generic_T0ArrayTypeInterfaces
     },
 };

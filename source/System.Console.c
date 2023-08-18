@@ -54,11 +54,11 @@ void System_Console_exit(const Size code)  {
     System_Exception exception = null;
     if (stack_System_Exception_catch(&exception, typeof(System_Exception))) {
         if (exception->message && exception->error)
-            Console_writeLine("{0:string}: error {1:uint} ({2:string}): {3:string}", 4, exception->base.type->name, exception->error, enum_getName(typeof(System_Error), exception->error), exception->message);
+            Console_writeLine("{0:string}: error {1:uint} ({2:string}): {3:string}", 4, exception->base.type->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error), exception->message);
         else if (exception->message)
             Console_writeLine("{0:string}: {1:string}", 2, exception->base.type->name, exception->message);
         else if (exception->error)
-            Console_writeLine("{0:string}: error {1:uint} ({2:string})", 3, exception->base.type->name, exception->error, enum_getName(typeof(System_Error), exception->error));
+            Console_writeLine("{0:string}: error {1:uint} ({2:string})", 3, exception->base.type->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error));
         else
             Console_writeLine("{0:string}", 1, exception->base.type->name);
     }

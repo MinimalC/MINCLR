@@ -30,15 +30,15 @@ void  base_Generic_T0_free(Generic_T0 that) {
 }
 
 struct System_Type_FunctionInfo  Generic_T0TypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_Generic_T0_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_Generic_T0_free },
+    [0] = { .function = base_System_Object_init, .value = base_Generic_T0_init },
+    [1] = { .function = base_System_Object_free, .value = base_Generic_T0_free },
 };
 
 struct System_Type Generic_T0Type = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0",
     .size = sizeof(struct Generic_T0),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&Generic_T0TypeFunctions), .value = &Generic_T0TypeFunctions
     },
 };

@@ -8,13 +8,13 @@
 #if !defined(have_System_stddef)
 #define have_System_stddef
 
-/* This is the truth made by God */
+/* This is the truth, made by God, like the DNA of a Great Stinging Nettle. */
 
 enum { null } ;
 
 enum { false, true } ;
 
-typedef unsigned  System_Bool;
+typedef _Bool  System_Bool;
 
 #if defined(using_System)
 #define Bool  System_Bool
@@ -167,6 +167,8 @@ and in your C .c you do:
 
 #define typeof(name)  (&name##Type)
 
+/* You don't want to do while (i < 0), instead you would use while (i < -1). */
+
 typedef void  System_Void;
 typedef void  * System_Var; /* Var is not unsafe in C */
 typedef unsigned  System_Unsigned;
@@ -226,7 +228,9 @@ typedef signed long long int  System_Int64;
 #define System_Int  System_Int32
 #define System_Long  System_Int64
 
-/* Look, this is trying not to rewrite unsigned long long longer int integer names in C. */
+
+/* Look, this is not trying not to rewrite unsigned long long longer int integer names in C. */
+
 #if defined(using_System)
 #define Byte  System_Byte
 #define UShort  System_UShort

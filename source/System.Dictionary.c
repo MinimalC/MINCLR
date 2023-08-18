@@ -17,14 +17,14 @@ void  base_System_Dictionary_free(System_Dictionary that) {
     base_System_Object_free((System_Object)that);
 }
 struct System_Type_FunctionInfo  System_DictionaryTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_init, .value = base_System_Dictionary_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Dictionary_free },
+    [0] = { .function = base_System_Object_init, .value = base_System_Dictionary_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Dictionary_free },
 };
 struct System_Type System_DictionaryType = { .base = { .type = typeof(System_Type) },
     .name = "Dictionary",
     .size = sizeof(struct System_Dictionary),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(System_DictionaryTypeFunctions), .value = &System_DictionaryTypeFunctions
     },
 };

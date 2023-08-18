@@ -14,7 +14,7 @@ Bool main_try() {
     catch
     catch_class(System_Exception,exception, {
 
-        Console_writeLine("SUCCESS: catch_class {0:string}, error: {1:string} ({2:uint})", 3, exception->base.type->name, enum_getName(typeof(System_Error), exception->error), exception->error);
+        Console_writeLine("SUCCESS: catch_class {0:string}, error: {1:string} ({2:uint})", 3, exception->base.type->name, enum_getName(typeof(System_ErrorCode), exception->error), exception->error);
 
         rethrow(exception);
     })

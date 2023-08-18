@@ -1,0 +1,63 @@
+/* Gemeinfrei. Public Domain. */
+#include "../System.internal.h"
+#include <min/System.h>
+
+void WebService_serve(Size argc, Var argv[]) {
+    if (argc < 1) return;
+    Network_TCPSocket tcp = argv[0];
+
+
+}
+
+int System_Runtime_main(int argc, char  * argv[]) {
+
+    if (argc < 1) {
+        System_Console_writeLine__string("Usage: WebService <command> <file>");
+        return false;
+    }
+
+    Network_TCPSocket tcp = Network_TCPSocket_create();
+    base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEADDR, true);
+    base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEPORT, true);
+
+    Network_IP4Address ip4 = { .address = { 127, 0, 0, 1 } };
+    System_UInt16 port = 8080;
+    base_Network_TCPSocket_bind(tcp, ip4, port);
+    System_Console_writeLine("WebService Network_IP4Address: {0:uint8:hex}.{1:uint8:hex}.{2:uint8:hex}.{3:uint8:hex}:{4:uint16}", 5, 
+        ip4.address[0], ip4.address[1], ip4.address[2], ip4.address[3], port);
+
+    base_Network_TCPSocket_listen(tcp, 512);
+
+    Network_TCPSocket sockets[512];
+    System_Thread threads[512];
+
+    while (true) {
+     
+        Network_TCPSocket tcp1 = base_Network_TCPSocket_accept(tcp);
+        if (!tcp1) return false; // throw
+        
+
+        System_Thread thread1 = System_Thread_create(WebService_serve, 1, tcp1);
+        if (!thread1) return false; // throw
+
+        // now cleanup old threads ...
+        for (Size i = 0; i < 512; ++i) {
+            if (!threads[i]) continue;
+            if (!threads[i]->status) {
+                System_Memory_freeClass(&threads[i]);
+                // Network_TCPSocket_close(tcp1)
+            }
+        }
+        
+
+        for (Size i = 0; i < 512; ++i) {
+            if (!sockets[i] && !threads[i]) {
+                sockets[i] = tcp1;
+                threads[i] = thread1;
+            }
+        }
+
+        break;
+    }
+    return false;
+}

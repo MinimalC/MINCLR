@@ -11,9 +11,9 @@
 #if !defined(code_System_Thread)
 #define code_System_Thread
 
-struct System_Type System_ThreadType = { .base = stack_System_Object(System_Type), .name = "Thread", };
+struct System_Type System_ThreadType = { .base = stack_System_Object(System_Type), .name = "Thread", .size = sizeof(struct System_Thread), };
 
-#define STACK_SIZE  8 * 1024 * 1024
+#define STACK_SIZE  (8 * 1024 * 1024)
 
 enum {
     CLONE_VM = 0x00000100,
@@ -27,7 +27,16 @@ enum {
 
 System_Bool sigiset = false;
 
-System_SIntPtr System_Thread_create(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
+System_Thread System_Thread_create(function_System_Thread_main function, ...) {
+    System_arguments args;
+    System_arguments_start(args, function);
+    System_Var argv[System_arguments_Limit_VALUE];
+    System_Size argc = stack_System_arguments_get(args, argv);
+    System_arguments_end(args);
+    return System_Thread_create__arguments(function, argc, argv);
+}
+
+System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
 
     System_Var stack = System_Syscall_mmap(STACK_SIZE, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
         System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown);
@@ -43,7 +52,7 @@ System_SIntPtr System_Thread_create(function_System_Thread_main function, System
 
     *(--stack_top) = (System_Size)argc;
     *(--stack_top) = (System_Size)function;
-    *(--stack_top) = (System_Size)System_Thread_start;
+    *(--stack_top) = (System_Size)System_Thread_boot;
 
     if (!sigiset) {
         struct System_Signal_Set procmask;
@@ -54,11 +63,15 @@ System_SIntPtr System_Thread_create(function_System_Thread_main function, System
         sigiset = true;
     }
 
-    //  | CLONE_THREAD | CLONE_SIGHAND | CLONE_PARENT
     System_SIntPtr reture = System_Syscall_clone(CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | System_Signal_Code_SIGCHILD, stack_top);
-    System_Error errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Thread_create Error: {0:uint}", 1, errno);
-    return reture;
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) {
+        System_Console_writeLine("System_Thread_create Error: {0:uint}", 1, errno);
+        return null;
+    }
+    System_Thread that = System_Memory_allocClass(typeof(System_Thread));
+    that->threadId = reture;
+    return that;
 }
 
 void System_Thread_sleep(System_Size seconds) {
@@ -74,14 +87,15 @@ void System_Thread_sleep(System_Size seconds) {
 #define WALL   0x40000000 /* Wait for any child.  */
 #define WCLONE 0x80000000 /* Wait for cloned process.  */
 
-System_Bool System_Thread_join(System_SIntPtr id) {
-    return System_Thread_join__dontwait(id, false);
+System_Bool System_Thread_join(System_Thread that) {
+    return System_Thread_join__dontwait(that, false);
 }
 
-System_Bool System_Thread_join__dontwait(System_SIntPtr id, System_Bool dontwait) {
+System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
+    Debug_assert(that);
     System_IntPtr status = 0;
-    System_Syscall_wait(id, &status, dontwait, null);
-    System_Error errno = System_Syscall_get_Error();
+    System_Syscall_wait(that->threadId, &status, dontwait, null);
+    System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("System_Thread_join Error: {0:uint}", 1, errno);
     // System_Console_writeLine("System_Thread_join status: {0:uint:hex}", 1, status);
     // if (!(status & 0x7f)) return (status & 0xff00) >> 8;

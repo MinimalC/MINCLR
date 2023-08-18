@@ -51,28 +51,28 @@ System_IEnumerator  base_System_UInt8Array_getEnumerator(System_UInt8Array that)
 }
 
 struct System_Type_FunctionInfo  System_UInt8ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt8Array_init, .value = base_System_UInt8Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_UInt8Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_UInt8Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_UInt8Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_UInt8Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt8Array_resize, .value = base_System_UInt8Array_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_UInt8Array_getEnumerator },
+    [0] = { .function = base_System_UInt8Array_init, .value = base_System_UInt8Array_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_UInt8Array_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_UInt8Array_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_UInt8Array_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_UInt8Array_set_index },
+    [5] = { .function = base_System_UInt8Array_resize, .value = base_System_UInt8Array_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_UInt8Array_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_UInt8ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_UInt8ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "System.UInt8Array",
     .size = sizeof(struct System_UInt8Array),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_UInt8ArrayTypeFunctions), .value = &System_UInt8ArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&System_UInt8ArrayTypeInterfaces), .value = &System_UInt8ArrayTypeInterfaces
     },
 };
@@ -131,28 +131,28 @@ System_IEnumerator  base_System_UInt16Array_getEnumerator(System_UInt16Array tha
 }
 
 struct System_Type_FunctionInfo  System_UInt16ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt16Array_init, .value = base_System_UInt16Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_UInt16Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_UInt16Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_UInt16Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_UInt16Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt16Array_resize, .value = base_System_UInt16Array_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_UInt16Array_getEnumerator },
+    [0] = { .function = base_System_UInt16Array_init, .value = base_System_UInt16Array_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_UInt16Array_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_UInt16Array_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_UInt16Array_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_UInt16Array_set_index },
+    [5] = { .function = base_System_UInt16Array_resize, .value = base_System_UInt16Array_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_UInt16Array_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_UInt16ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_UInt16ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "System.UInt16Array",
     .size = sizeof(struct System_UInt16Array),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_UInt16ArrayTypeFunctions), .value = &System_UInt16ArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&System_UInt16ArrayTypeInterfaces), .value = &System_UInt16ArrayTypeInterfaces
     },
 };
@@ -211,28 +211,28 @@ System_IEnumerator  base_System_UInt32Array_getEnumerator(System_UInt32Array tha
 }
 
 struct System_Type_FunctionInfo  System_UInt32ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt32Array_init, .value = base_System_UInt32Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_UInt32Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_UInt32Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_UInt32Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_UInt32Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt32Array_resize, .value = base_System_UInt32Array_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_UInt32Array_getEnumerator },
+    [0] = { .function = base_System_UInt32Array_init, .value = base_System_UInt32Array_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_UInt32Array_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_UInt32Array_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_UInt32Array_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_UInt32Array_set_index },
+    [5] = { .function = base_System_UInt32Array_resize, .value = base_System_UInt32Array_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_UInt32Array_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_UInt32ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_UInt32ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "System.UInt32Array",
     .size = sizeof(struct System_UInt32Array),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_UInt32ArrayTypeFunctions), .value = &System_UInt32ArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&System_UInt32ArrayTypeInterfaces), .value = &System_UInt32ArrayTypeInterfaces
     },
 };
@@ -291,28 +291,28 @@ System_IEnumerator  base_System_UInt64Array_getEnumerator(System_UInt64Array tha
 }
 
 struct System_Type_FunctionInfo  System_UInt64ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt64Array_init, .value = base_System_UInt64Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_UInt64Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_UInt64Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_UInt64Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_UInt64Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt64Array_resize, .value = base_System_UInt64Array_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_UInt64Array_getEnumerator },
+    [0] = { .function = base_System_UInt64Array_init, .value = base_System_UInt64Array_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_UInt64Array_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_UInt64Array_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_UInt64Array_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_UInt64Array_set_index },
+    [5] = { .function = base_System_UInt64Array_resize, .value = base_System_UInt64Array_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_UInt64Array_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_UInt64ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_UInt64ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "System.UInt64Array",
     .size = sizeof(struct System_UInt64Array),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_UInt64ArrayTypeFunctions), .value = &System_UInt64ArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&System_UInt64ArrayTypeInterfaces), .value = &System_UInt64ArrayTypeInterfaces
     },
 };
@@ -371,28 +371,28 @@ System_IEnumerator  base_System_Int8Array_getEnumerator(System_Int8Array that) {
 }
 
 struct System_Type_FunctionInfo  System_Int8ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int8Array_init, .value = base_System_Int8Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Int8Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_Int8Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_Int8Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_Int8Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int8Array_resize, .value = base_System_Int8Array_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_Int8Array_getEnumerator },
+    [0] = { .function = base_System_Int8Array_init, .value = base_System_Int8Array_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Int8Array_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_Int8Array_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_Int8Array_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_Int8Array_set_index },
+    [5] = { .function = base_System_Int8Array_resize, .value = base_System_Int8Array_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_Int8Array_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_Int8ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_Int8ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "System.Int8Array",
     .size = sizeof(struct System_Int8Array),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_Int8ArrayTypeFunctions), .value = &System_Int8ArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&System_Int8ArrayTypeInterfaces), .value = &System_Int8ArrayTypeInterfaces
     },
 };
@@ -451,28 +451,28 @@ System_IEnumerator  base_System_Int16Array_getEnumerator(System_Int16Array that)
 }
 
 struct System_Type_FunctionInfo  System_Int16ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int16Array_init, .value = base_System_Int16Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Int16Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_Int16Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_Int16Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_Int16Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int16Array_resize, .value = base_System_Int16Array_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_Int16Array_getEnumerator },
+    [0] = { .function = base_System_Int16Array_init, .value = base_System_Int16Array_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Int16Array_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_Int16Array_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_Int16Array_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_Int16Array_set_index },
+    [5] = { .function = base_System_Int16Array_resize, .value = base_System_Int16Array_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_Int16Array_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_Int16ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_Int16ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "System.Int16Array",
     .size = sizeof(struct System_Int16Array),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_Int16ArrayTypeFunctions), .value = &System_Int16ArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&System_Int16ArrayTypeInterfaces), .value = &System_Int16ArrayTypeInterfaces
     },
 };
@@ -531,28 +531,28 @@ System_IEnumerator  base_System_Int32Array_getEnumerator(System_Int32Array that)
 }
 
 struct System_Type_FunctionInfo  System_Int32ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int32Array_init, .value = base_System_Int32Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Int32Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_Int32Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_Int32Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_Int32Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int32Array_resize, .value = base_System_Int32Array_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_Int32Array_getEnumerator },
+    [0] = { .function = base_System_Int32Array_init, .value = base_System_Int32Array_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Int32Array_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_Int32Array_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_Int32Array_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_Int32Array_set_index },
+    [5] = { .function = base_System_Int32Array_resize, .value = base_System_Int32Array_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_Int32Array_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_Int32ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_Int32ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "System.Int32Array",
     .size = sizeof(struct System_Int32Array),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_Int32ArrayTypeFunctions), .value = &System_Int32ArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&System_Int32ArrayTypeInterfaces), .value = &System_Int32ArrayTypeInterfaces
     },
 };
@@ -611,28 +611,28 @@ System_IEnumerator  base_System_Int64Array_getEnumerator(System_Int64Array that)
 }
 
 struct System_Type_FunctionInfo  System_Int64ArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int64Array_init, .value = base_System_Int64Array_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Int64Array_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_Int64Array_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_Int64Array_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_Int64Array_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int64Array_resize, .value = base_System_Int64Array_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_Int64Array_getEnumerator },
+    [0] = { .function = base_System_Int64Array_init, .value = base_System_Int64Array_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Int64Array_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_Int64Array_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_Int64Array_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_Int64Array_set_index },
+    [5] = { .function = base_System_Int64Array_resize, .value = base_System_Int64Array_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_Int64Array_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_Int64ArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_Int64ArrayType = { .base = { .type = typeof(System_Type) },
     .name = "System.Int64Array",
     .size = sizeof(struct System_Int64Array),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_Int64ArrayTypeFunctions), .value = &System_Int64ArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&System_Int64ArrayTypeInterfaces), .value = &System_Int64ArrayTypeInterfaces
     },
 };
@@ -691,17 +691,17 @@ System_Bool  base_System_UInt8ArrayEnumerator_moveNext(System_UInt8ArrayEnumerat
 }
 
 struct System_Type_FunctionInfo  System_UInt8ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt8ArrayEnumerator_init, .value = base_System_UInt8ArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_UInt8ArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_UInt8ArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_UInt8ArrayEnumerator_moveNext },
+    [0] = { .function = base_System_UInt8ArrayEnumerator_init, .value = base_System_UInt8ArrayEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_UInt8ArrayEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_UInt8ArrayEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_UInt8ArrayEnumerator_moveNext },
 };
 
 struct System_Type System_UInt8ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "System.UInt8ArrayEnumerator",
     .size = sizeof(struct System_UInt8ArrayEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_UInt8ArrayEnumeratorTypeFunctions), .value = &System_UInt8ArrayEnumeratorTypeFunctions
     },
 };
@@ -757,17 +757,17 @@ System_Bool  base_System_UInt16ArrayEnumerator_moveNext(System_UInt16ArrayEnumer
 }
 
 struct System_Type_FunctionInfo  System_UInt16ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt16ArrayEnumerator_init, .value = base_System_UInt16ArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_UInt16ArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_UInt16ArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_UInt16ArrayEnumerator_moveNext },
+    [0] = { .function = base_System_UInt16ArrayEnumerator_init, .value = base_System_UInt16ArrayEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_UInt16ArrayEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_UInt16ArrayEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_UInt16ArrayEnumerator_moveNext },
 };
 
 struct System_Type System_UInt16ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "System.UInt16ArrayEnumerator",
     .size = sizeof(struct System_UInt16ArrayEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_UInt16ArrayEnumeratorTypeFunctions), .value = &System_UInt16ArrayEnumeratorTypeFunctions
     },
 };
@@ -823,17 +823,17 @@ System_Bool  base_System_UInt32ArrayEnumerator_moveNext(System_UInt32ArrayEnumer
 }
 
 struct System_Type_FunctionInfo  System_UInt32ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt32ArrayEnumerator_init, .value = base_System_UInt32ArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_UInt32ArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_UInt32ArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_UInt32ArrayEnumerator_moveNext },
+    [0] = { .function = base_System_UInt32ArrayEnumerator_init, .value = base_System_UInt32ArrayEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_UInt32ArrayEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_UInt32ArrayEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_UInt32ArrayEnumerator_moveNext },
 };
 
 struct System_Type System_UInt32ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "System.UInt32ArrayEnumerator",
     .size = sizeof(struct System_UInt32ArrayEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_UInt32ArrayEnumeratorTypeFunctions), .value = &System_UInt32ArrayEnumeratorTypeFunctions
     },
 };
@@ -889,17 +889,17 @@ System_Bool  base_System_UInt64ArrayEnumerator_moveNext(System_UInt64ArrayEnumer
 }
 
 struct System_Type_FunctionInfo  System_UInt64ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_UInt64ArrayEnumerator_init, .value = base_System_UInt64ArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_UInt64ArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_UInt64ArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_UInt64ArrayEnumerator_moveNext },
+    [0] = { .function = base_System_UInt64ArrayEnumerator_init, .value = base_System_UInt64ArrayEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_UInt64ArrayEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_UInt64ArrayEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_UInt64ArrayEnumerator_moveNext },
 };
 
 struct System_Type System_UInt64ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "System.UInt64ArrayEnumerator",
     .size = sizeof(struct System_UInt64ArrayEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_UInt64ArrayEnumeratorTypeFunctions), .value = &System_UInt64ArrayEnumeratorTypeFunctions
     },
 };
@@ -955,17 +955,17 @@ System_Bool  base_System_Int8ArrayEnumerator_moveNext(System_Int8ArrayEnumerator
 }
 
 struct System_Type_FunctionInfo  System_Int8ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int8ArrayEnumerator_init, .value = base_System_Int8ArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Int8ArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_Int8ArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_Int8ArrayEnumerator_moveNext },
+    [0] = { .function = base_System_Int8ArrayEnumerator_init, .value = base_System_Int8ArrayEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Int8ArrayEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_Int8ArrayEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_Int8ArrayEnumerator_moveNext },
 };
 
 struct System_Type System_Int8ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "System.Int8ArrayEnumerator",
     .size = sizeof(struct System_Int8ArrayEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_Int8ArrayEnumeratorTypeFunctions), .value = &System_Int8ArrayEnumeratorTypeFunctions
     },
 };
@@ -1021,17 +1021,17 @@ System_Bool  base_System_Int16ArrayEnumerator_moveNext(System_Int16ArrayEnumerat
 }
 
 struct System_Type_FunctionInfo  System_Int16ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int16ArrayEnumerator_init, .value = base_System_Int16ArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Int16ArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_Int16ArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_Int16ArrayEnumerator_moveNext },
+    [0] = { .function = base_System_Int16ArrayEnumerator_init, .value = base_System_Int16ArrayEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Int16ArrayEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_Int16ArrayEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_Int16ArrayEnumerator_moveNext },
 };
 
 struct System_Type System_Int16ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "System.Int16ArrayEnumerator",
     .size = sizeof(struct System_Int16ArrayEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_Int16ArrayEnumeratorTypeFunctions), .value = &System_Int16ArrayEnumeratorTypeFunctions
     },
 };
@@ -1087,17 +1087,17 @@ System_Bool  base_System_Int32ArrayEnumerator_moveNext(System_Int32ArrayEnumerat
 }
 
 struct System_Type_FunctionInfo  System_Int32ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int32ArrayEnumerator_init, .value = base_System_Int32ArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Int32ArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_Int32ArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_Int32ArrayEnumerator_moveNext },
+    [0] = { .function = base_System_Int32ArrayEnumerator_init, .value = base_System_Int32ArrayEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Int32ArrayEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_Int32ArrayEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_Int32ArrayEnumerator_moveNext },
 };
 
 struct System_Type System_Int32ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "System.Int32ArrayEnumerator",
     .size = sizeof(struct System_Int32ArrayEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_Int32ArrayEnumeratorTypeFunctions), .value = &System_Int32ArrayEnumeratorTypeFunctions
     },
 };
@@ -1153,17 +1153,17 @@ System_Bool  base_System_Int64ArrayEnumerator_moveNext(System_Int64ArrayEnumerat
 }
 
 struct System_Type_FunctionInfo  System_Int64ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Int64ArrayEnumerator_init, .value = base_System_Int64ArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_Int64ArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_Int64ArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_Int64ArrayEnumerator_moveNext },
+    [0] = { .function = base_System_Int64ArrayEnumerator_init, .value = base_System_Int64ArrayEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_Int64ArrayEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_Int64ArrayEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_Int64ArrayEnumerator_moveNext },
 };
 
 struct System_Type System_Int64ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "System.Int64ArrayEnumerator",
     .size = sizeof(struct System_Int64ArrayEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_Int64ArrayEnumeratorTypeFunctions), .value = &System_Int64ArrayEnumeratorTypeFunctions
     },
 };

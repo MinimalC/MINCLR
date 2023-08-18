@@ -56,28 +56,28 @@ System_IEnumerator  base_System_VarArray_getEnumerator(System_VarArray that) {
 }
 
 struct System_Type_FunctionInfo  System_VarArrayTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_VarArray_init, .value = base_System_VarArray_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_VarArray_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_Length, .value = base_System_VarArray_get_Length },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_get_index, .value = base_System_VarArray_get_index },
-    [4] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_ICollection_set_index, .value = base_System_VarArray_set_index },
-    [5] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_VarArray_resize, .value = base_System_VarArray_resize },
-    [6] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerable_getEnumerator, .value = base_System_VarArray_getEnumerator },
+    [0] = { .function = base_System_VarArray_init, .value = base_System_VarArray_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_VarArray_free },
+    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_VarArray_get_Length },
+    [3] = { .function = base_System_ICollection_get_index, .value = base_System_VarArray_get_index },
+    [4] = { .function = base_System_ICollection_set_index, .value = base_System_VarArray_set_index },
+    [5] = { .function = base_System_VarArray_resize, .value = base_System_VarArray_resize },
+    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_VarArray_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_VarArrayTypeInterfaces[] = {
-    [0] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_ICollectionType },
-    [1] = { .base = stack_System_Object(System_Type_InterfaceInfo), .interfaceType = &System_IEnumerableType },
+    [0] = { .interfaceType = &System_ICollectionType },
+    [1] = { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_VarArrayType = { .base = { .type = typeof(System_Type) },
     .name = "VarArray",
     .size = sizeof(struct System_VarArray),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_VarArrayTypeFunctions), .value = &System_VarArrayTypeFunctions
     },
-    .interfaces = { .base = stack_System_Object(System_Type_InterfaceInfoArray),
+    .interfaces = {
         .length = sizeof_array(&System_VarArrayTypeInterfaces), .value = &System_VarArrayTypeInterfaces
     },
 };
@@ -130,17 +130,17 @@ System_Bool  base_System_VarArrayEnumerator_moveNext(System_VarArrayEnumerator t
 }
 
 struct System_Type_FunctionInfo  System_VarArrayEnumeratorTypeFunctions[] = {
-    [0] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_VarArrayEnumerator_init, .value = base_System_VarArrayEnumerator_init },
-    [1] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_Object_free, .value = base_System_VarArrayEnumerator_free },
-    [2] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_get_current, .value = base_System_VarArrayEnumerator_get_current },
-    [3] = { .base = stack_System_Object(System_Type_FunctionInfo), .function = base_System_IEnumerator_moveNext, .value = base_System_VarArrayEnumerator_moveNext },
+    [0] = { .function = base_System_VarArrayEnumerator_init, .value = base_System_VarArrayEnumerator_init },
+    [1] = { .function = base_System_Object_free, .value = base_System_VarArrayEnumerator_free },
+    [2] = { .function = base_System_IEnumerator_get_current, .value = base_System_VarArrayEnumerator_get_current },
+    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_VarArrayEnumerator_moveNext },
 };
 
 struct System_Type System_VarArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "VarArrayEnumerator",
     .size = sizeof(struct System_VarArrayEnumerator),
     .baseType = typeof(System_Object),
-    .functions = { .base = stack_System_Object(System_Type_FunctionInfoArray),
+    .functions = { 
         .length = sizeof_array(&System_VarArrayEnumeratorTypeFunctions), .value = &System_VarArrayEnumeratorTypeFunctions
     },
 };
