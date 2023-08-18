@@ -2,7 +2,6 @@
 #include <min/System.h>
 
 STRING8  HALLOtxt = "./.FileNotFound";
-/* STRING8  HALLOtxt = "./.test.txt"; */
 
 Bool main_try() {
 	/* Test00: Open .FileNotFound */
@@ -29,10 +28,7 @@ Bool main_try() {
     return true;
 }
 
-#define main  System_Runtime_main
-
-//main(test41_System_Exception, args) {
-int main(int argc, char * argv[]) {
+int System_Runtime_main(int argc, char * argv[]) {
 
     Bool reture = main_try();
     Console_writeLine("{0:string}: returning {1:bool}", 2, reture ? "FAIL" : "SUCCESS", reture);

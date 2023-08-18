@@ -1,17 +1,10 @@
 #define using_System
 #include <min/System.h>
 
-internal Size  Test00_size = 8;
-internal UInt8  Test00_Check[] = "\x01\x01\x03\x01\x01\x01\x01\x01";
+Size  Test00_size = 8;
+UInt8  Test00_Check[] = "\x01\x01\x03\x01\x01\x01\x01\x01";
 
-#define main  System_Runtime_main
-
-//main(test00_System_Memory, args) {
-int main(int argc, char * argv[]) {
-    // UInt8 *arg1; Size arg1size;
-    /* if (argc == 1) is unnecessary: arg[0] is always the Application_Path, for example /home/user007/bin/MetaFrame */
-    // if (argc > 2) { arg1 = argv[1]; arg1size = sizeof(argv[1]); }
-
+int System_Runtime_main(int argc, char * argv[]) {
 
     /* Test: Memory_allocClass */
     UInt8 *bytes = Memory_allocArray(typeof(UInt8), Test00_size);

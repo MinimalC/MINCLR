@@ -2,7 +2,7 @@
 #include <min/System.h>
 
 STRING8  HALLO = "HaLLo";
-STRING8  HALLOtxt = "./.test.txt";
+STRING8  HALLOtxt = "./.System.File.test.txt";
 
 int System_Runtime_main(int argc, char * argv[]) {
 
