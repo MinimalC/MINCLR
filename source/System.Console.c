@@ -16,9 +16,6 @@
 #if !defined(have_System_String8)
 #include <min/System.String8.h>
 #endif
-#if !defined(have_System_UInt8)
-#include <min/System.values.auto.h>
-#endif
 #if !defined(have_ISO)
 #include <min/ISO.h>
 #endif

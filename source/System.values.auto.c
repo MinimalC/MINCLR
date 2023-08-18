@@ -154,6 +154,10 @@ System_UInt8  System_UInt8_parsebase10(System_String8 that) {
     return reture;
 }
 
+System_UInt8  System_UInt8_toNetworkOrder(System_UInt8 that) {
+    return inline_System_UInt8_toNetworkOrder(that);
+}
+
 #endif
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
@@ -311,6 +315,10 @@ System_UInt16  System_UInt16_parsebase10(System_String8 that) {
     if (count == 1) { reture += (that[n++] - 0x30); --count; }
 
     return reture;
+}
+
+System_UInt16  System_UInt16_toNetworkOrder(System_UInt16 that) {
+    return inline_System_UInt16_toNetworkOrder(that);
 }
 
 #endif
@@ -475,6 +483,10 @@ System_UInt32  System_UInt32_parsebase10(System_String8 that) {
     if (count == 1) { reture += (that[n++] - 0x30); --count; }
 
     return reture;
+}
+
+System_UInt32  System_UInt32_toNetworkOrder(System_UInt32 that) {
+    return inline_System_UInt32_toNetworkOrder(that);
 }
 
 #endif
@@ -649,6 +661,10 @@ System_UInt64  System_UInt64_parsebase10(System_String8 that) {
     if (count == 1) { reture += (that[n++] - 0x30); --count; }
 
     return reture;
+}
+
+System_UInt64  System_UInt64_toNetworkOrder(System_UInt64 that) {
+    return inline_System_UInt64_toNetworkOrder(that);
 }
 
 #endif

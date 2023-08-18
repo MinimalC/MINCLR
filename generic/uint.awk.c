@@ -187,4 +187,8 @@ Generic_T0  Generic_T0_parsebase10(System_String8 that) {
     return reture;
 }
 
+Generic_T0  Generic_T0_toNetworkOrder(Generic_T0 that) {
+    return inline_Generic_T0_toNetworkOrder(that);
+}
+
 #endif

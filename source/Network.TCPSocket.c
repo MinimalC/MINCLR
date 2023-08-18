@@ -2,6 +2,9 @@
 #if !defined(System_internal)
 #include "System.internal.h"
 #endif
+#if !defined(have_System_UInt32)
+#include <min/System.values.auto.h>
+#endif
 #if !defined(have_System_Memory)
 #include <min/System.Memory.h>
 #endif
@@ -49,7 +52,7 @@ void  base_Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address add
 
     struct Network_SocketAddress socketAddress = {
         .family = Network_AddressFamily_IP4,
-        .port = port,
+        .port = System_UInt16_toNetworkOrder(port),
     };
     for (Size i = 0; i < 16; ++i) {
         if (i < 4) socketAddress.address[i] = address.address[i];

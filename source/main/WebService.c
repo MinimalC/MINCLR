@@ -20,10 +20,10 @@ int System_Runtime_main(int argc, char  * argv[]) {
     base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEADDR, true);
     base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEPORT, true);
 
-    Network_IP4Address ip4 = { .address = { 127, 0, 0, 1 } };
-    System_UInt16 port = 8080;
+    Network_IP4Address ip4 = { .address32 = inline_System_UInt32_toNetworkOrder(0x7F000001) }; // { 127, 0, 0, 1 }
+    System_UInt16 port = 8081;
     base_Network_TCPSocket_bind(tcp, ip4, port);
-    System_Console_writeLine("WebService Network_IP4Address: {0:uint8:hex}.{1:uint8:hex}.{2:uint8:hex}.{3:uint8:hex}:{4:uint16}", 5, 
+    System_Console_writeLine("WebService Network_IP4Address: {0:uint8}.{1:uint8}.{2:uint8}.{3:uint8}:{4:uint16}", 5, 
         ip4.address[0], ip4.address[1], ip4.address[2], ip4.address[3], port);
 
     base_Network_TCPSocket_listen(tcp, 512);

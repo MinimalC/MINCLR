@@ -122,11 +122,13 @@ enum {
     Network_SocketOption_REUSEPORT = 15,
 };
 
-typedef struct Network_IP4Address {
+typedef union Network_IP4Address {
     System_UInt8 address[4];
+    System_UInt16 address16[2];
+    System_UInt32 address32;
 } Network_IP4Address;
 
-typedef struct Network_IP6Address {
+typedef union Network_IP6Address {
     System_UInt8 address[16];
 } Network_IP6Address;
 
