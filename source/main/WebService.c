@@ -34,13 +34,9 @@ int System_Runtime_main(int argc, char  * argv[]) {
     while (true) {
      
         Network_TCPSocket tcp1 = base_Network_TCPSocket_accept(tcp);
-        if (!tcp1) return false; // throw
         
-
         System_Thread thread1 = System_Thread_create(WebService_serve, 1, tcp1);
-        if (!thread1) return false; // throw
 
-        // for (Size i = 0; i < 512; ++i) { }
 
         for (Size i = 0; i < 512; ++i) {
             if (!sockets[i] && !threads[i]) {

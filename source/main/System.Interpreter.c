@@ -10,6 +10,54 @@ System_Var Environment_GetGlobalOffsetTable() {
     System_Var reture; asm("lea _GLOBAL_OFFSET_TABLE_(%%rip),%0" : "=r"(reture) ); return reture;
 }
 
+void System_Runtime_relocate(System_Var base, System_ELF64Assembly_RelocationAddend relocation, System_ELF64Assembly_SymbolEntry dynamicSymbols, System_String8 dynamicStrings) {
+
+    if (!relocation->type) return;
+
+    System_Size * address = (System_Size * )((System_Size)base + relocation->offset), oldies = *address;
+
+    System_ELF64Assembly_SymbolEntry symbol = !relocation->symbol ? null : dynamicSymbols + relocation->symbol;
+
+    switch (relocation->type) {
+    case System_ELFAssembly_AMD64Relocation_RELATIVE: 
+        if (relocation->addend)
+            *address = (System_Size)base + relocation->addend; 
+        break;
+    case System_ELFAssembly_AMD64Relocation_64: 
+        if (symbol->value)
+            *address = (System_Size)base + symbol->value + relocation->addend; 
+        break;
+    case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:
+        if ((symbol->sectionIndex || symbol->value) && *address) {
+            *address += (System_Size)base;
+            break;
+        }
+    case System_ELFAssembly_AMD64Relocation_GLOB_DAT: 
+        if (symbol->value)
+            *address = (System_Size)base + symbol->value; 
+        break;
+    case System_ELFAssembly_AMD64Relocation_COPY: 
+        if (symbol->value && symbol->size)
+            System_Memory_copyTo(base + symbol->value, symbol->size, address);
+        break;
+    case System_ELFAssembly_AMD64Relocation_32: 
+        *address = (System_Size)base + (symbol->value & 0xFFFFFFFFUL); 
+        break;
+#if DEBUG
+    default:
+        System_Console_write__string("UNLINKED ");
+
+        System_Console_writeLine("INTERP Relocation: offset {0:uint:hex}, type {1:uint32:hex}, symbol {2:uint32:hex}, addend {3:uint:hex}; address {4:uint:hex}: old {5:uint:hex} => new {6:uint:hex}", 7,
+            relocation->offset, relocation->type, relocation->symbol, relocation->addend, address, oldies, *address);
+
+        if (symbol)
+            System_Console_writeLine("INTERP Relocation Symbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6, 
+                dynamicStrings + symbol->name, symbol->info, symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
+        break;
+#endif 
+    }
+}
+
 void System_Runtime_selflink(System_Var base) {
     System_Size i;
 
@@ -101,61 +149,11 @@ void System_Runtime_selflink(System_Var base) {
     }
 #endif
     if (GOT_relocation)
-    for (i = 0; i < GOT_relocationCount; ++i) {
-        System_ELF64Assembly_RelocationAddend relocation = GOT_relocation + i;
-
-        if (!relocation->type) continue;
-
-        System_Size * address = (System_Size * )((System_Size)base + relocation->offset), oldies = *address;
-
-        System_ELF64Assembly_SymbolEntry symbol = !relocation->symbol ? null : dynamicSymbols + relocation->symbol;
-
-        switch (relocation->type) {
-        case System_ELFAssembly_AMD64Relocation_RELATIVE: 
-            if (relocation->addend)
-                *address = (System_Size)base + relocation->addend; 
-            break;
-        case System_ELFAssembly_AMD64Relocation_64: 
-            if (symbol->value)
-                *address = (System_Size)base + symbol->value + relocation->addend; 
-            break;
-        case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:
-            if ((symbol->sectionIndex || symbol->value) && *address) {
-                *address += (System_Size)base;
-                break;
-            }
-        case System_ELFAssembly_AMD64Relocation_GLOB_DAT: 
-            if (symbol->value)
-                *address = (System_Size)base + symbol->value; 
-            break;
-        case System_ELFAssembly_AMD64Relocation_COPY: 
-            if (symbol->value && symbol->size)
-                System_Memory_copyTo(base + symbol->value, symbol->size, address);
-            break;
-        case System_ELFAssembly_AMD64Relocation_32: 
-            *address = (System_Size)base + (symbol->value & 0xFFFFFFFFUL); 
-            break;
-#if DEBUG
-        default:
-            System_Console_write__string("UNLINKED ");
-
-            System_Console_writeLine("INTERP Relocation: offset {0:uint:hex}, type {1:uint32:hex}, symbol {2:uint32:hex}, addend {3:uint:hex}; address {4:uint:hex}: old {5:uint:hex} => new {6:uint:hex}", 7,
-                relocation->offset, relocation->type, relocation->symbol, relocation->addend, address, oldies, *address);
-
-            if (symbol)
-                System_Console_writeLine("INTERP Relocation Symbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6, 
-                    dynamicStrings + symbol->name, symbol->info, symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
-            break;
-#endif 
-        }
-    }
-#if DEBUG == DEBUG_System_ELFAssembly
-    extern System_Size _DYNAMIC;
-    System_Console_writeLine("INTERP AddressOf _DYNAMIC: {0:uint:hex}", 1, &_DYNAMIC);
-
-    if (!PLT) PLT = Environment_GetGlobalOffsetTable();
-    if (PLT) System_Console_writeLine("INTERP GLOBAL_OFFSET_TABLE: {0:uint:hex}, [0] {1:uint:hex}, [1] {2:uint:hex}, [2] {3:uint:hex}", 4, PLT, PLT[0], PLT[1], PLT[2]);
-#endif
+        for (i = 0; i < GOT_relocationCount; ++i)
+            System_Runtime_relocate(base, GOT_relocation + i, dynamicSymbols, dynamicStrings);
+    if (PLT_relocation)
+        for (i = 0; i < PLT_relocationCount; ++i)
+            System_Runtime_relocate(base, PLT_relocation + i, dynamicSymbols, dynamicStrings);
 }
 
 int System_Runtime_main(int argc, char  * argv[]) {
@@ -245,7 +243,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
 #endif
 
     register System_Var entry0 __asm__("r11") = entry;
-    register System_Var exit0 __asm__("rdx") = System_Syscall_terminate;
+    // register System_Var exit0 __asm__("rdx") = System_Syscall_terminate;
     register System_Var stack0 __asm__("rsp") = System_Runtime_stack;
     
     __asm__ __volatile__( "jmp *%%r11" : : : "memory" );
