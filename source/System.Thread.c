@@ -87,20 +87,18 @@ void System_Thread_sleep(System_Size seconds) {
 #define WALL   0x40000000 /* Wait for any child.  */
 #define WCLONE 0x80000000 /* Wait for cloned process.  */
 
-System_Bool System_Thread_join(System_Thread that) {
+System_IntPtr System_Thread_join(System_Thread that) {
     return System_Thread_join__dontwait(that, false);
 }
 
-System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
+System_IntPtr System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
     Debug_assert(that);
     System_IntPtr status = 0;
     System_Syscall_wait(that->threadId, &status, dontwait, null);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("System_Thread_join Error: {0:uint}", 1, errno);
     // System_Console_writeLine("System_Thread_join status: {0:uint:hex}", 1, status);
-    // if (!(status & 0x7f)) return (status & 0xff00) >> 8;
-    if (status & 0xff00) return true;
-    return false;
+    return status >>= 8;
 }
 
 void System_Thread_yield(void) {

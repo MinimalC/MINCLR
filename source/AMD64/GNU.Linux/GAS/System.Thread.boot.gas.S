@@ -10,7 +10,11 @@ System_Thread_boot:
 	addq $16,%rsi
 	call *%r11
 
-	movq $1,%rdi	/* true */
+	testq $-1,%rax
+	jnz true
+	movq $-1,%rax
+true:
+	movq %rax,%rdi	/* true */
 	movq $60,%rax	/* System_Syscall_Command_exit */
 	syscall
 
