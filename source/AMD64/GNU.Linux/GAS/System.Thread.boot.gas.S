@@ -4,18 +4,14 @@
 .type   System_Thread_boot,@function
 System_Thread_boot:
 
-	movq (%rsp),%r11	/* function */
-	movq 8(%rsp),%rdi	/* argc */
-	movq %rsp,%rsi		/* argv */
-	addq $16,%rsi
-	call *%r11
+    movq (%rsp),%r11    /* function */
+    movq 8(%rsp),%rdi    /* argc */
+    movq %rsp,%rsi        /* argv */
+    addq $16,%rsi
+    call *%r11
 
-	testq $-1,%rax
-	jnz true
-	movq $-1,%rax
-true:
-	movq %rax,%rdi	/* true */
-	movq $60,%rax	/* System_Syscall_Command_exit */
-	syscall
+    movq %rax,%rdi    /* true */
+    movq $60,%rax    /* System_Syscall_Command_exit */
+    syscall
 
 .size System_Thread_boot,.-System_Thread_boot

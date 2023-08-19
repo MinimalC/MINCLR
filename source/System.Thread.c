@@ -95,14 +95,14 @@ System_Bool System_Thread_join(System_Thread that) {
 System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
     Debug_assert(that);
     System_IntPtr status = 0;
-    System_Syscall_wait(that->threadId, &status, dontwait, null);
+    System_SIntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
     System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Thread_join Error: {0:uint}", 1, errno);
-    // System_Console_writeLine("System_Thread_join status: {0:uint:hex}", 1, status);
-    that->returnValue = status >>= 8;
-    that->isRunning = that->returnValue ? true : false;
-    that->returnValue = that->returnValue == 0xFF ? 0 : that->returnValue;
-    return that->isRunning;
+    if (errno) System_Console_writeLine("System_Thread_join Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+    if (!reture) return false;
+    that->returnValue = status >> 8;
+    that->isRunning = false;
+    // System_Console_writeLine("System_Thread_join status {0:uint:hex}, isRunning {1:bool}, returnValue: {2:uint:hex}", 3, status, that->isRunning, that->returnValue);
+    return true;
 }
 
 void System_Thread_yield(void) {

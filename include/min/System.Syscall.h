@@ -38,14 +38,14 @@ export System_ErrorCode  System_Syscall_get_Error();
 export void  System_Syscall_terminate(System_Size code)  noreturn;
 
 
-struct System_Syscall_timespec {
+typedef struct System_Syscall_timespec {
 
     System_Int64 sec;
-    System_IntPtr nsec;
-};
+    System_Int64 nsec;
 
+} * System_Syscall_timespec;
 
-struct System_Syscall_stat {
+typedef struct System_Syscall_stat {
 
     System_UInt64 deviceId;
     System_UInt64 iNodeId;
@@ -64,7 +64,7 @@ struct System_Syscall_stat {
     struct System_Syscall_timespec changeTime;
     System_IntPtr __reserved[3];
 
-};
+} * System_Syscall_stat;
 
 typedef System_Var  System_Syscall_StandardFile;
 
@@ -75,12 +75,12 @@ typedef System_Var  System_Syscall_StandardFile;
 
 export System_Var  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
 export System_Var  System_Syscall_openat(System_Var directoryPtr, System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
-export System_Size  System_Syscall_read(System_Var filePtr, const void  * buf, System_Size count);
-export System_Size  System_Syscall_write(System_Var filePtr, const void  * buf, System_Size count);
+export System_Size  System_Syscall_read(System_Var filePtr, const System_Var buffer, System_Size count);
+export System_Size  System_Syscall_write(System_Var filePtr, const System_Var buffer, System_Size count);
 export System_Size  System_Syscall_lseek(System_Var filePtr, System_Size offset, System_IntPtr whence);
 export void  System_Syscall_fsync(System_Var filePtr);
 export void  System_Syscall_close(System_Var filePtr);
-export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, struct System_Syscall_stat  * that, System_IntPtr flags);
+export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, System_Syscall_stat that, System_IntPtr flags);
 
 export System_Var  System_Syscall_mmap(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags);
 export System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
@@ -88,10 +88,10 @@ export System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, Syste
 export void  System_Syscall_munmap(System_Var address, System_Size length);
 export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
 
-export void  System_Syscall_nanosleep(struct System_Syscall_timespec * request, struct System_Syscall_timespec * remain);
+export void  System_Syscall_nanosleep(System_Syscall_timespec request, System_Syscall_timespec remain);
 
 export System_SIntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack);
-export void  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage);
+export System_SIntPtr  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage);
 export void  System_Syscall_sched_yield(void);
 
 export void  System_Syscall_sigaction(System_SIntPtr signal, System_Var action, System_Var old);
@@ -107,8 +107,11 @@ export void  System_Syscall_getsockopt(System_IntPtr socketId, System_IntPtr lev
 export void  System_Syscall_setsockopt(System_IntPtr socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size optionLength);
 export void  System_Syscall_send(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags);
 export void  System_Syscall_sendto(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
+export void  System_Syscall_sendmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags);
 export System_IntPtr  System_Syscall_recv(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags);
 export System_IntPtr  System_Syscall_recvfrom(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
+export System_Size  System_Syscall_recvmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags);
+export System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_Syscall_timespec timeout, System_Var sigmask);
 
 #if defined(using_System)
 #define SyscallType  System_SyscallType

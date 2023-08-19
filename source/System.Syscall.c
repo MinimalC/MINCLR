@@ -93,11 +93,11 @@ System_Var  System_Syscall_openat(System_Var directoryPtr, System_String8 fileNa
     return (System_Var)System_Syscall_call04(System_Syscall_Command_openat, (System_IntPtr)directoryPtr, (System_IntPtr)fileName, flags, mode);
 }
 
-System_Size  System_Syscall_read(System_Var filePtr, const void  * buf, System_Size count) {
+System_Size  System_Syscall_read(System_Var filePtr, const System_Var buf, System_Size count) {
     return System_Syscall_call03(System_Syscall_Command_read, (System_IntPtr)filePtr, (System_IntPtr)buf, count);
 }
 
-System_Size  System_Syscall_write(System_Var filePtr, const void  * buf, System_Size count) {
+System_Size  System_Syscall_write(System_Var filePtr, const System_Var buf, System_Size count) {
     return System_Syscall_call03(System_Syscall_Command_write, (System_IntPtr)filePtr, (System_IntPtr)buf, count);
 }
 
@@ -113,7 +113,7 @@ void  System_Syscall_close(System_Var filePtr) {
     (void)System_Syscall_call01(System_Syscall_Command_close, (System_IntPtr)filePtr);
 }
 
-void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, struct System_Syscall_stat  * that, System_IntPtr flags) {
+void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, System_Syscall_stat that, System_IntPtr flags) {
     (void)System_Syscall_call04(System_Syscall_Command_fstatat, (System_IntPtr)directoryPtr, (System_IntPtr)pathName, (System_IntPtr)that, flags);
 }
 
@@ -137,7 +137,7 @@ void  System_Syscall_mprotect(System_Var address, System_Size length, System_Int
     (void)System_Syscall_call03(System_Syscall_Command_mprotect, (System_IntPtr)address, length, flags);
 }
 
-void  System_Syscall_nanosleep(struct System_Syscall_timespec * request, struct System_Syscall_timespec * remain) {
+void  System_Syscall_nanosleep(System_Syscall_timespec request, System_Syscall_timespec remain) {
     (void)System_Syscall_call02(System_Syscall_Command_nanosleep, (System_IntPtr)request, (System_IntPtr)remain);
 }
 
@@ -145,8 +145,8 @@ System_SIntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack) {
     return (System_SIntPtr)System_Syscall_call02(System_Syscall_Command_clone, flags, (System_IntPtr)stack);
 }
 
-void  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage) {
-    (void)System_Syscall_call04(System_Syscall_Command_wait4, id, (System_IntPtr)status, flags, (System_IntPtr)usage);
+System_SIntPtr  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage) {
+    return System_Syscall_call04(System_Syscall_Command_wait4, id, (System_IntPtr)status, flags, (System_IntPtr)usage);
 }
 
 void  System_Syscall_sigaction(System_SIntPtr signal, System_Var action, System_Var old) {
@@ -201,12 +201,24 @@ void  System_Syscall_sendto(System_IntPtr socketId, System_Var buffer, System_Si
     (void)System_Syscall_call06(System_Syscall_Command_sendto, socketId, (System_IntPtr)buffer, length, flags, (System_IntPtr)socketAddress, addressLength);
 }
 
+void  System_Syscall_sendmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags) {
+    (void)System_Syscall_call03(System_Syscall_Command_sendmsg, socketId, (System_IntPtr)messageHeader, flags);
+}
+
 System_IntPtr  System_Syscall_recv(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags) {
     return System_Syscall_recvfrom(socketId, buffer, length, flags, null, 0);
 }
 
 System_IntPtr  System_Syscall_recvfrom(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength) {
     return System_Syscall_call06(System_Syscall_Command_recvfrom, socketId, (System_IntPtr)buffer, length, flags, (System_IntPtr)socketAddress, addressLength);
+}
+
+System_Size  System_Syscall_recvmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags) {
+    return System_Syscall_call03(System_Syscall_Command_recvmsg, socketId, (System_IntPtr)messageHeader, flags);
+}
+
+System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_Syscall_timespec timeout, System_Var sigmask) {
+    return System_Syscall_call04(System_Syscall_Command_ppoll, (System_IntPtr)pds, count, (System_IntPtr)timeout, (System_IntPtr)sigmask);
 }
 
 #endif
