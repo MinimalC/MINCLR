@@ -47,7 +47,7 @@ typedef struct System_Syscall_timespec {
 
 typedef struct System_Syscall_stat {
 
-    System_UInt64 deviceId;
+    System_UInt64 containerId;
     System_UInt64 iNodeId;
     System_UInt64 hardlinks;
     System_UInt32 mode;
@@ -55,7 +55,7 @@ typedef struct System_Syscall_stat {
     System_UInt32 groupId;
     System_UInt32 __padding1;
 
-    System_UInt64 isDevice;
+    System_UInt64 deviceId;
     System_Int64 size;
     System_Int64 bulkSize;
     System_Int64 blocks;
@@ -85,6 +85,7 @@ export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String
 export System_Var  System_Syscall_mmap(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags);
 export System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
 export System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
+export void System_Syscall_mmap__debug(void);
 export void  System_Syscall_munmap(System_Var address, System_Size length);
 export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
 

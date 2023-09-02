@@ -13,36 +13,42 @@
 
 /* 1-Dimensional, Indexed System_ObjectArray */
 
+enum {
+    System_Array_DefaultCapacity =  64,
+};
+
 typedef System_fixed struct System_Array {
     struct System_Object base;
 
     System_Size  length;
 
+    System_Size capacity;
+
     System_Object  (* value)[];
 
 }  * System_Array;
 
-#define stack_System_Array(LENGTH) (struct System_Array){ .base = stack_System_Object(System_Array), .length = LENGTH, }
+#define stack_System_Array(LENGTH) (struct System_Array){ .base = stack_System_Object(System_Array), .capacity = LENGTH, }
 #define new_System_Array(LENGTH)  (base_System_Array_init((System_Array)System_Memory_allocClass(typeof(System_Array)), LENGTH))
 
 export struct System_Type  System_ArrayType;
 
 typedef void  delegate(System_Array_free)(System_Array that);
-typedef System_Array  delegate(System_Array_init)(System_Array that, System_Size length);
+typedef System_Array  delegate(System_Array_init)(System_Array that, System_Size capacity);
 typedef System_Size  delegate(System_Array_get_Length)(System_Array that);
 typedef System_Object  delegate(System_Array_get_index)(System_Array that, System_Size index);
 typedef void  delegate(System_Array_set_index)(System_Array that, System_Size index, System_Object value);
 typedef void  delegate(System_Array_copyTo)(System_Array that, System_Array other, System_Size offset);
-typedef void  delegate(System_Array_resize)(System_Array that, System_Size length);
+typedef void  delegate(System_Array_resize)(System_Array that, System_Size capacity);
 typedef System_IEnumerator  delegate(System_Array_getEnumerator)(System_Array that);
 
-export System_Array  base_System_Array_init(System_Array that, System_Size length);
+export System_Array  base_System_Array_init(System_Array that, System_Size capacity);
 export void  base_System_Array_free(System_Array that);
 export System_Size  base_System_Array_get_Length(System_Array that);
 export System_Object  base_System_Array_get_index(System_Array that, System_Size index);
 export void  base_System_Array_set_index(System_Array that, System_Size index, System_Object value);
 export void  base_System_Array_copyTo(System_Array that, System_Array other, System_Size offset);
-export void  base_System_Array_resize(System_Array that, System_Size length);
+export void  base_System_Array_resize(System_Array that, System_Size capacity);
 export System_IEnumerator  base_System_Array_getEnumerator(System_Array that);
 
 #define System_Array_init(o,...)  ((function_System_Array_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Array_init))(o, __VA_ARGS__)

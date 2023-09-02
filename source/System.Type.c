@@ -98,7 +98,7 @@ System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
 
     System_Type they = that;
     System_Type_FunctionInfo info;
-    while (they && they->baseType) {
+    while (they) {
         for (System_Size f = 0; f < they->functions.length; ++f) {
             info = !they->functions.value ? null : *(they->functions.value) + f;
             if (info && fun == info->function) return info->value;

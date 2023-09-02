@@ -16,21 +16,14 @@
 
 /*# System_VarArray #*/
 
-System_VarArray base_System_VarArray_init(System_VarArray that, System_Size length) {
-    base_System_Object_init((System_Object)that);
-
-    that->length = length;
-
-    System_Var (* array)[] = System_Memory_allocArray(typeof(System_Var), length);
-    that->value = array;
-
+System_VarArray base_System_VarArray_init(System_VarArray that, System_Size capacity) {
+    that->value = System_Memory_allocArray(typeof(System_Var), capacity);
+    that->capacity = capacity;
     return that;
 }
 
 void  base_System_VarArray_free(System_VarArray that) {
     System_Memory_free(that->value);
-
-    base_System_Object_free((System_Object)that);
 }
 
 System_Size  base_System_VarArray_get_Length(System_VarArray that) {
@@ -45,10 +38,10 @@ void  base_System_VarArray_set_index(System_VarArray that, System_Size index, Sy
     array(that->value)[index] = value;
 }
 
-void  base_System_VarArray_resize(System_VarArray that, System_Size length) {
+void  base_System_VarArray_resize(System_VarArray that, System_Size capacity) {
     System_Size element_size = sizeof(System_Var);
-    System_Memory_reallocArray((System_Var)that->value, length);
-    that->length = length;
+    System_Memory_reallocArray((System_Var)that->value, capacity);
+    that->capacity = capacity;
 }
 
 System_IEnumerator  base_System_VarArray_getEnumerator(System_VarArray that) {

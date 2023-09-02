@@ -12,34 +12,35 @@
 #if !defined(have_System_VarArray)
 #define have_System_VarArray
 
-
 typedef System_fixed struct System_VarArray {
     struct System_Object base;
 
     System_Size  length;
 
+    System_Size  capacity;
+    
     System_Var  (* value)[];
 
 }  * System_VarArray;
 
 export struct System_Type  System_VarArrayType;
 
+typedef System_VarArray delegate(System_VarArray_init)(System_VarArray that, System_Size capacity);
 typedef void delegate(System_VarArray_free)(System_VarArray that);
-typedef System_VarArray delegate(System_VarArray_init)(System_VarArray that);
 typedef System_Size  delegate(System_VarArray_get_Length)(System_VarArray that);
 typedef System_Var  delegate(System_VarArray_get_index)(System_VarArray that, System_Size index);
 typedef void  delegate(System_VarArray_set_index)(System_VarArray that, System_Size index, System_Var value);
 typedef void delegate(System_VarArray_copyTo)(System_VarArray that, System_VarArray other, System_Size offset);
-typedef void delegate(System_VarArray_resize)(System_VarArray that, System_Size length);
+typedef void delegate(System_VarArray_resize)(System_VarArray that, System_Size capacity);
 typedef System_IEnumerator  delegate(System_VarArray_getEnumerator)(System_VarArray that);
 
-export System_VarArray  base_System_VarArray_init(System_VarArray that, System_Size length);
+export System_VarArray  base_System_VarArray_init(System_VarArray that, System_Size capacity);
 export void  base_System_VarArray_free(System_VarArray that);
 export System_Size  base_System_VarArray_get_Length(System_VarArray that);
 export System_Var  base_System_VarArray_get_index(System_VarArray that, System_Size index);
 export void  base_System_VarArray_set_index(System_VarArray that, System_Size index, System_Var value);
 export void  base_System_VarArray_copyTo(System_VarArray that, System_VarArray other, System_Size offset);
-export void  base_System_VarArray_resize(System_VarArray that, System_Size length);
+export void  base_System_VarArray_resize(System_VarArray that, System_Size capacity);
 export System_IEnumerator  base_System_VarArray_getEnumerator(System_VarArray that);
 
 #define System_VarArray_init(o,...)  ((function_System_VarArray_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_VarArray_init))(o, __VA_ARGS__)

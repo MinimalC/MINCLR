@@ -14,23 +14,18 @@
 
 /* class System_Array */
 
-System_Array  base_System_Array_init(System_Array that, System_Size length) {
+System_Array  base_System_Array_init(System_Array that, System_Size capacity) {
 	base_System_Object_init((Object)that);
 
-    that->length = length;
+    that->value =  Memory_allocArray(typeof(Var), capacity);
 
-    Size element_size = sizeof(Var);
-
-    that->value =  Memory_allocArray(typeof(Var), length);
+    that->capacity = capacity;
 
     return that;
 }
 
 void  base_System_Array_free(System_Array that) {
 	Debug_assert(that);
-
-	Size length = that->length;
-    Size i;
 
 #if DEBUG == DEBUG_System_Object
 	System_Type type = ((System_Object)that)->type;
@@ -40,7 +35,7 @@ void  base_System_Array_free(System_Array that) {
     /* * TODO: Array_get_index, Array_set_index and Array_hasValue */
     System_Object * array = (* that->value);
 
-    for (i = 0; i < length; ++i) {
+    for (Size i = 0; i < that->length; ++i) {
         Object object = *(array + i);
 
         if (object) {
@@ -93,9 +88,9 @@ void  base_System_Array_set_index(System_Array that, Size index, System_Object v
 	array(that->value)[index] = !value ? null : Memory_addReference(value);
 }
 
-void  base_System_Array_resize(System_Array that, System_Size length) {
-    System_Memory_reallocArray((Var)that, length);
-    that->length = length;
+void  base_System_Array_resize(System_Array that, System_Size capacity) {
+    System_Memory_reallocArray((System_Var)that, capacity);
+    that->capacity = capacity;
 }
 
 System_IEnumerator base_System_Array_getEnumerator(System_Array that) {

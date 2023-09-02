@@ -48,32 +48,24 @@ void  System_Console_sync() {
 
 void System_Console_exit(const Size code)  {
 #if DEBUG || !DEBUG
-    System_Exception exception = null;
-    if (stack_System_Exception_catch(&exception, typeof(System_Exception))) {
-        if (exception->message && exception->error)
-            Console_writeLine("{0:string}: error {1:uint} ({2:string}): {3:string}", 4, exception->base.type->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error), exception->message);
-        else if (exception->message)
-            Console_writeLine("{0:string}: {1:string}", 2, exception->base.type->name, exception->message);
-        else if (exception->error)
-            Console_writeLine("{0:string}: error {1:uint} ({2:string})", 3, exception->base.type->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error));
-        else
-            Console_writeLine("{0:string}", 1, exception->base.type->name);
-    }
+    System_Memory_debug();
+    System_Syscall_mmap__debug();
+    if (System_Exception_current) System_Exception_terminate(System_Exception_current);
 #endif
     System_Syscall_terminate(code);
 }
 
-void  System_Console_write__string(String8 string) {
+void  System_Console_write__string_size(String8 string, Size size) {
     Debug_assert(string);
-    base_System_File_write__string_size(&System_Console_StdOut, string, String8_get_Length(string));
+    base_System_File_write__string_size(&System_Console_StdOut, string, size);
+}
+
+void  System_Console_write__string(String8 string) {
+    System_Console_write__string_size(string, String8_get_Length(string));
 }
 
 void  System_Console_write__char(Char8 character) {
-    base_System_File_write__string_size(&System_Console_StdOut, &character, 1);
-}
-
-void  System_Console_writeLineEmpty(void) {
-    base_System_File_write__string_size(&System_Console_StdOut, "\n", 1);
+    System_Console_write__string_size(&character, 1);
 }
 
 void  System_Console_write(String8 format, ...) {
@@ -86,8 +78,11 @@ void  System_Console_write(String8 format, ...) {
     base_System_File_writeEnd__arguments(&System_Console_StdOut, format, 0, argc, argv);
 }
 
+void  System_Console_writeLineEmpty(void) {
+    base_System_File_write__string_size(&System_Console_StdOut, "\n", 1);
+}
+
 void  System_Console_writeLine__string(String8 string) {
-    Debug_assert(string);
     System_Console_writeLine(string, 0);
 }
 

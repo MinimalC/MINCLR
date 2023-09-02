@@ -7,11 +7,9 @@
 #else
 #define have_System
 
-#include "System.VarArray.h"
 #include "System.Array.h"
 /* #include "System.Arrays.auto.h" */
 #include "System.Math.h"
-#include "System.valueArrays.auto.h"
 #include "System.List.h"
 #include "System.ListEnumerator.h"
 #include "System.Dictionary.h"

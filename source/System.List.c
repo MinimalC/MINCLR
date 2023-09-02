@@ -10,24 +10,14 @@
 
 /*# System_List #*/
 
-const System_Size  System_List_Capacity = System_List_Capacity_DEFAULT;
-
 System_List  base_System_List_init(System_List that) {
-    base_System_Object_init((System_Object)that);
-
-    that->capacity = System_List_Capacity;
-    that->hashes = new_System_UInt64Array(that->capacity);
+    that->capacity = System_Array_DefaultCapacity;
     that->items = new_System_Array(that->capacity);
-
     return that;
 }
 
 void  base_System_List_free(System_List that) {
-
-    System_Memory_free(that->hashes);
     System_Memory_free(that->items);
-
-    base_System_Object_free((System_Object)that);
 }
 
 System_Size  base_System_List_get_Length(System_List that) {
@@ -41,10 +31,7 @@ System_Object  base_System_List_get_index(System_List that, Size index) {
 
 void  base_System_List_set_index(System_List that, Size index, System_Object value) {
 	Debug_assert(that);
-    if (value) {
-        if (base_System_List_contains(that, value)) throw(new_Exception("InvalidOperationException: System_List: System_Object already added"))
-        UInt64Array_set_index(that->hashes, index, Object_getSipHash(value));
-    }
+    if (value && base_System_List_contains(that, value)) throw(new_Exception("InvalidOperationException: System_List: System_Object already added"))
     Array_set_index(that->items, index, value);
 }
 
@@ -53,11 +40,10 @@ System_IEnumerator base_System_List_getEnumerator(System_List that) {
 }
 
 System_Bool  base_System_List_contains(System_List that, System_Object object) {
-
-    UInt64 object_siphash = Object_getSipHash(object);
-
+    UInt64 other_siphash, object_siphash = Object_getSipHash(object);
     for (Size i = 0; i < that->length; ++i) {
-        if (object_siphash == UInt64Array_get_index(that->hashes, i)) return true;
+        other_siphash = System_Object_getSipHash(&that->items[i]);
+        if (object_siphash == other_siphash) return true;
     }
     return false;
 }
@@ -69,13 +55,11 @@ void  base_System_List_add(System_List that, System_Object object) {
 
     Size new_i = that->length;
     if (new_i >= that->capacity) {
-        Size new_capacity = that->capacity * 2;
-        UInt64Array_resize(that->hashes, new_capacity);
+        Size new_capacity = that->capacity + System_Array_DefaultCapacity;
         Array_resize(that->items, new_capacity);
         that->capacity = new_capacity;
     }
 
-    UInt64Array_set_index(that->hashes, new_i, Object_getSipHash(object));
     Array_set_index(that->items, new_i, object);
     ++that->length;
 }

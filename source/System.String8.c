@@ -58,26 +58,34 @@ System_Bool  System_Char8_isPrintable(System_Char8 that) {
 
 /* static class System.String8 */
 
-struct System_Type System_String8Type = { .base = stack_System_Object(System_Type), .name = "String8", .size = 1 };
+struct System_Type System_String8Type = { .base = stack_System_Object(System_Type), .name = "String8", .size = sizeof(System_String8) };
 
 System_STRING8  System_String8_Empty = "";
 
-Size  System_String8_indexOf(String8 that, UInt8 character){
-    Size i = 0, len = String8_get_Length(that);
-    if (len == 0) return -1;
+Size  System_String8_indexOf__size(String8 that, UInt8 character, Size length) {
+    Size i = 0;
+    if (length == 0) return -1;
     do {
-        if (that[i] == character) return i + 1;
-    } while ( ++i < len );
+        if (that[i] == character) return i;
+    } while ( ++i < length );
+    return -1;
+}
+
+Size  System_String8_indexOf(String8 that, UInt8 character){
+    return System_String8_indexOf__size(that, character, String8_get_Length(that));
+}
+
+Size  System_String8_lastIndexOf__size(String8 that, UInt8 character, Size length) {
+    Size i = length;
+    if (i == 0) return -1;
+    do {
+        if (that[--i] == character) return i;
+    } while ( i );
     return -1;
 }
 
 Size  System_String8_lastIndexOf(String8 that, UInt8 character) {
-    Size i = String8_get_Length(that);
-    if (i == 0) return -1;
-    do {
-        if (that[--i] == character) return i + 1;
-    } while ( i );
-    return -1;
+    return System_String8_lastIndexOf__size(that, character, String8_get_Length(that));
 }
 
 Size  System_String8_get_Length(String8 that) {
@@ -194,6 +202,42 @@ Bool  System_String8_endsWith(String8 that, String8 other) {
     return System_String8_equalsSubstring(that + diff, other, length1);
 }
 
+System_String8Array System_String8_split(System_String8 that, System_UInt8 character) {
+
+    System_String8Array split = System_Memory_allocClass(typeof(System_String8Array));
+    base_System_String8Array_init(split, 64);
+
+    System_String8 other = split->buffer = System_String8_copy(that);
+    System_Size length = System_String8_get_Length(other);
+
+    for (Size i = 0, start = 0; i < length; ++i)
+        if (*(other + i) == character) {
+            *(other + i) = '\0';
+            base_System_String8Array_add(split, other + start);
+            start = i + 1;
+        } else if (i == length - 1)
+            base_System_String8Array_add(split, other + start);
+
+    return split;
+}
+
+System_String8  System_String8_join(System_String8Array that, System_UInt8 character) {
+    Size length = 0;
+    Size thatL = that->length;
+    for (Size i = 0; i < thatL; ++i) {
+        System_String8 item = array(that->value)[i];
+        length = String8_get_Length(item);
+        if (i < thatL - 1) ++length;
+    }
+    String8 string = System_Memory_allocArray(typeof(System_Char8), length + 1);
+    for (Size i = 0, position = 0; i < thatL; ++i) {
+        System_String8 item = array(that->value)[i];
+        System_String8_copyToAt(item, string, position);
+        position += String8_get_Length(item);
+        if (i < thatL - 1) *(string + position++) = character;
+    }
+    return string;
+}
 
 
 #if DEBUG

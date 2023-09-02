@@ -243,10 +243,10 @@ int System_Runtime_main(int argc, char  * argv[]) {
 #endif
 
     register System_Var entry0 __asm__("r11") = entry;
-    // register System_Var exit0 __asm__("rdx") = System_Syscall_terminate;
+    // register System_Var exit0 __asm__("rdx") = ;
     register System_Var stack0 __asm__("rsp") = System_Runtime_stack;
     
     __asm__ __volatile__( "jmp *%%r11" : : : "memory" );
 
-    return false;
+    System_Syscall_terminate(false);
 }

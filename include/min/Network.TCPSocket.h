@@ -122,14 +122,53 @@ enum {
     Network_SocketOption_REUSEPORT = 15,
 };
 
+typedef System_UShort Network_PollFlags;
+enum {
+    Network_PollFlags_IN = 1,
+    Network_PollFlags_URGENT = 2,
+    Network_PollFlags_OUT = 4,
+    Network_PollFlags_ERROR = 8,
+    Network_PollFlags_HANGUP = 0x10,
+    Network_PollFlags_INVALID = 0x20,
+};
+
+typedef System_UInt32 Network_MessageFlags;
+enum {
+    Network_MessageFlags_OUTOFBAND = 0x01,  /* Process out-of-band data.  */
+    Network_MessageFlags_PEEK    = 0x02,  /* Peek at incoming messages.  */
+    Network_MessageFlags_DONTROUTE  = 0x04,  /* Don't use local routing.  */
+    Network_MessageFlags_TRYHARD    = Network_MessageFlags_DONTROUTE, /* DECnet uses a different name.  */
+    Network_MessageFlags_CTRUNC    = 0x08,  /* Control data lost before delivery.  */
+    Network_MessageFlags_PROXY    = 0x10,  /* Supply or ask second address.  */
+    Network_MessageFlags_TRUNC    = 0x20,
+    Network_MessageFlags_DONTWAIT  = 0x40, /* Nonblocking IO.  */
+    Network_MessageFlags_ENDOFRECORD    = 0x80, /* End of record.  */
+    Network_MessageFlags_WAITALL    = 0x100, /* Wait for a full request.  */
+    Network_MessageFlags_FIN    = 0x200,
+    Network_MessageFlags_SYN    = 0x400,
+    Network_MessageFlags_CONFIRM    = 0x800, /* Confirm path validity.  */
+    Network_MessageFlags_RST    = 0x1000,
+    Network_MessageFlags_ERRQUEUE  = 0x2000, /* Fetch message from error queue.  */
+    Network_MessageFlags_NOSIGNAL  = 0x4000, /* Do not generate SIGPIPE.  */
+    Network_MessageFlags_MORE    = 0x8000,  /* Sender will send more.  */
+    Network_MessageFlags_WAITFORONE  = 0x10000, /* Wait for at least one packet to return.*/
+    Network_MessageFlags_CMSG_CLOEXEC  = 0x40000000  /* Set close_on_exit for file descriptor received through SCM_RIGHTS.  */
+};
+
 typedef union Network_IP4Address {
+
     System_UInt8 address[4];
+
     System_UInt16 address16[2];
+
     System_UInt32 address32;
+
 } Network_IP4Address;
 
 typedef union Network_IP6Address {
+
     System_UInt8 address[16];
+
 } Network_IP6Address;
 
 typedef struct Network_SocketAddress {
@@ -142,14 +181,33 @@ typedef struct Network_SocketAddress {
 
 }  * Network_SocketAddress;
 
-typedef System_IntPtr Network_TCPSocket_Status;
+typedef struct Network_MessageBody {    /* Scatter/gather array items */
+    System_String8 value;               /* Starting address */
+    System_Size length;                 /* Number of bytes to transfer */
+} * Network_MessageBody;
+
+export struct System_Type Network_MessageBodyType;
+
+enum {
+    Network_MessageHeader_ContentCapacity = 64,
+};
+
+typedef struct  Network_MessageHeader {
+    System_Var name;            /* Optional address */
+    System_UInt32 nameSize;     /* Size of address */
+    Network_MessageBody content;   /* Scatter/gather array */
+    System_Size contentCount;   /* # elements in contents */
+    System_Var control;         /* Ancillary data, see below */
+    System_Size controlCount;   /* Ancillary data buffer count */
+    Network_MessageFlags flags; /* Flags on received message */
+} * Network_MessageHeader;
+
+export struct System_Type Network_MessageHeaderType;
 
 typedef System_fixed struct Network_TCPSocket {
     struct System_Object base;
 
     System_IntPtr socketId;
-
-    Network_TCPSocket_Status status;
 
 }  * Network_TCPSocket;
 
@@ -164,5 +222,8 @@ export void  base_Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Addr
 export void  base_Network_TCPSocket_listen(Network_TCPSocket that, System_Size backlog);
 export Network_TCPSocket  base_Network_TCPSocket_accept(Network_TCPSocket that);
 export Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags);
+export Network_PollFlags  base_Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request);
+export Network_MessageHeader  base_Network_TCPSocket_receiveMessage(Network_TCPSocket that, Network_MessageFlags flags);
+export void  base_Network_TCPSocket_sendMessage(Network_TCPSocket that, Network_MessageHeader message, Network_MessageFlags flags);
 
 #endif

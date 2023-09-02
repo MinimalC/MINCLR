@@ -9,5 +9,6 @@ export struct System_Type  System_PathType;
 
 export System_String8 System_Path_getDirectoryName(System_String8 path);
 export System_String8 System_Path_getFileName(System_String8 path);
+export System_String8 System_Path_combine(System_String8 that, System_String8 other);
 
 #endif

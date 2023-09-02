@@ -16,7 +16,7 @@ System_UInt8Array base_System_UInt8Array_init(System_UInt8Array that, System_Siz
 
     that->length = length;
 
-    System_UInt8 (* array)[] = System_Memory_allocArray(typeof(System_UInt8), length);
+    System_UInt8 (* array)[] = System_Memory_allocArray(typeof(System_Char8), length);
     that->value = array;
 
     return that;

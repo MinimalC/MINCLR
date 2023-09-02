@@ -96,12 +96,19 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
     Debug_assert(that);
     System_IntPtr status = 0;
     System_SIntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
-    System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Thread_join Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-    if (!reture) return false;
     that->returnValue = status >> 8;
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) {
+        System_Console_writeLine("System_Thread_join Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+        that->isRunning = false;
+        that->threadId = 0;
+        return true;
+    }
+    if (!reture) return false;
     that->isRunning = false;
-    // System_Console_writeLine("System_Thread_join status {0:uint:hex}, isRunning {1:bool}, returnValue: {2:uint:hex}", 3, status, that->isRunning, that->returnValue);
+    that->threadId = 0;
+    /*System_Console_writeLine("System_Thread_join status {0:uint:hex}, reture {1:uint:hex}, isRunning {2:bool}, returnValue: {3:uint:hex}", 4, 
+        status, reture, that->isRunning, that->returnValue);*/
     return true;
 }
 

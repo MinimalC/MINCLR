@@ -158,6 +158,7 @@ export void System_Memory_reallocArray(System_Var ref that, System_Size count);
 export System_Bool System_Memory_isAllocated(System_Var that);
 export System_Var System_Memory_addReference(System_Var that);
 export void  System_Memory_freeClass(System_Var ref that);
+export void  System_Memory_debug(void);
 
 #define System_Memory_free(THAT) (System_Memory_freeClass((System_Var ref)&THAT))
 

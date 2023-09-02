@@ -117,16 +117,25 @@ void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathN
     (void)System_Syscall_call04(System_Syscall_Command_fstatat, (System_IntPtr)directoryPtr, (System_IntPtr)pathName, (System_IntPtr)that, flags);
 }
 
+internal System_Size System_Syscall_mmapDEBUG = 0;
+
 System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_IntPtr map) {
+    ++System_Syscall_mmapDEBUG;
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, -1, 0);
 }
 
 System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr page, System_IntPtr map, System_Var file, System_IntPtr offset) {
+    ++System_Syscall_mmapDEBUG;
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, (System_IntPtr)file, offset);
 }
 
 System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr page, System_IntPtr map, System_Var file, System_IntPtr offset) {
+    ++System_Syscall_mmapDEBUG;
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, initialAddress, length, page, map, (System_IntPtr)file, offset);
+}
+
+void System_Syscall_mmap__debug(void) {
+    if (System_Syscall_mmapDEBUG) System_Console_writeLine("System_Syscall_mmap__debug: called {0:uint} times without munmap.", 1, System_Syscall_mmapDEBUG);
 }
 
 void  System_Syscall_munmap(System_Var address, System_Size length) {

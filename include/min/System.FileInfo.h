@@ -36,21 +36,7 @@ typedef System_fixed struct System_FileInfo {
 
     System_String8 name;
 
-    System_UInt64 deviceId;
-    System_UInt64 iNodeId;
-    System_UInt64 hardlinks;
-
-    System_UInt32 mode;
-    System_UInt32 userId;
-    System_UInt32 groupId;
-
-    System_UInt64 isDevice;
-    System_Int64 size;
-    System_Int64 bulkSize;
-    System_Int64 blocks;
-    struct System_Syscall_timespec lastAccessTime;
-    struct System_Syscall_timespec lastWriteTime;
-    struct System_Syscall_timespec changeTime;
+    struct System_Syscall_stat stat;
 
 }  * System_FileInfo;
 
@@ -64,6 +50,10 @@ typedef void delegate(System_FileInfo_free)(System_FileInfo that);
 
 export System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 fileName);
 /* export void  base_System_FileInfo_free(System_FileInfo that); */
+
+export System_Bool System_FileInfo_isRegular(System_FileInfo that);
+export System_Bool System_FileInfo_isDirectory(System_FileInfo that);
+export System_Bool System_FileInfo_isLink(System_FileInfo that);
 
 #define System_FileInfo_init(o,...)  ((function_System_FileInfo_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o, __VA_ARGS__)
 #define System_FileInfo_free(o)  ((function_System_FileInfo_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)

@@ -24,10 +24,13 @@
 #include "System.Exception.c"
 #include "System.Syscall.c"
 
-
 #include "System.values.auto.c"
 #include "System.valueArrays.auto.c"
+
 #include "System.VarArray.c"
+#include "System.VarDictionary.c"
+
+#include "System.String8Array.c"
 
 #include "System.FileInfo.c"
 #include "System.File.c"

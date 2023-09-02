@@ -19,9 +19,11 @@ export System_String8 System_Console_Arguments[System_Console_Arguments_Length];
 export void  System_Console_exit(const System_Size code) noreturn;
 
 export void  System_Console_sync(void);
+export void  System_Console_write__string_size(System_String8 string, System_Size size);
 export void  System_Console_write__string(System_String8 string);
 export void  System_Console_write(System_String8 format, ...);
 export void  System_Console_writeLineEmpty(void);
+/*export void  System_Console_writeLine__string_size(System_String8 string, System_Size size);*/
 export void  System_Console_writeLine__string(System_String8 string);
 export void  System_Console_writeLine(System_String8 format, ...);
 export void  System_Console_write__char(System_Char8 character);

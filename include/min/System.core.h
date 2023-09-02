@@ -9,6 +9,12 @@
 #include "System.String8.h"
 #include "System.Decimal.h"
 #include "System.values.auto.h"
+#include "System.valueArrays.auto.h"
+
+#include "System.VarArray.h"
+#include "System.VarDictionary.h"
+
+#include "System.String8Array.h"
 
 #include "System.Syscall.h"
 #include "System.FileInfo.h"

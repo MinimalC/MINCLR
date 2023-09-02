@@ -7,17 +7,8 @@
 
 /* 2-Dimensional, Unique SipHash-Indexed ObjectList */
 
-#define System_List_Capacity_DEFAULT  64
-export const System_Size  System_List_Capacity;
-
 typedef System_fixed struct System_List {
     struct System_Object base;
-
-    System_Size capacity;
-
-    System_Size length;
-
-    System_UInt64Array hashes;
 
     System_Array items;
 

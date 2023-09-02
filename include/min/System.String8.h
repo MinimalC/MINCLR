@@ -1,6 +1,9 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
+#if !defined(have_System_String8Array)
+#include "System.String8Array.h"
+#endif
 #if !defined(have_System_Char8)
 #define have_System_Char8
 
@@ -36,7 +39,9 @@ export System_Bool  System_Char8_isPrintable(System_Char8 that);
 
 export struct System_Type  System_String8Type;
 
+export System_Size  System_String8_indexOf__size(System_String8 that, System_UInt8 character, System_Size length);
 export System_Size  System_String8_indexOf(System_String8 that, System_UInt8 character);
+export System_Size  System_String8_lastIndexOf__size(System_String8 that, System_UInt8 character, System_Size length);
 export System_Size  System_String8_lastIndexOf(System_String8 that, System_UInt8 character);
 export System_Size  System_String8_get_Length(System_String8 that);
 export System_Size  System_String8_get_Length__max(System_String8 that, System_Size limit);
@@ -56,6 +61,8 @@ export System_Bool  System_String8_equalsSubstring(System_String8 that, System_S
 export System_Bool  System_String8_isNullOrEmpty(System_String8 that);
 export System_Bool  System_String8_startsWith(System_String8 that, System_String8 other);
 export System_Bool  System_String8_endsWith(System_String8 that, System_String8 other);
+export System_String8Array  System_String8_split(System_String8 that, System_UInt8 character);
+export System_String8  System_String8_join(System_String8Array that, System_UInt8 character);
 
 #define inline_System_String8_equals(chars0, chars1)  (0 == System_String8_compare(chars0, chars1))
 #define inline_System_String8_equalsSubstring(chars0, chars1, n)  (0 == System_String8_compareSubstring(chars0, chars1, n))

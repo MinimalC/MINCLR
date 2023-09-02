@@ -59,6 +59,7 @@ void System_Runtime_start(System_Var  * stack) {
     System_Size envc = 0;
     System_String8 * envv = (System_String8 *)(stack += argc + 1);
     while (*stack) { ++envc; ++stack; }
+
     System_String8 name = null;
     System_Var base = null, exec = null;
     System_Size random = 0;
@@ -68,7 +69,7 @@ void System_Runtime_start(System_Var  * stack) {
     for (; auxv[auxc].type; ++auxc, stack += 2) {
         System_Environment_AuxValue aux = auxv + auxc;
 
-        if (aux->type == System_Environment_AuxType_PAGESZ) 
+        if (aux->type == System_Environment_AuxType_PAGESZ)
             System_Runtime_pageSize = aux->value;
 
         if (aux->type == System_Environment_AuxType_EXECFN)
@@ -83,7 +84,7 @@ void System_Runtime_start(System_Var  * stack) {
         if (aux->type == System_Environment_AuxType_INTERP)
             interp = aux->value;
 
-        if (aux->type == System_Environment_AuxType_RANDOM) 
+        if (aux->type == System_Environment_AuxType_RANDOM)
             random = aux->value;
     }
 
@@ -98,10 +99,10 @@ void System_Runtime_start(System_Var  * stack) {
         switch (auxv[i].type) {
         case System_Environment_AuxType_EXECFN:
         case System_Environment_AuxType_PLATFORM:
-            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:string}), value {2:string}", 3, i, System_Environment_AuxType_toString(auxv[i].type), auxv[i].value); 
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:string}), value {2:string}", 3, i, System_Environment_AuxType_toString(auxv[i].type), auxv[i].value);
             break;
         default:
-            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:string}), value 0x{2:uint:hex}", 3, i, System_Environment_AuxType_toString(auxv[i].type), auxv[i].value); 
+            System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:string}), value 0x{2:uint:hex}", 3, i, System_Environment_AuxType_toString(auxv[i].type), auxv[i].value);
             break;
         }
     #endif
