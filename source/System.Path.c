@@ -63,7 +63,6 @@ System_String8 System_Path_combine(System_String8 that, System_String8 other) {
     }
 
     String8 reture = System_String8_join(split, '/');
-    /* classical *//* HACK */ base_System_String8Array_free(split);
     System_Memory_free(split);
     return reture;
 }

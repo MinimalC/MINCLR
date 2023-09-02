@@ -84,10 +84,10 @@ struct System_Type System_String8ArrayType = { .base = { .type = typeof(System_T
     .size = sizeof(struct System_String8Array),
     .baseType = typeof(System_Object),
     .functions = {
-        .length = sizeof_array(&System_String8ArrayTypeFunctions), .value = &System_String8ArrayTypeFunctions
+        .length = sizeof_array(System_String8ArrayTypeFunctions), .value = &System_String8ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_String8ArrayTypeInterfaces), .value = &System_String8ArrayTypeInterfaces
+        .length = sizeof_array(System_String8ArrayTypeInterfaces), .value = &System_String8ArrayTypeInterfaces
     },
 };
 
@@ -150,7 +150,7 @@ struct System_Type System_String8ArrayEnumeratorType = { .base = { .type = typeo
     .size = sizeof(struct System_String8ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = {
-        .length = sizeof_array(&System_String8ArrayEnumeratorTypeFunctions), .value = &System_String8ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_String8ArrayEnumeratorTypeFunctions), .value = &System_String8ArrayEnumeratorTypeFunctions
     },
 };
 

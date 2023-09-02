@@ -81,10 +81,10 @@ struct System_Type Generic_T0ArrayType = { .base = { .type = typeof(System_Type)
     .size = sizeof(struct Generic_T0Array),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions
+        .length = sizeof_array(Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&Generic_T0ArrayTypeInterfaces), .value = &Generic_T0ArrayTypeInterfaces
+        .length = sizeof_array(Generic_T0ArrayTypeInterfaces), .value = &Generic_T0ArrayTypeInterfaces
     },
 };
 

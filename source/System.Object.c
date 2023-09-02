@@ -36,18 +36,9 @@ System_Object  System_Object_asInstanceof(System_Object that, System_Type type) 
 
 void  base_System_Object_free(Object that) {
 	unused(that)
-
-#if DEBUG == DEBUG_System_Object
-	Console_writeLine("{0:string}_free", 1, that->type->name);
-#endif
 }
 
 Object  base_System_Object_init(Object that) {
-
-#if DEBUG == DEBUG_System_Object
-	Console_writeLine("{0:string}_init", 1, that->type->name);
-#endif
-
     return that;
 }
 

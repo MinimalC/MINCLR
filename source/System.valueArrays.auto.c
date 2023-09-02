@@ -70,10 +70,10 @@ struct System_Type System_UInt8ArrayType = { .base = { .type = typeof(System_Typ
     .size = sizeof(struct System_UInt8Array),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_UInt8ArrayTypeFunctions), .value = &System_UInt8ArrayTypeFunctions
+        .length = sizeof_array(System_UInt8ArrayTypeFunctions), .value = &System_UInt8ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_UInt8ArrayTypeInterfaces), .value = &System_UInt8ArrayTypeInterfaces
+        .length = sizeof_array(System_UInt8ArrayTypeInterfaces), .value = &System_UInt8ArrayTypeInterfaces
     },
 };
 
@@ -150,10 +150,10 @@ struct System_Type System_UInt16ArrayType = { .base = { .type = typeof(System_Ty
     .size = sizeof(struct System_UInt16Array),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_UInt16ArrayTypeFunctions), .value = &System_UInt16ArrayTypeFunctions
+        .length = sizeof_array(System_UInt16ArrayTypeFunctions), .value = &System_UInt16ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_UInt16ArrayTypeInterfaces), .value = &System_UInt16ArrayTypeInterfaces
+        .length = sizeof_array(System_UInt16ArrayTypeInterfaces), .value = &System_UInt16ArrayTypeInterfaces
     },
 };
 
@@ -230,10 +230,10 @@ struct System_Type System_UInt32ArrayType = { .base = { .type = typeof(System_Ty
     .size = sizeof(struct System_UInt32Array),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_UInt32ArrayTypeFunctions), .value = &System_UInt32ArrayTypeFunctions
+        .length = sizeof_array(System_UInt32ArrayTypeFunctions), .value = &System_UInt32ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_UInt32ArrayTypeInterfaces), .value = &System_UInt32ArrayTypeInterfaces
+        .length = sizeof_array(System_UInt32ArrayTypeInterfaces), .value = &System_UInt32ArrayTypeInterfaces
     },
 };
 
@@ -310,10 +310,10 @@ struct System_Type System_UInt64ArrayType = { .base = { .type = typeof(System_Ty
     .size = sizeof(struct System_UInt64Array),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_UInt64ArrayTypeFunctions), .value = &System_UInt64ArrayTypeFunctions
+        .length = sizeof_array(System_UInt64ArrayTypeFunctions), .value = &System_UInt64ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_UInt64ArrayTypeInterfaces), .value = &System_UInt64ArrayTypeInterfaces
+        .length = sizeof_array(System_UInt64ArrayTypeInterfaces), .value = &System_UInt64ArrayTypeInterfaces
     },
 };
 
@@ -390,10 +390,10 @@ struct System_Type System_Int8ArrayType = { .base = { .type = typeof(System_Type
     .size = sizeof(struct System_Int8Array),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_Int8ArrayTypeFunctions), .value = &System_Int8ArrayTypeFunctions
+        .length = sizeof_array(System_Int8ArrayTypeFunctions), .value = &System_Int8ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_Int8ArrayTypeInterfaces), .value = &System_Int8ArrayTypeInterfaces
+        .length = sizeof_array(System_Int8ArrayTypeInterfaces), .value = &System_Int8ArrayTypeInterfaces
     },
 };
 
@@ -470,10 +470,10 @@ struct System_Type System_Int16ArrayType = { .base = { .type = typeof(System_Typ
     .size = sizeof(struct System_Int16Array),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_Int16ArrayTypeFunctions), .value = &System_Int16ArrayTypeFunctions
+        .length = sizeof_array(System_Int16ArrayTypeFunctions), .value = &System_Int16ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_Int16ArrayTypeInterfaces), .value = &System_Int16ArrayTypeInterfaces
+        .length = sizeof_array(System_Int16ArrayTypeInterfaces), .value = &System_Int16ArrayTypeInterfaces
     },
 };
 
@@ -550,10 +550,10 @@ struct System_Type System_Int32ArrayType = { .base = { .type = typeof(System_Typ
     .size = sizeof(struct System_Int32Array),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_Int32ArrayTypeFunctions), .value = &System_Int32ArrayTypeFunctions
+        .length = sizeof_array(System_Int32ArrayTypeFunctions), .value = &System_Int32ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_Int32ArrayTypeInterfaces), .value = &System_Int32ArrayTypeInterfaces
+        .length = sizeof_array(System_Int32ArrayTypeInterfaces), .value = &System_Int32ArrayTypeInterfaces
     },
 };
 
@@ -630,10 +630,10 @@ struct System_Type System_Int64ArrayType = { .base = { .type = typeof(System_Typ
     .size = sizeof(struct System_Int64Array),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_Int64ArrayTypeFunctions), .value = &System_Int64ArrayTypeFunctions
+        .length = sizeof_array(System_Int64ArrayTypeFunctions), .value = &System_Int64ArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_Int64ArrayTypeInterfaces), .value = &System_Int64ArrayTypeInterfaces
+        .length = sizeof_array(System_Int64ArrayTypeInterfaces), .value = &System_Int64ArrayTypeInterfaces
     },
 };
 
@@ -702,7 +702,7 @@ struct System_Type System_UInt8ArrayEnumeratorType = { .base = { .type = typeof(
     .size = sizeof(struct System_UInt8ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_UInt8ArrayEnumeratorTypeFunctions), .value = &System_UInt8ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_UInt8ArrayEnumeratorTypeFunctions), .value = &System_UInt8ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -768,7 +768,7 @@ struct System_Type System_UInt16ArrayEnumeratorType = { .base = { .type = typeof
     .size = sizeof(struct System_UInt16ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_UInt16ArrayEnumeratorTypeFunctions), .value = &System_UInt16ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_UInt16ArrayEnumeratorTypeFunctions), .value = &System_UInt16ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -834,7 +834,7 @@ struct System_Type System_UInt32ArrayEnumeratorType = { .base = { .type = typeof
     .size = sizeof(struct System_UInt32ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_UInt32ArrayEnumeratorTypeFunctions), .value = &System_UInt32ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_UInt32ArrayEnumeratorTypeFunctions), .value = &System_UInt32ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -900,7 +900,7 @@ struct System_Type System_UInt64ArrayEnumeratorType = { .base = { .type = typeof
     .size = sizeof(struct System_UInt64ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_UInt64ArrayEnumeratorTypeFunctions), .value = &System_UInt64ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_UInt64ArrayEnumeratorTypeFunctions), .value = &System_UInt64ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -966,7 +966,7 @@ struct System_Type System_Int8ArrayEnumeratorType = { .base = { .type = typeof(S
     .size = sizeof(struct System_Int8ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_Int8ArrayEnumeratorTypeFunctions), .value = &System_Int8ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_Int8ArrayEnumeratorTypeFunctions), .value = &System_Int8ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -1032,7 +1032,7 @@ struct System_Type System_Int16ArrayEnumeratorType = { .base = { .type = typeof(
     .size = sizeof(struct System_Int16ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_Int16ArrayEnumeratorTypeFunctions), .value = &System_Int16ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_Int16ArrayEnumeratorTypeFunctions), .value = &System_Int16ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -1098,7 +1098,7 @@ struct System_Type System_Int32ArrayEnumeratorType = { .base = { .type = typeof(
     .size = sizeof(struct System_Int32ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_Int32ArrayEnumeratorTypeFunctions), .value = &System_Int32ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_Int32ArrayEnumeratorTypeFunctions), .value = &System_Int32ArrayEnumeratorTypeFunctions
     },
 };
 
@@ -1164,7 +1164,7 @@ struct System_Type System_Int64ArrayEnumeratorType = { .base = { .type = typeof(
     .size = sizeof(struct System_Int64ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_Int64ArrayEnumeratorTypeFunctions), .value = &System_Int64ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_Int64ArrayEnumeratorTypeFunctions), .value = &System_Int64ArrayEnumeratorTypeFunctions
     },
 };
 

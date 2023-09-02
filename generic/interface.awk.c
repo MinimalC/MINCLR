@@ -19,7 +19,7 @@ struct System_Type Generic_T0Type = { .base = stack_System_Object(System_Type),
 	.name = "Generic.T0",
     .size = sizeof(struct Generic_T0),
     .functions = { 
-        .length = sizeof_array(&Generic_T0TypeFunctions), .value = &Generic_T0TypeFunctions
+        .length = sizeof_array(Generic_T0TypeFunctions), .value = &Generic_T0TypeFunctions
     },
 };
 

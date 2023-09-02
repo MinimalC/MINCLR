@@ -51,7 +51,7 @@ struct System_Type Generic1_T1Type = { .base = { .type = typeof(System_Type) },
     .size = sizeof(struct Generic1_T1),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&Generic1_T1TypeFunctions), .value = &Generic1_T1TypeFunctions
+        .length = sizeof_array(Generic1_T1TypeFunctions), .value = &Generic1_T1TypeFunctions
     },
 };
 

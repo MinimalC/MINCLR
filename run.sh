@@ -15,7 +15,7 @@ cd .make
 INTERP=
 #INTERP=./System.Interpreter
 
-$INTERP ./ELFAssembly.read Crypto.SipHash > ELFAssembly.read...report 2>&1
+$INTERP ./ELFAssembly.read Crypto.SipHash.test > ELFAssembly.read...report 2>&1
 $INTERP ./Crypto.SipHash.test > Crypto.SipHash.test...report 2>&1
 $INTERP ./System.Exception.test > System.Exception.test...report 2>&1
 $INTERP ./System.File.test > System.File.test...report 2>&1

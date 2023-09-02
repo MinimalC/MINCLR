@@ -380,8 +380,8 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
         header->refCount = System_Memory_ReferenceState_Disposing;
 
         Object object = (Object)that;
-        function_Object_free free = (function_Object_free)Type_tryMethod(object->type, base_System_Object_free);
-        if (free) free(object);
+        function_System_Object_free free = (function_System_Object_free)Type_tryMethod(object->type, base_System_Object_free);
+        if (free && free != base_System_Object_free) free(object);
 #if DEBUG
         else System_Console_writeLine("System_Memory_freeClass: function_System_Object_free not found in typeof({0:string}).", 1, header->elementType->name);
 #endif

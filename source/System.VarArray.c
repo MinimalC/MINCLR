@@ -68,10 +68,10 @@ struct System_Type System_VarArrayType = { .base = { .type = typeof(System_Type)
     .size = sizeof(struct System_VarArray),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_VarArrayTypeFunctions), .value = &System_VarArrayTypeFunctions
+        .length = sizeof_array(System_VarArrayTypeFunctions), .value = &System_VarArrayTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_VarArrayTypeInterfaces), .value = &System_VarArrayTypeInterfaces
+        .length = sizeof_array(System_VarArrayTypeInterfaces), .value = &System_VarArrayTypeInterfaces
     },
 };
 
@@ -134,7 +134,7 @@ struct System_Type System_VarArrayEnumeratorType = { .base = { .type = typeof(Sy
     .size = sizeof(struct System_VarArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_VarArrayEnumeratorTypeFunctions), .value = &System_VarArrayEnumeratorTypeFunctions
+        .length = sizeof_array(System_VarArrayEnumeratorTypeFunctions), .value = &System_VarArrayEnumeratorTypeFunctions
     },
 };
 

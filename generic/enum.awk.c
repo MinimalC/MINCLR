@@ -16,7 +16,7 @@ struct System_Type Generic_T0Type = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0",
     .size = sizeof(Generic_T0),
 	.fields = { 
-        .value = &Generic_T0TypeFields, .length = sizeof_array(Generic_T0TypeFields),
+        .length = sizeof_array(Generic_T0TypeFields), .value = &Generic_T0TypeFields,
     },
 };
 

@@ -105,10 +105,10 @@ struct System_Type System_VarDictionaryType = { .base = { .type = typeof(System_
     .size = sizeof(struct System_VarDictionary),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_VarDictionaryTypeFunctions), .value = &System_VarDictionaryTypeFunctions
+        .length = sizeof_array(System_VarDictionaryTypeFunctions), .value = &System_VarDictionaryTypeFunctions
     },
     .interfaces = {
-        .length = sizeof_array(&System_VarDictionaryTypeInterfaces), .value = &System_VarDictionaryTypeInterfaces
+        .length = sizeof_array(System_VarDictionaryTypeInterfaces), .value = &System_VarDictionaryTypeInterfaces
     },
 };
 
@@ -171,7 +171,7 @@ struct System_Type System_VarDictionaryEnumeratorType = { .base = { .type = type
     .size = sizeof(struct System_VarDictionaryEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&System_VarDictionaryEnumeratorTypeFunctions), .value = &System_VarDictionaryEnumeratorTypeFunctions
+        .length = sizeof_array(System_VarDictionaryEnumeratorTypeFunctions), .value = &System_VarDictionaryEnumeratorTypeFunctions
     },
 };
 

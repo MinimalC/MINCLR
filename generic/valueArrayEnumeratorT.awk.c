@@ -74,7 +74,7 @@ struct System_Type Generic_T0ArrayEnumeratorType = { .base = { .type = typeof(Sy
     .Size = sizeof(struct Generic_T0ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
-        .length = sizeof_array(&Generic_T0ArrayEnumeratorTypeFunctions), .value = &Generic_T0ArrayEnumeratorTypeFunctions
+        .length = sizeof_array(Generic_T0ArrayEnumeratorTypeFunctions), .value = &Generic_T0ArrayEnumeratorTypeFunctions
     },
 };
 
