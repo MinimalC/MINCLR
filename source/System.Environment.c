@@ -6,7 +6,7 @@
 #include <min/System.Environment.h>
 #endif
 
-System_String8  System_Environment_Arguments[System_Environment_Arguments_Length] = { };
+System_String8Dictionary System_Environment_Arguments = null;
 
 System_Size  System_Environment_AuxValues[System_Environment_AuxValues_Length] = { };
 

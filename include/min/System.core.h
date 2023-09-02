@@ -15,6 +15,7 @@
 #include "System.VarDictionary.h"
 
 #include "System.String8Array.h"
+#include "System.String8Dictionary.h"
 
 #include "System.Syscall.h"
 #include "System.FileInfo.h"

@@ -23,20 +23,13 @@
 /*# Generic_T0Array #*/
 
 Generic_T0Array base_Generic_T0Array_init(Generic_T0Array that, System_Size length) {
-    base_System_Object_init((System_Object)that);
-
     that->length = length;
-
-    Generic_T0 (* array)[] = System_Memory_allocArray(typeof(Generic_T0), length);
-    that->value = array;
-
+    that->value = System_Memory_allocArray(typeof(Generic_T0), length);
     return that;
 }
 
 void  base_Generic_T0Array_free(Generic_T0Array that) {
     System_Memory_free(that->value);
-
-    base_System_Object_free((System_Object)that);
 }
 
 System_Size  base_Generic_T0Array_get_Length(Generic_T0Array that) {

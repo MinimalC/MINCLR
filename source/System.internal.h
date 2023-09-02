@@ -9,6 +9,7 @@
 #define DEBUG_System_Memory 4
 #define DEBUG_System_Console_Environment_Arguments 5
 #define DEBUG_System_ELFAssembly 6
+#define DEBUG_System_Syscall_mmap 7
 
 #if defined(NDEBUG)
 #undef NDEBUG

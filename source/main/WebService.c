@@ -210,9 +210,10 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
                 System_Console_writeLine("HTTPService_serve: {0:string}: {1:string}", 2, array(request->header->key)[i], array(request->header->value)[i]);
 
             // Get a worker for the URI
+            String8 cwd = base_System_String8Dictionary_get_value(System_Environment_Arguments, "PWD");
+            String8 requestPath = System_Path_combine(cwd ? cwd : ".", request->uri.source);
 
-            //String8 runPath = System_Path_combine( httpMessage1->uri.source);
-
+            System_Console_writeLine("HTTPService_serve: {0:string}", 1, requestPath);
             // Try if directory
 
 

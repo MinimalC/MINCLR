@@ -47,11 +47,13 @@ void  System_Console_sync() {
 /* __attribute__((constructor)) void System_init */
 
 void System_Console_exit(const Size code)  {
-#if DEBUG || !DEBUG
-    System_Memory_debug();
+#if DEBUG == DEBUG_System_Syscall_mmap
     System_Syscall_mmap__debug();
-    if (System_Exception_current) System_Exception_terminate(System_Exception_current);
 #endif
+#if DEBUG
+    System_Memory_debug();
+#endif
+    if (System_Exception_current) System_Exception_terminate(System_Exception_current);
     System_Syscall_terminate(code);
 }
 

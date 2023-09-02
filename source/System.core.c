@@ -31,6 +31,7 @@
 #include "System.VarDictionary.c"
 
 #include "System.String8Array.c"
+#include "System.String8Dictionary.c"
 
 #include "System.FileInfo.c"
 #include "System.File.c"

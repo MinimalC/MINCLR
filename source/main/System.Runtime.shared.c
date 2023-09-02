@@ -90,12 +90,36 @@ void System_Runtime_start(System_Var  * stack) {
 
     System_Size i;
 
-    #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
-    for (i = 0; i < argc; ++i)
+    for (i = 0; i < argc; ++i) {
+        System_Console_Arguments[i] = argv[i];
+        #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
         System_Console_writeLine("System_Console_Arguments({0:uint}): {1:string}", 2, i, argv[i]);
-    for (i = 0; i < envc; ++i)
-        System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}", 2, i, envv[i]);
-    for (i = 0; i < auxc; ++i)
+        #endif
+    }
+
+    String8 keys[256]; for (i = 0; i < 256; ++i) keys[i] = null;
+    String8 values[256]; for (i = 0; i < 256; ++i) values[i] = null;
+    struct System_String8Dictionary dictionary = {
+        .base = { .type = typeof(System_String8Dictionary), },
+        .key = &keys, .value = &values, .capacity = 256, .length = 0,
+    };
+    if (interp) {
+        System_Environment_Arguments = &dictionary;
+        for (i = 0; i < envc; ++i) {
+            String8 key = envv[i];
+            SSize sign = System_String8_indexOf(key, '=');
+            if (sign != -1) *(key + sign) = '\0';
+            String8 value = key + sign + 1;
+            base_System_String8Dictionary_add(&dictionary, key, value);
+            #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
+            System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}: {2:string}", 3, i, key, value);
+            #endif
+        }
+    }
+    
+    for (i = 0; i < auxc; ++i) {
+        System_Environment_AuxValues[auxv[i].type] = auxv[i].value;
+        #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
         switch (auxv[i].type) {
         case System_Environment_AuxType_EXECFN:
         case System_Environment_AuxType_PLATFORM:
@@ -105,14 +129,9 @@ void System_Runtime_start(System_Var  * stack) {
             System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:string}), value 0x{2:uint:hex}", 3, i, System_Environment_AuxType_toString(auxv[i].type), auxv[i].value);
             break;
         }
-    #endif
+        #endif
+    }
 
-    for (i = 0; i < argc && i < System_Console_Arguments_Length; ++i)
-        System_Console_Arguments[i] = argv[i];
-    for (i = 0; i < envc && i < System_Environment_Arguments_Length; ++i)
-        System_Environment_Arguments[i] = envv[i];
-    for (i = 0; i < auxc && i < System_Environment_AuxValues_Length; ++i)
-        System_Environment_AuxValues[auxv[i].type] = auxv[i].value;
 
     /* struct vdso_info info = { .valid = false }; */
 

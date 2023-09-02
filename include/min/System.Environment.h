@@ -2,13 +2,15 @@
 #if !defined(have_System_Type)
 #include <min/System.Type.h>
 #endif
+#if !defined(have_System_String8Dictionary)
+#include "System.String8Dictionary.h"
+#endif
 #if !defined(have_System_Environment)
 #define have_System_Environment
 
 export struct System_Type  System_EnvironmentType;
 
-enum { System_Environment_Arguments_Length = 256 };
-export System_String8 System_Environment_Arguments[System_Environment_Arguments_Length];
+export System_String8Dictionary  System_Environment_Arguments;
 
 typedef unsigned System_Environment_AuxType;
 enum {
