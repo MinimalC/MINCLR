@@ -37,14 +37,8 @@ System_Bool System_FileInfo_isLink(System_FileInfo that) {
     return that->stat.mode & FileInfo_Type_Link;
 }
 
-/* void  base_System_FileInfo_free(System_FileInfo that) {
-
-    base_System_Object_free((System_Object)that);
-} */
-
 struct System_Type_FunctionInfo  System_FileInfoTypeFunctions[] = {
     [0] = { .function = base_System_FileInfo_init, .value = base_System_FileInfo_init },
-/*    [1] = { .function = base_System_Object_free, .value = base_System_FileInfo_free }, */
 };
 
 struct System_Type System_FileInfoType = {

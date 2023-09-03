@@ -222,20 +222,25 @@ System_String8Array System_String8_split(System_String8 that, System_UInt8 chara
 }
 
 System_String8  System_String8_join(System_String8Array that, System_UInt8 character) {
-    Size length = 0;
-    Size thatL = that->length;
-    for (Size i = 0; i < thatL; ++i) {
-        System_String8 item = array(that->value)[i];
-        length = String8_get_Length(item);
-        if (i < thatL - 1) ++length;
+    Debug_assert(that);
+    if (!that->length) return String8_Empty;
+    Size i = 0, length = 0, position = 0;
+    Size thatL = that->length - 1;
+    String8 item = null;
+    for (i = 0; i < thatL; ++i) {
+        item = array(that->value)[i];
+        length = String8_get_Length(item) + 1;
     }
     String8 string = System_Memory_allocArray(typeof(System_Char8), length + 1);
-    for (Size i = 0, position = 0; i < thatL; ++i) {
-        System_String8 item = array(that->value)[i];
+    for (i = 0; i < thatL; ++i) {
+        item = array(that->value)[i];
         System_String8_copyToAt(item, string, position);
         position += String8_get_Length(item);
-        if (i < thatL - 1) *(string + position++) = character;
+        *(string + position++) = character;
     }
+    item = array(that->value)[thatL];
+    System_String8_copyToAt(item, string, position);
+    /* position += String8_get_Length(item); */
     return string;
 }
 

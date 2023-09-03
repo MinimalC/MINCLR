@@ -20,14 +20,15 @@
 #if !defined(have_System_String8)
 #include <min/System.String8.h>
 #endif
+#if !defined(have_System_Exception)
+#include <min/System.Exception.h>
+#endif
 #if !defined(code_System_Memory)
 #define code_System_Memory
 
 /*# System_Memory #*/
 
-struct System_Type System_MemoryType = { .base = stack_System_Object(System_Type),
-	.name = "Memory",
-};
+struct System_Type System_MemoryType = { .base = stack_System_Object(System_Type), .name = "Memory" };
 
 Size System_Memory_indexOf(Var ptr, Char8 needle, Size count) {
     Debug_assert(count);
@@ -269,14 +270,18 @@ Size System_Memory_debug__min_i_max(System_Size min, System_Size index, System_S
         Var position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
         while (position < ((System_Var)mem64h + mem64h->length)) {
             System_Memory_Header header = (System_Memory_Header)position;
+            System_Var item = position + sizeof(struct System_Memory_Header);
 
             if (header->refCount && header->elementType) {
 
-                ++unfree;
-                System_Console_write("{0:string}", 1, header->elementType->name);
-                if (header->length > sizeof(struct System_Memory_Header) + header->elementType->size * 1) 
-                    System_Console_write__string("[]");
-                System_Console_write__string(", ");
+                if (item != System_Exception_current) {
+                    /* LIE about that one */
+                    ++unfree;
+                    System_Console_write("{0:string}", 1, header->elementType->name);
+                    if (header->length > sizeof(struct System_Memory_Header) + header->elementType->size * 1) 
+                        System_Console_write__string("[]");
+                    System_Console_write__string(", ");
+                }
 
                 position += header->length;
                 ++index1;
@@ -381,7 +386,7 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
 
         Object object = (Object)that;
         function_System_Object_free free = (function_System_Object_free)Type_tryMethod(object->type, base_System_Object_free);
-        if (free && free != base_System_Object_free) free(object);
+        if (free) free(object);
 #if DEBUG
         else System_Console_writeLine("System_Memory_freeClass: function_System_Object_free not found in typeof({0:string}).", 1, header->elementType->name);
 #endif

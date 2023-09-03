@@ -94,10 +94,6 @@ System_UInt64  Crypto_SipHash48_final(Crypto_SipHash48 that) {
 #undef HALF_ROUND
 #undef rotl64
 
-void  base_Crypto_SipHash48_free(Crypto_SipHash48 that) {
-    unused(that)
-}
-
 struct System_Type_FunctionInfo  Crypto_SipHash48TypeFunctions[] = {
     [0] = { .function = base_System_Object_init, .value = base_Crypto_SipHash48_init },
 };

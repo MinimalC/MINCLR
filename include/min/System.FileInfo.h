@@ -46,10 +46,8 @@ export struct System_Type  System_FileInfoType;
 #define new_System_FileInfo(fileName)  (base_System_FileInfo_init((System_FileInfo)System_Memory_allocClass(typeof(System_FileInfo)), fileName))
 
 typedef System_FileInfo delegate(System_FileInfo_init)(System_FileInfo that, System_String8 fileName);
-typedef void delegate(System_FileInfo_free)(System_FileInfo that);
 
 export System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 fileName);
-/* export void  base_System_FileInfo_free(System_FileInfo that); */
 
 export System_Bool System_FileInfo_isRegular(System_FileInfo that);
 export System_Bool System_FileInfo_isDirectory(System_FileInfo that);

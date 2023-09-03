@@ -15,36 +15,34 @@ struct System_Type System_PathType = { .base = stack_System_Object(System_Type),
 System_String8 System_Path_getDirectoryName(System_String8 path) {
     Size i = System_String8_lastIndexOf(path, '/');
     if (i == -1) return System_String8_Empty;
-    return System_String8_copySubstring(path, i);
+    return System_String8_copySubstring(path, i + 1);
 }
 
 System_String8 System_Path_getFileName(System_String8 path) {
     Size i = System_String8_lastIndexOf(path, '/');
     if (i == -1) return path; /* TODO: Memory_addReference? */
-    return System_String8_copyFrom(path, i);
+    return System_String8_copyFrom(path, i + 1);
 }
 
 System_String8 System_Path_combine(System_String8 that, System_String8 other) {
-
     System_Size thatL = System_String8_get_Length(that);
     System_Size otherL = System_String8_get_Length(other);
-
     System_String8 path = System_Memory_allocArray(typeof(System_Char8), thatL + 1 + otherL + 1);
     System_String8_copyTo(that, path);
     *(path + thatL) = '/';
     System_String8_copyToAt(other, path, thatL + 1);
-
     System_String8Array split = System_String8_split(path, '/');
     System_Memory_free(path);
-
+    System_String8 last = null, item = null;
+    System_Size itemL = 0;
     for (Size i = 0; i < split->length; ++i) {
-        System_String8 item = array(split->value)[i];
-        System_Size itemL = System_String8_get_Length(item);
-
+        last = !i ? null : array(split->value)[i - 1];
+        item = array(split->value)[i];
+        itemL = System_String8_get_Length(item);
         if (i == 0) {
             if (itemL == 0) continue;
             if (itemL == 1 && *item == '.') continue;
-            if (itemL == 2 && *item == '.' && *(item + 1) == '.') continue;
+            if (String8_equals(item, "..")) continue;
             continue;
         }
         if (itemL == 0 && i < split->length - 1) {
@@ -55,13 +53,14 @@ System_String8 System_Path_combine(System_String8 that, System_String8 other) {
             base_System_String8Array_remove(split, i--);
             continue;
         }
-        if (itemL == 2 && *item == '.' && *(item + 1) == '.') {
-            base_System_String8Array_remove(split, i--);
-            base_System_String8Array_remove(split, i--);
+        if (String8_equals(item, "..")) {
+            if (last && !String8_equals(last, "..")) {
+                base_System_String8Array_remove(split, i--);
+                base_System_String8Array_remove(split, i--);
+            }
             continue;
         }
     }
-
     String8 reture = System_String8_join(split, '/');
     System_Memory_free(split);
     return reture;

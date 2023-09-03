@@ -1,8 +1,8 @@
 #define using_System
 #include <min/System.h>
 
-STRING8 isRight = " is right\n";
-STRING8 isWrong = " is wrong\n";
+STRING8 isRight = "Syscall is right\n";
+STRING8 isWrong = "Syscall is wrong\n";
 
 IntPtr Beispiel(IntPtr a, IntPtr b, IntPtr c, IntPtr d, IntPtr e, IntPtr f, IntPtr g) {
 
@@ -13,9 +13,7 @@ int System_Runtime_main(int argc, char * argv[]) {
 
     IntPtr  k = Beispiel(2, 4, 8, 16, 32, 64, 128);
 
-    IntPtr  l = Syscall_write(Syscall_StandardFile_STDOUT, &k, sizeof(IntPtr));
-
-    if (l == sizeof(IntPtr) && k == 254)
+    if (k == 254)
         Syscall_write(Syscall_StandardFile_STDOUT, isRight, String8_get_Length(isRight));
     else {
         Syscall_write(Syscall_StandardFile_STDOUT, isWrong, String8_get_Length(isWrong));

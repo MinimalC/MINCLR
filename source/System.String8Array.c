@@ -53,6 +53,7 @@ void  base_System_String8Array_remove(System_String8Array that, System_Size inde
     for (Size i = index; i < length; ++i)
         *(array(that->value) + i) = *(array(that->value) + i + 1);
     --that->length;
+    *(array(that->value) + that->length) = null;
 }
 
 void  base_System_String8Array_resize(System_String8Array that, System_Size capacity) {
