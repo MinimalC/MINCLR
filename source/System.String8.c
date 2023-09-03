@@ -129,8 +129,8 @@ String8  System_String8_copy(String8 that) {
     return dest;
 }
 
-String8  System_String8_copyFrom(String8 that, Size from) {
-    that += from;
+String8  System_String8_copyOf(String8 that, Size offset) {
+    that += offset;
     Size count = String8_get_Length(that);
     String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), count + 1);
     String8_copyTo(that, dest);
@@ -143,8 +143,8 @@ String8  System_String8_copySubstring(String8 that, Size count) {
     return dest;
 }
 
-String8  System_String8_copyFromSubstring(String8 that, Size from, Size count) {
-    that += from;
+String8  System_String8_copyOfSubstring(String8 that, Size offset, Size count) {
+    that += offset;
     String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), count + 1);
     String8_copySubstringTo(that, count, dest);
     return dest;

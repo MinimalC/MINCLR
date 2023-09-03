@@ -21,7 +21,7 @@ System_String8 System_Path_getDirectoryName(System_String8 path) {
 System_String8 System_Path_getFileName(System_String8 path) {
     Size i = System_String8_lastIndexOf(path, '/');
     if (i == -1) return path; /* TODO: Memory_addReference? */
-    return System_String8_copyFrom(path, i + 1);
+    return System_String8_copyOf(path, i + 1);
 }
 
 System_String8 System_Path_combine(System_String8 that, System_String8 other) {

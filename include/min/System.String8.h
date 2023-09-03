@@ -50,9 +50,9 @@ export void  System_String8_copyToAt(System_String8 src, System_String8 dest, Sy
 export void  System_String8_copySubstringTo(System_String8 src, System_Size count, System_String8 dest);
 export void  System_String8_copySubstringToAt(System_String8 src, System_Size count, System_String8 dest, System_Size at);
 export System_String8  System_String8_copy(System_String8 that);
-export System_String8  System_String8_copyFrom(System_String8 that, System_Size from);
+export System_String8  System_String8_copyOf(System_String8 that, System_Size offset);
 export System_String8  System_String8_copySubstring(System_String8 that, System_Size count);
-export System_String8  System_String8_copyFromSubstring(System_String8 that, System_Size from, System_Size count);
+export System_String8  System_String8_copyOfSubstring(System_String8 that, System_Size offset, System_Size count);
 export System_String8  System_String8_concat(System_String8 that, System_String8 other);
 export System_Size  System_String8_compare(System_String8 that, System_String8 other);
 export System_Bool  System_String8_equals(System_String8 that, System_String8 other);
