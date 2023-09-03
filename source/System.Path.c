@@ -36,7 +36,6 @@ System_String8 System_Path_combine(System_String8 that, System_String8 other) {
     System_String8 last = null, item = null;
     System_Size itemL = 0;
     for (Size i = 0; i < split->length; ++i) {
-        last = !i ? null : array(split->value)[i - 1];
         item = array(split->value)[i];
         itemL = System_String8_get_Length(item);
         if (i == 0) {
@@ -54,7 +53,8 @@ System_String8 System_Path_combine(System_String8 that, System_String8 other) {
             continue;
         }
         if (String8_equals(item, "..")) {
-            if (last && !String8_equals(last, "..")) {
+            last = array(split->value)[i - 1];
+            if (!String8_equals(last, "..")) {
                 base_System_String8Array_remove(split, i--);
                 base_System_String8Array_remove(split, i--);
             }
