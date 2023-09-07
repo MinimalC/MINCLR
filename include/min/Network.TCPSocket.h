@@ -204,6 +204,13 @@ typedef struct  Network_MessageHeader {
 
 export struct System_Type Network_MessageHeaderType;
 
+typedef System_UInt16 Network_HTTPStatus;
+enum {
+    Network_HTTPStatus_OK = 200,
+    Network_HTTPStatus_FileNotFound = 404,
+    Network_HTTPStatus_Error = 500,
+};
+
 typedef System_fixed struct Network_TCPSocket {
     struct System_Object base;
 

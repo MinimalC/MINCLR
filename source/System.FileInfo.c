@@ -12,7 +12,8 @@
 /*# System_FileInfo #*/
 
 System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 fileName) {
-    base_System_Object_init((System_Object)that);
+
+    that->name = fileName;
 
     System_Syscall_fstatat(System_Syscall_StandardFile_CurrentWorkingDirectory, fileName, &that->stat, 0);
 
@@ -21,8 +22,6 @@ System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 
         System_Console_writeLine("System_FileInfo_init Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), error));
         return that;
     }
-
-    that->name = fileName;
 
     return that;
 }
@@ -46,7 +45,7 @@ struct System_Type System_FileInfoType = {
     .name = "FileInfo",
     .size = sizeof(struct System_FileInfo),
     .baseType = &System_ObjectType,
-    .functions = { 
+    .functions = {
         .length = sizeof_array(System_FileInfoTypeFunctions), .value = &System_FileInfoTypeFunctions
     },
 };

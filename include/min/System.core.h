@@ -23,6 +23,7 @@
 #include "System.ICollection.h"
 #include "System.IStream.h"
 #include "System.File.h"
+#include "System.Directory.h"
 #include "System.Console.h"
 #include "System.Exception.h"
 #include "System.Environment.h"

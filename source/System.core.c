@@ -35,6 +35,7 @@
 
 #include "System.FileInfo.c"
 #include "System.File.c"
+#include "System.Directory.c"
 #include "System.Console.c"
 
 #include "System.Path.c"

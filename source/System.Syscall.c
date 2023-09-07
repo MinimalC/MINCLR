@@ -117,6 +117,14 @@ void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathN
     (void)System_Syscall_call04(System_Syscall_Command_fstatat, (System_IntPtr)directoryPtr, (System_IntPtr)pathName, (System_IntPtr)that, flags);
 }
 
+void System_Syscall_getcwd(System_String8 buffer, System_Size length) {
+    (void)System_Syscall_call02(System_Syscall_Command_getcwd, (System_IntPtr)buffer, length);
+}
+
+void System_Syscall_chdir(System_String8 path) {
+    (void)System_Syscall_call01(System_Syscall_Command_chdir, (System_IntPtr)path);
+}
+
 internal System_Size System_Syscall_mmapCount = 0;
 
 System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_IntPtr map) {

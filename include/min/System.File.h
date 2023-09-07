@@ -68,8 +68,9 @@ typedef System_fixed struct System_File {
 
 export struct System_Type  System_FileType;
 
-export System_File  System_File_open(System_String8 filename, System_File_Mode flags);
-export System_Bool  stack_System_File_open(System_File that, System_String8 filename, System_File_Mode flags);
+export System_Bool  System_File_exists(System_String8 name);
+export System_File  System_File_open(System_String8 name, System_File_Mode flags);
+export System_Bool  stack_System_File_open(System_File that, System_String8 name, System_File_Mode flags);
 
 typedef System_File  delegate(System_File_init)(System_File that);
 typedef void  delegate(System_File_free)(System_File that);

@@ -16,6 +16,11 @@
 
 /*# System_File #*/
 
+System_Bool System_File_exists(System_String8 name) {
+    struct System_FileInfo info;
+    return base_System_FileInfo_init(&info, name) && System_FileInfo_isRegular(&info);
+}
+
 File  System_File_open(String8 filename, File_Mode flags) {
 
     File that = new_File();

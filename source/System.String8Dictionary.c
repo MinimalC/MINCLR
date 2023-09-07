@@ -46,7 +46,6 @@ System_Size  base_System_String8Dictionary_get_Length(System_String8Dictionary t
 }
 
 System_String8  base_System_String8Dictionary_get_index(System_String8Dictionary that, System_Size index) {
-    Debug_assert(index);
     return array(that->key)[index];
 }
 
@@ -54,12 +53,12 @@ System_Size  base_System_String8Dictionary_get_key(System_String8Dictionary that
     for (Size i = 0; i < that->length; ++i)
         if (String8_equals(array_item(that->key, i), key))
             return i;
-    return 0;
+    return -1;
 }
 
 System_String8  base_System_String8Dictionary_get_value(System_String8Dictionary that, System_String8 key) {
     System_Size index = base_System_String8Dictionary_get_key(that, key);
-    if (!index) return null;
+    if (index == -1) return null;
     return array(that->value)[index];
 }
 
