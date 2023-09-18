@@ -678,7 +678,9 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
         break;
     }
 
-    if (suffix) message[message_length++] = (suffix == 0x01 ? 0x00 : suffix);
+    if (suffix) message[message_length++] = suffix;
+
+    message[message_length] = '\0';
 
     return message_length;
 }

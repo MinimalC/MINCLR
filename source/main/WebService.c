@@ -173,6 +173,10 @@ typedef struct Network_HTTPResponse {
 
     System_String8Dictionary header;
 
+    System_Size bufferLength;
+
+    System_String8 buffer;
+
 } * Network_HTTPResponse;
 
 struct System_Type Network_HTTPResponseType = {
@@ -182,11 +186,14 @@ struct System_Type Network_HTTPResponseType = {
 };
 
 Network_HTTPResponse Network_HTTPResponse_create(Network_HTTPStatus status) {
-    Network_HTTPResponse reture = System_Memory_allocClass(typeof(Network_HTTPResponse));
-    reture->status = status;
-    reture->header = System_Memory_allocClass(typeof(System_String8Dictionary));
-    base_System_String8Dictionary_init(reture->header, 64);
-    return reture;
+
+    Network_HTTPResponse response = System_Memory_allocClass(typeof(Network_HTTPResponse));
+
+    response->header = System_Memory_allocClass(typeof(System_String8Dictionary));
+    base_System_String8Dictionary_init(response->header, 64);
+
+    response->status = status;
+    return response;
 }
 
 String8 Network_HTTPStatus_toString(Network_HTTPStatus value) {
@@ -199,8 +206,15 @@ String8 Network_HTTPStatus_toString(Network_HTTPStatus value) {
 }
 
 IntPtr HTTPService_serve(Size argc, Var argv[]) {
-    if (argc < 1) return false;
+    if (argc < 1) {
+        System_Console_writeLine("HTTPService_serve: No TCPSocket", 0);
+        return false;
+    }
     Network_TCPSocket tcp = argv[0];
+
+    struct { int on; int seconds; } linger = { 1, 0 };
+    base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_LINGER, (System_IntPtr)&linger);
+
     Network_PollFlags poller = 0;
     Network_MessageHeader message = null;
     Network_HTTPRequest request = null;
@@ -219,7 +233,7 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
             message = base_Network_TCPSocket_receiveMessage(tcp, 0);
             if (!message) {
                 System_Console_writeLine("HTTPService_serve: No Message", 0);
-                return false;
+                goto error;
             }
             System_Console_writeLine("HTTPService_serve: MessageHeader contentCount {0:uint}, content[0] length {1:uint}", 2,
                 message->contentCount, (!message->contentCount ? 0 : message->content[0].length));
@@ -236,9 +250,10 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
 
             request = HTTPRequest_parse(message);
             if (!request) {
+                System_Console_writeLine("HTTPService_serve: request not parsed", 0);
                 System_Memory_free(message->content);
                 System_Memory_free(message);
-                return false;
+                goto error;
             }
 
             for (Size i = 0; i < request->header->length; ++i)
@@ -269,21 +284,18 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
                     response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
                     goto continue_IN;
                 }
-                response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
-                if (!response->source) {
-                    response->source = System_Memory_allocClass(typeof(Network_MessageHeader));
-                    response->source->content = System_Memory_allocArray(typeof(Network_MessageBody), 2);
-                    response->source->contentCount = 2;
-                }
                 System_Size fileSize = base_System_File_get_Length(&file);
-                System_String8 text = System_Memory_allocArray(typeof(System_Char8), fileSize);
+                System_String8 text = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
                 base_System_File_read(&file, text, fileSize);
                 base_System_File_close(&file);
-                response->source->content[1].value = text;
-                response->source->content[1].length = fileSize;
+
+                response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
+                response->buffer = text;
+                response->bufferLength = fileSize;
                 String8 scratch = System_Memory_allocArray(typeof(System_Char8), System_UInt64_String8base10Length_DEFAULT);
                 stack_UInt64_toString8base10(fileSize, scratch);
                 base_System_String8Dictionary_add(response->header, "Content-Length", scratch);
+                base_System_String8Dictionary_add(response->header, "Content-Type", "text/plain");
             }
 
 continue_IN:
@@ -293,43 +305,54 @@ continue_IN:
             continue;
         }
         if (poller & Network_PollFlags_OUT) {
-            if (!response) return false;
+            if (!response) {
+                System_Console_writeLine("HTTPService_serve: no response", 0);
+                continue;
+            }
 
             Char8  text1[System_String8_formatLimit_VALUE]; for (Size i = 0; i < System_String8_formatLimit_VALUE; ++i) text1[i] = 0;
-            Size length = 0, position = 0;
-            position += length = stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", text1 + position, 2, response->status, Network_HTTPStatus_toString(response->status));
+            Size position = 0;
+            position += stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", text1 + position, 2, response->status, Network_HTTPStatus_toString(response->status));
 
             for (Size i = 0; i < base_System_String8Dictionary_get_Length(response->header); ++i) {
                 String8 key = base_System_String8Dictionary_get_index(response->header, i);
                 String8 value = base_System_String8Dictionary_get_value(response->header, key);
-                position += length = stack_System_String8_formatLine("{0:string}: {1:string}\r", text1 + position, 2, key, value);
+                position += stack_System_String8_formatLine("{0:string}: {1:string}\r", text1 + position, 2, key, value);
             }
 
-            position += length = stack_System_String8_formatLine("\r", text1 + position, 0);
-
-            *(text1 + position) = '\0';
-        System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, text1);
+            position += stack_System_String8_formatLine("\r", text1 + position, 0);
 
             if (!response->source) {
                 response->source = System_Memory_allocClass(typeof(Network_MessageHeader));
-                response->source->content = System_Memory_allocArray(typeof(Network_MessageBody), 1);
-                response->source->contentCount = 1;
+                response->source->content = System_Memory_allocArray(typeof(Network_MessageBody), 2);
             }
 
-            response->source->content[0].value = System_Memory_allocArray(typeof(System_Char8), length + 1);
+            response->source->content[0].value = System_Memory_allocArray(typeof(System_Char8), position + 1);
             System_String8_copyTo(text1, response->source->content[0].value);
-            response->source->content[0].length = length;
-                
-            base_Network_TCPSocket_sendMessage(tcp, response->source, 0);
+            response->source->content[0].length = position;
+            ++response->source->contentCount;
 
+            if (response->bufferLength) {
+                response->source->content[1].value = response->buffer;
+                response->source->content[1].length = response->bufferLength;
+                ++response->source->contentCount;
+            }
+
+            System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->source->content[0].value, response->source->content[1].value);
+
+            base_Network_TCPSocket_sendMessage(tcp, response->source, Network_MessageFlags_NOSIGNAL);
+
+            System_Memory_free(response->source->content[0].value);
+            System_Memory_free(response->source->content);
+            System_Memory_free(response->source);
             System_Memory_free(response);
-            System_Memory_free(message->content);
-            System_Memory_free(message);
-            
-            return true;
         }
         break;
     }
+    base_Network_TCPSocket_close(tcp);
+    return true;
+error:
+    base_Network_TCPSocket_close(tcp);
     return false;
 }
 
@@ -360,8 +383,9 @@ int System_Runtime_main(int argc, char  * argv[]) {
         
         System_Thread thread1 = System_Thread_create(HTTPService_serve, 1, tcp1);
 
-        System_Thread_join(thread1);
+        System_Thread_yield();
 
+        if (System_Thread_join__dontwait(thread1, true)) System_Console_writeLine("Thread cancelled");
     }
     return false;
 }

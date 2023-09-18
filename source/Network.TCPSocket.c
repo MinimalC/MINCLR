@@ -172,6 +172,12 @@ void  base_Network_TCPSocket_sendMessage(Network_TCPSocket that, Network_Message
     if (errno) System_Console_writeLine("Network_TCPSocket_sendMessage Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
+void  base_Network_TCPSocket_close(Network_TCPSocket that) {
+    if (!that->socketId) return;
+    System_Syscall_close((System_Var)that->socketId);
+    that->socketId = null;
+}
+
 struct System_Type Network_MessageBodyType = { .base = stack_System_Object(System_Type), 
     .name = "MessageBody", 
     .size = sizeof(struct Network_MessageBody),

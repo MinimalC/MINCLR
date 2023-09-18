@@ -232,5 +232,6 @@ export Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket
 export Network_PollFlags  base_Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request);
 export Network_MessageHeader  base_Network_TCPSocket_receiveMessage(Network_TCPSocket that, Network_MessageFlags flags);
 export void  base_Network_TCPSocket_sendMessage(Network_TCPSocket that, Network_MessageHeader message, Network_MessageFlags flags);
+export void  base_Network_TCPSocket_close(Network_TCPSocket that);
 
 #endif
