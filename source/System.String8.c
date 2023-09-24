@@ -227,20 +227,24 @@ System_String8  System_String8_join(System_String8Array that, System_UInt8 chara
     Size i = 0, length = 0, position = 0;
     Size thatL = that->length - 1;
     String8 item = null;
-    for (i = 0; i < thatL; ++i) {
+    for (i = 0; i <= thatL; ++i) {
         item = array(that->value)[i];
-        length = String8_get_Length(item) + 1;
+        if (item) length += String8_get_Length(item) + 1;
     }
     String8 string = System_Memory_allocArray(typeof(System_Char8), length + 1);
     for (i = 0; i < thatL; ++i) {
         item = array(that->value)[i];
-        System_String8_copyToAt(item, string, position);
-        position += String8_get_Length(item);
+        if (item) {
+            System_String8_copyToAt(item, string, position);
+            position += String8_get_Length(item);
+        }
         *(string + position++) = character;
     }
     item = array(that->value)[thatL];
-    System_String8_copyToAt(item, string, position);
-    /* position += String8_get_Length(item); */
+    if (item) {
+        System_String8_copyToAt(item, string, position);
+        /* position += String8_get_Length(item); */
+    }
     return string;
 }
 

@@ -98,8 +98,9 @@ export System_SIntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stac
 export System_SIntPtr  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage);
 export void  System_Syscall_sched_yield(void);
 
-export void  System_Syscall_sigaction(System_SIntPtr signal, System_Var action, System_Var old);
-export void  System_Syscall_sigprocmask(System_SIntPtr how, System_Var set, System_Var old, System_IntPtr setsize);
+export void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_Var old);
+export void  System_Syscall_sigprocmask(System_IntPtr how, System_Var set, System_Var old, System_IntPtr setsize);
+import void  System_Syscall_sigreturn(void);
 
 export System_IntPtr  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol);
 export void  System_Syscall_bind(System_IntPtr socketId, System_Var socketAddress, System_Size socketAddressLength);

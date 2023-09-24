@@ -58,7 +58,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
         struct System_Signal_Set procmask;
         System_Signal_getProcMask(&procmask);
         procmask.signal[0] |= (1 << (System_Signal_Code_SIGCHILD - 1));
-        System_Signal_setProcMask(1, &procmask);
+        System_Signal_unblock(&procmask);
         System_Signal_signal(System_Signal_Code_SIGCHILD, function_System_Signal_handler_DEFAULT);
         sigiset = true;
     }

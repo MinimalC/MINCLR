@@ -14,7 +14,7 @@
 struct System_Type System_DirectoryType = { .base = { .type = typeof(System_Type) }, .name = "Directory", };
 
 System_Bool System_Directory_exists(System_String8 name) {
-    struct System_FileInfo info;
+    struct System_FileInfo info; System_Stack_free(info);
     return base_System_FileInfo_init(&info, name) && System_FileInfo_isDirectory(&info);
 }
 

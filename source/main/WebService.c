@@ -259,6 +259,8 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
             for (Size i = 0; i < request->header->length; ++i)
                 System_Console_writeLine("HTTPService_serve: {0:string}: {1:string}", 2, array(request->header->key)[i], array(request->header->value)[i]);
 
+            System_Console_writeLine("HTTPService_serve: request->uri.source {0:string}", 1, request->uri.source);
+
             // Get a worker for the URI
             String8 currentDirectory = System_Directory_get_current();
             String8 requestPath = System_Path_combine(currentDirectory, request->uri.source);
@@ -269,7 +271,9 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
             }
             if (System_Directory_exists(requestPath)) {
                 System_Console_writeLine("HTTPService_serve: Folder {0:string}", 1, requestPath);
-                String8 requestPath = System_Path_combine(requestPath, "index.html");
+                String8 new_requestPath = System_String8_concat(requestPath, "index.html");
+                System_Memory_free(requestPath);
+                requestPath = new_requestPath;
             }
             if (!System_File_exists(requestPath)) {
                 System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
@@ -299,6 +303,7 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
             }
 
 continue_IN:
+            System_Memory_free(requestPath);
             System_Memory_free(request);
             System_Memory_free(message->content);
             System_Memory_free(message);
@@ -336,9 +341,10 @@ continue_IN:
                 response->source->content[1].value = response->buffer;
                 response->source->content[1].length = response->bufferLength;
                 ++response->source->contentCount;
+                System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->source->content[0].value, response->source->content[1].value);
             }
-
-            System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->source->content[0].value, response->source->content[1].value);
+            else
+                System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->source->content[0].value);
 
             base_Network_TCPSocket_sendMessage(tcp, response->source, Network_MessageFlags_NOSIGNAL);
 
@@ -356,12 +362,23 @@ error:
     return false;
 }
 
+Bool System_Runtime_HitCTRLC = false;
+
+void System_Runtime_CTRLC(System_Signal_Code code) {
+    System_Runtime_HitCTRLC = true;
+}
+
 int System_Runtime_main(int argc, char  * argv[]) {
 
     if (argc < 1) {
         System_Console_writeLine__string("Usage: WebService <command> <file>");
         return false;
     }
+
+    /*struct System_Signal_Set procmask; Stack_free(procmask);
+    procmask.signal[0] |= (1 << (System_Signal_Code_SIGINT - 1));
+    System_Signal_unblock(&procmask);
+    System_Signal_signal(System_Signal_Code_SIGINT, System_Runtime_CTRLC);*/
 
     System_Directory_change("www");
 
@@ -383,9 +400,9 @@ int System_Runtime_main(int argc, char  * argv[]) {
         
         System_Thread thread1 = System_Thread_create(HTTPService_serve, 1, tcp1);
 
-        System_Thread_yield();
+        System_Thread_join(thread1);
 
-        if (System_Thread_join__dontwait(thread1, true)) System_Console_writeLine("Thread cancelled");
+        if (System_Runtime_HitCTRLC) System_Console_exit(false);
     }
     return false;
 }

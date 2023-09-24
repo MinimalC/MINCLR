@@ -166,11 +166,11 @@ System_SIntPtr  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, S
     return System_Syscall_call04(System_Syscall_Command_wait4, id, (System_IntPtr)status, flags, (System_IntPtr)usage);
 }
 
-void  System_Syscall_sigaction(System_SIntPtr signal, System_Var action, System_Var old) {
+void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_Var old) {
     (void)System_Syscall_call03(System_Syscall_Command_rt_sigaction, signal, (System_IntPtr)action, (System_IntPtr)old);
 }
 
-void  System_Syscall_sigprocmask(System_SIntPtr how, System_Var set, System_Var old, System_IntPtr setsize) {
+void  System_Syscall_sigprocmask(System_IntPtr how, System_Var set, System_Var old, System_IntPtr setsize) {
     (void)System_Syscall_call04(System_Syscall_Command_rt_sigprocmask, how, (System_IntPtr)set, (System_IntPtr)old, setsize);
 }
 

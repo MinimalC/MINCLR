@@ -7,6 +7,8 @@ STRING8  path = "/./Documents/whaat/../../Downloads/.System.File.test.txt";
 STRING8  root1 = "../../user1";
 STRING8  path1 = "./Documents/whaat/Downloads/../../../../../.System.File.test.txt";
 
+STRING8  path2 = "index.html";
+
 int System_Runtime_main(int argc, char * argv[]) {
 
     Console_writeLine("Test01: System_Path_combine(\"{0:string}\", \"{1:string}\"):", 2, root, path);
@@ -18,6 +20,11 @@ int System_Runtime_main(int argc, char * argv[]) {
 	String8 combination1 = System_Path_combine(root1, path1);
     Console_writeLine("Test02: {0:string}", 1, combination1);
     Memory_free(combination1);
+
+    Console_writeLine("Test02: System_Path_combine(\"{0:string}\", \"{1:string}\"):", 2, root, path2);
+	String8 combination2 = System_Path_combine(root, path2);
+    Console_writeLine("Test02: {0:string}", 1, combination2);
+    Memory_free(combination2);
 
     String8  command_directory = System_Path_getDirectoryName(path1);
     if (!command_directory)

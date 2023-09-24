@@ -57,6 +57,8 @@ enum {
 
 #define inline_System_Memory_equals(VAR0, VAR1, N)  (N == System_Memory_compare(VAR0, VAR1, N))
 
+#define System_Stack_free(VAR) for (System_Size I = 0; I < sizeof(VAR); ++I) ((System_Char8 *)&VAR)[I] = 0
+
 #if defined(using_System)
 #define MemoryType  System_MemoryType
 
@@ -69,5 +71,7 @@ enum {
 #define Memory_indexOf  System_Memory_indexOf
 
 #define inline_Memory_equals  inline_System_Memory_equals
+
+#define Stack_free  System_Stack_free
 #endif
 #endif
