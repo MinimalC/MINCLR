@@ -248,11 +248,6 @@ System_String8  System_String8_join(System_String8Array that, System_UInt8 chara
     return string;
 }
 
-
-#if DEBUG
-STRING8 WARNING = "WARNING  ";
-#endif
-
 Size  stack_System_String8_format(String8 format, Char8 message[System_String8_formatLimit_VALUE], ...) {
     arguments args;
     arguments_start(args, message);
@@ -294,6 +289,10 @@ Size  stack_System_String8_formatEnd__arguments(String8 format, Char8 suffix, Ch
 
 Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suffix, Size limit, Char8 message[], Size argc, Var argv[]) {
     Debug_assert(!argc || argv);
+
+#if DEBUG
+    STRING8 WARNING = "WARNING  ";
+#endif
 
     Size i;
     Char8  scratch[72];
