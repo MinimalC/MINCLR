@@ -19,6 +19,8 @@ typedef struct Network_URI {
 
     System_String8 source;
 
+    System_String8 queryString;
+
 } * Network_URI;
 
 typedef struct Network_HTTPRequest {
@@ -46,24 +48,19 @@ Network_HTTPRequest HTTPRequest_parse(Network_MessageHeader message) {
     Debug_assert(message);
     Debug_assert(message->contentCount);
 
-    struct Network_HTTPRequest httpMessage = {
-        .base = { .type = typeof(Network_HTTPRequest) },
-        .method = 0,
-    };
+    struct Network_HTTPRequest httpMessage; Stack_zero(httpMessage);
     System_String8 keys[64]; for (Size i = 0; i < 64; ++i) keys[i] = null;
     System_String8 values[64]; for (Size i = 0; i < 64; ++i) values[i] = null;
-    struct System_String8Dictionary httpHeader = { 
-        .base = { .type = typeof(System_String8Dictionary) },
-        .capacity = 64,
-        .key = &keys,
-        .value = &values,
-    };
+    struct System_String8Dictionary httpHeader; Stack_zero(httpHeader);
+    httpHeader.capacity = 64;
+    httpHeader.key = &keys;
+    httpHeader.value = &values;
 
     System_String8 string = message->content[0].value;
     System_Size remainSize = message->content[0].length;
     while (1) {
 
-        System_SSize linefeed = System_String8_indexOf__size(string, '\n', remainSize);
+        System_Size linefeed = System_String8_indexOf__size(string, '\n', remainSize);
         remainSize -= linefeed + 1;
         if (linefeed == -1) {
             System_Console_writeLine("HTTPRequest_parse: No linefeed", 0);
@@ -77,8 +74,8 @@ Network_HTTPRequest HTTPRequest_parse(Network_MessageHeader message) {
             System_Console_writeLine("HTTPRequest_parse: End of Header", 0);
             goto body;
         }
-        System_SSize nullchar = System_String8_indexOf(string, '\0');
-        if (nullchar > -1) {
+        System_Size nullchar = System_String8_indexOf(string, '\0');
+        if (nullchar != -1) {
             System_Console_writeLine("HTTPRequest_parse: null in there", 0);
             goto error;
         }
@@ -98,13 +95,18 @@ Network_HTTPRequest HTTPRequest_parse(Network_MessageHeader message) {
             }
             *(string1++) = '\0';
 
-            System_SSize space = System_String8_indexOf(string1, ' ');
+            System_Size space = System_String8_indexOf(string1, ' ');
             if (space == -1) {
                 System_Console_writeLine("HTTPRequest_parse: No Space after URI. {0:string}", 1, string);
                 goto error;
             }
             *(string1 + space) = '\0';
             httpMessage.uri.source = string1;
+            System_Size questionMark = System_String8_indexOf(string1, '?');
+            if (questionMark != -1) {
+                *(string1 + questionMark) = '\0';
+                httpMessage.uri.queryString = string1 + questionMark + 1;
+            }
             string1 += space + 1;
 
             if (!String8_equalsSubstring(string1, "HTTP/", 5)) {
@@ -114,13 +116,17 @@ Network_HTTPRequest HTTPRequest_parse(Network_MessageHeader message) {
             string1 += 5;
             httpMessage.version = string1;
 
-            System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string} HTTP/{2:string}", 3,
-                string, httpMessage.uri.source, httpMessage.version);
+            if (httpMessage.uri.queryString)
+                System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string}?{2:string} HTTP/{3:string}", 4,
+                    string, httpMessage.uri.source, httpMessage.uri.queryString, httpMessage.version);
+            else
+                System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string} HTTP/{2:string}", 3,
+                    string, httpMessage.uri.source, httpMessage.version);
 
             goto nextHeader;
         }
 
-        System_SSize dot = System_String8_indexOf(string, ':');
+        System_Size dot = System_String8_indexOf(string, ':');
         if (dot == -1) {
             System_Console_writeLine("HTTPRequest_parse: No Header Name", 0);
             goto error;
@@ -152,6 +158,7 @@ body:
     Network_HTTPRequest httpMessage1 = System_Memory_allocClass(typeof(Network_HTTPRequest));
     httpMessage1->method = httpMessage.method;
     httpMessage1->uri.source = httpMessage.uri.source;
+    httpMessage1->uri.queryString = httpMessage.uri.queryString;
     httpMessage1->version = httpMessage.version;
     httpMessage1->header = System_Memory_allocClass(typeof(System_String8Dictionary));
     base_System_String8Dictionary_init(httpMessage1->header, 64);
@@ -184,6 +191,48 @@ struct System_Type Network_HTTPResponseType = {
     .name = "HTTPResponse",
     .size = sizeof(struct Network_HTTPResponse),
 };
+
+typedef struct Network_MimeType {
+    System_String8 extension;
+    System_String8 name;
+} * Network_MimeType;
+
+struct Network_MimeType  Network_MimeTypes[] = {
+    { "txt", "text/plain" },
+    { "md", "text/markdown" },
+    { "htm", "text/html" },
+    { "html", "text/html" },
+    { "xml", "text/xml" },
+    { "css", "text/css" },
+    { "csv", "text/csv" },
+    { "rtf", "text/rtf" },
+    { "js", "text/javascript" },
+    { "ttf", "font/ttf" },
+    { "otf", "font/otf" },
+    { "gif", "image/gif" },
+    { "tif", "image/tiff" },
+    { "tiff", "image/tiff" },
+    { "jpg", "image/jpeg" },
+    { "jpeg", "image/jpeg" },
+    { "png", "image/png" },
+    { "bmp", "image/bmp" },
+    { "svg", "image/svg+xml" },
+    { "ico", "image/vnd.microsoft.icon" },
+    { "bin", "application/octet-stream" },
+    { "iso", "application/x-iso9660-image" },
+    { "json", "application/json" },
+    { "sh", "application/x-sh" },
+    { "ps", "application/postscript" },
+    { "pdf", "application/pdf" },
+    { "zip", "application/zip" },
+    { "tar", "application/x-tar" },
+    { "gz", "application/gzip" },
+    { "7z", "application/x-7z-compressed" },
+    { "xz", "application/x-xz" },
+    { "deb", "application/x-deb" },
+};
+
+enum { Network_MimeTypes_Capacity = sizeof_array(Network_MimeTypes) };
 
 Network_HTTPResponse Network_HTTPResponse_create(Network_HTTPStatus status) {
 
@@ -219,142 +268,148 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     Network_MessageHeader message = null;
     Network_HTTPRequest request = null;
     Network_HTTPResponse response = null;
-    System_Size i;
 
-    while (1) {
+    poller = base_Network_TCPSocket_poll(tcp, Network_PollFlags_IN);
+    if (!(poller & Network_PollFlags_IN)) {
+        System_Console_writeLine("HTTPService_serve: Error Poll IN {0:bool}", 1, (poller & Network_PollFlags_IN));  
+        goto error;
+    }
 
-        poller = base_Network_TCPSocket_poll(tcp, Network_PollFlags_IN | Network_PollFlags_URGENT |  Network_PollFlags_OUT | Network_PollFlags_ERROR | Network_PollFlags_HANGUP | Network_PollFlags_INVALID);
+    message = base_Network_TCPSocket_receiveMessage(tcp, 0);
+    if (!message) {
+        System_Console_writeLine("HTTPService_serve: No Message", 0);
+        goto error;
+    }
+    System_Console_writeLine("HTTPService_serve: MessageHeader contentCount {0:uint}, content[0] length {1:uint}", 2,
+        message->contentCount, (!message->contentCount ? 0 : message->content[0].length));
 
-        System_Console_writeLine("HTTPService_serve: Poll IN {0:bool}, URGENT {1:bool}, OUT {2:bool}, ERROR {3:bool}, HANGUP {4:bool}, INVALID {5:bool}", 6, 
-            (poller & Network_PollFlags_IN), (poller & Network_PollFlags_URGENT), (poller & Network_PollFlags_OUT), (poller & Network_PollFlags_ERROR),
-            (poller & Network_PollFlags_HANGUP), (poller & Network_PollFlags_INVALID));  
+    /*
+        // TODO: reallocArray, if 0 == message->contentCount % Network_MessageHeader_ContentCapacity
+        i = request->source->contentCount++;
+        request->source->content[i].value = message->content[0].value;
+        request->source->content[i].length = message->content[0].length;
+        System_Memory_free(message->content);
+        System_Memory_free(message);
+        continue;
+    }*/
 
-        if (poller & Network_PollFlags_IN) {
-            message = base_Network_TCPSocket_receiveMessage(tcp, 0);
-            if (!message) {
-                System_Console_writeLine("HTTPService_serve: No Message", 0);
-                goto error;
-            }
-            System_Console_writeLine("HTTPService_serve: MessageHeader contentCount {0:uint}, content[0] length {1:uint}", 2,
-                message->contentCount, (!message->contentCount ? 0 : message->content[0].length));
+    request = HTTPRequest_parse(message);
+    if (!request) {
+        System_Console_writeLine("HTTPService_serve: request not parsed", 0);
+        System_Memory_free(message->content);
+        System_Memory_free(message);
+        goto error;
+    }
 
-            /*
-                // TODO: reallocArray, if 0 == message->contentCount % Network_MessageHeader_ContentCapacity
-                i = request->source->contentCount++;
-                request->source->content[i].value = message->content[0].value;
-                request->source->content[i].length = message->content[0].length;
-                System_Memory_free(message->content);
-                System_Memory_free(message);
-                continue;
-            }*/
+    for (System_Size i = 0; i < request->header->length; ++i)
+        System_Console_writeLine("HTTPService_serve: {0:string}: {1:string}", 2, array(request->header->key)[i], array(request->header->value)[i]);
 
-            request = HTTPRequest_parse(message);
-            if (!request) {
-                System_Console_writeLine("HTTPService_serve: request not parsed", 0);
-                System_Memory_free(message->content);
-                System_Memory_free(message);
-                goto error;
-            }
+    System_Console_writeLine("HTTPService_serve: request->uri.source {0:string}", 1, request->uri.source);
+    if (request->uri.queryString)
+        System_Console_writeLine("HTTPService_serve: request->uri.queryString ?{0:string}", 1, request->uri.queryString);
 
-            for (Size i = 0; i < request->header->length; ++i)
-                System_Console_writeLine("HTTPService_serve: {0:string}: {1:string}", 2, array(request->header->key)[i], array(request->header->value)[i]);
+    // Get a worker for the URI
+    System_String8 currentDirectory = System_Directory_get_current();
+    System_String8 requestPath = System_Path_combine(currentDirectory, request->uri.source);
+    if (!String8_startsWith(requestPath, currentDirectory)) {
+        System_Console_writeLine("HTTPService_serve: 500 Error {0:string}", 1, requestPath);
+        response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
+        goto continue_IN;
+    }
+    if (System_Directory_exists(requestPath)) {
+        System_Console_writeLine("HTTPService_serve: Folder {0:string}", 1, requestPath);
+        System_String8 new_requestPath = System_String8_concat(requestPath, "index.html");
+        System_Memory_free(requestPath);
+        requestPath = new_requestPath;
+    }
+    if (!System_File_exists(requestPath)) {
+        System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
+        response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
+        goto continue_IN;
+    }
+    System_String8 requestExt = System_Path_getFileExtension(requestPath);
+    System_Size mime = 0;
+    for (; mime < Network_MimeTypes_Capacity; ++mime) {
+        if (String8_equals(requestExt, Network_MimeTypes[mime].extension)) break;
+    }
+    if (mime == Network_MimeTypes_Capacity) {
+        mime = 0;
+        System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
+        response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
+        goto continue_IN;
+    }
+    System_Console_writeLine("HTTPService_serve: File {0:string}", 1, requestPath);
+    struct System_File file = stack_System_File();
+    if (!stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) {
+        System_Console_writeLine("HTTPService_serve: File Error {0:string}", 1, requestPath);
+        response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
+        goto continue_IN;
+    }
+    System_Size fileSize = base_System_File_get_Length(&file);
+    System_String8 text = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
+    base_System_File_read(&file, text, fileSize);
+    base_System_File_close(&file);
 
-            System_Console_writeLine("HTTPService_serve: request->uri.source {0:string}", 1, request->uri.source);
-
-            // Get a worker for the URI
-            String8 currentDirectory = System_Directory_get_current();
-            String8 requestPath = System_Path_combine(currentDirectory, request->uri.source);
-            if (!String8_startsWith(requestPath, currentDirectory)) {
-                System_Console_writeLine("HTTPService_serve: 500 Error {0:string}", 1, requestPath);
-                response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
-                goto continue_IN;
-            }
-            if (System_Directory_exists(requestPath)) {
-                System_Console_writeLine("HTTPService_serve: Folder {0:string}", 1, requestPath);
-                String8 new_requestPath = System_String8_concat(requestPath, "index.html");
-                System_Memory_free(requestPath);
-                requestPath = new_requestPath;
-            }
-            if (!System_File_exists(requestPath)) {
-                System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
-                response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
-            }
-            else {
-                System_Console_writeLine("HTTPService_serve: File {0:string}", 1, requestPath);
-
-                struct System_File file = stack_System_File();
-                if (!stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) {
-                    System_Console_writeLine("HTTPService_serve: No File {0:string}", 1, requestPath);
-                    response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
-                    goto continue_IN;
-                }
-                System_Size fileSize = base_System_File_get_Length(&file);
-                System_String8 text = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
-                base_System_File_read(&file, text, fileSize);
-                base_System_File_close(&file);
-
-                response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
-                response->buffer = text;
-                response->bufferLength = fileSize;
-                String8 scratch = System_Memory_allocArray(typeof(System_Char8), System_UInt64_String8base10Length_DEFAULT);
-                stack_UInt64_toString8base10(fileSize, scratch);
-                base_System_String8Dictionary_add(response->header, "Content-Length", scratch);
-                base_System_String8Dictionary_add(response->header, "Content-Type", "text/plain");
-            }
+    response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
+    response->buffer = text;
+    response->bufferLength = fileSize;
+    System_String8 scratch = System_Memory_allocArray(typeof(System_Char8), System_UInt64_String8base10Length_DEFAULT + 1);
+    stack_System_UInt64_toString8base10(fileSize, scratch);
+    base_System_String8Dictionary_add(response->header, "Content-Length", scratch);
+    base_System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[mime].name);
 
 continue_IN:
-            System_Memory_free(requestPath);
-            System_Memory_free(request);
-            System_Memory_free(message->content);
-            System_Memory_free(message);
-            continue;
-        }
-        if (poller & Network_PollFlags_OUT) {
-            if (!response) {
-                System_Console_writeLine("HTTPService_serve: no response", 0);
-                continue;
-            }
+    System_Memory_free(requestExt);
+    System_Memory_free(requestPath);
+    System_Memory_free(request);
+    System_Memory_free(message->content);
+    System_Memory_free(message);
 
-            Char8  text1[System_String8_formatLimit_VALUE]; for (Size i = 0; i < System_String8_formatLimit_VALUE; ++i) text1[i] = 0;
-            Size position = 0;
-            position += stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", text1 + position, 2, response->status, Network_HTTPStatus_toString(response->status));
-
-            for (Size i = 0; i < base_System_String8Dictionary_get_Length(response->header); ++i) {
-                String8 key = base_System_String8Dictionary_get_index(response->header, i);
-                String8 value = base_System_String8Dictionary_get_value(response->header, key);
-                position += stack_System_String8_formatLine("{0:string}: {1:string}\r", text1 + position, 2, key, value);
-            }
-
-            position += stack_System_String8_formatLine("\r", text1 + position, 0);
-
-            if (!response->source) {
-                response->source = System_Memory_allocClass(typeof(Network_MessageHeader));
-                response->source->content = System_Memory_allocArray(typeof(Network_MessageBody), 2);
-            }
-
-            response->source->content[0].value = System_Memory_allocArray(typeof(System_Char8), position + 1);
-            System_String8_copyTo(text1, response->source->content[0].value);
-            response->source->content[0].length = position;
-            ++response->source->contentCount;
-
-            if (response->bufferLength) {
-                response->source->content[1].value = response->buffer;
-                response->source->content[1].length = response->bufferLength;
-                ++response->source->contentCount;
-                System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->source->content[0].value, response->source->content[1].value);
-            }
-            else
-                System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->source->content[0].value);
-
-            base_Network_TCPSocket_sendMessage(tcp, response->source, Network_MessageFlags_NOSIGNAL);
-
-            System_Memory_free(response->source->content[0].value);
-            System_Memory_free(response->source->content);
-            System_Memory_free(response->source);
-            System_Memory_free(response);
-        }
-        break;
+    poller = base_Network_TCPSocket_poll(tcp, Network_PollFlags_OUT);
+    if (!(poller & Network_PollFlags_OUT)) {
+        System_Console_writeLine("HTTPService_serve: Error Poll OUT {0:bool}", 1, (poller & Network_PollFlags_OUT));  
+        goto error;
     }
+    if (!response) {
+        System_Console_writeLine("HTTPService_serve: no response", 0);
+        goto error;
+    }
+    if (!response->source) {
+        response->source = System_Memory_allocClass(typeof(Network_MessageHeader));
+        response->source->content = System_Memory_allocArray(typeof(Network_MessageBody), 2);
+    }
+
+    System_Char8  text1[System_String8_formatLimit_VALUE]; Stack_zero(text1);
+    System_Size position = stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", text1 + position, 2, response->status, Network_HTTPStatus_toString(response->status));
+    for (System_Size i = 0; i < base_System_String8Dictionary_get_Length(response->header); ++i) {
+        System_String8 key = base_System_String8Dictionary_get_index(response->header, i);
+        System_String8 value = base_System_String8Dictionary_get_value(response->header, key);
+        position += stack_System_String8_formatLine("{0:string}: {1:string}\r", text1 + position, 2, key, value);
+    }
+    position += stack_System_String8_formatLine("\r", text1 + position, 0);
+
+    response->source->content[0].value = System_Memory_allocArray(typeof(System_Char8), position + 1);
+    System_String8_copyTo(text1, response->source->content[0].value);
+    response->source->content[0].length = position;
+    ++response->source->contentCount;
+
+    if (response->bufferLength) {
+        response->source->content[1].value = response->buffer;
+        response->source->content[1].length = response->bufferLength;
+        ++response->source->contentCount;
+    }
+    if (response->source->contentCount == 2 && mime < Network_MimeTypes_Capacity && System_String8_startsWith("text/", Network_MimeTypes[mime].name))
+        System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->source->content[0].value, response->source->content[1].value);
+    else
+        System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->source->content[0].value);
+
+    base_Network_TCPSocket_sendMessage(tcp, response->source, Network_MessageFlags_NOSIGNAL);
+
+    System_Memory_free(response->source->content[0].value);
+    System_Memory_free(response->source->content);
+    System_Memory_free(response->source);
+    System_Memory_free(response);
+
     base_Network_TCPSocket_close(tcp);
     return true;
 error:
@@ -375,7 +430,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
         return false;
     }
 
-    /*struct System_Signal_Set procmask; Stack_free(procmask);
+    /*struct System_Signal_Set procmask; Stack_zero(procmask);
     procmask.signal[0] |= (1 << (System_Signal_Code_SIGINT - 1));
     System_Signal_unblock(&procmask);
     System_Signal_signal(System_Signal_Code_SIGINT, System_Runtime_CTRLC);*/

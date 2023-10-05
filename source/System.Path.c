@@ -14,13 +14,19 @@ struct System_Type System_PathType = { .base = stack_System_Object(System_Type),
 
 System_String8 System_Path_getDirectoryName(System_String8 path) {
     Size i = System_String8_lastIndexOf(path, '/');
-    if (i == -1) return System_String8_Empty;
+    if (i == -1) return null;
     return System_String8_copySubstring(path, i + 1);
 }
 
 System_String8 System_Path_getFileName(System_String8 path) {
     Size i = System_String8_lastIndexOf(path, '/');
-    if (i == -1) return path; /* TODO: Memory_addReference? */
+    if (i == -1) return null;
+    return System_String8_copyOf(path, i + 1);
+}
+
+System_String8 System_Path_getFileExtension(System_String8 path) {
+    Size i = System_String8_lastIndexOf(path, '.');
+    if (i == -1) return null;
     return System_String8_copyOf(path, i + 1);
 }
 

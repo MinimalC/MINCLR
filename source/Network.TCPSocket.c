@@ -36,6 +36,12 @@ Network_TCPSocket  Network_TCPSocket_create() {
     return that;
 }
 
+void  base_Network_TCPSocket_close(Network_TCPSocket that) {
+    if (!that->socketId) return;
+    System_Syscall_close((System_Var)that->socketId);
+    that->socketId = null;
+}
+
 System_IntPtr  base_Network_TCPSocket_getSocketOption(Network_TCPSocket that, Network_SocketOption option) {
     System_IntPtr reture = 0;
     System_Size retureSize = sizeof(System_IntPtr);
@@ -91,25 +97,6 @@ Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket that, 
     Network_TCPSocket new = (Network_TCPSocket)System_Memory_allocClass(typeof(Network_TCPSocket)); 
     new->socketId = reture;
     return new;
-}
-
-typedef struct Network_PollDescriptor {
-    System_UInt32 socketId;
-    Network_PollFlags inEvents;
-    Network_PollFlags outEvents;
-} * Network_PollDescriptor;
-
-Network_PollFlags  base_Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request) {
-    struct Network_PollDescriptor socketD = {
-        .socketId = (System_UInt32)that->socketId,
-        .inEvents = request,
-        .outEvents = 0,
-    };
-    struct System_Syscall_timespec timeout = { .sec = 1, .nsec = 0 }; /* TODO */
-    System_Size reture = System_Syscall_ppoll(&socketD, 1, &timeout, null);
-    System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("Network_TCPSocket_poll Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-    return !reture ? 0 : socketD.outEvents;
 }
 
 Network_MessageHeader  base_Network_TCPSocket_receiveMessage(Network_TCPSocket that, Network_MessageFlags flags) {
@@ -172,10 +159,23 @@ void  base_Network_TCPSocket_sendMessage(Network_TCPSocket that, Network_Message
     if (errno) System_Console_writeLine("Network_TCPSocket_sendMessage Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
-void  base_Network_TCPSocket_close(Network_TCPSocket that) {
-    if (!that->socketId) return;
-    System_Syscall_close((System_Var)that->socketId);
-    that->socketId = null;
+typedef struct Network_PollDescriptor {
+    System_UInt32 socketId;
+    Network_PollFlags inEvents;
+    Network_PollFlags outEvents;
+} * Network_PollDescriptor;
+
+Network_PollFlags  base_Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request) {
+    struct Network_PollDescriptor socketD = {
+        .socketId = (System_UInt32)that->socketId,
+        .inEvents = request,
+        .outEvents = 0,
+    };
+    struct System_Syscall_timespec timeout = { .sec = 1, .nsec = 0 }; /* TODO */
+    System_Size reture = System_Syscall_spoll(&socketD, 1, &timeout, null);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("Network_TCPSocket_poll Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+    return !reture ? 0 : socketD.outEvents;
 }
 
 struct System_Type Network_MessageBodyType = { .base = stack_System_Object(System_Type), 

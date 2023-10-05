@@ -67,7 +67,7 @@ export System_String8  System_String8_join(System_String8Array that, System_UInt
 #define inline_System_String8_equals(chars0, chars1)  (0 == System_String8_compare(chars0, chars1))
 #define inline_System_String8_equalsSubstring(chars0, chars1, n)  (0 == System_String8_compareSubstring(chars0, chars1, n))
 
-#define System_String8_formatLimit_VALUE  65536
+#define System_String8_formatLimit_VALUE  System_UInt16_Max
 #define System_String8_MaxLength_VALUE  System_UInt32_Max
 
 export System_Size  stack_System_String8_format(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], ...);

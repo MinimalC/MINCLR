@@ -35,7 +35,7 @@ struct System_Type System_SignalType = { .base = stack_System_Object(System_Type
 
 void System_Signal_signal(System_Signal_Code signal, function_System_Signal_handler handler) {
 
-    struct System_Signal_Action new; System_Stack_free(new);
+    struct System_Signal_Action new; System_Stack_zero(new);
     new.handler = handler; 
     new.flags = 0; // SA_RESTORER SA_RESTART SA_NODEFER
     //new.restorer = &System_Syscall_sigreturn;
