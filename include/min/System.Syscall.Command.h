@@ -1,4 +1,7 @@
 /* Gemeinfrei. Public Domain. */
+#if !defined(have_System_Type)
+#include "System.Type.h"
+#endif
 #if !defined(have_System_Syscall_Command)
 #define have_System_Syscall_Command
 

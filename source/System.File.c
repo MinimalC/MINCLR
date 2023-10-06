@@ -87,8 +87,7 @@ void  base_System_File_write__string_size(File that, String8 value, Size count) 
 }
 
 void  base_System_File_writeEnd__arguments(File stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
-    Char8  message[System_String8_formatLimit_VALUE];
-    for (Size i = 0; i < System_String8_formatLimit_VALUE; ++i) message[i] = 0;
+    Char8  message[System_String8_formatLimit_VALUE]; System_Stack_zero(message);
     Size message_length = stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);
     base_System_File_write__string_size(stream, message, message_length);
 }
@@ -136,7 +135,7 @@ struct System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {
 };
 
 struct System_Type System_FileType = {
-    .base = stack_System_Object(System_Type),
+    .base = { .type = typeof(System_Type) },
 	.name = "File",
     .size = sizeof(struct System_File),
 	.baseType = &System_ObjectType,

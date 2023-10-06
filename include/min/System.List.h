@@ -14,7 +14,7 @@ typedef System_fixed struct System_List {
 
 }  * System_List;
 
-#define stack_System_List()  { .base = stack_System_Object(System_List), }
+
 #define new_System_List()  (base_System_List_init((System_List)System_Memory_allocClass(typeof(System_List))))
 
 export struct System_Type  System_ListType;
@@ -49,7 +49,7 @@ export void  base_System_List_add(System_List that, System_Object object);
 #if defined(using_System)
 #define List  System_List
 #define ListType  System_ListType
-#define stack_List  stack_System_List
+
 #define new_List  new_System_List
 #define function_List_init  function_System_List_init
 #define function_List_free  function_System_List_free

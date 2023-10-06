@@ -11,7 +11,7 @@ typedef System_fixed struct System_Object {
 
 } * System_Object;
 
-#define stack_System_Object(TYPE)  { .type = typeof(TYPE), }
+
 #define new_System_Object()  (base_System_Object_init((System_Object)System_Memory_allocClass(typeof(System_Object))))
 
 export struct System_Type  System_ObjectType;
@@ -41,7 +41,7 @@ export System_UInt64  base_System_Object_getSipHash(System_Object that);
 #define Object  System_Object
 #define ObjectType  System_ObjectType
 
-#define stack_Object  stack_System_Object
+
 #define new_Object  new_System_Object
 
 #define Object_get_Type  System_Object_get_Type

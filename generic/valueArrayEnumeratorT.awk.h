@@ -23,7 +23,7 @@ typedef System_fixed struct Generic_T0ArrayEnumerator {
 
 }  * Generic_T0ArrayEnumerator;
 
-#define stack_Generic_T0ArrayEnumerator(ARRAY)  { .base = stack_System_Object(Generic_T0ArrayEnumerator), .array = ARRAY, }
+
 #define new_Generic_T0ArrayEnumerator(ARRAY)  (base_Generic_T0ArrayEnumerator_init((Generic_T0ArrayEnumerator)System_Memory_allocClass(typeof(Generic_T0ArrayEnumerator)), ARRAY))
 
 export struct System_Type  Generic_T0ArrayEnumeratorType;
@@ -46,7 +46,7 @@ export System_Bool  base_Generic_T0ArrayEnumerator_moveNext(Generic_T0ArrayEnume
 #if defined(using_System)
 #define T0ArrayEnumerator  Generic_T0ArrayEnumerator
 #define T0ArrayEnumeratorType  Generic_T0ArrayEnumeratorType
-#define stack_T0ArrayEnumerator  stack_Generic_T0ArrayEnumerator
+
 #define new_T0ArrayEnumerator  new_Generic_T0ArrayEnumerator
 #define function_T0ArrayEnumerator_init  function_Generic_T0ArrayEnumerator_init
 #define function_T0ArrayEnumerator_free  function_Generic_T0ArrayEnumerator_free

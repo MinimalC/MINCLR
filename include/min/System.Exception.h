@@ -22,8 +22,8 @@ typedef System_fixed struct System_Exception {
 
 export struct System_Type  System_ExceptionType;
 
-#define stack_System_Exception(MESSAGE)  { .base = stack_System_Object(System_Exception), .message = MESSAGE }
-#define stack_System_Exception__error(ERROR, MESSAGE)  { .base = stack_System_Object(System_Exception), .error = ERROR, .message = MESSAGE }
+
+
 #define new_System_Exception(MESSAGE)  (base_System_Exception_init((System_Exception)System_Memory_allocClass(typeof(System_Exception)), MESSAGE))
 
 export thread System_Exception  System_Exception_current;
@@ -52,7 +52,7 @@ export System_Exception  base_System_Exception_init(System_Exception that, Syste
 #define Exception  System_Exception
 #define ExceptionType  System_ExceptionType
 #define new_Exception  new_System_Exception
-#define stack_Exception  stack_System_Exception
+
 
 #define Exception_try  System_Exception_try
 #define Exception_tryNot  System_Exception_tryNot

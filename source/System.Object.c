@@ -43,7 +43,7 @@ Object  base_System_Object_init(Object that) {
 }
 
 System_UInt64 base_System_Object_getSipHash(System_Object that) {
-    struct Crypto_SipHash48 sipHash48 = stack_Crypto_SipHash48();
+    struct Crypto_SipHash48 sipHash48; System_Stack_zero(sipHash48);
     Crypto_SipHash48_init(&sipHash48);
     System_IntPtr that_intptr = (System_IntPtr)that;
     Crypto_SipHash48_update(&sipHash48, &that_intptr, System_Size_Bytes);

@@ -1,12 +1,12 @@
 #define using_System
 #include <min/System.values.auto.h>
 #include <min/System.Console.h>
+#include <min/System.Memory.h>
 
 int System_Runtime_main(int argc, char * argv[]) {
 
     Size i;
-    Char8 scratch[100] = { };
-    for (i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
+    Char8 scratch[100]; System_Stack_zero(scratch);
 
 
     UInt8 the_uint8 = 127;

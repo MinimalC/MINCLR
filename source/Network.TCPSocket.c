@@ -59,10 +59,9 @@ void  base_Network_TCPSocket_setSocketOption(Network_TCPSocket that, Network_Soc
 
 void  base_Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address address, System_UInt16 port) {
 
-    struct Network_SocketAddress socketAddress = {
-        .family = Network_AddressFamily_IP4,
-        .port = System_UInt16_toNetworkOrder(port),
-    };
+    struct Network_SocketAddress socketAddress; System_Stack_zero(socketAddress);
+    socketAddress.family = Network_AddressFamily_IP4;
+    socketAddress.port = System_UInt16_toNetworkOrder(port);
     for (Size i = 0; i < 16; ++i) {
         if (i < 4) socketAddress.address[i] = address.address[i];
         else socketAddress.address[i] = 0;
@@ -86,7 +85,7 @@ Network_TCPSocket  base_Network_TCPSocket_accept(Network_TCPSocket that) {
 }
 
 Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags) {
-    struct Network_SocketAddress address;
+    struct Network_SocketAddress address; System_Stack_zero(address);
     System_Size addressLength = sizeof(struct Network_SocketAddress);
     System_IntPtr reture = System_Syscall_accept(that->socketId, &address, &addressLength, flags);
     System_ErrorCode errno = System_Syscall_get_Error();
@@ -101,20 +100,15 @@ Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket that, 
 
 Network_MessageHeader  base_Network_TCPSocket_receiveMessage(Network_TCPSocket that, Network_MessageFlags flags) {
 
-    UInt8 body[System_UInt16_Max];
-    for (Size i = 0; i < System_UInt16_Max; ++i) body[i] = 0;
+    UInt8 body[System_UInt16_Max]; System_Stack_zero(body);
 
-    struct Network_MessageBody iov;
+    struct Network_MessageBody iov; System_Stack_zero(iov);
     iov.value = body;
     iov.length = System_UInt16_Max;
 
-    struct Network_MessageHeader message;
-    message.name = null;
-    message.nameSize = 0;
+    struct Network_MessageHeader message; System_Stack_zero(message);
     message.content = &iov;
     message.contentCount = 1;
-    message.control = null;
-    message.controlCount = 0;
     message.flags = flags | Network_MessageFlags_WAITALL;
 
     System_ErrorCode errno = 0;
@@ -178,17 +172,17 @@ Network_PollFlags  base_Network_TCPSocket_poll(Network_TCPSocket that, Network_P
     return !reture ? 0 : socketD.outEvents;
 }
 
-struct System_Type Network_MessageBodyType = { .base = stack_System_Object(System_Type), 
+struct System_Type Network_MessageBodyType = { .base = { .type = typeof(System_Type) }, 
     .name = "MessageBody", 
     .size = sizeof(struct Network_MessageBody),
 };
 
-struct System_Type Network_MessageHeaderType = { .base = stack_System_Object(System_Type), 
+struct System_Type Network_MessageHeaderType = { .base = { .type = typeof(System_Type) }, 
     .name = "MessageHeader", 
     .size = sizeof(struct  Network_MessageHeader),
 };
 
-struct System_Type Network_TCPSocketType = { .base = stack_System_Object(System_Type), 
+struct System_Type Network_TCPSocketType = { .base = { .type = typeof(System_Type) }, 
     .name = "TCPSocket", 
     .size = sizeof(struct Network_TCPSocket),
     .baseType = typeof(System_Object),

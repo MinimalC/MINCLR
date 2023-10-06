@@ -15,7 +15,7 @@
 
 /*# System_UInt8 #*/
 
-struct System_Type System_UInt8Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt8", .size = sizeof(System_UInt8) };
+struct System_Type System_UInt8Type  = { .base = { .type = typeof(System_Type) }, .name = "System.UInt8", .size = sizeof(System_UInt8) };
 
 System_Bool  System_UInt8_isPrintable(System_UInt8 that) {
     return inline_System_UInt8_isPrintable(that);
@@ -115,7 +115,7 @@ System_Size  stack_System_UInt8_toString8base16(System_UInt8 that, System_Char8 
 }
 
 System_Size  stack_System_UInt8_toString8base10(System_UInt8 that, System_Char8 array[System_UInt8_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal = stack_System_Decimal();
+    struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__UInt8(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_UInt8_String8base10Length_DEFAULT - 1;
@@ -176,7 +176,7 @@ System_UInt8  System_UInt8_toNetworkOrder(System_UInt8 that) {
 
 /*# System_UInt16 #*/
 
-struct System_Type System_UInt16Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt16", .size = sizeof(System_UInt16) };
+struct System_Type System_UInt16Type  = { .base = { .type = typeof(System_Type) }, .name = "System.UInt16", .size = sizeof(System_UInt16) };
 
 System_Bool  System_UInt16_isPrintable(System_UInt16 that) {
     return inline_System_UInt16_isPrintable(that);
@@ -276,7 +276,7 @@ System_Size  stack_System_UInt16_toString8base16(System_UInt16 that, System_Char
 }
 
 System_Size  stack_System_UInt16_toString8base10(System_UInt16 that, System_Char8 array[System_UInt16_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal = stack_System_Decimal();
+    struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__UInt16(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_UInt16_String8base10Length_DEFAULT - 1;
@@ -339,7 +339,7 @@ System_UInt16  System_UInt16_toNetworkOrder(System_UInt16 that) {
 
 /*# System_UInt32 #*/
 
-struct System_Type System_UInt32Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt32", .size = sizeof(System_UInt32) };
+struct System_Type System_UInt32Type  = { .base = { .type = typeof(System_Type) }, .name = "System.UInt32", .size = sizeof(System_UInt32) };
 
 System_Bool  System_UInt32_isPrintable(System_UInt32 that) {
     return inline_System_UInt32_isPrintable(that);
@@ -439,7 +439,7 @@ System_Size  stack_System_UInt32_toString8base16(System_UInt32 that, System_Char
 }
 
 System_Size  stack_System_UInt32_toString8base10(System_UInt32 that, System_Char8 array[System_UInt32_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal = stack_System_Decimal();
+    struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__UInt32(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_UInt32_String8base10Length_DEFAULT - 1;
@@ -507,7 +507,7 @@ System_UInt32  System_UInt32_toNetworkOrder(System_UInt32 that) {
 
 /*# System_UInt64 #*/
 
-struct System_Type System_UInt64Type  = { .base = stack_System_Object(System_Type), .name = "System.UInt64", .size = sizeof(System_UInt64) };
+struct System_Type System_UInt64Type  = { .base = { .type = typeof(System_Type) }, .name = "System.UInt64", .size = sizeof(System_UInt64) };
 
 System_Bool  System_UInt64_isPrintable(System_UInt64 that) {
     return inline_System_UInt64_isPrintable(that);
@@ -607,7 +607,7 @@ System_Size  stack_System_UInt64_toString8base16(System_UInt64 that, System_Char
 }
 
 System_Size  stack_System_UInt64_toString8base10(System_UInt64 that, System_Char8 array[System_UInt64_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal = stack_System_Decimal();
+    struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__UInt64(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_UInt64_String8base10Length_DEFAULT - 1;
@@ -682,7 +682,7 @@ System_UInt64  System_UInt64_toNetworkOrder(System_UInt64 that) {
 /*# System_Int8 #*/
 
 
-struct System_Type System_Int8Type  = { .base = stack_System_Object(System_Type), .name = "System.Int8", .size = sizeof(System_Int8) };
+struct System_Type System_Int8Type  = { .base = { .type = typeof(System_Type) }, .name = "System.Int8", .size = sizeof(System_Int8) };
 
 System_Bool  System_Int8_isPrintable(System_Int8 that) {
     return inline_System_Int8_isPrintable(that);
@@ -797,7 +797,7 @@ System_Size  stack_System_Int8_toString8base16(System_Int8 that, System_Char8 ar
 }
 
 System_Size  stack_System_Int8_toString8base10(System_Int8 that, System_Char8 array[System_Int8_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal = stack_System_Decimal();
+    struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__Int8(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_Int8_String8base10Length_DEFAULT - 1;
@@ -840,7 +840,7 @@ System_Size  stack_System_Int8_toString8base10(System_Int8 that, System_Char8 ar
 /*# System_Int16 #*/
 
 
-struct System_Type System_Int16Type  = { .base = stack_System_Object(System_Type), .name = "System.Int16", .size = sizeof(System_Int16) };
+struct System_Type System_Int16Type  = { .base = { .type = typeof(System_Type) }, .name = "System.Int16", .size = sizeof(System_Int16) };
 
 System_Bool  System_Int16_isPrintable(System_Int16 that) {
     return inline_System_Int16_isPrintable(that);
@@ -955,7 +955,7 @@ System_Size  stack_System_Int16_toString8base16(System_Int16 that, System_Char8 
 }
 
 System_Size  stack_System_Int16_toString8base10(System_Int16 that, System_Char8 array[System_Int16_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal = stack_System_Decimal();
+    struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__Int16(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_Int16_String8base10Length_DEFAULT - 1;
@@ -998,7 +998,7 @@ System_Size  stack_System_Int16_toString8base10(System_Int16 that, System_Char8 
 /*# System_Int32 #*/
 
 
-struct System_Type System_Int32Type  = { .base = stack_System_Object(System_Type), .name = "System.Int32", .size = sizeof(System_Int32) };
+struct System_Type System_Int32Type  = { .base = { .type = typeof(System_Type) }, .name = "System.Int32", .size = sizeof(System_Int32) };
 
 System_Bool  System_Int32_isPrintable(System_Int32 that) {
     return inline_System_Int32_isPrintable(that);
@@ -1113,7 +1113,7 @@ System_Size  stack_System_Int32_toString8base16(System_Int32 that, System_Char8 
 }
 
 System_Size  stack_System_Int32_toString8base10(System_Int32 that, System_Char8 array[System_Int32_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal = stack_System_Decimal();
+    struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__Int32(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_Int32_String8base10Length_DEFAULT - 1;
@@ -1156,7 +1156,7 @@ System_Size  stack_System_Int32_toString8base10(System_Int32 that, System_Char8 
 /*# System_Int64 #*/
 
 
-struct System_Type System_Int64Type  = { .base = stack_System_Object(System_Type), .name = "System.Int64", .size = sizeof(System_Int64) };
+struct System_Type System_Int64Type  = { .base = { .type = typeof(System_Type) }, .name = "System.Int64", .size = sizeof(System_Int64) };
 
 System_Bool  System_Int64_isPrintable(System_Int64 that) {
     return inline_System_Int64_isPrintable(that);
@@ -1271,7 +1271,7 @@ System_Size  stack_System_Int64_toString8base16(System_Int64 that, System_Char8 
 }
 
 System_Size  stack_System_Int64_toString8base10(System_Int64 that, System_Char8 array[System_Int64_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal = stack_System_Decimal();
+    struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__Int64(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_Int64_String8base10Length_DEFAULT - 1;

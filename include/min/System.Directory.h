@@ -2,9 +2,6 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
-#if !defined(have_System_Syscall)
-#include "System.Syscall.h"
-#endif
 #if !defined(have_System_Directory)
 #define have_System_Directory
 

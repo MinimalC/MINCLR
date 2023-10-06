@@ -2,9 +2,6 @@
 #if !defined(have_System_Type)
 #include <min/System.Type.h>
 #endif
-#if !defined(have_System_File)
-#include <min/System.File.h>
-#endif
 #if !defined(have_System_ELFAssembly)
 
 #define System_ELFAssembly_Magic  "\177ELF"
@@ -791,7 +788,7 @@ typedef struct System_ELF64Assembly {
 
 } * System_ELF64Assembly;
 
-#define stack_System_ELF64Assembly()  (struct System_ELF64Assembly){ .base = stack_System_Object(System_ELF64Assembly), .name = 0, .buffer = 0, .link = 0 }
+
 #define new_System_ELF64Assembly()  (base_System_ELF64Assembly_init((System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly))))
 
 export struct System_Type  System_ELF64AssemblyType;

@@ -106,7 +106,7 @@ export void  base_System_File_close(System_File that);
 #define System_File_set_Position(o,...)  ((function_System_File_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
 #define System_File_close(o)  ((function_System_File_close)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_File_close))(o)
 
-#define stack_System_File() { .base = stack_System_Object(System_File) }
+
 #define new_System_File()  (base_System_File_init((System_File)System_Memory_allocClass(typeof(System_File))))
 
 #if defined(using_System)
@@ -126,7 +126,7 @@ export void  base_System_File_close(System_File that);
 #define FileType  System_FileType
 
 #define new_File  new_System_File
-#define stack_File  stack_System_File
+
 
 #define File_free  System_File_free
 #define File_init  System_File_init

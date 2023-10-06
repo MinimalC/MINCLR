@@ -17,7 +17,6 @@ typedef System_fixed struct Generic_T0 {
 
 }  * Generic_T0;
 
-#define stack_Generic_T0()  { .base = stack_System_Object(Generic_T0) }
 #define new_Generic_T0()  (base_Generic_T0_init((Generic_T0)System_Memory_allocClass(typeof(Generic_T0))))
 
 export struct System_Type  Generic_T0Type;
@@ -34,7 +33,7 @@ export void  base_Generic_T0_free(Generic_T0 that);
 #if defined(using_Generic)
 #define T0  Generic_T0
 #define T0Type  Generic_T0Type
-#define stack_T0  stack_Generic_T0
+
 #define new_T0  new_Generic_T0
 #define T0_init  Generic_T0_init
 #define T0_free  Generic_T0_free

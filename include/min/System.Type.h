@@ -151,42 +151,30 @@ export System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type 
 #define Type_isAssignableFrom  System_Type_isAssignableFrom
 #endif
 
-
-export System_Var  System_Memory_allocClass(System_Type type);
-export System_Var  System_Memory_allocArray(System_Type type, System_Size count);
-export void System_Memory_reallocArray(System_Var ref that, System_Size count);
-export System_Bool System_Memory_isAllocated(System_Var that);
-export System_Var System_Memory_addReference(System_Var that);
-export void  System_Memory_freeClass(System_Var ref that);
-export void  System_Memory_debug(void);
-
-#define System_Memory_free(THAT) (System_Memory_freeClass((System_Var ref)&THAT))
-
-#if defined(using_System)
-#define Memory_allocClass  System_Memory_allocClass
-#define Memory_allocArray  System_Memory_allocArray
-#define Memory_reallocArray  System_Memory_reallocArray
-#define Memory_isAllocated  System_Memory_isAllocated
-#define Memory_addReference  System_Memory_addReference
-#define Memory_freeClass  System_Memory_freeClass
-#define Memory_free  System_Memory_free
-#endif
-
-
-#endif
 #if !defined(have_System_enum)
 #define have_System_enum
-
 export System_String8  System_enum_getName(System_Type type, System_IntPtr value);
-
 #define inline_System_enum_getName(CLASS, VALUE)  System_enum_getName(typeof(CLASS), (System_IntPtr)(VALUE))
-
 /* TODO: inline_System_enum_toString is running into enum_System_Origin_toString(value), possibly returning a string for that value */
 #define inline_System_enum_toString(ENUM, VALUE)  ccc(enum_,ENUM,_toString)(VALUE)
-
 #if defined(using_System)
 #define enum_getName  System_enum_getName
 #define inline_enum_getName  inline_System_enum_getName
 #define inline_enum_toString  inline_System_enum_toString
+#endif
+#endif
+
+export void  System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Size line);
+export void  System_Debug_writeLine__message(const System_String8 message, ...);
+#if !DEBUG
+#define System_Debug_assert(expression) (void)(expression)
+#define System_Debug_writeLine(message,...) (void)(message, __VA_ARGS__)
+#else
+#define System_Debug_assert(expression)  (void)(!(expression) ? System_Debug_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Size)__LINE__) : 0)
+#define System_Debug_writeLine(message,...)  (void)System_Debug_writeLine__message((System_String8)message, __VA_ARGS__)
+#endif
+#if defined(using_System)
+#define Debug_assert  System_Debug_assert
+#define Debug_writeLine  System_Debug_writeLine
 #endif
 #endif

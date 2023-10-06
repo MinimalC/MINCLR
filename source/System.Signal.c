@@ -13,7 +13,7 @@
 
 /*# System_Signal #*/
 
-struct System_Type System_SignalType = { .base = stack_System_Object(System_Type), .name = "Signal", };
+struct System_Type System_SignalType = { .base = { .type = typeof(System_Type) }, .name = "Signal", };
 
 #define __sigmask(sig) (((unsigned long) 1) << ((unsigned)((sig) - 1) % (8 * sizeof (unsigned long))))
 #define __sigword(sig) ((unsigned)((sig) - 1) / (8 * sizeof (unsigned long)))
@@ -57,8 +57,6 @@ void System_Signal_signal(System_Signal_Code signal, function_System_Signal_hand
 */
 
 void System_Signal_getProcMask(System_Signal_Set old) {
-
-    for (System_Size i = 0; i < System_Signal_Set_LENGTH; ++i) old->signal[i] = 0;
 
     System_Syscall_sigprocmask(0, null, old, sizeof(struct System_Signal_Set));
 

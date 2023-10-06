@@ -1,7 +1,9 @@
 /* Gemeinfrei. Public Domain. */
-
 #if !defined(have_System_Type)
 #include "System.Type.h"
+#endif
+#if !defined(have_System_String8)
+#include "System.String8.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"

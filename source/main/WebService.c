@@ -39,7 +39,7 @@ typedef struct Network_HTTPRequest {
 } * Network_HTTPRequest;
 
 struct System_Type Network_HTTPRequestType = {
-    .base = stack_System_Object(System_Type),
+    .base = { .type = typeof(System_Type) },
     .name = "HTTPRequest",
     .size = sizeof(struct Network_HTTPRequest),
 };
@@ -49,8 +49,8 @@ Network_HTTPRequest HTTPRequest_parse(Network_MessageHeader message) {
     Debug_assert(message->contentCount);
 
     struct Network_HTTPRequest httpMessage; Stack_zero(httpMessage);
-    System_String8 keys[64]; for (Size i = 0; i < 64; ++i) keys[i] = null;
-    System_String8 values[64]; for (Size i = 0; i < 64; ++i) values[i] = null;
+    System_String8 keys[64]; Stack_zero(keys);
+    System_String8 values[64]; Stack_zero(values);
     struct System_String8Dictionary httpHeader; Stack_zero(httpHeader);
     httpHeader.capacity = 64;
     httpHeader.key = &keys;
@@ -187,7 +187,7 @@ typedef struct Network_HTTPResponse {
 } * Network_HTTPResponse;
 
 struct System_Type Network_HTTPResponseType = {
-    .base = stack_System_Object(System_Type),
+    .base = { .type = typeof(System_Type) },
     .name = "HTTPResponse",
     .size = sizeof(struct Network_HTTPResponse),
 };
@@ -339,7 +339,7 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
         goto continue_IN;
     }
     System_Console_writeLine("HTTPService_serve: File {0:string}", 1, requestPath);
-    struct System_File file = stack_System_File();
+    struct System_File file; System_Stack_zero(file);
     if (!stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) {
         System_Console_writeLine("HTTPService_serve: File Error {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_Error);

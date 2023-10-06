@@ -30,7 +30,7 @@ typedef System_fixed struct Generic_T0Array {
 
 }  * Generic_T0Array;
 
-#define stack_Generic_T0Array(LENGTH)  { .base = stack_System_Object(Generic_T0Array), .length = LENGTH }
+
 #define new_Generic_T0Array(LENGTH)  (base_Generic_T0Array_init((Generic_T0Array)System_Memory_allocClass(typeof(Generic_T0Array)), LENGTH))
 
 export struct System_Type  Generic_T0ArrayType;
@@ -65,7 +65,7 @@ export System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array th
 #if defined(using_System)
 #define T0Array  Generic_T0Array
 #define T0ArrayType  Generic_T0ArrayType
-#define stack_T0Array  stack_Generic_T0Array
+
 #define new_T0Array  new_Generic_T0Array
 #define T0Array_init  Generic_T0Array_init
 #define T0Array_free  Generic_T0Array_free

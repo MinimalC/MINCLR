@@ -18,7 +18,7 @@ typedef System_fixed struct System_ListEnumerator {
 
 }  * System_ListEnumerator;
 
-#define stack_System_ListEnumerator()  (struct System_ListEnumerator){ .base = stack_System_Object(System_ListEnumerator), }
+
 #define new_System_ListEnumerator(ARRAY)  (base_System_ListEnumerator_init((System_ListEnumerator)System_Memory_allocClass(typeof(System_ListEnumerator), ARRAY)))
 
 export struct System_Type  System_ListEnumeratorType;
@@ -41,7 +41,7 @@ export System_Bool  base_System_ListEnumerator_moveNext(System_ListEnumerator th
 #if defined(using_System)
 #define ListArrayEnumerator  System_ListEnumerator
 #define ListArrayEnumeratorType  System_ListEnumeratorType
-#define stack_ListArrayEnumerator  stack_System_ListEnumerator
+
 #define new_ListArrayEnumerator  new_System_ListEnumerator
 #define function_ListArrayEnumerator_init  function_System_ListEnumerator_init
 #define function_ListArrayEnumerator_free  function_System_ListEnumerator_free

@@ -10,7 +10,7 @@
 #if !defined(have_Generic_T0)
 #define have_Generic_T0
 
-typedef System_Unsigned  Generic_T0;
+typedef System_IntPtr  Generic_T0;
 enum {
     Generic_T0_Null,
 };

@@ -26,8 +26,7 @@ int System_Runtime_main(int argc, char * argv[]) {
     File_set_Position(file, 0);
 
 	/* Test04: Read from the File */
-    Char8 text[6];
-    for (Size i = 0; i < 6; ++i) text[i] = 0x00;
+    Char8 text[6]; Stack_zero(text);
 
     Size count =  File_read(file, text, 5);
 

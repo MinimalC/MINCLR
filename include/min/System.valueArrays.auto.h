@@ -22,7 +22,7 @@ typedef System_fixed struct System_UInt8Array {
 
 }  * System_UInt8Array;
 
-#define stack_System_UInt8Array(LENGTH)  { .base = stack_System_Object(System_UInt8Array), .length = LENGTH }
+
 #define new_System_UInt8Array(LENGTH)  (base_System_UInt8Array_init((System_UInt8Array)System_Memory_allocClass(typeof(System_UInt8Array)), LENGTH))
 
 export struct System_Type  System_UInt8ArrayType;
@@ -57,7 +57,7 @@ export System_IEnumerator  base_System_UInt8Array_getEnumerator(System_UInt8Arra
 #if defined(using_System)
 #define UInt8Array  System_UInt8Array
 #define UInt8ArrayType  System_UInt8ArrayType
-#define stack_UInt8Array  stack_System_UInt8Array
+
 #define new_UInt8Array  new_System_UInt8Array
 #define UInt8Array_init  System_UInt8Array_init
 #define UInt8Array_free  System_UInt8Array_free
@@ -103,7 +103,7 @@ typedef System_fixed struct System_UInt16Array {
 
 }  * System_UInt16Array;
 
-#define stack_System_UInt16Array(LENGTH)  { .base = stack_System_Object(System_UInt16Array), .length = LENGTH }
+
 #define new_System_UInt16Array(LENGTH)  (base_System_UInt16Array_init((System_UInt16Array)System_Memory_allocClass(typeof(System_UInt16Array)), LENGTH))
 
 export struct System_Type  System_UInt16ArrayType;
@@ -138,7 +138,7 @@ export System_IEnumerator  base_System_UInt16Array_getEnumerator(System_UInt16Ar
 #if defined(using_System)
 #define UInt16Array  System_UInt16Array
 #define UInt16ArrayType  System_UInt16ArrayType
-#define stack_UInt16Array  stack_System_UInt16Array
+
 #define new_UInt16Array  new_System_UInt16Array
 #define UInt16Array_init  System_UInt16Array_init
 #define UInt16Array_free  System_UInt16Array_free
@@ -184,7 +184,7 @@ typedef System_fixed struct System_UInt32Array {
 
 }  * System_UInt32Array;
 
-#define stack_System_UInt32Array(LENGTH)  { .base = stack_System_Object(System_UInt32Array), .length = LENGTH }
+
 #define new_System_UInt32Array(LENGTH)  (base_System_UInt32Array_init((System_UInt32Array)System_Memory_allocClass(typeof(System_UInt32Array)), LENGTH))
 
 export struct System_Type  System_UInt32ArrayType;
@@ -219,7 +219,7 @@ export System_IEnumerator  base_System_UInt32Array_getEnumerator(System_UInt32Ar
 #if defined(using_System)
 #define UInt32Array  System_UInt32Array
 #define UInt32ArrayType  System_UInt32ArrayType
-#define stack_UInt32Array  stack_System_UInt32Array
+
 #define new_UInt32Array  new_System_UInt32Array
 #define UInt32Array_init  System_UInt32Array_init
 #define UInt32Array_free  System_UInt32Array_free
@@ -265,7 +265,7 @@ typedef System_fixed struct System_UInt64Array {
 
 }  * System_UInt64Array;
 
-#define stack_System_UInt64Array(LENGTH)  { .base = stack_System_Object(System_UInt64Array), .length = LENGTH }
+
 #define new_System_UInt64Array(LENGTH)  (base_System_UInt64Array_init((System_UInt64Array)System_Memory_allocClass(typeof(System_UInt64Array)), LENGTH))
 
 export struct System_Type  System_UInt64ArrayType;
@@ -300,7 +300,7 @@ export System_IEnumerator  base_System_UInt64Array_getEnumerator(System_UInt64Ar
 #if defined(using_System)
 #define UInt64Array  System_UInt64Array
 #define UInt64ArrayType  System_UInt64ArrayType
-#define stack_UInt64Array  stack_System_UInt64Array
+
 #define new_UInt64Array  new_System_UInt64Array
 #define UInt64Array_init  System_UInt64Array_init
 #define UInt64Array_free  System_UInt64Array_free
@@ -346,7 +346,7 @@ typedef System_fixed struct System_Int8Array {
 
 }  * System_Int8Array;
 
-#define stack_System_Int8Array(LENGTH)  { .base = stack_System_Object(System_Int8Array), .length = LENGTH }
+
 #define new_System_Int8Array(LENGTH)  (base_System_Int8Array_init((System_Int8Array)System_Memory_allocClass(typeof(System_Int8Array)), LENGTH))
 
 export struct System_Type  System_Int8ArrayType;
@@ -381,7 +381,7 @@ export System_IEnumerator  base_System_Int8Array_getEnumerator(System_Int8Array 
 #if defined(using_System)
 #define Int8Array  System_Int8Array
 #define Int8ArrayType  System_Int8ArrayType
-#define stack_Int8Array  stack_System_Int8Array
+
 #define new_Int8Array  new_System_Int8Array
 #define Int8Array_init  System_Int8Array_init
 #define Int8Array_free  System_Int8Array_free
@@ -427,7 +427,7 @@ typedef System_fixed struct System_Int16Array {
 
 }  * System_Int16Array;
 
-#define stack_System_Int16Array(LENGTH)  { .base = stack_System_Object(System_Int16Array), .length = LENGTH }
+
 #define new_System_Int16Array(LENGTH)  (base_System_Int16Array_init((System_Int16Array)System_Memory_allocClass(typeof(System_Int16Array)), LENGTH))
 
 export struct System_Type  System_Int16ArrayType;
@@ -462,7 +462,7 @@ export System_IEnumerator  base_System_Int16Array_getEnumerator(System_Int16Arra
 #if defined(using_System)
 #define Int16Array  System_Int16Array
 #define Int16ArrayType  System_Int16ArrayType
-#define stack_Int16Array  stack_System_Int16Array
+
 #define new_Int16Array  new_System_Int16Array
 #define Int16Array_init  System_Int16Array_init
 #define Int16Array_free  System_Int16Array_free
@@ -508,7 +508,7 @@ typedef System_fixed struct System_Int32Array {
 
 }  * System_Int32Array;
 
-#define stack_System_Int32Array(LENGTH)  { .base = stack_System_Object(System_Int32Array), .length = LENGTH }
+
 #define new_System_Int32Array(LENGTH)  (base_System_Int32Array_init((System_Int32Array)System_Memory_allocClass(typeof(System_Int32Array)), LENGTH))
 
 export struct System_Type  System_Int32ArrayType;
@@ -543,7 +543,7 @@ export System_IEnumerator  base_System_Int32Array_getEnumerator(System_Int32Arra
 #if defined(using_System)
 #define Int32Array  System_Int32Array
 #define Int32ArrayType  System_Int32ArrayType
-#define stack_Int32Array  stack_System_Int32Array
+
 #define new_Int32Array  new_System_Int32Array
 #define Int32Array_init  System_Int32Array_init
 #define Int32Array_free  System_Int32Array_free
@@ -589,7 +589,7 @@ typedef System_fixed struct System_Int64Array {
 
 }  * System_Int64Array;
 
-#define stack_System_Int64Array(LENGTH)  { .base = stack_System_Object(System_Int64Array), .length = LENGTH }
+
 #define new_System_Int64Array(LENGTH)  (base_System_Int64Array_init((System_Int64Array)System_Memory_allocClass(typeof(System_Int64Array)), LENGTH))
 
 export struct System_Type  System_Int64ArrayType;
@@ -624,7 +624,7 @@ export System_IEnumerator  base_System_Int64Array_getEnumerator(System_Int64Arra
 #if defined(using_System)
 #define Int64Array  System_Int64Array
 #define Int64ArrayType  System_Int64ArrayType
-#define stack_Int64Array  stack_System_Int64Array
+
 #define new_Int64Array  new_System_Int64Array
 #define Int64Array_init  System_Int64Array_init
 #define Int64Array_free  System_Int64Array_free
@@ -666,7 +666,7 @@ typedef System_fixed struct System_UInt8ArrayEnumerator {
 
 }  * System_UInt8ArrayEnumerator;
 
-#define stack_System_UInt8ArrayEnumerator(ARRAY)  { .base = stack_System_Object(System_UInt8ArrayEnumerator), .array = ARRAY, }
+
 #define new_System_UInt8ArrayEnumerator(ARRAY)  (base_System_UInt8ArrayEnumerator_init((System_UInt8ArrayEnumerator)System_Memory_allocClass(typeof(System_UInt8ArrayEnumerator)), ARRAY))
 
 export struct System_Type  System_UInt8ArrayEnumeratorType;
@@ -689,7 +689,7 @@ export System_Bool  base_System_UInt8ArrayEnumerator_moveNext(System_UInt8ArrayE
 #if defined(using_System)
 #define UInt8ArrayEnumerator  System_UInt8ArrayEnumerator
 #define UInt8ArrayEnumeratorType  System_UInt8ArrayEnumeratorType
-#define stack_UInt8ArrayEnumerator  stack_System_UInt8ArrayEnumerator
+
 #define new_UInt8ArrayEnumerator  new_System_UInt8ArrayEnumerator
 #define function_UInt8ArrayEnumerator_init  function_System_UInt8ArrayEnumerator_init
 #define function_UInt8ArrayEnumerator_free  function_System_UInt8ArrayEnumerator_free
@@ -716,7 +716,7 @@ typedef System_fixed struct System_UInt16ArrayEnumerator {
 
 }  * System_UInt16ArrayEnumerator;
 
-#define stack_System_UInt16ArrayEnumerator(ARRAY)  { .base = stack_System_Object(System_UInt16ArrayEnumerator), .array = ARRAY, }
+
 #define new_System_UInt16ArrayEnumerator(ARRAY)  (base_System_UInt16ArrayEnumerator_init((System_UInt16ArrayEnumerator)System_Memory_allocClass(typeof(System_UInt16ArrayEnumerator)), ARRAY))
 
 export struct System_Type  System_UInt16ArrayEnumeratorType;
@@ -739,7 +739,7 @@ export System_Bool  base_System_UInt16ArrayEnumerator_moveNext(System_UInt16Arra
 #if defined(using_System)
 #define UInt16ArrayEnumerator  System_UInt16ArrayEnumerator
 #define UInt16ArrayEnumeratorType  System_UInt16ArrayEnumeratorType
-#define stack_UInt16ArrayEnumerator  stack_System_UInt16ArrayEnumerator
+
 #define new_UInt16ArrayEnumerator  new_System_UInt16ArrayEnumerator
 #define function_UInt16ArrayEnumerator_init  function_System_UInt16ArrayEnumerator_init
 #define function_UInt16ArrayEnumerator_free  function_System_UInt16ArrayEnumerator_free
@@ -766,7 +766,7 @@ typedef System_fixed struct System_UInt32ArrayEnumerator {
 
 }  * System_UInt32ArrayEnumerator;
 
-#define stack_System_UInt32ArrayEnumerator(ARRAY)  { .base = stack_System_Object(System_UInt32ArrayEnumerator), .array = ARRAY, }
+
 #define new_System_UInt32ArrayEnumerator(ARRAY)  (base_System_UInt32ArrayEnumerator_init((System_UInt32ArrayEnumerator)System_Memory_allocClass(typeof(System_UInt32ArrayEnumerator)), ARRAY))
 
 export struct System_Type  System_UInt32ArrayEnumeratorType;
@@ -789,7 +789,7 @@ export System_Bool  base_System_UInt32ArrayEnumerator_moveNext(System_UInt32Arra
 #if defined(using_System)
 #define UInt32ArrayEnumerator  System_UInt32ArrayEnumerator
 #define UInt32ArrayEnumeratorType  System_UInt32ArrayEnumeratorType
-#define stack_UInt32ArrayEnumerator  stack_System_UInt32ArrayEnumerator
+
 #define new_UInt32ArrayEnumerator  new_System_UInt32ArrayEnumerator
 #define function_UInt32ArrayEnumerator_init  function_System_UInt32ArrayEnumerator_init
 #define function_UInt32ArrayEnumerator_free  function_System_UInt32ArrayEnumerator_free
@@ -816,7 +816,7 @@ typedef System_fixed struct System_UInt64ArrayEnumerator {
 
 }  * System_UInt64ArrayEnumerator;
 
-#define stack_System_UInt64ArrayEnumerator(ARRAY)  { .base = stack_System_Object(System_UInt64ArrayEnumerator), .array = ARRAY, }
+
 #define new_System_UInt64ArrayEnumerator(ARRAY)  (base_System_UInt64ArrayEnumerator_init((System_UInt64ArrayEnumerator)System_Memory_allocClass(typeof(System_UInt64ArrayEnumerator)), ARRAY))
 
 export struct System_Type  System_UInt64ArrayEnumeratorType;
@@ -839,7 +839,7 @@ export System_Bool  base_System_UInt64ArrayEnumerator_moveNext(System_UInt64Arra
 #if defined(using_System)
 #define UInt64ArrayEnumerator  System_UInt64ArrayEnumerator
 #define UInt64ArrayEnumeratorType  System_UInt64ArrayEnumeratorType
-#define stack_UInt64ArrayEnumerator  stack_System_UInt64ArrayEnumerator
+
 #define new_UInt64ArrayEnumerator  new_System_UInt64ArrayEnumerator
 #define function_UInt64ArrayEnumerator_init  function_System_UInt64ArrayEnumerator_init
 #define function_UInt64ArrayEnumerator_free  function_System_UInt64ArrayEnumerator_free
@@ -866,7 +866,7 @@ typedef System_fixed struct System_Int8ArrayEnumerator {
 
 }  * System_Int8ArrayEnumerator;
 
-#define stack_System_Int8ArrayEnumerator(ARRAY)  { .base = stack_System_Object(System_Int8ArrayEnumerator), .array = ARRAY, }
+
 #define new_System_Int8ArrayEnumerator(ARRAY)  (base_System_Int8ArrayEnumerator_init((System_Int8ArrayEnumerator)System_Memory_allocClass(typeof(System_Int8ArrayEnumerator)), ARRAY))
 
 export struct System_Type  System_Int8ArrayEnumeratorType;
@@ -889,7 +889,7 @@ export System_Bool  base_System_Int8ArrayEnumerator_moveNext(System_Int8ArrayEnu
 #if defined(using_System)
 #define Int8ArrayEnumerator  System_Int8ArrayEnumerator
 #define Int8ArrayEnumeratorType  System_Int8ArrayEnumeratorType
-#define stack_Int8ArrayEnumerator  stack_System_Int8ArrayEnumerator
+
 #define new_Int8ArrayEnumerator  new_System_Int8ArrayEnumerator
 #define function_Int8ArrayEnumerator_init  function_System_Int8ArrayEnumerator_init
 #define function_Int8ArrayEnumerator_free  function_System_Int8ArrayEnumerator_free
@@ -916,7 +916,7 @@ typedef System_fixed struct System_Int16ArrayEnumerator {
 
 }  * System_Int16ArrayEnumerator;
 
-#define stack_System_Int16ArrayEnumerator(ARRAY)  { .base = stack_System_Object(System_Int16ArrayEnumerator), .array = ARRAY, }
+
 #define new_System_Int16ArrayEnumerator(ARRAY)  (base_System_Int16ArrayEnumerator_init((System_Int16ArrayEnumerator)System_Memory_allocClass(typeof(System_Int16ArrayEnumerator)), ARRAY))
 
 export struct System_Type  System_Int16ArrayEnumeratorType;
@@ -939,7 +939,7 @@ export System_Bool  base_System_Int16ArrayEnumerator_moveNext(System_Int16ArrayE
 #if defined(using_System)
 #define Int16ArrayEnumerator  System_Int16ArrayEnumerator
 #define Int16ArrayEnumeratorType  System_Int16ArrayEnumeratorType
-#define stack_Int16ArrayEnumerator  stack_System_Int16ArrayEnumerator
+
 #define new_Int16ArrayEnumerator  new_System_Int16ArrayEnumerator
 #define function_Int16ArrayEnumerator_init  function_System_Int16ArrayEnumerator_init
 #define function_Int16ArrayEnumerator_free  function_System_Int16ArrayEnumerator_free
@@ -966,7 +966,7 @@ typedef System_fixed struct System_Int32ArrayEnumerator {
 
 }  * System_Int32ArrayEnumerator;
 
-#define stack_System_Int32ArrayEnumerator(ARRAY)  { .base = stack_System_Object(System_Int32ArrayEnumerator), .array = ARRAY, }
+
 #define new_System_Int32ArrayEnumerator(ARRAY)  (base_System_Int32ArrayEnumerator_init((System_Int32ArrayEnumerator)System_Memory_allocClass(typeof(System_Int32ArrayEnumerator)), ARRAY))
 
 export struct System_Type  System_Int32ArrayEnumeratorType;
@@ -989,7 +989,7 @@ export System_Bool  base_System_Int32ArrayEnumerator_moveNext(System_Int32ArrayE
 #if defined(using_System)
 #define Int32ArrayEnumerator  System_Int32ArrayEnumerator
 #define Int32ArrayEnumeratorType  System_Int32ArrayEnumeratorType
-#define stack_Int32ArrayEnumerator  stack_System_Int32ArrayEnumerator
+
 #define new_Int32ArrayEnumerator  new_System_Int32ArrayEnumerator
 #define function_Int32ArrayEnumerator_init  function_System_Int32ArrayEnumerator_init
 #define function_Int32ArrayEnumerator_free  function_System_Int32ArrayEnumerator_free
@@ -1016,7 +1016,7 @@ typedef System_fixed struct System_Int64ArrayEnumerator {
 
 }  * System_Int64ArrayEnumerator;
 
-#define stack_System_Int64ArrayEnumerator(ARRAY)  { .base = stack_System_Object(System_Int64ArrayEnumerator), .array = ARRAY, }
+
 #define new_System_Int64ArrayEnumerator(ARRAY)  (base_System_Int64ArrayEnumerator_init((System_Int64ArrayEnumerator)System_Memory_allocClass(typeof(System_Int64ArrayEnumerator)), ARRAY))
 
 export struct System_Type  System_Int64ArrayEnumeratorType;
@@ -1039,7 +1039,7 @@ export System_Bool  base_System_Int64ArrayEnumerator_moveNext(System_Int64ArrayE
 #if defined(using_System)
 #define Int64ArrayEnumerator  System_Int64ArrayEnumerator
 #define Int64ArrayEnumeratorType  System_Int64ArrayEnumeratorType
-#define stack_Int64ArrayEnumerator  stack_System_Int64ArrayEnumerator
+
 #define new_Int64ArrayEnumerator  new_System_Int64ArrayEnumerator
 #define function_Int64ArrayEnumerator_init  function_System_Int64ArrayEnumerator_init
 #define function_Int64ArrayEnumerator_free  function_System_Int64ArrayEnumerator_free

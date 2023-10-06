@@ -1,7 +1,9 @@
 /* Gemeinfrei. Public Domain. */
-/* AUTOGEN */
 #if !defined(have_System_Type)
 #include "System.Type.h"
+#endif
+#if !defined(have_System_String8)
+#include "System.String8.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"
@@ -46,6 +48,9 @@ export void  base_System_String8Array_remove(System_String8Array that, System_Si
 export void  base_System_String8Array_copyTo(System_String8Array that, System_String8Array other, System_Size offset);
 export void  base_System_String8Array_resize(System_String8Array that, System_Size capacity);
 export System_IEnumerator  base_System_String8Array_getEnumerator(System_String8Array that);
+
+export System_String8Array  System_String8_split(System_String8 that, System_Char8 separator);
+export System_String8  System_Char8_join(System_Char8 that, System_String8Array array);
 
 #define System_String8Array_init(o,...)  ((function_System_String8Array_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_String8Array_init))(o, __VA_ARGS__)
 #define System_String8Array_free(o)  ((function_System_String8Array_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)

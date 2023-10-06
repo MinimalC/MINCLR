@@ -28,7 +28,7 @@
 
 /*# System_Memory #*/
 
-struct System_Type System_MemoryType = { .base = stack_System_Object(System_Type), .name = "Memory" };
+struct System_Type System_MemoryType = { .base = { .type = typeof(System_Type) }, .name = "Memory" };
 
 Size System_Memory_indexOf(Var ptr, Char8 needle, Size count) {
     Debug_assert(count);

@@ -17,7 +17,7 @@ typedef System_fixed struct System_Dictionary {
 
 }  * System_Dictionary;
 
-#define stack_System_Dictionary()  (struct System_Dictionary){ .base = stack_System_Object(System_Dictionary), }
+
 #define new_System_Dictionary()  (base_System_Dictionary_init((System_Dictionary)System_Memory_allocClass(typeof(System_Dictionary))))
 
 export struct System_Type  System_DictionaryType;

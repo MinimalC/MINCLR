@@ -5,6 +5,9 @@
 #if !defined(have_System_String8)
 #include <min/System.String8.h>
 #endif
+#if !defined(have_System_String8Array)
+#include <min/System.String8Array.h>
+#endif
 #if !defined(have_System_Memory)
 #include <min/System.Memory.h>
 #endif
@@ -18,7 +21,7 @@
 #define code_System_Char8
 /*# System_Char8 #*/
 
-struct System_Type System_Char8Type = { .base = stack_System_Object(System_Type), .name = "Char8", .size = 1 };
+struct System_Type System_Char8Type = { .base = { .type = typeof(System_Type) }, .name = "Char8", .size = 1 };
 
 System_Bool  System_Char8_isNumber(System_Char8 that) {
     return (that >= 0x30 && that <= 0x39);
@@ -58,11 +61,11 @@ System_Bool  System_Char8_isPrintable(System_Char8 that) {
 
 /* static class System.String8 */
 
-struct System_Type System_String8Type = { .base = stack_System_Object(System_Type), .name = "String8", .size = sizeof(System_String8) };
+struct System_Type System_String8Type = { .base = { .type = typeof(System_Type) }, .name = "String8", .size = sizeof(System_String8) };
 
 System_STRING8  System_String8_Empty = "";
 
-Size  System_String8_indexOf__size(String8 that, UInt8 character, Size length) {
+Size  System_String8_indexOf__size(String8 that, Char8 character, Size length) {
     Size i = 0;
     if (length == 0) return -1;
     do {
@@ -71,11 +74,11 @@ Size  System_String8_indexOf__size(String8 that, UInt8 character, Size length) {
     return -1;
 }
 
-Size  System_String8_indexOf(String8 that, UInt8 character){
+Size  System_String8_indexOf(String8 that, Char8 character){
     return System_String8_indexOf__size(that, character, String8_get_Length(that));
 }
 
-Size  System_String8_lastIndexOf__size(String8 that, UInt8 character, Size length) {
+Size  System_String8_lastIndexOf__size(String8 that, Char8 character, Size length) {
     Size i = length;
     if (i == 0) return -1;
     do {
@@ -84,7 +87,7 @@ Size  System_String8_lastIndexOf__size(String8 that, UInt8 character, Size lengt
     return -1;
 }
 
-Size  System_String8_lastIndexOf(String8 that, UInt8 character) {
+Size  System_String8_lastIndexOf(String8 that, Char8 character) {
     return System_String8_lastIndexOf__size(that, character, String8_get_Length(that));
 }
 
@@ -202,7 +205,7 @@ Bool  System_String8_endsWith(String8 that, String8 other) {
     return System_String8_equalsSubstring(that + diff, other, length1);
 }
 
-System_String8Array System_String8_split(System_String8 that, System_UInt8 character) {
+System_String8Array System_String8_split(System_String8 that, System_Char8 separator) {
 
     System_String8Array split = System_Memory_allocClass(typeof(System_String8Array));
     base_System_String8Array_init(split, 64);
@@ -211,7 +214,7 @@ System_String8Array System_String8_split(System_String8 that, System_UInt8 chara
     System_Size length = System_String8_get_Length(other);
 
     for (Size i = 0, start = 0; i < length; ++i)
-        if (*(other + i) == character) {
+        if (*(other + i) == separator) {
             *(other + i) = '\0';
             base_System_String8Array_add(split, other + start);
             start = i + 1;
@@ -221,26 +224,26 @@ System_String8Array System_String8_split(System_String8 that, System_UInt8 chara
     return split;
 }
 
-System_String8  System_String8_join(System_String8Array that, System_UInt8 character) {
-    Debug_assert(that);
-    if (!that->length) return String8_Empty;
+System_String8  System_Char8_join(System_Char8 that, System_String8Array array) {
+    Debug_assert(array);
+    if (!array->length) return String8_Empty;
     Size i = 0, length = 0, position = 0;
-    Size thatL = that->length - 1;
+    Size arrayL = array->length - 1;
     String8 item = null;
-    for (i = 0; i <= thatL; ++i) {
-        item = array(that->value)[i];
+    for (i = 0; i <= arrayL; ++i) {
+        item = array(array->value)[i];
         if (item) length += String8_get_Length(item) + 1;
     }
     String8 string = System_Memory_allocArray(typeof(System_Char8), length + 1);
-    for (i = 0; i < thatL; ++i) {
-        item = array(that->value)[i];
+    for (i = 0; i < arrayL; ++i) {
+        item = array(array->value)[i];
         if (item) {
             System_String8_copyToAt(item, string, position);
             position += String8_get_Length(item);
         }
-        *(string + position++) = character;
+        *(string + position++) = that;
     }
-    item = array(that->value)[thatL];
+    item = array(array->value)[arrayL];
     if (item) {
         System_String8_copyToAt(item, string, position);
         /* position += String8_get_Length(item); */

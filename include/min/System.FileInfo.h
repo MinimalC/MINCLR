@@ -42,7 +42,7 @@ typedef System_fixed struct System_FileInfo {
 
 export struct System_Type  System_FileInfoType;
 
-#define stack_System_FileInfo()  { .base = stack_System_Object(System_FileInfo), }
+
 #define new_System_FileInfo(fileName)  (base_System_FileInfo_init((System_FileInfo)System_Memory_allocClass(typeof(System_FileInfo)), fileName))
 
 typedef System_FileInfo delegate(System_FileInfo_init)(System_FileInfo that, System_String8 fileName);

@@ -28,7 +28,7 @@ typedef System_fixed struct System_Array {
 
 }  * System_Array;
 
-#define stack_System_Array(LENGTH) (struct System_Array){ .base = stack_System_Object(System_Array), .capacity = LENGTH, }
+
 #define new_System_Array(LENGTH)  (base_System_Array_init((System_Array)System_Memory_allocClass(typeof(System_Array)), LENGTH))
 
 export struct System_Type  System_ArrayType;
@@ -63,7 +63,7 @@ export System_IEnumerator  base_System_Array_getEnumerator(System_Array that);
 #if defined(using_System)
 #define Array  System_Array
 #define ArrayType  System_ArrayType
-#define stack_Array  stack_System_Array
+
 #define new_Array  new_System_Array
 #define Array_init  System_Array_init
 #define Array_free  System_Array_free
@@ -87,7 +87,7 @@ typedef System_fixed struct System_ArrayEnumerator {
 
 }  * System_ArrayEnumerator;
 
-#define stack_System_ArrayEnumerator()  (struct System_ArrayEnumerator){ .base = stack_System_Object(System_ArrayEnumerator), }
+
 #define new_System_ArrayEnumerator(ARRAY)  (base_System_ArrayEnumerator_init((System_ArrayEnumerator)System_Memory_allocClass(typeof(System_ArrayEnumerator)), ARRAY))
 
 export struct System_Type  System_ArrayEnumeratorType;
@@ -110,7 +110,7 @@ export System_Bool  base_System_ArrayEnumerator_moveNext(System_ArrayEnumerator 
 #if defined(using_System)
 #define ArrayEnumerator  System_ArrayEnumerator
 #define ArrayEnumeratorType  System_ArrayEnumeratorType
-#define stack_ArrayEnumerator  stack_System_ArrayEnumerator
+
 #define new_ArrayEnumerator  new_System_ArrayEnumerator
 #define function_ArrayEnumerator_init  function_System_ArrayEnumerator_init
 #define function_ArrayEnumerator_free  function_System_ArrayEnumerator_free

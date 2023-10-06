@@ -1,3 +1,4 @@
+/* Gemeinfrei. Public Domain. */
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif

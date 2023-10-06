@@ -11,7 +11,7 @@ int System_Runtime_main(int argc, char * argv[]) {
     String8 hash_sourcecode = HalloWelt;
     Size hash_sourcecode_length = String8_get_Length(HalloWelt);
 
-    struct SipHash48 sipHash48 = stack_SipHash48();
+    struct SipHash48 sipHash48; System_Stack_zero(sipHash48);
     SipHash48_init(&sipHash48);
 
     if (argc > 1) {

@@ -24,7 +24,7 @@
 ##error "Unknown Type. System.int.awk implements Int8, Int16, Int32 and Int64."
 ##endif
 
-struct System_Type Generic_T0Type  = { .base = stack_System_Object(System_Type), .name = "Generic.T0", .size = sizeof(Generic_T0) };
+struct System_Type Generic_T0Type  = { .base = { .type = typeof(System_Type) }, .name = "Generic.T0", .size = sizeof(Generic_T0) };
 
 System_Bool  Generic_T0_isPrintable(Generic_T0 that) {
     return inline_Generic_T0_isPrintable(that);
@@ -139,7 +139,7 @@ System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 arra
 }
 
 System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal = stack_System_Decimal();
+    struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__T0(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + Generic_T0_String8base10Length_DEFAULT - 1;

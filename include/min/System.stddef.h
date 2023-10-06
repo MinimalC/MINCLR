@@ -117,36 +117,15 @@ typedef _Bool  System_Bool;
 #define enum_hasFlag  System_enum_hasFlag
 #endif
 
-/* Example: typedef void delegate(System_Object_init)(System_Object that);
-   Use function(System_Object_init), write base(System_Object_init) */
 #define delegate(name)  (* ff(function,name) )
 #define function(name)  ff(function,name)
 #define base(name)  ff(base,name)
 
-/* Don't define base(name)  ff(base,name)
-Do define base_MyProject_Product_init  base_MyProject_Product_init__02  instead. */
-
-/* Example:  void System_Memory_freeClass(System_Object ref that); */
 #define ref  *
 #define out  *
 
 #define array(instance)  (* (instance))
 #define array_item(instance, item)  *(array(instance) + item)
-
-/*
-This is valid C, but C++ throws a compiler exception, also within extern "C":
-:    typedef struct System_Object  * System_Object;
-:    export struct System_Type  System_ObjectType;
-:    struct System_Object { ... }
-
-Actually, in your C .h you'd have to do:
-:
-:    typedef struct System_Object  * System_Object;
-:    export struct System_Type  System_ObjectType;
-:    struct System_Object { ... }
-and in your C .c you do:
-:    struct System_Type  System_ObjectType  = { ... }
-*/
 
 #if defined(__builtin_offsetof)
 #define offsetof(TYPE,MEMBER)  __builtin_offsetof(TYPE,MEMBER)
@@ -171,8 +150,6 @@ and in your C .c you do:
 
 typedef void  System_Void;
 typedef void  * System_Var; /* Var is not unsafe in C */
-typedef unsigned  System_Unsigned;
-typedef signed  System_Signed;
 typedef __SIZE_TYPE__  System_Size;
 typedef __SIZE_TYPE__  System_IntPtr;
 typedef __PTRDIFF_TYPE__  System_SSize;
@@ -228,9 +205,6 @@ typedef signed long long int  System_Int64;
 #define System_Int  System_Int32
 #define System_Long  System_Int64
 
-
-/* Look, this is not trying not to rewrite unsigned long long longer int integer names in C. */
-
 #if defined(using_System)
 #define Byte  System_Byte
 #define UShort  System_UShort
@@ -252,20 +226,5 @@ export System_Char8  System_String8_Empty[1];
 #define String8  System_String8
 #define STRING8  System_STRING8
 #define String8_Empty  System_String8_Empty
-#endif
-
-export void  System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Size line);
-export void  System_Debug_writeLine__message(const System_String8 message, ...);
-
-#if !DEBUG
-#define System_Debug_assert(expression) (void)(expression)
-#define System_Debug_writeLine(message,...) (void)(message, __VA_ARGS__)
-#else
-#define System_Debug_assert(expression)  (void)(!(expression) ? System_Debug_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Size)__LINE__) : 0)
-#define System_Debug_writeLine(message,...)  (void)System_Debug_writeLine__message((System_String8)message, __VA_ARGS__)
-#endif
-#if defined(using_System)
-#define Debug_assert  System_Debug_assert
-#define Debug_writeLine  System_Debug_writeLine
 #endif
 #endif

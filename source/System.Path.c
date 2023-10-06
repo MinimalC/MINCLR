@@ -10,7 +10,7 @@
 
 /*# System_Path #*/
 
-struct System_Type System_PathType = { .base = stack_System_Object(System_Type), .name = "Path" };
+struct System_Type System_PathType = { .base = { .type = typeof(System_Type) }, .name = "Path" };
 
 System_String8 System_Path_getDirectoryName(System_String8 path) {
     Size i = System_String8_lastIndexOf(path, '/');
@@ -67,7 +67,7 @@ System_String8 System_Path_combine(System_String8 that, System_String8 other) {
             continue;
         }
     }
-    String8 reture = System_String8_join(split, '/');
+    String8 reture = System_Char8_join('/', split);
     System_Memory_free(split);
     return reture;
 }

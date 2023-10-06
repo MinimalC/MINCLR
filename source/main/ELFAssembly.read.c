@@ -13,7 +13,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
         return false;
     }
 
-    struct System_ELF64Assembly assembly = stack_System_ELF64Assembly();
+    struct System_ELF64Assembly assembly; System_Stack_zero(assembly);
     System_ELF64Assembly_read__print(&assembly, argv[1], true);
 
     return true;

@@ -23,7 +23,7 @@ System_String8 System_Directory_current = null;
 System_String8 System_Directory_get_current() {
 
     if (!System_Directory_current) {
-        Char8 buffer[4096]; for (Size i = 0; i < 4096; ++i) buffer[i] = '\0';
+        Char8 buffer[4096]; System_Stack_zero(buffer);
 
         System_Syscall_getcwd(buffer, 4096);
         System_ErrorCode error = System_Syscall_get_Error();

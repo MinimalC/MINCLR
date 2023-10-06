@@ -33,7 +33,7 @@ export System_Size stack_System_arguments_get__limit(System_arguments args, Syst
 #define arguments_start  System_arguments_start
 #define arguments_end  System_arguments_end
 #define arguments_Limit_VALUE  System_arguments_Limit_VALUE
-#define stack_arguments_get  stack_System_arguments_get
-#define stack_arguments_get__limit  stack_System_arguments_get__limit
+
+
 #endif
 #endif

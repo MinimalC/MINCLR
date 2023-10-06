@@ -14,7 +14,7 @@ typedef System_fixed struct System_Decimal {
     System_UInt8  null;
 } * System_Decimal;
 
-#define stack_System_Decimal()  { }
+
 
 export struct System_Type  System_DecimalType;
 

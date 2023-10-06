@@ -16,31 +16,27 @@
 #if !defined(have_System_String8)
 #include <min/System.String8.h>
 #endif
-#if !defined(have_ISO)
-#include <min/ISO.h>
-#endif
 #if !defined(code_System_Console)
 #define code_System_Console
 
-struct System_Type System_ConsoleType = { .base = stack_System_Object(System_Type),
+struct System_Type System_ConsoleType = { .base = { .type = typeof(System_Type) },
 	.name = "Console",
 };
 
 struct System_File  System_Console_StdIn = {
-    .base = stack_System_Object(System_File),
+    .base = { .type = typeof(System_File) },
     .filePtr = (System_Var)System_Syscall_StandardFile_STDIN,
 };
 struct System_File  System_Console_StdOut = {
-    .base = stack_System_Object(System_File),
+    .base = { .type = typeof(System_File) },
     .filePtr = (System_Var)System_Syscall_StandardFile_STDOUT,
 };
 struct System_File  System_Console_StdErr = {
-    .base = stack_System_Object(System_File),
+    .base = { .type = typeof(System_File) },
     .filePtr = (System_Var)System_Syscall_StandardFile_STDERR,
 };
 
 void  System_Console_sync() {
-    /* ISO_fflush(ISO_stdout); */
     System_Syscall_fsync((System_Var)System_Syscall_StandardFile_STDOUT);
 }
 
@@ -109,12 +105,9 @@ void System_Debug_writeHex(Size length, void  * value) {
     Size i, j, l, pos, length_div_columns_rem = length % hexdump_Columns, i_div_columns_rem;
 
 
-    Char8 scratch[System_UInt64_String8base16Length_DEFAULT + 1];
-    for (i = 0; i < System_UInt64_String8base16Length_DEFAULT; ++i) scratch[i] = 0;
+    Char8 scratch[System_UInt64_String8base16Length_DEFAULT + 1]; System_Stack_zero(scratch);
 
-    Char8 buffer[hexdump_Space_VALUE];
-    static Size hexdump_Space = hexdump_Space_VALUE;
-    for (i = 0; i < hexdump_Space; ++i) buffer[i] = 0;
+    Char8 buffer[hexdump_Space_VALUE]; System_Stack_zero(buffer);
     buffer[0] = '0';
     buffer[1] = 'x';
 

@@ -11,7 +11,7 @@
 #if !defined(code_System_Thread)
 #define code_System_Thread
 
-struct System_Type System_ThreadType = { .base = stack_System_Object(System_Type), .name = "Thread", .size = sizeof(struct System_Thread), };
+struct System_Type System_ThreadType = { .base = { .type = typeof(System_Type) }, .name = "Thread", .size = sizeof(struct System_Thread) };
 
 #define STACK_SIZE  (8 * 1024 * 1024)
 

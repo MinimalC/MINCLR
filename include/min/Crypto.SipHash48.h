@@ -14,12 +14,6 @@ typedef System_fixed struct Crypto_SipHash48 {
 
 } * Crypto_SipHash48;
 
-#define stack_Crypto_SipHash48() {\
-    .v0 = 0x736f6d6570736575ULL ,\
-    .v1 = 0x646f72616e646f6dULL ,\
-    .v2 = 0x6c7967656e657261ULL ,\
-    .v3 = 0x7465646279746573ULL ,}
-
 #define new_Crypto_SipHash48()  (base_Crypto_SipHash48_init((Crypto_SipHash48)System_Memory_allocClass(typeof(Crypto_SipHash48))))
 
 export struct System_Type  Crypto_SipHash48Type;
@@ -33,7 +27,7 @@ export System_UInt64  Crypto_SipHash48_final(Crypto_SipHash48 that);
 #if defined(using_Crypto)
 #define SipHash48  Crypto_SipHash48
 #define SipHash48Type  Crypto_SipHash48Type
-#define stack_SipHash48  stack_Crypto_SipHash48
+
 #define new_SipHash48  new_Crypto_SipHash48
 #define function_SipHash48_init  function_Crypto_SipHash48_init
 #define base_SipHash48_init  base_Crypto_SipHash48_init
