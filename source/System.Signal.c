@@ -33,59 +33,71 @@ struct System_Type System_SignalType = { .base = { .type = typeof(System_Type) }
 #define SA_RESTORER  0x04000000
 #define SA_SIGINFO    4		 /* Invoke signal-catching function with three arguments instead of one.  */
 
-void System_Signal_signal(System_Signal_Code signal, function_System_Signal_handler handler) {
+void System_Signal_signal(System_Signal_Code code, function_System_Signal_handler handler) {
 
     struct System_Signal_Action new; System_Stack_zero(new);
     new.handler = handler; 
     new.flags = 0; // SA_RESTORER SA_RESTART SA_NODEFER
     //new.restorer = &System_Syscall_sigreturn;
 
-    /*unsigned __word = __sigword (signal);
-    unsigned long __mask = __sigmask (signal);
+    /*unsigned __word = __sigword (code);
+    unsigned long __mask = __sigmask (code);
     //System_Console_writeLine("SIGWORD: {0:uint}, SIGMASK: {1:uint}", 2, __word, __mask);
-    new.mask.signal[__word] |= __mask;*/
+    new.signal.mask[__word] |= __mask;*/
 
-    System_Syscall_sigaction(signal, &new, null);
+    // new.signal.mask[0] |= (1 << (code - 1));
+
+    System_Syscall_sigaction(code, &new, null);
     System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Signal_signal Code: {0:uint:hex} Error: {1:string}", 2, signal, enum_getName(typeof(System_ErrorCode), errno));
+    if (errno) System_Console_writeLine("System_Signal_signal Code: {0:uint:hex} Error: {1:string}", 2, code, enum_getName(typeof(System_ErrorCode), errno));
 }
 
-/* Values for the HOW argument to `sigprocmask'.
-#define  SIG_BLOCK     0     // Block signals.
-#define  SIG_UNBLOCK   1     // Unblock signals.
-#define  SIG_SETMASK   2     // Set the set of blocked signals.
-*/
+/* Values for the HOW argument to `sigprocmask'. */
+enum {
+    SIG_BLOCK,      // Block signals.
+    SIG_UNBLOCK,    // Unblock signals.
+    SIG_SETMASK,    // Set the set of blocked signals.
+};
 
-void System_Signal_getProcMask(System_Signal_Set old) {
+System_Bool System_Signal_get__code(System_Signal_Code code) {
 
-    System_Syscall_sigprocmask(0, null, old, sizeof(struct System_Signal_Set));
+    struct System_Signal sigset; System_Stack_zero(sigset);
+    System_Syscall_sigprocmask(SIG_SETMASK, null, &sigset, sizeof(struct System_Signal));
 
     System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Signal_getProcMask Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+    if (errno) System_Console_writeLine("System_Signal_get__code Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+
+    return sigset.mask[0] & (1 << (code - 1));
 }
 
-void System_Signal_setProcMask(System_Signal_Set new) {
+void System_Signal_set__code(System_Signal_Code code) {
 
-    System_Syscall_sigprocmask(2, new, null, sizeof(struct System_Signal_Set));
+    struct System_Signal sigset; System_Stack_zero(sigset);
+    sigset.mask[0] |= (1 << (code - 1));
+    System_Syscall_sigprocmask(SIG_SETMASK, &sigset, null, sizeof(struct System_Signal));
 
     System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Signal_setProcMask Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+    if (errno) System_Console_writeLine("System_Signal_set__code Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
-void System_Signal_block(System_Signal_Set new) {
+void System_Signal_block__code(System_Signal_Code code) {
 
-    System_Syscall_sigprocmask(0, new, null, sizeof(struct System_Signal_Set));
+    struct System_Signal sigset; System_Stack_zero(sigset);
+    sigset.mask[0] |= (1 << (code - 1));
+    System_Syscall_sigprocmask(SIG_BLOCK, &sigset, null, sizeof(struct System_Signal));
 
     System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Signal_setProcMask Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+    if (errno) System_Console_writeLine("System_Signal_block__code Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
-void System_Signal_unblock(System_Signal_Set new) {
+void System_Signal_unblock__code(System_Signal_Code code) {
 
-    System_Syscall_sigprocmask(1, new, null, sizeof(struct System_Signal_Set));
+    struct System_Signal sigset; System_Stack_zero(sigset);
+    sigset.mask[0] |= (1 << (code - 1));
+    System_Syscall_sigprocmask(SIG_UNBLOCK, &sigset, null, sizeof(struct System_Signal));
 
     System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Signal_setProcMask Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+    if (errno) System_Console_writeLine("System_Signal_unblock__code Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
 #endif

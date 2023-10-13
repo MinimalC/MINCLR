@@ -80,10 +80,10 @@ typedef struct System_Environment64_AuxValue {
 
 export struct System_Type  System_Environment64_AuxValueType;
 
-#if System_Size_Width == 32
+#if System_Size_Bits == 32
 #define System_Environment_AuxValue  System_Environment32_AuxValue
 
-#else /* if System_Size_Width == 64 */
+#else /* if System_Size_Bits == 64 */
 #define System_Environment_AuxValue  System_Environment64_AuxValue
 #endif
 

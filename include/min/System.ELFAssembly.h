@@ -819,7 +819,7 @@ export System_String8 System_ELFAssembly_DynamicType_toString(System_ELFAssembly
 #define System_ELFAssembly_SymbolEntry_TYPE(i)   ( (i) & 0xf )
 #define System_ELFAssembly_SymbolEntry_INFO(b,t) ( ((b) << 4) + ((t) & 0xf ) )
 
-#if System_Size_Width == 32
+#if System_Size_Bits == 32
 #define System_ELFAssembly  System_ELF32Assembly
 #define System_ELFAssemblyType  System_ELF32AssemblyType
 #define System_ELFAssembly_Header  System_ELF32Assembly_Header
@@ -833,7 +833,7 @@ export System_String8 System_ELFAssembly_DynamicType_toString(System_ELFAssembly
 #define System_ELFAssembly_Relocation_TYPE  System_ELF32Assembly_Relocation_TYPE
 #define System_ELFAssembly_Relocation_INFO  System_ELF32Assembly_Relocation_INFO
 
-#else /* if System_Size_Width == 64 */
+#else /* if System_Size_Bits == 64 */
 #define System_ELFAssembly  System_ELF64Assembly
 #define System_ELFAssemblyType  System_ELF64AssemblyType
 #define System_ELFAssembly_Header  System_ELF64Assembly_Header

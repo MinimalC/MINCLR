@@ -148,7 +148,7 @@ Bool vdso_init_from_sysinfo_ehdr(vdso_info info, System_ELFAssembly_Header heade
     if (!System_String8_equals(header->magic, System_ELFAssembly_Magic)) {
         return false;
     }
-    if (header->class != (System_Size_Width == 32 ? System_ELFAssembly_Class_32 : System_ELFAssembly_Class_64)) {
+    if (header->class != (System_Size_Bits == 32 ? System_ELFAssembly_Class_32 : System_ELFAssembly_Class_64)) {
         return false;  /* Wrong ELF class -- check ELF_BITS */
     }
 #if DEBUG

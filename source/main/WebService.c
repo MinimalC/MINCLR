@@ -12,9 +12,6 @@ enum {
     Network_HTTPMethod_DELETE,
 };
 
-typedef System_String8 Network_URISchema;
-#define Network_URISchema_http "http"
-
 typedef struct Network_URI {
 
     System_String8 source;
@@ -219,6 +216,7 @@ struct Network_MimeType  Network_MimeTypes[] = {
     { "svg", "image/svg+xml" },
     { "ico", "image/vnd.microsoft.icon" },
     { "bin", "application/octet-stream" },
+    { "exe", "application/octet-stream" },
     { "iso", "application/x-iso9660-image" },
     { "json", "application/json" },
     { "sh", "application/x-sh" },
@@ -430,9 +428,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
         return false;
     }
 
-    /*struct System_Signal_Set procmask; Stack_zero(procmask);
-    procmask.signal[0] |= (1 << (System_Signal_Code_SIGINT - 1));
-    System_Signal_unblock(&procmask);
+    /*System_Signal_unblock__code(System_Signal_Code_SIGINT);
     System_Signal_signal(System_Signal_Code_SIGINT, System_Runtime_CTRLC);*/
 
     System_Directory_change("www");

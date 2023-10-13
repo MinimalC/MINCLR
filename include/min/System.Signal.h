@@ -47,11 +47,13 @@ enum {
 #endif
 };
 
-#define System_Signal_Set_LENGTH (64 / (8 * sizeof(unsigned long)))
-
-typedef struct System_Signal_Set {
-    unsigned long signal[System_Signal_Set_LENGTH];
-} * System_Signal_Set;
+typedef struct System_Signal {
+#if System_Size_Bits == 32
+    unsigned long mask[2];
+#else /* if System_Size_Bits == 64 */
+    unsigned long mask[1];
+#endif
+} * System_Signal;
 
 typedef void delegate(System_Signal_handler)(System_Signal_Code code);
 typedef void delegate(System_Signal_action)(System_Signal_Code code, System_Var info, System_Var context);
@@ -65,16 +67,16 @@ typedef struct System_Signal_Action {
         function_System_Signal_handler handler;
         function_System_Signal_action action;
     };
-    struct System_Signal_Set mask;
+    struct System_Signal signal;
     unsigned long flags;
     void (*restorer)(void);
 } * System_Signal_Action;
 
-export void System_Signal_signal(System_Signal_Code signal, function_System_Signal_handler handler);
-export void System_Signal_getProcMask(System_Signal_Set old);
-export void System_Signal_setProcMask(System_Signal_Set new);
-export void System_Signal_block(System_Signal_Set new);
-export void System_Signal_unblock(System_Signal_Set new);
+export void System_Signal_signal(System_Signal_Code code, function_System_Signal_handler handler);
+export System_Bool System_Signal_get__code(System_Signal_Code code);
+export void System_Signal_set__code(System_Signal_Code code);
+export void System_Signal_block__code(System_Signal_Code code);
+export void System_Signal_unblock__code(System_Signal_Code code);
 
 export struct System_Type  System_SignalType;
 

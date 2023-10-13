@@ -57,10 +57,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     *(--stack_top) = (System_Size)System_Thread_boot;
 
     if (!sigiset) {
-        struct System_Signal_Set procmask;
-        System_Signal_getProcMask(&procmask);
-        procmask.signal[0] |= (1 << (System_Signal_Code_SIGCHILD - 1));
-        System_Signal_unblock(&procmask);
+        System_Signal_unblock__code(System_Signal_Code_SIGCHILD);
         System_Signal_signal(System_Signal_Code_SIGCHILD, function_System_Signal_handler_DEFAULT);
         sigiset = true;
     }

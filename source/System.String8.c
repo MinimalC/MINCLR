@@ -468,13 +468,13 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                 }
                 else if (String8_compareSubstring(begin1, "integer", sizeof("integer") - 1) >= 3) {
 
-                    if (!argsize) argsize = System_Size_Width;
+                    if (!argsize) argsize = System_Size_Bits;
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
 #if DEBUG == DEBUG_System_String8_format
                         WARNING[7] = '5';
                         System_Console_write__string(WARNING);
 #endif
-                        argsize = System_Size_Width;
+                        argsize = System_Size_Bits;
                     }
                     if (argsize == 64) {
                         if (target == 16) {
@@ -568,13 +568,13 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                 else if (String8_compareSubstring(begin1, "uinteger", sizeof("uinteger") - 1) >= 4
                       || String8_equalsSubstring(begin1, "unsigned", sizeof("unsigned") - 1))
                 {
-                    if (!argsize) argsize = System_Size_Width;
+                    if (!argsize) argsize = System_Size_Bits;
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
 #if DEBUG == DEBUG_System_String8_format
                         WARNING[7] = '6';
                         System_Console_write__string(WARNING);
 #endif
-                        argsize = System_Size_Width;
+                        argsize = System_Size_Bits;
                     }
                     if (argsize == 64) {
                         if (target == 16) {
