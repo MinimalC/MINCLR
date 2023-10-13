@@ -30,19 +30,17 @@
 
 struct System_Type System_MemoryType = { .base = { .type = typeof(System_Type) }, .name = "Memory" };
 
-Size System_Memory_indexOf(Var ptr, Char8 needle, Size count) {
+SSize System_Memory_indexOf(Var ptr, Char8 needle, Size count) {
     Debug_assert(count);
 
-    Size i = 0;
+    SSize i = 0;
     Char8 *ptrBytes = (Char8 *)ptr;
     do {
         ++i;
-        if (*ptrBytes == needle) return i;
-        if (--count == 0) break;
-        ++ptrBytes;
-    } while (true);
+        if (*ptrBytes++ == needle) return i;
 
-    return 0;
+    } while (--count);
+    return -1;
 }
 
 void System_Memory_zero(Var dest, Size n) {

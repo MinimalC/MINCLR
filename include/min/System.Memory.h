@@ -52,7 +52,7 @@ export System_Size  System_Memory_compare(System_Var var0, System_Var var1, Syst
 export System_Bool  System_Memory_equals(System_Var var0, System_Var var1, System_Size length);
 
 /* void * memchr ( const void * var, int value, size_t num ); */
-export System_Size  System_Memory_indexOf(System_Var var, System_Char8 needle, System_Size count);
+export System_SSize  System_Memory_indexOf(System_Var var, System_Char8 needle, System_Size count);
 
 export System_Var  System_Memory_allocClass(System_Type type);
 export System_Var  System_Memory_allocArray(System_Type type, System_Size count);

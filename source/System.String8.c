@@ -65,8 +65,8 @@ struct System_Type System_String8Type = { .base = { .type = typeof(System_Type) 
 
 System_STRING8  System_String8_Empty = "";
 
-Size  System_String8_indexOf__size(String8 that, Char8 character, Size length) {
-    Size i = 0;
+SSize  System_String8_indexOf__size(String8 that, Char8 character, Size length) {
+    SSize i = 0;
     if (length == 0) return -1;
     do {
         if (that[i] == character) return i;
@@ -74,12 +74,12 @@ Size  System_String8_indexOf__size(String8 that, Char8 character, Size length) {
     return -1;
 }
 
-Size  System_String8_indexOf(String8 that, Char8 character){
+SSize  System_String8_indexOf(String8 that, Char8 character){
     return System_String8_indexOf__size(that, character, String8_get_Length(that));
 }
 
-Size  System_String8_lastIndexOf__size(String8 that, Char8 character, Size length) {
-    Size i = length;
+SSize  System_String8_lastIndexOf__size(String8 that, Char8 character, Size length) {
+    SSize i = length;
     if (i == 0) return -1;
     do {
         if (that[--i] == character) return i;
@@ -87,7 +87,7 @@ Size  System_String8_lastIndexOf__size(String8 that, Char8 character, Size lengt
     return -1;
 }
 
-Size  System_String8_lastIndexOf(String8 that, Char8 character) {
+SSize  System_String8_lastIndexOf(String8 that, Char8 character) {
     return System_String8_lastIndexOf__size(that, character, String8_get_Length(that));
 }
 

@@ -108,7 +108,7 @@ void System_Runtime_start(System_Var  * stack) {
         for (i = 0; i < envc; ++i) {
             String8 key = envv[i];
             SSize sign = System_String8_indexOf(key, '=');
-            if (sign != -1) *(key + sign) = '\0';
+            if (sign > -1) *(key + sign) = '\0';
             String8 value = key + sign + 1;
             base_System_String8Dictionary_add(&dictionary, key, value);
             #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly

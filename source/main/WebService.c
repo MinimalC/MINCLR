@@ -60,7 +60,7 @@ Network_HTTPRequest HTTPRequest_parse(Network_MessageHeader message) {
     System_Size remainSize = message->content[0].length;
     while (1) {
 
-        System_Size linefeed = System_String8_indexOf__size(string, '\n', remainSize);
+        System_SSize linefeed = System_String8_indexOf__size(string, '\n', remainSize);
         remainSize -= linefeed + 1;
         if (linefeed == -1) {
             System_Console_writeLine("HTTPRequest_parse: No linefeed", 0);
@@ -74,8 +74,8 @@ Network_HTTPRequest HTTPRequest_parse(Network_MessageHeader message) {
             System_Console_writeLine("HTTPRequest_parse: End of Header", 0);
             goto body;
         }
-        System_Size nullchar = System_String8_indexOf(string, '\0');
-        if (nullchar != -1) {
+        System_SSize nullchar = System_String8_indexOf(string, '\0');
+        if (nullchar > -1) {
             System_Console_writeLine("HTTPRequest_parse: null in there", 0);
             goto error;
         }
@@ -95,15 +95,15 @@ Network_HTTPRequest HTTPRequest_parse(Network_MessageHeader message) {
             }
             *(string1++) = '\0';
 
-            System_Size space = System_String8_indexOf(string1, ' ');
+            System_SSize space = System_String8_indexOf(string1, ' ');
             if (space == -1) {
                 System_Console_writeLine("HTTPRequest_parse: No Space after URI. {0:string}", 1, string);
                 goto error;
             }
             *(string1 + space) = '\0';
             httpMessage.uri.source = string1;
-            System_Size questionMark = System_String8_indexOf(string1, '?');
-            if (questionMark != -1) {
+            System_SSize questionMark = System_String8_indexOf(string1, '?');
+            if (questionMark > -1) {
                 *(string1 + questionMark) = '\0';
                 httpMessage.uri.queryString = string1 + questionMark + 1;
             }
@@ -126,7 +126,7 @@ Network_HTTPRequest HTTPRequest_parse(Network_MessageHeader message) {
             goto nextHeader;
         }
 
-        System_Size dot = System_String8_indexOf(string, ':');
+        System_SSize dot = System_String8_indexOf(string, ':');
         if (dot == -1) {
             System_Console_writeLine("HTTPRequest_parse: No Header Name", 0);
             goto error;

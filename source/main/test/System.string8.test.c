@@ -21,13 +21,13 @@ int System_Runtime_main(int argc, char * argv[]) {
     else
         Console_writeLine__string("Test01: SUCCESS: String8_get_Length");
 
-    Size  command_i0 = String8_indexOf(command, '/');
+    SSize  command_i0 = String8_indexOf(command, '/');
     if (command_i0 != 1)
         Console_writeLine("Test02: ERROR: String8_indexOf: {0:uint}", 1, command_i0);
     else
         Console_writeLine__string("Test02: SUCCESS: String8_indexOf");
 
-    Size  command_i1 = String8_lastIndexOf(command, '/');
+    SSize  command_i1 = String8_lastIndexOf(command, '/');
     if (command_i1 != 6)
         Console_writeLine__string("Test03: ERROR: String8_lastIndexOf");
     else

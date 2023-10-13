@@ -36,7 +36,7 @@ int System_Runtime_main(int argc, char * argv[]) {
 
 
     /* Test: Memory_indexOf */
-    Size indexOf2 = Memory_indexOf(bytes, 0x03, Test00_size);
+    SSize indexOf2 = Memory_indexOf(bytes, 0x03, Test00_size);
     if (indexOf2 != 3)
         Console_writeLine__string("Test04: ERROR: System_Memory_indexOf");
     else

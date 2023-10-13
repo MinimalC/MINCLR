@@ -13,21 +13,21 @@
 struct System_Type System_PathType = { .base = { .type = typeof(System_Type) }, .name = "Path" };
 
 System_String8 System_Path_getDirectoryName(System_String8 path) {
-    Size i = System_String8_lastIndexOf(path, '/');
-    if (i == -1) return null;
-    return System_String8_copySubstring(path, i + 1);
+    SSize i = System_String8_lastIndexOf(path, '/');
+    if (i > -1) return System_String8_copySubstring(path, i + 1);
+    return null;
 }
 
 System_String8 System_Path_getFileName(System_String8 path) {
-    Size i = System_String8_lastIndexOf(path, '/');
-    if (i == -1) return null;
-    return System_String8_copyOf(path, i + 1);
+    SSize i = System_String8_lastIndexOf(path, '/');
+    if (i > -1) return System_String8_copyOf(path, i + 1);
+    return null;
 }
 
 System_String8 System_Path_getFileExtension(System_String8 path) {
-    Size i = System_String8_lastIndexOf(path, '.');
-    if (i == -1) return null;
-    return System_String8_copyOf(path, i + 1);
+    SSize i = System_String8_lastIndexOf(path, '.');
+    if (i > -1) return System_String8_copyOf(path, i + 1);
+    return null;
 }
 
 System_String8 System_Path_combine(System_String8 that, System_String8 other) {

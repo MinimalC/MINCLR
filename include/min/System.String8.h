@@ -37,10 +37,10 @@ export System_Bool  System_Char8_isPrintable(System_Char8 that);
 
 export struct System_Type  System_String8Type;
 
-export System_Size  System_String8_indexOf__size(System_String8 that, System_Char8 character, System_Size length);
-export System_Size  System_String8_indexOf(System_String8 that, System_Char8 character);
-export System_Size  System_String8_lastIndexOf__size(System_String8 that, System_Char8 character, System_Size length);
-export System_Size  System_String8_lastIndexOf(System_String8 that, System_Char8 character);
+export System_SSize  System_String8_indexOf__size(System_String8 that, System_Char8 character, System_Size length);
+export System_SSize  System_String8_indexOf(System_String8 that, System_Char8 character);
+export System_SSize  System_String8_lastIndexOf__size(System_String8 that, System_Char8 character, System_Size length);
+export System_SSize  System_String8_lastIndexOf(System_String8 that, System_Char8 character);
 export System_Size  System_String8_get_Length(System_String8 that);
 export System_Size  System_String8_get_Length__max(System_String8 that, System_Size limit);
 export void  System_String8_copyTo(System_String8 src, System_String8 dest);
