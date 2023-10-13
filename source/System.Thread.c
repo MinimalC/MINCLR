@@ -13,7 +13,9 @@
 
 struct System_Type System_ThreadType = { .base = { .type = typeof(System_Type) }, .name = "Thread", .size = sizeof(struct System_Thread) };
 
-#define STACK_SIZE  (8 * 1024 * 1024)
+enum {
+    STACK_SIZE = (8 * 1024 * 1024)
+};
 
 enum {
     CLONE_VM = 0x00000100,
