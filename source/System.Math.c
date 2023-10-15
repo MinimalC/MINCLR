@@ -10,9 +10,7 @@
 
 /*# System_Math #*/
 
-struct System_Type System_MathType = { .base = { .type = typeof(System_Type) },
-    .name = "Math",
-};
+struct System_Type System_MathType = { .base = { .type = typeof(System_Type) }, .name = "Math", };
 
 System_UInt64  System_Math_divRem__UInt64__generic(System_UInt64 divident, System_UInt64 divisor, System_UInt64 ref remainder) {
 

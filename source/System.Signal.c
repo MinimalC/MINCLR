@@ -18,20 +18,22 @@ struct System_Type System_SignalType = { .base = { .type = typeof(System_Type) }
 #define __sigmask(sig) (((unsigned long) 1) << ((unsigned)((sig) - 1) % (8 * sizeof (unsigned long))))
 #define __sigword(sig) ((unsigned)((sig) - 1) / (8 * sizeof (unsigned long)))
 
-#define SA_INTERRUPT 0x20000000 /* Historical no-op.  */
+enum {
+    SA_INTERRUPT = 0x20000000, /* Historical no-op.  */
 
-#define	SA_NOCLDSTOP  1		 /* Don't send SIGCHLD when children stop.  */
-#define SA_NOCLDWAIT  2		 /* Don't create zombie on child death.  */
-#define SA_NODEFER   0x40000000 /* Don't automatically block the signal when its handler is being executed.  */
-#define SA_NOMASK    SA_NODEFER
+    SA_NOCLDSTOP = 1, /* Don't send SIGCHLD when children stop.  */
+    SA_NOCLDWAIT = 2, /* Don't create zombie on child death.  */
+    SA_NODEFER = 0x40000000, /* Don't automatically block the signal when its handler is being executed.  */
+    SA_NOMASK = SA_NODEFER,
 
-#define SA_ONSTACK   0x08000000 /* Use signal stack by using `sa_restorer'. */
-#define SA_ONESHOT   SA_RESETHAND
-#define SA_RESTART   0x10000000 /* Restart syscall on signal return.  */
-#define SA_RESETHAND 0x80000000 /* Reset to SIG_DFL on entry to handler.  */
+    SA_ONSTACK = 0x08000000, /* Use signal stack by using `sa_restorer'. */
+    SA_RESTART = 0x10000000, /* Restart syscall on signal return.  */
+    SA_RESETHAND = 0x80000000, /* Reset to SIG_DFL on entry to handler.  */
+    SA_ONESHOT = SA_RESETHAND,
 
-#define SA_RESTORER  0x04000000
-#define SA_SIGINFO    4		 /* Invoke signal-catching function with three arguments instead of one.  */
+    SA_RESTORER = 0x04000000,
+    SA_SIGINFO = 4,  /* Invoke signal-catching function with three arguments instead of one.  */
+};
 
 void System_Signal_signal(System_Signal_Code code, function_System_Signal_handler handler) {
 

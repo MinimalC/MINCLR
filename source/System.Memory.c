@@ -83,10 +83,8 @@ void System_Memory_set(Var dest, Char8 src, Size length) {
 
     Char8 *destBytes = (Char8 *)dest;
     do {
-        *destBytes = src;
-        if (--length == 0) break;
-        ++destBytes;
-    } while (true);
+        *destBytes++ = src;
+    } while (--length);
 }
 
 Size System_Memory_compare(Var ptr0, Var ptr1, Size length) {
@@ -98,10 +96,9 @@ Size System_Memory_compare(Var ptr0, Var ptr1, Size length) {
     do {
         if (*ptr0Bytes != *ptr1Bytes) return count;
         ++count;
-        if (--length == 0) break;
         ++ptr0Bytes;
         ++ptr1Bytes;
-    } while (true);
+    } while (--length);
 
     return count;
 }
@@ -365,8 +362,10 @@ void System_Memory_reallocArray(System_Var ref that, System_Size count) {
 
 void  System_Memory_freeClass(System_Var ref thatPtr) {
 	Debug_assert(thatPtr);
+    if (!thatPtr) return;
     Var that = *thatPtr;
 	Debug_assert(that);
+    if (!that) return;
 
     if (!Memory_isAllocated(that)) return;
 

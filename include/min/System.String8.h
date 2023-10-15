@@ -66,6 +66,13 @@ export System_Bool  System_String8_endsWith(System_String8 that, System_String8 
 #define System_String8_formatLimit_VALUE  System_UInt16_Max
 #define System_String8_MaxLength_VALUE  System_UInt32_Max
 
+export System_String8  System_String8_format(System_String8 format, ...);
+export System_String8  System_String8_format__arguments(System_String8 format, System_Size argc, System_Var argv[]);
+export System_String8  System_String8_formatLine(System_String8 format, ...);
+export System_String8  System_String8_formatLine__arguments(System_String8 format, System_Size argc, System_Var argv[]);
+export System_String8  System_String8_formatEnd(System_String8 format, System_Char8 suffix, ...);
+export System_String8  System_String8_formatEnd__arguments(System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
+
 export System_Size  stack_System_String8_format(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], ...);
 export System_Size  stack_System_String8_format__arguments(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], System_Size argc, System_Var argv[]);
 export System_Size  stack_System_String8_formatLine(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], ...);

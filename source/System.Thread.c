@@ -79,13 +79,13 @@ void System_Thread_sleep(System_Size seconds) {
     System_Syscall_nanosleep(&time, &time);
 }
 
-#define	WNOHANG     1 /* Don't block waiting.  */
-#define WSTOPPED    2 /* Report stopped child (same as WUNTRACED). */
-
-#define WCONTINUED	8 /* Report continued child.  */
-
-#define WALL   0x40000000 /* Wait for any child.  */
-#define WCLONE 0x80000000 /* Wait for cloned process.  */
+enum {
+    WNOHANG = 1, /* Don't block waiting.  */
+    WSTOPPED = 2, /* Report stopped child (same as WUNTRACED). */
+    WCONTINUED = 8, /* Report continued child.  */
+    WALL = 0x40000000,   /* Wait for any child.  */
+    WCLONE = 0x80000000, /* Wait for cloned process.  */
+};
 
 System_Bool System_Thread_join(System_Thread that) {
     return System_Thread_join__dontwait(that, false);

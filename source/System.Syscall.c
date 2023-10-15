@@ -63,9 +63,7 @@ struct System_Type System_ErrorCodeType = { .base = { .type = typeof(System_Type
 
 /*# System_Syscall #*/
 
-struct System_Type System_SyscallType = { .base = { .type = typeof(System_Type) },
-    .name = "Syscall",
-};
+struct System_Type System_SyscallType = { .base = { .type = typeof(System_Type) }, .name = "Syscall", };
 
 System_ErrorCode System_Syscall_error = 0;
 

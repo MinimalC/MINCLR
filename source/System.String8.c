@@ -61,7 +61,7 @@ System_Bool  System_Char8_isPrintable(System_Char8 that) {
 
 /* static class System.String8 */
 
-struct System_Type System_String8Type = { .base = { .type = typeof(System_Type) }, .name = "String8", .size = sizeof(System_String8) };
+struct System_Type System_String8Type = { .base = { .type = typeof(System_Type) }, .name = "String8", .size = sizeof(System_Var) };
 
 System_STRING8  System_String8_Empty = "";
 
@@ -251,6 +251,47 @@ System_String8  System_Char8_join(System_Char8 that, System_String8Array array) 
     return string;
 }
 
+String8  System_String8_format(String8 format, ...) {
+    arguments args;
+    arguments_start(args, format);
+    Var argv[System_arguments_Limit_VALUE];
+    Size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    return System_String8_format__arguments(format, argc, argv);
+}
+
+String8  System_String8_format__arguments(String8 format, Size argc, Var argv[]) {
+    return System_String8_formatEnd__arguments(format, 0, argc, argv);
+}
+
+String8  System_String8_formatLine(String8 format, ...) {
+    arguments args;
+    arguments_start(args, format);
+    Var argv[System_arguments_Limit_VALUE];
+    Size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    return System_String8_formatLine__arguments(format, argc, argv);
+}
+
+String8  System_String8_formatLine__arguments(String8 format, Size argc, Var argv[]) {
+    return System_String8_formatEnd__arguments(format, '\n', argc, argv);
+}
+
+String8  System_String8_formatEnd(String8 format, Char8 suffix, ...) {
+    arguments args;
+    arguments_start(args, suffix);
+    Var argv[System_arguments_Limit_VALUE];
+    Size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    return System_String8_formatEnd__arguments(format, suffix, argc, argv);
+}
+
+String8  System_String8_formatEnd__arguments(String8 format, Char8 suffix, Size argc, Var argv[]) {
+    Char8 message[System_String8_formatLimit_VALUE]; Stack_zero(message);
+    Size length = stack_System_String8_formatEnd__limit_arguments(format, suffix, System_String8_formatLimit_VALUE, message, argc, argv);
+    return System_String8_copy(message);
+}
+
 Size  stack_System_String8_format(String8 format, Char8 message[System_String8_formatLimit_VALUE], ...) {
     arguments args;
     arguments_start(args, message);
@@ -298,13 +339,13 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
 #endif
 
     Size i;
-    Char8  scratch[72];
-    for (i = 0; i < sizeof(scratch); ++i) scratch[i] = 0;
+    Char8  scratch[72]; Stack_zero(scratch);
 
     // just don't write everything else
 
     Size format_length = String8_get_Length(format);
-    if (format_length > (limit - 5)) { format_length = limit - 5;
+    if (format_length > (limit - 5)) { 
+        format_length = limit - 5;
 #if DEBUG
         WARNING[7] = '1';
         System_Console_write__string(WARNING);

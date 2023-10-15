@@ -19,9 +19,7 @@
 #if !defined(code_System_Console)
 #define code_System_Console
 
-struct System_Type System_ConsoleType = { .base = { .type = typeof(System_Type) },
-	.name = "Console",
-};
+struct System_Type System_ConsoleType = { .base = { .type = typeof(System_Type) }, .name = "Console", };
 
 struct System_File  System_Console_StdIn = {
     .base = { .type = typeof(System_File) },
