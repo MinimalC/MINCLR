@@ -27,19 +27,15 @@
 
 Network_TCPSocket  new_Network_TCPSocket() {
     Network_TCPSocket that = (Network_TCPSocket)System_Memory_allocClass(typeof(Network_TCPSocket));
-    //base_Network_TCPSocket_init(that);
+    base_Network_TCPSocket_init(that);
     return that;
 }
 
-Network_TCPSocket  Network_TCPSocket_create() {
-
-    Network_TCPSocket that = System_Memory_allocClass(typeof(Network_TCPSocket));
+void  base_Network_TCPSocket_init(Network_TCPSocket that) {
 
     that->socketId = System_Syscall_socket(Network_AddressFamily_IP4, Network_SocketType_STREAM, 0);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-
-    return that;
 }
 
 void  base_Network_TCPSocket_close(Network_TCPSocket that) {

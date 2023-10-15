@@ -433,7 +433,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
 
     System_Directory_change("www");
 
-    Network_TCPSocket tcp = Network_TCPSocket_create();
+    Network_TCPSocket tcp = new_Network_TCPSocket();
     base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEADDR, true);
     base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEPORT, true);
 

@@ -221,7 +221,7 @@ typedef System_fixed struct Network_TCPSocket {
 export struct System_Type  Network_TCPSocketType;
 
 export Network_TCPSocket  new_Network_TCPSocket();
-export Network_TCPSocket  Network_TCPSocket_create();
+export void  base_Network_TCPSocket_init(Network_TCPSocket that);
 
 export System_IntPtr  base_Network_TCPSocket_getSocketOption(Network_TCPSocket that, Network_SocketOption option);
 export void  base_Network_TCPSocket_setSocketOption(Network_TCPSocket that, Network_SocketOption option, System_IntPtr value);
