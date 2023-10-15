@@ -39,15 +39,15 @@ void System_Signal_signal(System_Signal_Code code, function_System_Signal_handle
 
     struct System_Signal_Action new; System_Stack_zero(new);
     new.handler = handler; 
-    new.flags = 0; // SA_RESTORER SA_RESTART SA_NODEFER
-    //new.restorer = &System_Syscall_sigreturn;
+    new.flags = SA_RESTORER; // | SA_RESTART | SA_NODEFER
+    new.restorer = &System_Syscall_sigreturn;
 
     /*unsigned __word = __sigword (code);
     unsigned long __mask = __sigmask (code);
     //System_Console_writeLine("SIGWORD: {0:uint}, SIGMASK: {1:uint}", 2, __word, __mask);
     new.signal.mask[__word] |= __mask;*/
 
-    // new.signal.mask[0] |= (1 << (code - 1));
+    new.signal.mask[0] |= (1 << (code - 1));
 
     System_Syscall_sigaction(code, &new, null);
     System_ErrorCode errno = System_Syscall_get_Error();
@@ -69,13 +69,13 @@ System_Bool System_Signal_get__code(System_Signal_Code code) {
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("System_Signal_get__code Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 
-    return sigset.mask[0] & (1 << (code - 1));
+    return sigset.mask[0] & ((System_Signal_Code)1 << (code - 1));
 }
 
 void System_Signal_set__code(System_Signal_Code code) {
 
     struct System_Signal sigset; System_Stack_zero(sigset);
-    sigset.mask[0] |= (1 << (code - 1));
+    sigset.mask[0] |= ((System_Signal_Code)1 << (code - 1));
     System_Syscall_sigprocmask(SIG_SETMASK, &sigset, null, sizeof(struct System_Signal));
 
     System_ErrorCode errno = System_Syscall_get_Error();
@@ -85,7 +85,7 @@ void System_Signal_set__code(System_Signal_Code code) {
 void System_Signal_block__code(System_Signal_Code code) {
 
     struct System_Signal sigset; System_Stack_zero(sigset);
-    sigset.mask[0] |= (1 << (code - 1));
+    sigset.mask[0] |= ((System_Signal_Code)1 << (code - 1));
     System_Syscall_sigprocmask(SIG_BLOCK, &sigset, null, sizeof(struct System_Signal));
 
     System_ErrorCode errno = System_Syscall_get_Error();
@@ -95,7 +95,7 @@ void System_Signal_block__code(System_Signal_Code code) {
 void System_Signal_unblock__code(System_Signal_Code code) {
 
     struct System_Signal sigset; System_Stack_zero(sigset);
-    sigset.mask[0] |= (1 << (code - 1));
+    sigset.mask[0] |= ((System_Signal_Code)1 << (code - 1));
     System_Syscall_sigprocmask(SIG_UNBLOCK, &sigset, null, sizeof(struct System_Signal));
 
     System_ErrorCode errno = System_Syscall_get_Error();

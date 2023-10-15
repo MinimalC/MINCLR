@@ -272,7 +272,7 @@ Size System_Memory_debug__min_i_max(System_Size min, System_Size index, System_S
                 if (item != System_Exception_current) {
                     /* LIE about that one */
                     ++unfree;
-                    System_Console_write("{0:string}", 1, header->elementType->name);
+                    System_Console_write__string(header->elementType->name);
                     if (header->length > sizeof(struct System_Memory_Header) + header->elementType->size * 1) 
                         System_Console_write__string("[]");
                     System_Console_write__string(", ");

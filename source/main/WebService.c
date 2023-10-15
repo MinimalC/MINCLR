@@ -428,8 +428,8 @@ int System_Runtime_main(int argc, char  * argv[]) {
         return false;
     }
 
-    /*System_Signal_unblock__code(System_Signal_Code_SIGINT);
-    System_Signal_signal(System_Signal_Code_SIGINT, System_Runtime_CTRLC);*/
+    System_Signal_unblock__code(System_Signal_Code_SIGINT);
+    System_Signal_signal(System_Signal_Code_SIGINT, System_Runtime_CTRLC);
 
     System_Directory_change("www");
 
@@ -446,14 +446,19 @@ int System_Runtime_main(int argc, char  * argv[]) {
     base_Network_TCPSocket_listen(tcp, 512);
 
     while (true) {
-     
-        Network_TCPSocket tcp1 = base_Network_TCPSocket_accept(tcp);
-        
-        System_Thread thread1 = System_Thread_create(HTTPService_serve, 1, tcp1);
-
-        System_Thread_join(thread1);
 
         if (System_Runtime_HitCTRLC) System_Console_exit(false);
+     
+        Network_TCPSocket tcp1 = base_Network_TCPSocket_accept(tcp);
+        if (!tcp1) continue;
+        
+        System_Thread thread1 = System_Thread_create(HTTPService_serve, 1, tcp1);
+        if (!thread1) {
+            base_Network_TCPSocket_close(tcp1);
+            continue;
+        }
+
+        System_Thread_join(thread1);
     }
     return false;
 }

@@ -67,9 +67,9 @@ typedef struct System_Signal_Action {
         function_System_Signal_handler handler;
         function_System_Signal_action action;
     };
-    struct System_Signal signal;
     unsigned long flags;
     void (*restorer)(void);
+    struct System_Signal signal;
 } * System_Signal_Action;
 
 export void System_Signal_signal(System_Signal_Code code, function_System_Signal_handler handler);
