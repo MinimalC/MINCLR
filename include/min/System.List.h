@@ -14,13 +14,9 @@ typedef System_fixed struct System_List {
 
 }  * System_List;
 
-
-#define new_System_List()  (base_System_List_init((System_List)System_Memory_allocClass(typeof(System_List))))
-
 export struct System_Type  System_ListType;
 
-typedef System_List delegate(System_List_init)(System_List that);
-typedef void delegate(System_List_free)(System_List that);
+typedef void delegate(System_List_init)(System_List that);
 typedef System_Size  delegate(System_List_get_Length)(System_List that);
 typedef System_Object  delegate(System_List_get_index)(System_List that, System_Size index);
 typedef void  delegate(System_List_set_index)(System_List that, System_Size index, System_Object value);
@@ -28,7 +24,8 @@ typedef void delegate(System_List_copyTo)(System_List that, System_List other, S
 typedef System_Bool  delegate(System_List_contains)(System_List that, System_Object object);
 typedef void delegate(System_List_add)(System_List that, System_Object object);
 
-export System_List  base_System_List_init(System_List that);
+export System_List  new_System_List();
+export void  base_System_List_init(System_List that);
 export void  base_System_List_free(System_List that);
 export System_Size  base_System_List_get_Length(System_List that);
 export System_Object  base_System_List_get_index(System_List that, System_Size index);
@@ -38,7 +35,7 @@ export System_Bool  base_System_List_contains(System_List that, System_Object ob
 export void  base_System_List_add(System_List that, System_Object object);
 
 #define System_List_init(o)  ((function_System_List_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
-#define System_List_free(o)  ((function_System_List_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
+#define System_List_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_List_get_Length(o)  ((function_System_List_get_Length)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_get_Length))(o)
 #define System_List_get_index(o,...)  ((function_System_List_get_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_get_index))(o, __VA_ARGS__)
 #define System_List_set_index(o,...)  ((function_System_List_set_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_set_index))(o, __VA_ARGS__)
@@ -50,7 +47,6 @@ export void  base_System_List_add(System_List that, System_Object object);
 #define List  System_List
 #define ListType  System_ListType
 
-#define new_List  new_System_List
 #define function_List_init  function_System_List_init
 #define function_List_free  function_System_List_free
 #define function_List_contains  function_System_List_contains

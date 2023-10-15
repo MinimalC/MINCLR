@@ -22,23 +22,17 @@ typedef System_fixed struct System_Exception {
 
 export struct System_Type  System_ExceptionType;
 
-
-
-#define new_System_Exception(MESSAGE)  (base_System_Exception_init((System_Exception)System_Memory_allocClass(typeof(System_Exception)), MESSAGE))
-
 export thread System_Exception  System_Exception_current;
 
-typedef System_Exception delegate(System_Exception_init)(System_Exception that, System_String8 message);
-typedef void delegate(System_Exception_free)(System_Exception that);
+typedef void delegate(System_Exception_init)(System_Exception that, System_String8 message);
 
+export System_Exception  new_System_Exception(System_String8 message);
+export void  base_System_Exception_init(System_Exception that, System_String8 message);
 export System_Bool  System_Exception_try(void);
 export System_Bool  System_Exception_tryNot(void);
 export void  System_Exception_throw(System_Exception that);
 export void  System_Exception_terminate(System_Exception that) noreturn;
 export System_Bool  stack_System_Exception_catch(System_Exception * that, System_Type type);
-
-export System_Exception  base_System_Exception_init(System_Exception that, System_String8 message);
-/* export void  base_System_Exception_free(System_Exception that); */
 
 #define System_Exception_init(o,...)  ((function_System_Exception_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Exception_init))(o, __VA_ARGS__)
 #define System_Exception_free(o)  ((function_System_Exception_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
@@ -52,7 +46,6 @@ export System_Exception  base_System_Exception_init(System_Exception that, Syste
 #define Exception  System_Exception
 #define ExceptionType  System_ExceptionType
 #define new_Exception  new_System_Exception
-
 
 #define Exception_try  System_Exception_try
 #define Exception_tryNot  System_Exception_tryNot

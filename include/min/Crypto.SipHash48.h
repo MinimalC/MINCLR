@@ -14,11 +14,10 @@ typedef System_fixed struct Crypto_SipHash48 {
 
 } * Crypto_SipHash48;
 
-#define new_Crypto_SipHash48()  (base_Crypto_SipHash48_init((Crypto_SipHash48)System_Memory_allocClass(typeof(Crypto_SipHash48))))
-
 export struct System_Type  Crypto_SipHash48Type;
 
-export Crypto_SipHash48  base_Crypto_SipHash48_init(Crypto_SipHash48 that);
+export Crypto_SipHash48  new_Crypto_SipHash48();
+export void  base_Crypto_SipHash48_init(Crypto_SipHash48 that);
 export void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_Var input, System_Size length);
 export System_UInt64  Crypto_SipHash48_final(Crypto_SipHash48 that);
 

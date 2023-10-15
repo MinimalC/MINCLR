@@ -17,14 +17,13 @@ typedef System_fixed struct Generic_T0 {
 
 }  * Generic_T0;
 
-#define new_Generic_T0()  (base_Generic_T0_init((Generic_T0)System_Memory_allocClass(typeof(Generic_T0))))
-
 export struct System_Type  Generic_T0Type;
 
-typedef Generic_T0 delegate(Generic_T0_init)(Generic_T0 that);
+typedef void delegate(Generic_T0_init)(Generic_T0 that);
 typedef void delegate(Generic_T0_free)(Generic_T0 that);
 
-export Generic_T0  base_Generic_T0_init(Generic_T0 that);
+export Generic_T0  new_Generic_T0();
+export void  base_Generic_T0_init(Generic_T0 that);
 export void  base_Generic_T0_free(Generic_T0 that);
 
 #define Generic_T0_init(o)  ((function_Generic_T0_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)

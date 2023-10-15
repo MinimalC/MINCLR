@@ -25,6 +25,12 @@
 
 /*# Network.TCPSocket #*/
 
+Network_TCPSocket  new_Network_TCPSocket() {
+    Network_TCPSocket that = (Network_TCPSocket)System_Memory_allocClass(typeof(Network_TCPSocket));
+    //base_Network_TCPSocket_init(that);
+    return that;
+}
+
 Network_TCPSocket  Network_TCPSocket_create() {
 
     Network_TCPSocket that = System_Memory_allocClass(typeof(Network_TCPSocket));

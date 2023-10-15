@@ -36,6 +36,12 @@ struct System_Type System_ELF64AssemblyType = { .base = { .type = typeof(System_
     .baseType = typeof(System_Object),
 };
 
+System_ELF64Assembly  new_System_ELF64Assembly() {
+    System_ELF64Assembly that = (System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly));
+    //base_System_ELF64Assembly_init(that);
+    return that;
+}
+
 void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print) {
 
     if (assembly->name) return; // throw

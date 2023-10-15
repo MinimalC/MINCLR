@@ -11,7 +11,13 @@
 
 /*# System_FileInfo #*/
 
-System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 fileName) {
+System_FileInfo  new_System_FileInfo(System_String8 fileName) {
+    System_FileInfo that = (System_FileInfo)System_Memory_allocClass(typeof(System_FileInfo));
+    base_System_FileInfo_init(that, fileName);
+    return that;
+}
+
+void  base_System_FileInfo_init(System_FileInfo that, System_String8 fileName) {
 
     that->name = fileName;
 
@@ -20,10 +26,8 @@ System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 
     System_ErrorCode error = System_Syscall_get_Error();
     if (error) { /* TODO */
         System_Console_writeLine("System_FileInfo_init Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), error));
-        return that;
+        return;
     }
-
-    return that;
 }
 
 System_Bool System_FileInfo_isRegular(System_FileInfo that) {

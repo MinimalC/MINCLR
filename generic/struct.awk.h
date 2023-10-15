@@ -16,9 +16,6 @@ typedef System_fixed struct Generic_T0 {
 
 export struct System_Type  Generic_T0Type;
 
-
-#define new_Generic_T0() ((Generic_T0)System_Memory_allocClass(typeof(Generic_T0)))
-
 export void  Generic_T0_init(Generic_T0 that);
 
 #if defined(using_Generic)
@@ -37,15 +34,13 @@ typedef System_fixed struct Generic1_T1 {
 
 }  * Generic1_T1;
 
-
-#define new_Generic1_T1(value)  (base_Generic1_T1_init((Generic1_T1)System_Memory_allocClass(typeof(Generic1_T1)), value))
-
 export struct System_Type  Generic1_T1Type;
 
-typedef Generic1_T1 delegate(Generic1_T1_init)(Generic1_T1 that, Generic_T0 value);
+typedef void delegate(Generic1_T1_init)(Generic1_T1 that, Generic_T0 value);
 typedef void delegate(Generic1_T1_free)(Generic1_T1 that);
 
-export Generic1_T1  base_Generic1_T1_init(Generic1_T1 that, Generic_T0 value);
+export Generic1_T1  new_Generic1_T1(Generic_T0 value);
+export void  base_Generic1_T1_init(Generic1_T1 that, Generic_T0 value);
 export void  base_Generic1_T1_free(Generic1_T1 that);
 
 #define Generic1_T1_init(o,...)  ((function_Generic1_T1_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_Generic1_T1_init))(o, __VA_ARGS__)

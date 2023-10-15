@@ -27,7 +27,7 @@ typedef System_fixed struct System_VarDictionary {
 
 export struct System_Type  System_VarDictionaryType;
 
-typedef System_VarDictionary delegate(System_VarDictionary_init)(System_VarDictionary that, System_Size capacity);
+typedef void delegate(System_VarDictionary_init)(System_VarDictionary that, System_Size capacity);
 typedef void delegate(System_VarDictionary_free)(System_VarDictionary that);
 typedef System_Size  delegate(System_VarDictionary_get_Length)(System_VarDictionary that);
 typedef System_Var  delegate(System_VarDictionary_get_index)(System_VarDictionary that, System_Size index);
@@ -36,7 +36,8 @@ typedef void delegate(System_VarDictionary_copyTo)(System_VarDictionary that, Sy
 typedef void delegate(System_VarDictionary_resize)(System_VarDictionary that, System_Size length);
 typedef System_IEnumerator  delegate(System_VarDictionary_getEnumerator)(System_VarDictionary that);
 
-export System_VarDictionary  base_System_VarDictionary_init(System_VarDictionary that, System_Size capacity);
+export System_VarDictionary  new_System_VarDictionary(System_Size capacity);
+export void  base_System_VarDictionary_init(System_VarDictionary that, System_Size capacity);
 export void  base_System_VarDictionary_free(System_VarDictionary that);
 export System_Size base_System_VarDictionary_add(System_VarDictionary that, System_Var key, System_Var value);
 export System_Size  base_System_VarDictionary_get_Length(System_VarDictionary that);
@@ -59,13 +60,9 @@ export System_IEnumerator  base_System_VarDictionary_getEnumerator(System_VarDic
 #define System_VarDictionary_resize(o,...)  ((function_System_VarDictionary_resize)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_VarDictionary_resize))(o,__VA_ARGS__)
 #define System_VarDictionary_getEnumerator(o)  ((function_System_VarDictionary_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
 
-#define new_System_VarDictionary(LENGTH)  (base_System_VarDictionary_init((System_VarDictionary)System_Memory_allocClass(typeof(System_VarDictionary)), LENGTH))
-
 #if defined(using_System)
 #define VarDictionary  System_VarDictionary
 #define VarDictionaryType  System_VarDictionaryType
-
-#define new_VarDictionary  new_System_VarDictionary
 
 #define VarDictionary_init  System_VarDictionary_init
 #define VarDictionary_free  System_VarDictionary_free
@@ -108,11 +105,12 @@ typedef System_fixed struct System_VarDictionaryEnumerator {
 export struct System_Type  System_VarDictionaryEnumeratorType;
 
 typedef void delegate(System_VarDictionaryEnumerator_free)(System_VarDictionaryEnumerator that);
-typedef System_VarDictionaryEnumerator delegate(System_VarDictionaryEnumerator_init)(System_VarDictionaryEnumerator that, System_VarDictionary array);
+typedef void delegate(System_VarDictionaryEnumerator_init)(System_VarDictionaryEnumerator that, System_VarDictionary array);
 typedef System_Var delegate(System_VarDictionaryEnumerator_get_current)(System_VarDictionaryEnumerator that);
 typedef System_Bool delegate(System_VarDictionaryEnumerator_moveNext)(System_VarDictionaryEnumerator that);
 
-export System_VarDictionaryEnumerator  base_System_VarDictionaryEnumerator_init(System_VarDictionaryEnumerator that, System_VarDictionary array);
+export System_VarDictionaryEnumerator  new_System_VarDictionaryEnumerator(System_VarDictionary array);
+export void  base_System_VarDictionaryEnumerator_init(System_VarDictionaryEnumerator that, System_VarDictionary array);
 export void  base_System_VarDictionaryEnumerator_free(System_VarDictionaryEnumerator that);
 export System_Var  base_System_VarDictionaryEnumerator_get_current(System_VarDictionaryEnumerator that);
 export System_Bool  base_System_VarDictionaryEnumerator_moveNext(System_VarDictionaryEnumerator that);
@@ -121,8 +119,6 @@ export System_Bool  base_System_VarDictionaryEnumerator_moveNext(System_VarDicti
 #define System_VarDictionaryEnumerator_free(o)  ((function_System_VarDictionaryEnumerator_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_VarDictionaryEnumerator_get_current(o)  ((function_System_VarDictionaryEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
 #define System_VarDictionaryEnumerator_moveNext(o)  ((function_System_VarDictionaryEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
-
-#define new_System_VarDictionaryEnumerator(a)  (base_System_VarDictionaryEnumerator_init((System_VarDictionaryEnumerator)System_Memory_allocClass(typeof(System_VarDictionaryEnumerator)), a))
 
 #if defined(using_System)
 #define VarDictionaryEnumerator  System_VarDictionaryEnumerator
@@ -133,6 +129,5 @@ export System_Bool  base_System_VarDictionaryEnumerator_moveNext(System_VarDicti
 #define base_VarDictionaryEnumerator_free  base_System_VarDictionaryEnumerator_free
 #define VarDictionaryEnumerator_init  System_VarDictionaryEnumerator_init
 #define VarDictionaryEnumerator_free  System_VarDictionaryEnumerator_free
-#define new_VarDictionaryEnumerator  new_System_VarDictionaryEnumerator
 #endif
 #endif

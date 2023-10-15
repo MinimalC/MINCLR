@@ -16,11 +16,16 @@
 
 /*# System_String8Dictionary #*/
 
-System_String8Dictionary base_System_String8Dictionary_init(System_String8Dictionary that, System_Size capacity) {
+System_String8Dictionary  new_System_String8Dictionary(System_Size capacity) {
+    System_String8Dictionary that = (System_String8Dictionary)System_Memory_allocClass(typeof(System_String8Dictionary));
+    base_System_String8Dictionary_init(that, capacity);
+    return that;
+}
+
+void base_System_String8Dictionary_init(System_String8Dictionary that, System_Size capacity) {
     that->key = System_Memory_allocArray(typeof(System_String8), capacity);
     that->value = System_Memory_allocArray(typeof(System_String8), capacity);
     that->capacity = capacity;
-    return that;
 }
 
 void  base_System_String8Dictionary_free(System_String8Dictionary that) {
@@ -121,23 +126,24 @@ struct System_Type System_String8DictionaryType = { .base = { .type = typeof(Sys
 
 /*# System_String8DictionaryEnumerator #*/
 
-System_String8DictionaryEnumerator  base_System_String8DictionaryEnumerator_init(System_String8DictionaryEnumerator that, System_String8Dictionary array) {
-    base_System_Object_init((System_Object)that);
+System_String8DictionaryEnumerator  new_System_String8DictionaryEnumerator(System_String8Dictionary array) {
+    System_String8DictionaryEnumerator that = (System_String8DictionaryEnumerator)System_Memory_allocClass(typeof(System_String8DictionaryEnumerator));
+    base_System_String8DictionaryEnumerator_init(that, array);
+    return that;
+}
+
+void  base_System_String8DictionaryEnumerator_init(System_String8DictionaryEnumerator that, System_String8Dictionary array) {
 
     if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_String8Dictionary)System_Memory_addReference((System_Object)array);
     that->index = -1;
-
-    return that;
 }
 
 void  base_System_String8DictionaryEnumerator_free(System_String8DictionaryEnumerator that) {
 
     System_Memory_free(that->array);
     that->index = -2;
-
-    base_System_Object_free((System_Object)that);
 }
 
 System_String8  base_System_String8DictionaryEnumerator_get_current(System_String8DictionaryEnumerator that) {

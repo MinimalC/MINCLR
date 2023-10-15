@@ -220,6 +220,7 @@ typedef System_fixed struct Network_TCPSocket {
 
 export struct System_Type  Network_TCPSocketType;
 
+export Network_TCPSocket  new_Network_TCPSocket();
 export Network_TCPSocket  Network_TCPSocket_create();
 
 export System_IntPtr  base_Network_TCPSocket_getSocketOption(Network_TCPSocket that, Network_SocketOption option);

@@ -30,13 +30,9 @@ typedef System_fixed struct Generic_T0Array {
 
 }  * Generic_T0Array;
 
-
-#define new_Generic_T0Array(LENGTH)  (base_Generic_T0Array_init((Generic_T0Array)System_Memory_allocClass(typeof(Generic_T0Array)), LENGTH))
-
 export struct System_Type  Generic_T0ArrayType;
 
-typedef void delegate(Generic_T0Array_free)(Generic_T0Array that);
-typedef Generic_T0Array delegate(Generic_T0Array_init)(Generic_T0Array that, System_Size length);
+typedef void delegate(Generic_T0Array_init)(Generic_T0Array that, System_Size length);
 typedef System_Size  delegate(Generic_T0Array_get_Length)(Generic_T0Array that);
 typedef Generic_T0  delegate(Generic_T0Array_get_index)(Generic_T0Array that, System_Size index);
 typedef void  delegate(Generic_T0Array_set_index)(Generic_T0Array that, System_Size index, Generic_T0 value);
@@ -44,7 +40,8 @@ typedef void delegate(Generic_T0Array_copyTo)(Generic_T0Array that, Generic_T0Ar
 typedef void delegate(Generic_T0Array_resize)(Generic_T0Array that, System_Size length);
 typedef System_IEnumerator  delegate(Generic_T0Array_getEnumerator)(Generic_T0Array that);
 
-export Generic_T0Array  base_Generic_T0Array_init(Generic_T0Array that, System_Size length);
+export Generic_T0Array  new_Generic_T0Array(System_Size length);
+export void  base_Generic_T0Array_init(Generic_T0Array that, System_Size length);
 export void  base_Generic_T0Array_free(Generic_T0Array that);
 export System_Size  base_Generic_T0Array_get_Length(Generic_T0Array that);
 export Generic_T0  base_Generic_T0Array_get_index(Generic_T0Array that, System_Size index);
@@ -65,8 +62,8 @@ export System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array th
 #if defined(using_System)
 #define T0Array  Generic_T0Array
 #define T0ArrayType  Generic_T0ArrayType
-
 #define new_T0Array  new_Generic_T0Array
+
 #define T0Array_init  Generic_T0Array_init
 #define T0Array_free  Generic_T0Array_free
 #define T0Array_get_Length  Generic_T0Array_get_Length
@@ -88,5 +85,4 @@ export System_IEnumerator  base_Generic_T0Array_getEnumerator(Generic_T0Array th
 #define function_T0Array_resize  function_Generic_T0Array_resize
 #define function_T0Array_getEnumerator  function_Generic_T0Array_getEnumerator
 #endif
-
 #endif

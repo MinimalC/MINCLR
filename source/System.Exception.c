@@ -77,16 +77,19 @@ Bool  stack_System_Exception_catch(System_Exception * that, System_Type type) {
     return true;    
 }
 
-System_Exception  base_System_Exception_init(System_Exception that, System_String8 message) {
-    base_System_Object_init((System_Object)that);
+System_Exception  new_System_Exception(System_String8 message) {
+    System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_Exception));
+    base_System_Exception_init(that, message);
+    return that;
+}
+
+void  base_System_Exception_init(System_Exception that, System_String8 message) {
 
     that->message = message;
-    return that;
 }
 
 /* void  base_System_Exception_free(System_Exception that) {
 
-    base_System_Object_free((System_Object)that);
 } */
 
 struct System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {

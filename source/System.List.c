@@ -10,10 +10,15 @@
 
 /*# System_List #*/
 
-System_List  base_System_List_init(System_List that) {
+System_List  new_System_List() {
+    System_List that = (System_List)System_Memory_allocClass(typeof(System_List));
+    base_System_List_init(that);
+    return that;
+}
+
+void  base_System_List_init(System_List that) {
     that->capacity = System_Array_DefaultCapacity;
     that->items = new_System_Array(that->capacity);
-    return that;
 }
 
 void  base_System_List_free(System_List that) {

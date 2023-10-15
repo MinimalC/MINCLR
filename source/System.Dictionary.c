@@ -8,13 +8,20 @@
 #endif
 #if !defined(code_auto_System_Dictionary)
 #define code_auto_System_Dictionary
+
 /*# System_Dictionary #*/
-System_Dictionary  base_System_Dictionary_init(System_Dictionary that) {
-    base_System_Object_init((System_Object)that);
+
+System_Dictionary  new_System_Dictionary() {
+    System_Dictionary that = (System_Dictionary)System_Memory_allocClass(typeof(System_Dictionary));
+    base_System_Dictionary_init(that);
     return that;
 }
+
+void  base_System_Dictionary_init(System_Dictionary that) {
+
+}
 void  base_System_Dictionary_free(System_Dictionary that) {
-    base_System_Object_free((System_Object)that);
+
 }
 struct System_Type_FunctionInfo  System_DictionaryTypeFunctions[] = {
     [0] = { .function = base_System_Object_init, .value = base_System_Dictionary_init },

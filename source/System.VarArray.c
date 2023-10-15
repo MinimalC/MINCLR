@@ -16,10 +16,15 @@
 
 /*# System_VarArray #*/
 
-System_VarArray base_System_VarArray_init(System_VarArray that, System_Size capacity) {
+System_VarArray  new_System_VarArray(System_Size capacity) {
+    System_VarArray that = (System_VarArray)System_Memory_allocClass(typeof(System_VarArray));
+    base_System_VarArray_init(that, capacity);
+    return that;
+}
+
+void base_System_VarArray_init(System_VarArray that, System_Size capacity) {
     that->value = System_Memory_allocArray(typeof(System_Var), capacity);
     that->capacity = capacity;
-    return that;
 }
 
 void  base_System_VarArray_free(System_VarArray that) {
@@ -83,23 +88,24 @@ struct System_Type System_VarArrayType = { .base = { .type = typeof(System_Type)
 
 /*# System_VarArrayEnumerator #*/
 
-System_VarArrayEnumerator  base_System_VarArrayEnumerator_init(System_VarArrayEnumerator that, System_VarArray array) {
-    base_System_Object_init((System_Object)that);
+System_VarArrayEnumerator  new_System_VarArrayEnumerator(System_VarArray array) {
+    System_VarArrayEnumerator that = (System_VarArrayEnumerator)System_Memory_allocClass(typeof(System_VarArrayEnumerator));
+    base_System_VarArrayEnumerator_init(that, array);
+    return that;
+}
+
+void  base_System_VarArrayEnumerator_init(System_VarArrayEnumerator that, System_VarArray array) {
 
     if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_VarArray)System_Memory_addReference((System_Object)array);
     that->index = -1;
-
-    return that;
 }
 
 void  base_System_VarArrayEnumerator_free(System_VarArrayEnumerator that) {
 
     System_Memory_free(that->array);
     that->index = -2;
-
-    base_System_Object_free((System_Object)that);
 }
 
 System_Var  base_System_VarArrayEnumerator_get_current(System_VarArrayEnumerator that) {

@@ -42,28 +42,24 @@ typedef System_fixed struct System_FileInfo {
 
 export struct System_Type  System_FileInfoType;
 
+typedef void delegate(System_FileInfo_init)(System_FileInfo that, System_String8 fileName);
 
-#define new_System_FileInfo(fileName)  (base_System_FileInfo_init((System_FileInfo)System_Memory_allocClass(typeof(System_FileInfo)), fileName))
-
-typedef System_FileInfo delegate(System_FileInfo_init)(System_FileInfo that, System_String8 fileName);
-
-export System_FileInfo  base_System_FileInfo_init(System_FileInfo that, System_String8 fileName);
+export System_FileInfo  new_System_FileInfo();
+export void  base_System_FileInfo_init(System_FileInfo that, System_String8 fileName);
 
 export System_Bool System_FileInfo_isRegular(System_FileInfo that);
 export System_Bool System_FileInfo_isDirectory(System_FileInfo that);
 export System_Bool System_FileInfo_isLink(System_FileInfo that);
 
 #define System_FileInfo_init(o,...)  ((function_System_FileInfo_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o, __VA_ARGS__)
-#define System_FileInfo_free(o)  ((function_System_FileInfo_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
+#define System_FileInfo_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 
 #if defined(using_System)
 #define FileInfo  System_FileInfo
 #define FileInfoType  System_FileInfoType
-#define function_FileInfo_init  function_System_FileInfo_init
-#define function_FileInfo_free  function_System_FileInfo_free
-#define base_FileInfo_init  base_System_FileInfo_init
-/* #define base_FileInfo_free  base_System_FileInfo_free */
 #define new_FileInfo  new_System_FileInfo
+#define function_FileInfo_init  function_System_FileInfo_init
+#define base_FileInfo_init  base_System_FileInfo_init
 #define FileInfo_init  System_FileInfo_init
 #define FileInfo_free  System_FileInfo_free
 #endif

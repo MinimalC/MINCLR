@@ -38,7 +38,13 @@ void  base_System_Object_free(Object that) {
 	unused(that)
 }
 
-Object  base_System_Object_init(Object that) {
+void  base_System_Object_init(Object that) {
+	unused(that)
+}
+
+Object  new_System_Object() {
+    System_Object that = (System_Object)System_Memory_allocClass(typeof(System_Object));
+    /* base_System_Object_init(that); */
     return that;
 }
 

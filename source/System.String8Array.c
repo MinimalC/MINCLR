@@ -16,10 +16,15 @@
 
 /*# System_String8Array #*/
 
-System_String8Array base_System_String8Array_init(System_String8Array that, System_Size capacity) {
+System_String8Array  new_System_String8Array(System_Size capacity) {
+    System_String8Array that = (System_String8Array)System_Memory_allocClass(typeof(System_String8Array));
+    base_System_String8Array_init(that, capacity);
+    return that;
+}
+
+void base_System_String8Array_init(System_String8Array that, System_Size capacity) {
     that->value = System_Memory_allocArray(typeof(System_String8), capacity);
     that->capacity = capacity;
-    return that;
 }
 
 void  base_System_String8Array_free(System_String8Array that) {
@@ -100,23 +105,24 @@ struct System_Type System_String8ArrayType = { .base = { .type = typeof(System_T
 
 /*# System_String8ArrayEnumerator #*/
 
-System_String8ArrayEnumerator  base_System_String8ArrayEnumerator_init(System_String8ArrayEnumerator that, System_String8Array array) {
-    base_System_Object_init((System_Object)that);
+System_String8ArrayEnumerator  new_System_String8ArrayEnumerator(System_String8Array array) {
+    System_String8ArrayEnumerator that = (System_String8ArrayEnumerator)System_Memory_allocClass(typeof(System_String8ArrayEnumerator));
+    base_System_String8ArrayEnumerator_init(that, array);
+    return that;
+}
+
+void  base_System_String8ArrayEnumerator_init(System_String8ArrayEnumerator that, System_String8Array array) {
 
     if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_String8Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
-
-    return that;
 }
 
 void  base_System_String8ArrayEnumerator_free(System_String8ArrayEnumerator that) {
 
     System_Memory_free(that->array);
     that->index = -2;
-
-    base_System_Object_free((System_Object)that);
 }
 
 System_String8  base_System_String8ArrayEnumerator_get_current(System_String8ArrayEnumerator that) {

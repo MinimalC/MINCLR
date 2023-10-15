@@ -25,7 +25,7 @@ typedef System_fixed struct System_VarArray {
 
 export struct System_Type  System_VarArrayType;
 
-typedef System_VarArray delegate(System_VarArray_init)(System_VarArray that, System_Size capacity);
+typedef void delegate(System_VarArray_init)(System_VarArray that, System_Size capacity);
 typedef void delegate(System_VarArray_free)(System_VarArray that);
 typedef System_Size  delegate(System_VarArray_get_Length)(System_VarArray that);
 typedef System_Var  delegate(System_VarArray_get_index)(System_VarArray that, System_Size index);
@@ -34,7 +34,8 @@ typedef void delegate(System_VarArray_copyTo)(System_VarArray that, System_VarAr
 typedef void delegate(System_VarArray_resize)(System_VarArray that, System_Size capacity);
 typedef System_IEnumerator  delegate(System_VarArray_getEnumerator)(System_VarArray that);
 
-export System_VarArray  base_System_VarArray_init(System_VarArray that, System_Size capacity);
+export System_VarArray  new_System_VarArray(System_Size capacity);
+export void  base_System_VarArray_init(System_VarArray that, System_Size capacity);
 export void  base_System_VarArray_free(System_VarArray that);
 export System_Size  base_System_VarArray_get_Length(System_VarArray that);
 export System_Var  base_System_VarArray_get_index(System_VarArray that, System_Size index);
@@ -52,13 +53,9 @@ export System_IEnumerator  base_System_VarArray_getEnumerator(System_VarArray th
 #define System_VarArray_resize(o,...)  ((function_System_VarArray_resize)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_VarArray_resize))(o,__VA_ARGS__)
 #define System_VarArray_getEnumerator(o)  ((function_System_VarArray_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
 
-#define new_System_VarArray(LENGTH)  (base_System_VarArray_init((System_VarArray)System_Memory_allocClass(typeof(System_VarArray)), LENGTH))
-
 #if defined(using_System)
 #define VarArray  System_VarArray
 #define VarArrayType  System_VarArrayType
-
-#define new_VarArray  new_System_VarArray
 
 #define VarArray_init  System_VarArray_init
 #define VarArray_free  System_VarArray_free
@@ -101,11 +98,12 @@ typedef System_fixed struct System_VarArrayEnumerator {
 export struct System_Type  System_VarArrayEnumeratorType;
 
 typedef void delegate(System_VarArrayEnumerator_free)(System_VarArrayEnumerator that);
-typedef System_VarArrayEnumerator delegate(System_VarArrayEnumerator_init)(System_VarArrayEnumerator that, System_VarArray array);
+typedef void delegate(System_VarArrayEnumerator_init)(System_VarArrayEnumerator that, System_VarArray array);
 typedef System_Var delegate(System_VarArrayEnumerator_get_current)(System_VarArrayEnumerator that);
 typedef System_Bool delegate(System_VarArrayEnumerator_moveNext)(System_VarArrayEnumerator that);
 
-export System_VarArrayEnumerator  base_System_VarArrayEnumerator_init(System_VarArrayEnumerator that, System_VarArray array);
+export System_VarArrayEnumerator  new_System_VarArrayEnumerator(System_VarArray array);
+export void  base_System_VarArrayEnumerator_init(System_VarArrayEnumerator that, System_VarArray array);
 export void  base_System_VarArrayEnumerator_free(System_VarArrayEnumerator that);
 export System_Var  base_System_VarArrayEnumerator_get_current(System_VarArrayEnumerator that);
 export System_Bool  base_System_VarArrayEnumerator_moveNext(System_VarArrayEnumerator that);
@@ -114,8 +112,6 @@ export System_Bool  base_System_VarArrayEnumerator_moveNext(System_VarArrayEnume
 #define System_VarArrayEnumerator_free(o)  ((function_System_VarArrayEnumerator_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_VarArrayEnumerator_get_current(o)  ((function_System_VarArrayEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
 #define System_VarArrayEnumerator_moveNext(o)  ((function_System_VarArrayEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
-
-#define new_System_VarArrayEnumerator(a)  (base_System_VarArrayEnumerator_init((System_VarArrayEnumerator)System_Memory_allocClass(typeof(System_VarArrayEnumerator)), a))
 
 #if defined(using_System)
 #define VarArrayEnumerator  System_VarArrayEnumerator
@@ -126,6 +122,5 @@ export System_Bool  base_System_VarArrayEnumerator_moveNext(System_VarArrayEnume
 #define base_VarArrayEnumerator_free  base_System_VarArrayEnumerator_free
 #define VarArrayEnumerator_init  System_VarArrayEnumerator_init
 #define VarArrayEnumerator_free  System_VarArrayEnumerator_free
-#define new_VarArrayEnumerator  new_System_VarArrayEnumerator
 #endif
 #endif

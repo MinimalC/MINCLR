@@ -12,16 +12,16 @@
 
 /*# System_Array #*/
 
-/* class System_Array */
+System_Array  new_System_Array(System_Size capacity) {
+    System_Array that = (System_Array)System_Memory_allocClass(typeof(System_Array));
+    base_System_Array_init(that, capacity);
+    return that;
+}
 
-System_Array  base_System_Array_init(System_Array that, System_Size capacity) {
-	base_System_Object_init((Object)that);
+void  base_System_Array_init(System_Array that, System_Size capacity) {
 
     that->value =  Memory_allocArray(typeof(Var), capacity);
-
     that->capacity = capacity;
-
-    return that;
 }
 
 void  base_System_Array_free(System_Array that) {
@@ -68,8 +68,6 @@ void  base_System_Array_free(System_Array that) {
 #endif
 
     Memory_free(that->value);
-
-	base_System_Object_free((Object)that);
 }
 
 System_Size  base_System_Array_get_Length(System_Array that) {
@@ -131,23 +129,24 @@ struct System_Type System_ArrayType = {
 
 /*# System_ArrayEnumerator #*/
 
-System_ArrayEnumerator  base_System_ArrayEnumerator_init(System_ArrayEnumerator that, System_Array array) {
-    base_System_Object_init((System_Object)that);
+System_ArrayEnumerator  new_System_ArrayEnumerator(System_Array array) {
+    System_ArrayEnumerator that = (System_ArrayEnumerator)System_Memory_allocClass(typeof(System_ArrayEnumerator));
+    base_System_ArrayEnumerator_init(that, array);
+    return that;
+}
+
+void  base_System_ArrayEnumerator_init(System_ArrayEnumerator that, System_Array array) {
 
     if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
-
-    return that;
 }
 
 void  base_System_ArrayEnumerator_free(System_ArrayEnumerator that) {
 
     System_Memory_free(that->array);
     that->index = -2;
-
-    base_System_Object_free((System_Object)that);
 }
 
 System_Object  base_System_ArrayEnumerator_get_current(System_ArrayEnumerator that) {

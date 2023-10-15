@@ -19,6 +19,14 @@ typedef System_fixed struct System_Decimal {
 export struct System_Type  System_DecimalType;
 
 export void  System_Decimal_carryOver(System_Decimal  that, System_UInt8 digits);
+export System_Decimal  new_System_Decimal__uint8(System_UInt8 uint8);
+export System_Decimal  new_System_Decimal__uint16(System_UInt16 uint16);
+export System_Decimal  new_System_Decimal__uint32(System_UInt32 uint32);
+export System_Decimal  new_System_Decimal__uint64(System_UInt64 uint64);
+export System_Decimal  new_System_Decimal__int8(System_UInt8 uint8);
+export System_Decimal  new_System_Decimal__int16(System_UInt16 uint16);
+export System_Decimal  new_System_Decimal__int32(System_UInt32 uint32);
+export System_Decimal  new_System_Decimal__int64(System_UInt64 uint64);
 export void  System_Decimal_init__UInt8(System_Decimal  that, System_UInt8 UInt8);
 export void  System_Decimal_init__UInt16(System_Decimal  that, System_UInt16 UInt16);
 export void  System_Decimal_init__UInt32(System_Decimal  that, System_UInt32 UInt32);

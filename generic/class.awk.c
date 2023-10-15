@@ -18,20 +18,23 @@
 
 /*# Generic_T0 #*/
 
-Generic_T0  base_Generic_T0_init(Generic_T0 that) {
-    base_System_Object_init((System_Object)that);
-
+Generic_T0  new_Generic_T0() {
+    Generic_T0 that = (Generic_T0)System_Memory_allocClass(typeof(Generic_T0));
+    base_Generic_T0_init(that);
     return that;
+}
+
+void  base_Generic_T0_init(Generic_T0 that) {
+
 }
 
 void  base_Generic_T0_free(Generic_T0 that) {
 
-    base_System_Object_free((System_Object)that);
 }
 
 struct System_Type_FunctionInfo  Generic_T0TypeFunctions[] = {
-    [0] = { .function = base_System_Object_init, .value = base_Generic_T0_init },
-    [1] = { .function = base_System_Object_free, .value = base_Generic_T0_free },
+    { .function = base_System_Object_init, .value = base_Generic_T0_init },
+    { .function = base_System_Object_free, .value = base_Generic_T0_free },
 };
 
 struct System_Type Generic_T0Type = { .base = { .type = typeof(System_Type) },

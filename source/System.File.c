@@ -18,7 +18,8 @@
 
 System_Bool System_File_exists(System_String8 name) {
     struct System_FileInfo info; System_Stack_zero(info);
-    return base_System_FileInfo_init(&info, name) && System_FileInfo_isRegular(&info);
+    base_System_FileInfo_init(&info, name);
+    return System_FileInfo_isRegular(&info);
 }
 
 File  System_File_open(String8 filename, File_Mode flags) {
@@ -55,11 +56,13 @@ System_Bool  stack_System_File_open(System_File that, System_String8 filename, S
     return true;
 }
 
-File  base_System_File_init(File that) {
-	base_System_Object_init((Object)that);
-
+System_File  new_System_File() {
+    System_File that = (System_File)System_Memory_allocClass(typeof(System_File));
+    base_System_File_init(that);
     return that;
 }
+
+void  base_System_File_init(File that) { }
 
 void  base_System_File_close(File that) {
     if (!that->filePtr) return;
@@ -70,7 +73,6 @@ void  base_System_File_close(File that) {
 
 void  base_System_File_free(File that) {
     base_System_File_close(that);
-	base_System_Object_free((Object)that);
 }
 
 Size  base_System_File_read(File that, String8 value, Size count) {

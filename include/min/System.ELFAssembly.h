@@ -788,14 +788,12 @@ typedef struct System_ELF64Assembly {
 
 } * System_ELF64Assembly;
 
-
-#define new_System_ELF64Assembly()  (base_System_ELF64Assembly_init((System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly))))
-
 export struct System_Type  System_ELF64AssemblyType;
 
 export System_ELF64Assembly System_ELF64Assembly_loaded[64];
 export System_Size System_ELF64Assembly_loadedCount;
 
+export System_ELF64Assembly  new_System_ELF64Assembly();
 export void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 name);
 export void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print);
 export void System_ELF64Assembly_link(System_ELF64Assembly assembly);

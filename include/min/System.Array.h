@@ -28,13 +28,9 @@ typedef System_fixed struct System_Array {
 
 }  * System_Array;
 
-
-#define new_System_Array(LENGTH)  (base_System_Array_init((System_Array)System_Memory_allocClass(typeof(System_Array)), LENGTH))
-
 export struct System_Type  System_ArrayType;
 
-typedef void  delegate(System_Array_free)(System_Array that);
-typedef System_Array  delegate(System_Array_init)(System_Array that, System_Size capacity);
+typedef void  delegate(System_Array_init)(System_Array that, System_Size capacity);
 typedef System_Size  delegate(System_Array_get_Length)(System_Array that);
 typedef System_Object  delegate(System_Array_get_index)(System_Array that, System_Size index);
 typedef void  delegate(System_Array_set_index)(System_Array that, System_Size index, System_Object value);
@@ -42,7 +38,8 @@ typedef void  delegate(System_Array_copyTo)(System_Array that, System_Array othe
 typedef void  delegate(System_Array_resize)(System_Array that, System_Size capacity);
 typedef System_IEnumerator  delegate(System_Array_getEnumerator)(System_Array that);
 
-export System_Array  base_System_Array_init(System_Array that, System_Size capacity);
+export System_Array  new_System_Array(System_Size capacity);
+export void  base_System_Array_init(System_Array that, System_Size capacity);
 export void  base_System_Array_free(System_Array that);
 export System_Size  base_System_Array_get_Length(System_Array that);
 export System_Object  base_System_Array_get_index(System_Array that, System_Size index);
@@ -64,7 +61,6 @@ export System_IEnumerator  base_System_Array_getEnumerator(System_Array that);
 #define Array  System_Array
 #define ArrayType  System_ArrayType
 
-#define new_Array  new_System_Array
 #define Array_init  System_Array_init
 #define Array_free  System_Array_free
 #define Array_get_Length  System_Array_get_Length
@@ -87,17 +83,15 @@ typedef System_fixed struct System_ArrayEnumerator {
 
 }  * System_ArrayEnumerator;
 
-
-#define new_System_ArrayEnumerator(ARRAY)  (base_System_ArrayEnumerator_init((System_ArrayEnumerator)System_Memory_allocClass(typeof(System_ArrayEnumerator)), ARRAY))
-
 export struct System_Type  System_ArrayEnumeratorType;
 
 typedef void delegate(System_ArrayEnumerator_free)(System_ArrayEnumerator that);
-typedef System_ArrayEnumerator delegate(System_ArrayEnumerator_init)(System_ArrayEnumerator that, System_Array array);
+typedef void delegate(System_ArrayEnumerator_init)(System_ArrayEnumerator that, System_Array array);
 typedef System_Object delegate(System_ArrayEnumerator_get_current)(System_ArrayEnumerator that);
 typedef System_Bool delegate(System_ArrayEnumerator_moveNext)(System_ArrayEnumerator that);
 
-export System_ArrayEnumerator  base_System_ArrayEnumerator_init(System_ArrayEnumerator that, System_Array array);
+export System_ArrayEnumerator  new_System_ArrayEnumerator(System_Array array);
+export void  base_System_ArrayEnumerator_init(System_ArrayEnumerator that, System_Array array);
 export void  base_System_ArrayEnumerator_free(System_ArrayEnumerator that);
 export System_Object  base_System_ArrayEnumerator_get_current(System_ArrayEnumerator that);
 export System_Bool  base_System_ArrayEnumerator_moveNext(System_ArrayEnumerator that);
@@ -111,7 +105,6 @@ export System_Bool  base_System_ArrayEnumerator_moveNext(System_ArrayEnumerator 
 #define ArrayEnumerator  System_ArrayEnumerator
 #define ArrayEnumeratorType  System_ArrayEnumeratorType
 
-#define new_ArrayEnumerator  new_System_ArrayEnumerator
 #define function_ArrayEnumerator_init  function_System_ArrayEnumerator_init
 #define function_ArrayEnumerator_free  function_System_ArrayEnumerator_free
 #define base_ArrayEnumerator_init  base_System_ArrayEnumerator_init

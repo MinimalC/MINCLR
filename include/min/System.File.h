@@ -72,8 +72,7 @@ export System_Bool  System_File_exists(System_String8 name);
 export System_File  System_File_open(System_String8 name, System_File_Mode flags);
 export System_Bool  stack_System_File_open(System_File that, System_String8 name, System_File_Mode flags);
 
-typedef System_File  delegate(System_File_init)(System_File that);
-typedef void  delegate(System_File_free)(System_File that);
+typedef void  delegate(System_File_init)(System_File that);
 typedef void  delegate(System_File_write__string_size)(System_File that, System_String8 value, System_Size count);
 typedef void  delegate(System_File_writeEnd__arguments)(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 typedef void  delegate(System_File_sync)(System_File that);
@@ -83,7 +82,8 @@ typedef System_IntPtr  delegate(System_File_get_Position)(System_File that);
 typedef void  delegate(System_File_set_Position)(System_File that, System_Size value);
 typedef void  delegate(System_File_close)(System_File that);
 
-export System_File  base_System_File_init(System_File that);
+export System_File  new_System_File();
+export void  base_System_File_init(System_File that);
 export void  base_System_File_free(System_File that);
 export void  base_System_File_write__string_size(System_File that, System_String8 value, System_Size count);
 export void  base_System_File_writeEnd__arguments(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
@@ -95,7 +95,7 @@ export void  base_System_File_set_Position(System_File that, System_Size value);
 export System_Size  base_System_File_get_Length(System_File that);
 export void  base_System_File_close(System_File that);
 
-#define System_File_free(o)  ((function_System_File_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
+#define System_File_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_File_init(o)  ((function_System_File_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
 #define System_File_write__string_size(o,...)  ((function_System_File_write__string_size)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write__string_size))(o, __VA_ARGS__)
 #define System_File_writeEnd__arguments(o,...)  ((function_System_File_writeEnd__arguments)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_writeEnd__arguments))(o, __VA_ARGS__)
@@ -106,8 +106,6 @@ export void  base_System_File_close(System_File that);
 #define System_File_set_Position(o,...)  ((function_System_File_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
 #define System_File_close(o)  ((function_System_File_close)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_File_close))(o)
 
-
-#define new_System_File()  (base_System_File_init((System_File)System_Memory_allocClass(typeof(System_File))))
 
 #if defined(using_System)
 #define File_Mode  System_File_Mode
@@ -124,9 +122,7 @@ export void  base_System_File_close(System_File that);
 
 #define File  System_File
 #define FileType  System_FileType
-
 #define new_File  new_System_File
-
 
 #define File_free  System_File_free
 #define File_init  System_File_init

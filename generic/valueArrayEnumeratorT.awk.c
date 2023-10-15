@@ -23,15 +23,18 @@
 
 /*# Generic_T0ArrayEnumerator #*/
 
-Generic_T0ArrayEnumerator  base_Generic_T0ArrayEnumerator_init(Generic_T0ArrayEnumerator that, Generic_T0Array array) {
-    base_System_Object_init((System_Object)that);
+Generic_T0ArrayEnumerator  new_Generic_T0ArrayEnumerator(Generic_T0Array array) {
+    Generic_T0ArrayEnumerator that = (Generic_T0ArrayEnumerator)System_Memory_allocClass(typeof(Generic_T0ArrayEnumerator));
+    base_Generic_T0ArrayEnumerator_init(that, array);
+    return that;
+}
+
+void  base_Generic_T0ArrayEnumerator_init(Generic_T0ArrayEnumerator that, Generic_T0Array array) {
 
     if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (Generic_T0Array)System_Memory_addReference((System_Object)array);
     that->index = -1;
-
-    return that;
 }
 
 void  base_Generic_T0ArrayEnumerator_free(Generic_T0ArrayEnumerator that) {
@@ -63,15 +66,15 @@ System_Bool  base_Generic_T0ArrayEnumerator_moveNext(Generic_T0ArrayEnumerator t
 }
 
 struct System_Type_FunctionInfo  Generic_T0ArrayEnumeratorTypeFunctions[] = {
-    [0] = { .function = base_Generic_T0ArrayEnumerator_init, .value = base_Generic_T0ArrayEnumerator_init },
-    [1] = { .function = base_System_Object_free, .value = base_Generic_T0ArrayEnumerator_free },
-    [2] = { .function = base_System_IEnumerator_get_current, .value = base_Generic_T0ArrayEnumerator_get_current },
-    [3] = { .function = base_System_IEnumerator_moveNext, .value = base_Generic_T0ArrayEnumerator_moveNext },
+    { .function = base_Generic_T0ArrayEnumerator_init, .value = base_Generic_T0ArrayEnumerator_init },
+    { .function = base_System_Object_free, .value = base_Generic_T0ArrayEnumerator_free },
+    { .function = base_System_IEnumerator_get_current, .value = base_Generic_T0ArrayEnumerator_get_current },
+    { .function = base_System_IEnumerator_moveNext, .value = base_Generic_T0ArrayEnumerator_moveNext },
 };
 
 struct System_Type Generic_T0ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
     .name = "Generic.T0ArrayEnumerator",
-    .Size = sizeof(struct Generic_T0ArrayEnumerator),
+    .size = sizeof(struct Generic_T0ArrayEnumerator),
     .baseType = typeof(System_Object),
     .functions = { 
         .length = sizeof_array(Generic_T0ArrayEnumeratorTypeFunctions), .value = &Generic_T0ArrayEnumeratorTypeFunctions

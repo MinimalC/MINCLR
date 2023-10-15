@@ -29,8 +29,7 @@ typedef System_fixed struct System_String8Array {
 
 export struct System_Type  System_String8ArrayType;
 
-typedef System_String8Array delegate(System_String8Array_init)(System_String8Array that, System_Size capacity);
-typedef void delegate(System_String8Array_free)(System_String8Array that);
+typedef void delegate(System_String8Array_init)(System_String8Array that, System_Size capacity);
 typedef System_Size  delegate(System_String8Array_get_Length)(System_String8Array that);
 typedef System_String8  delegate(System_String8Array_get_index)(System_String8Array that, System_Size index);
 typedef void  delegate(System_String8Array_set_index)(System_String8Array that, System_Size index, System_String8 value);
@@ -38,7 +37,8 @@ typedef void delegate(System_String8Array_copyTo)(System_String8Array that, Syst
 typedef void delegate(System_String8Array_resize)(System_String8Array that, System_Size capacity);
 typedef System_IEnumerator  delegate(System_String8Array_getEnumerator)(System_String8Array that);
 
-export System_String8Array  base_System_String8Array_init(System_String8Array that, System_Size capacity);
+export System_String8Array  new_System_String8Array(System_Size capacity);
+export void  base_System_String8Array_init(System_String8Array that, System_Size capacity);
 export void  base_System_String8Array_free(System_String8Array that);
 export System_Size  base_System_String8Array_get_Length(System_String8Array that);
 export System_String8  base_System_String8Array_get_index(System_String8Array that, System_Size index);
@@ -53,7 +53,7 @@ export System_String8Array  System_String8_split(System_String8 that, System_Cha
 export System_String8  System_Char8_join(System_Char8 that, System_String8Array array);
 
 #define System_String8Array_init(o,...)  ((function_System_String8Array_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_String8Array_init))(o, __VA_ARGS__)
-#define System_String8Array_free(o)  ((function_System_String8Array_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
+#define System_String8Array_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_String8Array_get_Length(o)  ((function_System_String8Array_get_Length)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_get_Length))(o)
 #define System_String8Array_get_index(o,...)  ((function_System_String8Array_get_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_get_index))(o, __VA_ARGS__)
 #define System_String8Array_set_index(o,...)  ((function_System_String8Array_set_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_set_index))(o, __VA_ARGS__)
@@ -61,13 +61,9 @@ export System_String8  System_Char8_join(System_Char8 that, System_String8Array 
 #define System_String8Array_resize(o,...)  ((function_System_String8Array_resize)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_String8Array_resize))(o,__VA_ARGS__)
 #define System_String8Array_getEnumerator(o)  ((function_System_String8Array_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
 
-#define new_System_String8Array(LENGTH)  (base_System_String8Array_init((System_String8Array)System_Memory_allocClass(typeof(System_String8Array)), LENGTH))
-
 #if defined(using_System)
 #define String8Array  System_String8Array
 #define String8ArrayType  System_String8ArrayType
-
-#define new_String8Array  new_System_String8Array
 
 #define String8Array_init  System_String8Array_init
 #define String8Array_free  System_String8Array_free
@@ -109,22 +105,20 @@ typedef System_fixed struct System_String8ArrayEnumerator {
 
 export struct System_Type  System_String8ArrayEnumeratorType;
 
-typedef void delegate(System_String8ArrayEnumerator_free)(System_String8ArrayEnumerator that);
-typedef System_String8ArrayEnumerator delegate(System_String8ArrayEnumerator_init)(System_String8ArrayEnumerator that, System_String8Array array);
+typedef void delegate(System_String8ArrayEnumerator_init)(System_String8ArrayEnumerator that, System_String8Array array);
 typedef System_String8 delegate(System_String8ArrayEnumerator_get_current)(System_String8ArrayEnumerator that);
 typedef System_Bool delegate(System_String8ArrayEnumerator_moveNext)(System_String8ArrayEnumerator that);
 
-export System_String8ArrayEnumerator  base_System_String8ArrayEnumerator_init(System_String8ArrayEnumerator that, System_String8Array array);
+export System_String8ArrayEnumerator  new_System_String8ArrayEnumerator(System_String8Array array);
+export void  base_System_String8ArrayEnumerator_init(System_String8ArrayEnumerator that, System_String8Array array);
 export void  base_System_String8ArrayEnumerator_free(System_String8ArrayEnumerator that);
 export System_String8  base_System_String8ArrayEnumerator_get_current(System_String8ArrayEnumerator that);
 export System_Bool  base_System_String8ArrayEnumerator_moveNext(System_String8ArrayEnumerator that);
 
 #define System_String8ArrayEnumerator_init(o,...)  ((function_System_String8ArrayEnumerator_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_String8ArrayEnumerator_init))(o,__VA_ARGS__)
-#define System_String8ArrayEnumerator_free(o)  ((function_System_String8ArrayEnumerator_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
+#define System_String8ArrayEnumerator_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_String8ArrayEnumerator_get_current(o)  ((function_System_String8ArrayEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
 #define System_String8ArrayEnumerator_moveNext(o)  ((function_System_String8ArrayEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
-
-#define new_System_String8ArrayEnumerator(a)  (base_System_String8ArrayEnumerator_init((System_String8ArrayEnumerator)System_Memory_allocClass(typeof(System_String8ArrayEnumerator)), a))
 
 #if defined(using_System)
 #define String8ArrayEnumerator  System_String8ArrayEnumerator

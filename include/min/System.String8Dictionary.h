@@ -29,8 +29,7 @@ typedef System_fixed struct System_String8Dictionary {
 
 export struct System_Type  System_String8DictionaryType;
 
-typedef System_String8Dictionary delegate(System_String8Dictionary_init)(System_String8Dictionary that, System_Size capacity);
-typedef void delegate(System_String8Dictionary_free)(System_String8Dictionary that);
+typedef void delegate(System_String8Dictionary_init)(System_String8Dictionary that, System_Size capacity);
 typedef System_Size  delegate(System_String8Dictionary_get_Length)(System_String8Dictionary that);
 typedef System_String8  delegate(System_String8Dictionary_get_index)(System_String8Dictionary that, System_Size index);
 typedef void  delegate(System_String8Dictionary_set_index)(System_String8Dictionary that, System_Size index, System_String8 value);
@@ -38,7 +37,8 @@ typedef void delegate(System_String8Dictionary_copyTo)(System_String8Dictionary 
 typedef void delegate(System_String8Dictionary_resize)(System_String8Dictionary that, System_Size length);
 typedef System_IEnumerator  delegate(System_String8Dictionary_getEnumerator)(System_String8Dictionary that);
 
-export System_String8Dictionary  base_System_String8Dictionary_init(System_String8Dictionary that, System_Size capacity);
+export System_String8Dictionary  new_System_String8Dictionary(System_Size capacity);
+export void  base_System_String8Dictionary_init(System_String8Dictionary that, System_Size capacity);
 export void  base_System_String8Dictionary_free(System_String8Dictionary that);
 export System_Size base_System_String8Dictionary_add(System_String8Dictionary that, System_String8 key, System_String8 value);
 export System_Size  base_System_String8Dictionary_get_Length(System_String8Dictionary that);
@@ -53,7 +53,7 @@ export void  base_System_String8Dictionary_resize(System_String8Dictionary that,
 export System_IEnumerator  base_System_String8Dictionary_getEnumerator(System_String8Dictionary that);
 
 #define System_String8Dictionary_init(o,...)  ((function_System_String8Dictionary_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_String8Dictionary_init))(o, __VA_ARGS__)
-#define System_String8Dictionary_free(o)  ((function_System_String8Dictionary_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
+#define System_String8Dictionary_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_String8Dictionary_get_Length(o)  ((function_System_String8Dictionary_get_Length)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_get_Length))(o)
 #define System_String8Dictionary_get_index(o,...)  ((function_System_String8Dictionary_get_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_get_index))(o, __VA_ARGS__)
 #define System_String8Dictionary_set_index(o,...)  ((function_System_String8Dictionary_set_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_set_index))(o, __VA_ARGS__)
@@ -61,13 +61,9 @@ export System_IEnumerator  base_System_String8Dictionary_getEnumerator(System_St
 #define System_String8Dictionary_resize(o,...)  ((function_System_String8Dictionary_resize)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_String8Dictionary_resize))(o,__VA_ARGS__)
 #define System_String8Dictionary_getEnumerator(o)  ((function_System_String8Dictionary_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
 
-#define new_System_String8Dictionary(LENGTH)  (base_System_String8Dictionary_init((System_String8Dictionary)System_Memory_allocClass(typeof(System_String8Dictionary)), LENGTH))
-
 #if defined(using_System)
 #define String8Dictionary  System_String8Dictionary
 #define String8DictionaryType  System_String8DictionaryType
-
-#define new_String8Dictionary  new_System_String8Dictionary
 
 #define String8Dictionary_init  System_String8Dictionary_init
 #define String8Dictionary_free  System_String8Dictionary_free
@@ -109,22 +105,20 @@ typedef System_fixed struct System_String8DictionaryEnumerator {
 
 export struct System_Type  System_String8DictionaryEnumeratorType;
 
-typedef void delegate(System_String8DictionaryEnumerator_free)(System_String8DictionaryEnumerator that);
-typedef System_String8DictionaryEnumerator delegate(System_String8DictionaryEnumerator_init)(System_String8DictionaryEnumerator that, System_String8Dictionary array);
+typedef void delegate(System_String8DictionaryEnumerator_init)(System_String8DictionaryEnumerator that, System_String8Dictionary array);
 typedef System_String8 delegate(System_String8DictionaryEnumerator_get_current)(System_String8DictionaryEnumerator that);
 typedef System_Bool delegate(System_String8DictionaryEnumerator_moveNext)(System_String8DictionaryEnumerator that);
 
-export System_String8DictionaryEnumerator  base_System_String8DictionaryEnumerator_init(System_String8DictionaryEnumerator that, System_String8Dictionary array);
+export System_String8DictionaryEnumerator  new_System_String8DictionaryEnumerator(System_String8Dictionary array);
+export void  base_System_String8DictionaryEnumerator_init(System_String8DictionaryEnumerator that, System_String8Dictionary array);
 export void  base_System_String8DictionaryEnumerator_free(System_String8DictionaryEnumerator that);
 export System_String8  base_System_String8DictionaryEnumerator_get_current(System_String8DictionaryEnumerator that);
 export System_Bool  base_System_String8DictionaryEnumerator_moveNext(System_String8DictionaryEnumerator that);
 
 #define System_String8DictionaryEnumerator_init(o,...)  ((function_System_String8DictionaryEnumerator_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_String8DictionaryEnumerator_init))(o,__VA_ARGS__)
-#define System_String8DictionaryEnumerator_free(o)  ((function_System_String8DictionaryEnumerator_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
+#define System_String8DictionaryEnumerator_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 #define System_String8DictionaryEnumerator_get_current(o)  ((function_System_String8DictionaryEnumerator_get_current)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_get_current))(o)
 #define System_String8DictionaryEnumerator_moveNext(o)  ((function_System_String8DictionaryEnumerator_moveNext)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerator_moveNext))(o)
-
-#define new_System_String8DictionaryEnumerator(a)  (base_System_String8DictionaryEnumerator_init((System_String8DictionaryEnumerator)System_Memory_allocClass(typeof(System_String8DictionaryEnumerator)), a))
 
 #if defined(using_System)
 #define String8DictionaryEnumerator  System_String8DictionaryEnumerator
@@ -135,6 +129,5 @@ export System_Bool  base_System_String8DictionaryEnumerator_moveNext(System_Stri
 #define base_String8DictionaryEnumerator_free  base_System_String8DictionaryEnumerator_free
 #define String8DictionaryEnumerator_init  System_String8DictionaryEnumerator_init
 #define String8DictionaryEnumerator_free  System_String8DictionaryEnumerator_free
-#define new_String8DictionaryEnumerator  new_System_String8DictionaryEnumerator
 #endif
 #endif

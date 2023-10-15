@@ -10,23 +10,24 @@
 
 /*# System_ListEnumerator #*/
 
-System_ListEnumerator  base_System_ListEnumerator_init(System_ListEnumerator that, System_List array) {
-    base_System_Object_init((System_Object)that);
+System_ListEnumerator  new_System_ListEnumerator(System_List array) {
+    System_ListEnumerator that = (System_ListEnumerator)System_Memory_allocClass(typeof(System_ListEnumerator));
+    base_System_ListEnumerator_init(that, array);
+    return that;
+}
+
+void  base_System_ListEnumerator_init(System_ListEnumerator that, System_List array) {
 
     if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_List)System_Memory_addReference((System_Object)array);
     that->index = -1;
-
-    return that;
 }
 
 void  base_System_ListEnumerator_free(System_ListEnumerator that) {
 
     System_Memory_free(that->array);
     that->index = -2;
-
-    base_System_Object_free((System_Object)that);
 }
 
 System_Object  base_System_ListEnumerator_get_current(System_ListEnumerator that) {

@@ -16,11 +16,10 @@
 
 /*# System_VarDictionary #*/
 
-System_VarDictionary base_System_VarDictionary_init(System_VarDictionary that, System_Size capacity) {
+void base_System_VarDictionary_init(System_VarDictionary that, System_Size capacity) {
     that->key = System_Memory_allocArray(typeof(System_Var), capacity);
     that->value = System_Memory_allocArray(typeof(System_Var), capacity);
     that->capacity = capacity;
-    return that;
 }
 
 void  base_System_VarDictionary_free(System_VarDictionary that) {
@@ -120,23 +119,24 @@ struct System_Type System_VarDictionaryType = { .base = { .type = typeof(System_
 
 /*# System_VarDictionaryEnumerator #*/
 
-System_VarDictionaryEnumerator  base_System_VarDictionaryEnumerator_init(System_VarDictionaryEnumerator that, System_VarDictionary array) {
-    base_System_Object_init((System_Object)that);
+System_VarDictionaryEnumerator  new_System_VarDictionaryEnumerator(System_VarDictionary array) {
+    System_VarDictionaryEnumerator that = (System_VarDictionaryEnumerator)System_Memory_allocClass(typeof(System_VarDictionaryEnumerator));
+    base_System_VarDictionaryEnumerator_init(that, array);
+    return that;
+}
+
+void  base_System_VarDictionaryEnumerator_init(System_VarDictionaryEnumerator that, System_VarDictionary array) {
 
     if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_VarDictionary)System_Memory_addReference((System_Object)array);
     that->index = -1;
-
-    return that;
 }
 
 void  base_System_VarDictionaryEnumerator_free(System_VarDictionaryEnumerator that) {
 
     System_Memory_free(that->array);
     that->index = -2;
-
-    base_System_Object_free((System_Object)that);
 }
 
 System_Var  base_System_VarDictionaryEnumerator_get_current(System_VarDictionaryEnumerator that) {
