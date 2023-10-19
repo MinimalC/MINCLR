@@ -47,6 +47,9 @@ enum {
 #endif
 };
 
+export System_String8 System_Signal_Code_toString(System_Signal_Code value);
+
+
 typedef struct System_Signal {
 #if System_Size_Bits == 32
     unsigned long mask[2];
@@ -55,8 +58,65 @@ typedef struct System_Signal {
 #endif
 } * System_Signal;
 
+typedef struct System_Signal_Info {
+    System_UInt32 code; /* Signal number.  */
+    System_UInt32 errno; /* If non-zero, an errno value associated with this signal, as defined in <errno.h>.  */
+    System_UInt32 code1; /* Signal code.  */
+
+    union {
+
+        /* kill  */
+        struct {
+            System_Int32 pid;    /* Sending process ID.  */
+            System_UInt32 uid;    /* Real user ID of sending process.  */
+        } kill;
+
+        /* POSIX.1b timers.  */
+        struct {
+            System_Int32 tid;        /* Timer ID.  */
+            System_Int32 overrun;    /* Overrun count.  */
+            System_IntPtr value;    /* Signal value.  */
+        } timer;
+
+        /* POSIX.1b signals.  */
+        struct {
+            System_Int32 pid;    /* Sending process ID.  */
+            System_UInt32 uid;    /* Real user ID of sending process.  */
+            System_IntPtr value;    /* Signal value.  */
+        } realtime;
+
+        /* SIGCHILD.  */
+        struct {
+            System_Int32 pid;    /* Which child.  */
+            System_UInt32 uid;    /* Real user ID of sending process.  */
+            System_Int32 status;    /* Exit value or signal.  */
+            System_Int64 utime;
+            System_Int64 stime;
+        } sigchild;
+
+        /* SIGILL, SIGFPE, SIGSEGV, SIGBUS.  */
+        struct {
+            System_Var address;    /* Faulting instruction  */
+        } sigfault;
+
+        /* SIGPOLL.  */
+        struct {
+            System_Int64 band;    /* Band event for SIGPOLL.  */
+            System_Int32 fd;
+        } sigpoll;
+
+        /* SIGSYS.  */
+        struct {
+            System_Var address;   /* Calling user instruction  */
+            System_Int32 syscall; /* Triggering system call number.  */
+            System_UInt32 arch;   /* AUDIT_ARCH_* of syscall.  */
+        } sigsys;
+    };
+    
+} * System_Signal_Info;
+
 typedef void delegate(System_Signal_handler)(System_Signal_Code code);
-typedef void delegate(System_Signal_action)(System_Signal_Code code, System_Var info, System_Var context);
+typedef void delegate(System_Signal_action)(System_Signal_Code code, System_Signal_Info info, System_Var context);
 
 #define function_System_Signal_handler_DEFAULT ((function_System_Signal_handler)0UL)
 #define function_System_Signal_handler_IGNORE ((function_System_Signal_handler)1UL)
@@ -72,11 +132,18 @@ typedef struct System_Signal_Action {
     struct System_Signal signal;
 } * System_Signal_Action;
 
-export void System_Signal_signal(System_Signal_Code code, function_System_Signal_handler handler);
+export void System_Signal_handle(System_Signal_Code code, function_System_Signal_handler handler);
+export void System_Signal_act(System_Signal_Code code, function_System_Signal_action action);
 export System_Bool System_Signal_get__code(System_Signal_Code code);
 export void System_Signal_set__code(System_Signal_Code code);
 export void System_Signal_block__code(System_Signal_Code code);
 export void System_Signal_unblock__code(System_Signal_Code code);
+export void System_Signal_add(System_Signal that, System_Signal_Code code);
+export void System_Signal_remove(System_Signal that, System_Signal_Code code);
+export void System_Signal_get(System_Signal that);
+export void System_Signal_set(System_Signal that);
+export void System_Signal_block(System_Signal that);
+export void System_Signal_unblock(System_Signal that);
 
 export struct System_Type  System_SignalType;
 

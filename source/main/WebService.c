@@ -316,9 +316,7 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     }
     if (System_Directory_exists(requestPath)) {
         System_Console_writeLine("HTTPService_serve: Folder {0:string}", 1, requestPath);
-        System_String8 new_requestPath = System_String8_concat(requestPath, "index.html");
-        System_Memory_free(requestPath);
-        requestPath = new_requestPath;
+        System_String8_replace(&requestPath, System_String8_concat(requestPath, "index.html"));
     }
     if (!System_File_exists(requestPath)) {
         System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
@@ -421,6 +419,12 @@ void System_Runtime_CTRLC(System_Signal_Code code) {
     System_Runtime_HitCTRLC = true;
 }
 
+void System_Runtime_sigfault(System_Signal_Code code, System_Signal_Info info, System_Var context) {
+    System_Console_writeLine("{0:string}: code {1:uint32}, errno {2:uint32}, code1 {3:uint32}, sigfault.address {4:uint:hex}", 5,
+        System_Signal_Code_toString(code), info->code, info->errno, info->code1, info->sigfault.address);
+    System_Syscall_terminate(false);
+}
+
 int System_Runtime_main(int argc, char  * argv[]) {
 
     if (argc < 1) {
@@ -428,8 +432,16 @@ int System_Runtime_main(int argc, char  * argv[]) {
         return false;
     }
 
-    System_Signal_unblock__code(System_Signal_Code_SIGINT);
-    System_Signal_signal(System_Signal_Code_SIGINT, System_Runtime_CTRLC);
+    struct System_Signal signal; Stack_zero(signal);
+    System_Signal_add(&signal, System_Signal_Code_SIGINT);
+    System_Signal_add(&signal, System_Signal_Code_SIGILL);
+    System_Signal_add(&signal, System_Signal_Code_SIGFPE);
+    System_Signal_add(&signal, System_Signal_Code_SIGSEGV);
+    System_Signal_unblock(&signal);
+    System_Signal_handle(System_Signal_Code_SIGINT, System_Runtime_CTRLC);
+    System_Signal_act(System_Signal_Code_SIGILL, System_Runtime_sigfault);
+    System_Signal_act(System_Signal_Code_SIGFPE, System_Runtime_sigfault);
+    System_Signal_act(System_Signal_Code_SIGSEGV, System_Runtime_sigfault);
 
     System_Directory_change("www");
 
@@ -447,7 +459,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
 
     while (true) {
 
-        if (System_Runtime_HitCTRLC) System_Console_exit(false);
+        if (System_Runtime_HitCTRLC) break;
      
         Network_TCPSocket tcp1 = base_Network_TCPSocket_accept(tcp);
         if (!tcp1) continue;

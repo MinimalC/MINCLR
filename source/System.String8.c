@@ -205,6 +205,12 @@ Bool  System_String8_endsWith(String8 that, String8 other) {
     return System_String8_equalsSubstring(that + diff, other, length1);
 }
 
+void  System_String8_replace(String8 ref that, String8 other) {
+    String8 old = *that;
+    *that = other;
+    Memory_free(old);
+}
+
 System_String8Array System_String8_split(System_String8 that, System_Char8 separator) {
 
     System_String8Array split = System_Memory_allocClass(typeof(System_String8Array));
