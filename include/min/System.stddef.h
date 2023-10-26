@@ -221,10 +221,13 @@ typedef char  System_Char8,  * System_String8,  System_STRING8[];
 
 export System_Char8  System_String8_Empty[1];
 
+#define System_Stack_zero(VAR) for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof(VAR); ++ff(VAR,Z)) ((System_Char8 *)&VAR)[ff(VAR,Z)] = 0
+
 #if defined(using_System)
 #define Char8  System_Char8
 #define String8  System_String8
 #define STRING8  System_STRING8
 #define String8_Empty  System_String8_Empty
+#define Stack_zero  System_Stack_zero
 #endif
 #endif

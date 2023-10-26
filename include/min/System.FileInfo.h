@@ -36,7 +36,27 @@ typedef System_fixed struct System_FileInfo {
 
     System_String8 name;
 
-    struct System_Syscall_stat stat;
+    System_ErrorCode error;
+
+    /* struct System_Syscall_stat */
+    
+    System_UInt64 containerId;
+    System_UInt64 iNodeId;
+    System_UInt64 hardlinks;
+    System_UInt32 mode;
+    System_UInt32 userId;
+    System_UInt32 groupId;
+    System_UInt32 __padding1;
+
+    System_UInt64 deviceId;
+    System_Int64 size;
+    System_Int64 bulkSize;
+    System_Int64 blocks;
+    struct System_Syscall_timespec accessTime;
+    struct System_Syscall_timespec modifyTime;
+    struct System_Syscall_timespec changeTime;
+
+    System_IntPtr __reserved[3];
 
 }  * System_FileInfo;
 

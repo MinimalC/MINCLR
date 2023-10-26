@@ -14,25 +14,7 @@
 #if !defined(code_System_Exception)
 #define code_System_Exception
 
-/*typedef struct System_ReservedException {
-    struct System_Exception base;
-
-    System_Size __reserved[8];
-} * System_ReservedException;
-
-thread struct System_ReservedException System_ReservedException_current;*/
-
 thread System_Exception System_Exception_current = null;
-
-//thread System_Char8 System_Exception_message[4096] = "";
-
-Bool  System_Exception_try() {
-    return (System_Exception_current && System_Exception_current->base.type) ? true : false;
-}
-
-Bool  System_Exception_tryNot() {
-    return (!System_Exception_current || !System_Exception_current->base.type) ? true : false;
-}
 
 void  System_Exception_throw(System_Exception that) {
     Debug_assert(that);
@@ -64,7 +46,7 @@ void  System_Exception_terminate(System_Exception that) {
     System_Syscall_terminate(false);
 }
 
-Bool  stack_System_Exception_catch(System_Exception * that, System_Type type) {
+Bool  System_Exception_catch(System_Exception * that, System_Type type) {
     Debug_assert(that);
     Debug_assert(type);
     
@@ -74,6 +56,20 @@ Bool  stack_System_Exception_catch(System_Exception * that, System_Type type) {
         
     *that = System_Exception_current;
     System_Exception_current = null;
+#if DEBUG
+    System_Exception exception = *that;
+    Type exceptionType = exception->base.type;
+    if (!exceptionType) exceptionType = typeof(System_Exception);
+
+    if (exception->message && exception->error)
+        Console_writeLine("catches {0:string}: error {1:uint} ({2:string}): {3:string}", 4, exceptionType->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error), exception->message);
+    else if (exception->message)
+        Console_writeLine("catches {0:string}: {1:string}", 2, exceptionType->name, exception->message);
+    else if (exception->error)
+        Console_writeLine("catches {0:string}: error {1:uint} ({2:string})", 3, exceptionType->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error));
+    else
+        Console_writeLine("catches {0:string}", 1, exceptionType->name);
+#endif
     return true;    
 }
 
@@ -84,17 +80,16 @@ System_Exception  new_System_Exception(System_String8 message) {
 }
 
 void  base_System_Exception_init(System_Exception that, System_String8 message) {
-
     that->message = message;
 }
 
-/* void  base_System_Exception_free(System_Exception that) {
-
-} */
+void  base_System_Exception_free(System_Exception that) {
+    System_Memory_free(that->message);
+}
 
 struct System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {
     [0] = { .function = base_System_Exception_init, .value = base_System_Exception_init },
-/*    [1] = { .function = base_System_Object_free, .value = base_System_Exception_free }, */
+    [1] = { .function = base_System_Object_free, .value = base_System_Exception_free },
 };
 
 struct System_Type System_ExceptionType = {
@@ -106,5 +101,70 @@ struct System_Type System_ExceptionType = {
         .length = sizeof_array(System_ExceptionTypeFunctions), .value = &System_ExceptionTypeFunctions
     },
 };
+
+struct System_Type System_IOExceptionType = {
+    .base = { .type = typeof(System_Type) },
+    .name = "IOException",
+    .size = sizeof(struct System_Exception),
+    .baseType = typeof(System_Exception),
+};
+
+System_Exception  new_System_IOException(System_String8 message) {
+    System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_IOException));
+    base_System_Exception_init(that, message);
+    return that;
+}
+
+struct System_Type System_NotSupportedExceptionType = {
+    .base = { .type = typeof(System_Type) },
+    .name = "NotSupportedException",
+    .size = sizeof(struct System_Exception),
+    .baseType = typeof(System_Exception),
+};
+
+System_Exception  new_System_NotSupportedException(System_String8 message) {
+    System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_NotSupportedException));
+    base_System_Exception_init(that, message);
+    return that;
+}
+
+struct System_Type System_NotImplementedExceptionType = {
+    .base = { .type = typeof(System_Type) },
+    .name = "NotImplementedException",
+    .size = sizeof(struct System_Exception),
+    .baseType = typeof(System_Exception),
+};
+
+System_Exception  new_System_NotImplementedException(System_String8 message) {
+    System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_NotImplementedException));
+    base_System_Exception_init(that, message);
+    return that;
+}
+
+struct System_Type System_ArgumentExceptionType = {
+    .base = { .type = typeof(System_Type) },
+    .name = "ArgumentException",
+    .size = sizeof(struct System_Exception),
+    .baseType = typeof(System_Exception),
+};
+
+System_Exception  new_System_ArgumentException(System_String8 message) {
+    System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_ArgumentException));
+    base_System_Exception_init(that, message);
+    return that;
+}
+
+struct System_Type System_InvalidExceptionType = {
+    .base = { .type = typeof(System_Type) },
+    .name = "InvalidException",
+    .size = sizeof(struct System_Exception),
+    .baseType = typeof(System_Exception),
+};
+
+System_Exception  new_System_InvalidException(System_String8 message) {
+    System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_InvalidException));
+    base_System_Exception_init(that, message);
+    return that;
+}
 
 #endif

@@ -88,7 +88,7 @@ struct System_Type System_Type_FieldInfoArrayType = { .base = { .type = typeof(S
 
 System_Var System_Type_getMethod(System_Type  that, System_Var fun) {
     System_Var reture = System_Type_tryMethod(that, fun);
-    if (!reture) terminate(new_System_Exception("NotImplementedException: Method not found"));
+    if (!reture) System_Exception_terminate(new_System_Exception("NotImplementedException: Method not found"));
     return reture;
 }
 

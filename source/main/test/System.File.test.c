@@ -3,6 +3,7 @@
 
 STRING8  HALLO = "HaLLo";
 STRING8  HALLOtxt = "./.System.File.test.txt";
+STRING8  FILENOTFOUND = ".FileNotFound";
 
 int System_Runtime_main(int argc, char * argv[]) {
 
@@ -37,6 +38,15 @@ int System_Runtime_main(int argc, char * argv[]) {
 
 	/* Test02: Close the File */
     Memory_free(file);
+
+    file = File_open(FILENOTFOUND, System_File_Mode_readOnly);
+    System_Exception exception = null;
+    if (System_Exception_catch(&exception, typeof(System_IOException))) {
+        Console_writeLine__string("SUCCESS: catch(IOException)");
+        System_Memory_free(exception);
+    }
+    else
+        Console_writeLine__string("ERROR: no catch(IOException)");
 
 	return true;	/* OK (1 == true) */
 }

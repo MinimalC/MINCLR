@@ -60,6 +60,12 @@ int System_Runtime_main(int argc, char * argv[]) {
 
         System_Thread_sleep(1);
     }
+
+    System_Memory_free(dummy0);
+    System_Memory_free(dummy1);
+    System_Memory_free(dummy2);
+    System_Memory_free(dummy3);
+    System_Memory_free(dummy4);
     
     System_Console_writeLine__string("This is Parent");
 

@@ -62,11 +62,9 @@ export System_Var System_Memory_addReference(System_Var that);
 export void  System_Memory_freeClass(System_Var ref that);
 export void  System_Memory_debug(void);
 
-#define System_Memory_free(THAT) (System_Memory_freeClass((System_Var ref)&THAT))
+#define System_Memory_free(THAT) (!THAT ? false : System_Memory_freeClass((System_Var ref)&THAT), true)
 
 #define inline_System_Memory_equals(VAR0, VAR1, N)  (N == System_Memory_compare(VAR0, VAR1, N))
-
-#define System_Stack_zero(VAR) for (System_Size I = 0; I < sizeof(VAR); ++I) ((System_Char8 *)&VAR)[I] = 0
 
 #if defined(using_System)
 #define MemoryType  System_MemoryType
@@ -88,7 +86,5 @@ export void  System_Memory_debug(void);
 #define Memory_free  System_Memory_free
 
 #define inline_Memory_equals  inline_System_Memory_equals
-
-#define Stack_zero  System_Stack_zero
 #endif
 #endif

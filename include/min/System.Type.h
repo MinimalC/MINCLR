@@ -12,7 +12,7 @@
 #error "This doesn't work in C++, as this throws a compiler exception. Use AWK and C !"
 /*
 1. C++Exceptions are using setjmp, to jump the stack.
-   In Minimal C, Exceptions just return, return 0 or terminate.
+   In Minimal C, Exceptions just return, return 0 or System_Exception_terminate.
 2. typedef struct Name Name; even in extern "C": C++ throws a compiler exception.
    In Minimal C, you just use typedef struct Name * Name;
 */

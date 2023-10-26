@@ -45,27 +45,6 @@ typedef struct System_Syscall_timespec {
 
 } * System_Syscall_timespec;
 
-typedef struct System_Syscall_stat {
-
-    System_UInt64 containerId;
-    System_UInt64 iNodeId;
-    System_UInt64 hardlinks;
-    System_UInt32 mode;
-    System_UInt32 userId;
-    System_UInt32 groupId;
-    System_UInt32 __padding1;
-
-    System_UInt64 deviceId;
-    System_Int64 size;
-    System_Int64 bulkSize;
-    System_Int64 blocks;
-    struct System_Syscall_timespec accessTime;
-    struct System_Syscall_timespec modifyTime;
-    struct System_Syscall_timespec changeTime;
-    System_IntPtr __reserved[3];
-
-} * System_Syscall_stat;
-
 typedef System_Var  System_Syscall_StandardFile;
 
 #define System_Syscall_StandardFile_STDIN   ((System_Var)0)
@@ -80,7 +59,7 @@ export System_Size  System_Syscall_write(System_Var filePtr, const System_Var bu
 export System_Size  System_Syscall_lseek(System_Var filePtr, System_Size offset, System_IntPtr whence);
 export void  System_Syscall_fsync(System_Var filePtr);
 export void  System_Syscall_close(System_Var filePtr);
-export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, System_Syscall_stat that, System_IntPtr flags);
+export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, System_Var stat, System_IntPtr flags);
 
 export void System_Syscall_getcwd(System_String8 buffer, System_Size length);
 export void System_Syscall_chdir(System_String8 path);

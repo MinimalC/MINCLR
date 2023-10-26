@@ -45,6 +45,14 @@ System_Size  stack_Generic_T0_toString8base2(Generic_T0 that, System_Char8 array
     return numbers;
 }
 
+System_String8  Generic_T0_toString8base2(Generic_T0 that) {
+    System_Char8 array[Generic_T0_String8base2Length_DEFAULT + 1];
+    System_Size length = stack_Generic_T0_toString8base2(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + Generic_T0_String8base4Length_DEFAULT - 1;
     System_Char8 n;
@@ -68,6 +76,14 @@ System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array
     return numbers;
 }
 
+System_String8  Generic_T0_toString8base4(Generic_T0 that) {
+    System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1];
+    System_Size length = stack_Generic_T0_toString8base4(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + Generic_T0_String8base8Length_DEFAULT - 1;
     System_Char8 n;
@@ -89,6 +105,14 @@ System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array
     }
     *(array + Generic_T0_String8base8Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  Generic_T0_toString8base8(Generic_T0 that) {
+    System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1];
+    System_Size length = stack_Generic_T0_toString8base8(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1]) {
@@ -115,6 +139,14 @@ System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 arra
     return numbers;
 }
 
+System_String8  Generic_T0_toString8base16(Generic_T0 that) {
+    System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1];
+    System_Size length = stack_Generic_T0_toString8base16(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__T0(&decimal, that);
@@ -139,6 +171,14 @@ System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 arra
     }
     *(array + Generic_T0_String8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  Generic_T0_toString8base10(Generic_T0 that) {
+    System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1];
+    System_Size length = stack_Generic_T0_toString8base10(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 Generic_T0  Generic_T0_parsebase10(System_String8 that) {

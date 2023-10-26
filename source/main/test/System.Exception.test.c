@@ -1,27 +1,25 @@
 #define using_System
 #include <min/System.h>
 
-STRING8  HALLOtxt = "./.FileNotFound";
+STRING8  HALLOtxt = ".FileNotFound";
 
 Bool main_try() {
+
 	/* Test00: Open .FileNotFound */
     File file = File_open(HALLOtxt, System_File_Mode_readOnly);
-    try
 
-    Console_write__string("ERROR: try isn't");
-
-    catch
-    catch_class(System_Exception,exception, {
-
-        Console_writeLine("SUCCESS: catch_class {0:string}, error: {1:string} ({2:uint})", 3, exception->base.type->name, enum_getName(typeof(System_ErrorCode), exception->error), exception->error);
-
-        rethrow(exception);
-    })
-    finally
+    System_Exception exception = null;
+    if (System_Exception_catch(&exception, typeof(System_Exception))) {
+        Console_writeLine("SUCCESS: catch {0:string}, error: {1:string} ({2:uint})", 3, exception->base.type->name, enum_getName(typeof(System_ErrorCode), exception->error), exception->error);
+    }
     Console_writeLine__string("This is finally.");
     /* Test02: Close the File */
     if (file) Memory_free(file);
-    finally_return
+    if (exception) {
+        /* rethrow, just to see TERMINATED */
+        System_Exception_throw(exception);
+        return false;
+    }
 
     Console_writeLine__string("ERROR: You should NOT see this.");
 

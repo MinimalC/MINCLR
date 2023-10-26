@@ -20,6 +20,10 @@ typedef struct Network_URI {
 
 } * Network_URI;
 
+void Network_URI_free(Network_URI that) {
+
+}
+
 typedef struct Network_HTTPRequest {
     struct System_Object base;
 
@@ -34,6 +38,10 @@ typedef struct Network_HTTPRequest {
     System_String8Dictionary header;
 
 } * Network_HTTPRequest;
+
+void Network_HTTPRequest_free(Network_HTTPRequest that) {
+
+}
 
 struct System_Type Network_HTTPRequestType = {
     .base = { .type = typeof(System_Type) },
@@ -349,14 +357,13 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
     response->buffer = text;
     response->bufferLength = fileSize;
-    System_String8 scratch = System_Memory_allocArray(typeof(System_Char8), System_UInt64_String8base10Length_DEFAULT + 1);
-    stack_System_UInt64_toString8base10(fileSize, scratch);
-    base_System_String8Dictionary_add(response->header, "Content-Length", scratch);
+    base_System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(fileSize));
     base_System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[mime].name);
 
 continue_IN:
     System_Memory_free(requestExt);
     System_Memory_free(requestPath);
+    System_Memory_free(request->header);
     System_Memory_free(request);
     System_Memory_free(message->content);
     System_Memory_free(message);
@@ -401,9 +408,11 @@ continue_IN:
 
     base_Network_TCPSocket_sendMessage(tcp, response->source, Network_MessageFlags_NOSIGNAL);
 
+    System_Memory_free(response->buffer);
     System_Memory_free(response->source->content[0].value);
     System_Memory_free(response->source->content);
     System_Memory_free(response->source);
+    System_Memory_free(response->header);
     System_Memory_free(response);
 
     base_Network_TCPSocket_close(tcp);

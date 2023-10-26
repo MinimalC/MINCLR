@@ -218,7 +218,6 @@ System_String8Array System_String8_split(System_String8 that, System_Char8 separ
 
     System_String8 other = split->buffer = System_String8_copy(that);
     System_Size length = System_String8_get_Length(other);
-
     for (Size i = 0, start = 0; i < length; ++i)
         if (*(other + i) == separator) {
             *(other + i) = '\0';

@@ -111,8 +111,8 @@ void  System_Syscall_close(System_Var filePtr) {
     (void)System_Syscall_call01(System_Syscall_Command_close, (System_IntPtr)filePtr);
 }
 
-void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, System_Syscall_stat that, System_IntPtr flags) {
-    (void)System_Syscall_call04(System_Syscall_Command_fstatat, (System_IntPtr)directoryPtr, (System_IntPtr)pathName, (System_IntPtr)that, flags);
+void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, System_Var stat, System_IntPtr flags) {
+    (void)System_Syscall_call04(System_Syscall_Command_fstatat, (System_IntPtr)directoryPtr, (System_IntPtr)pathName, (System_IntPtr)stat, flags);
 }
 
 void System_Syscall_getcwd(System_String8 buffer, System_Size length) {

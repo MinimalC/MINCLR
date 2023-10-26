@@ -44,6 +44,14 @@ System_Size  stack_System_UInt8_toString8base2(System_UInt8 that, System_Char8 a
     return numbers;
 }
 
+System_String8  System_UInt8_toString8base2(System_UInt8 that) {
+    System_Char8 array[System_UInt8_String8base2Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt8_toString8base2(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt8_toString8base4(System_UInt8 that, System_Char8 array[System_UInt8_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt8_String8base4Length_DEFAULT - 1;
     System_Char8 n;
@@ -67,6 +75,14 @@ System_Size  stack_System_UInt8_toString8base4(System_UInt8 that, System_Char8 a
     return numbers;
 }
 
+System_String8  System_UInt8_toString8base4(System_UInt8 that) {
+    System_Char8 array[System_UInt8_String8base4Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt8_toString8base4(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt8_toString8base8(System_UInt8 that, System_Char8 array[System_UInt8_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt8_String8base8Length_DEFAULT - 1;
     System_Char8 n;
@@ -88,6 +104,14 @@ System_Size  stack_System_UInt8_toString8base8(System_UInt8 that, System_Char8 a
     }
     *(array + System_UInt8_String8base8Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_UInt8_toString8base8(System_UInt8 that) {
+    System_Char8 array[System_UInt8_String8base8Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt8_toString8base8(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_UInt8_toString8base16(System_UInt8 that, System_Char8 array[System_UInt8_String8base16Length_DEFAULT + 1]) {
@@ -114,6 +138,14 @@ System_Size  stack_System_UInt8_toString8base16(System_UInt8 that, System_Char8 
     return numbers;
 }
 
+System_String8  System_UInt8_toString8base16(System_UInt8 that) {
+    System_Char8 array[System_UInt8_String8base16Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt8_toString8base16(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt8_toString8base10(System_UInt8 that, System_Char8 array[System_UInt8_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__UInt8(&decimal, that);
@@ -138,6 +170,14 @@ System_Size  stack_System_UInt8_toString8base10(System_UInt8 that, System_Char8 
     }
     *(array + System_UInt8_String8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_UInt8_toString8base10(System_UInt8 that) {
+    System_Char8 array[System_UInt8_String8base10Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt8_toString8base10(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_UInt8  System_UInt8_parsebase10(System_String8 that) {
@@ -205,6 +245,14 @@ System_Size  stack_System_UInt16_toString8base2(System_UInt16 that, System_Char8
     return numbers;
 }
 
+System_String8  System_UInt16_toString8base2(System_UInt16 that) {
+    System_Char8 array[System_UInt16_String8base2Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt16_toString8base2(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt16_toString8base4(System_UInt16 that, System_Char8 array[System_UInt16_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt16_String8base4Length_DEFAULT - 1;
     System_Char8 n;
@@ -228,6 +276,14 @@ System_Size  stack_System_UInt16_toString8base4(System_UInt16 that, System_Char8
     return numbers;
 }
 
+System_String8  System_UInt16_toString8base4(System_UInt16 that) {
+    System_Char8 array[System_UInt16_String8base4Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt16_toString8base4(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt16_toString8base8(System_UInt16 that, System_Char8 array[System_UInt16_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt16_String8base8Length_DEFAULT - 1;
     System_Char8 n;
@@ -249,6 +305,14 @@ System_Size  stack_System_UInt16_toString8base8(System_UInt16 that, System_Char8
     }
     *(array + System_UInt16_String8base8Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_UInt16_toString8base8(System_UInt16 that) {
+    System_Char8 array[System_UInt16_String8base8Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt16_toString8base8(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_UInt16_toString8base16(System_UInt16 that, System_Char8 array[System_UInt16_String8base16Length_DEFAULT + 1]) {
@@ -275,6 +339,14 @@ System_Size  stack_System_UInt16_toString8base16(System_UInt16 that, System_Char
     return numbers;
 }
 
+System_String8  System_UInt16_toString8base16(System_UInt16 that) {
+    System_Char8 array[System_UInt16_String8base16Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt16_toString8base16(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt16_toString8base10(System_UInt16 that, System_Char8 array[System_UInt16_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__UInt16(&decimal, that);
@@ -299,6 +371,14 @@ System_Size  stack_System_UInt16_toString8base10(System_UInt16 that, System_Char
     }
     *(array + System_UInt16_String8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_UInt16_toString8base10(System_UInt16 that) {
+    System_Char8 array[System_UInt16_String8base10Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt16_toString8base10(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_UInt16  System_UInt16_parsebase10(System_String8 that) {
@@ -368,6 +448,14 @@ System_Size  stack_System_UInt32_toString8base2(System_UInt32 that, System_Char8
     return numbers;
 }
 
+System_String8  System_UInt32_toString8base2(System_UInt32 that) {
+    System_Char8 array[System_UInt32_String8base2Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt32_toString8base2(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt32_toString8base4(System_UInt32 that, System_Char8 array[System_UInt32_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt32_String8base4Length_DEFAULT - 1;
     System_Char8 n;
@@ -391,6 +479,14 @@ System_Size  stack_System_UInt32_toString8base4(System_UInt32 that, System_Char8
     return numbers;
 }
 
+System_String8  System_UInt32_toString8base4(System_UInt32 that) {
+    System_Char8 array[System_UInt32_String8base4Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt32_toString8base4(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt32_toString8base8(System_UInt32 that, System_Char8 array[System_UInt32_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt32_String8base8Length_DEFAULT - 1;
     System_Char8 n;
@@ -412,6 +508,14 @@ System_Size  stack_System_UInt32_toString8base8(System_UInt32 that, System_Char8
     }
     *(array + System_UInt32_String8base8Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_UInt32_toString8base8(System_UInt32 that) {
+    System_Char8 array[System_UInt32_String8base8Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt32_toString8base8(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_UInt32_toString8base16(System_UInt32 that, System_Char8 array[System_UInt32_String8base16Length_DEFAULT + 1]) {
@@ -438,6 +542,14 @@ System_Size  stack_System_UInt32_toString8base16(System_UInt32 that, System_Char
     return numbers;
 }
 
+System_String8  System_UInt32_toString8base16(System_UInt32 that) {
+    System_Char8 array[System_UInt32_String8base16Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt32_toString8base16(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt32_toString8base10(System_UInt32 that, System_Char8 array[System_UInt32_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__UInt32(&decimal, that);
@@ -462,6 +574,14 @@ System_Size  stack_System_UInt32_toString8base10(System_UInt32 that, System_Char
     }
     *(array + System_UInt32_String8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_UInt32_toString8base10(System_UInt32 that) {
+    System_Char8 array[System_UInt32_String8base10Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt32_toString8base10(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_UInt32  System_UInt32_parsebase10(System_String8 that) {
@@ -536,6 +656,14 @@ System_Size  stack_System_UInt64_toString8base2(System_UInt64 that, System_Char8
     return numbers;
 }
 
+System_String8  System_UInt64_toString8base2(System_UInt64 that) {
+    System_Char8 array[System_UInt64_String8base2Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt64_toString8base2(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt64_toString8base4(System_UInt64 that, System_Char8 array[System_UInt64_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt64_String8base4Length_DEFAULT - 1;
     System_Char8 n;
@@ -559,6 +687,14 @@ System_Size  stack_System_UInt64_toString8base4(System_UInt64 that, System_Char8
     return numbers;
 }
 
+System_String8  System_UInt64_toString8base4(System_UInt64 that) {
+    System_Char8 array[System_UInt64_String8base4Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt64_toString8base4(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt64_toString8base8(System_UInt64 that, System_Char8 array[System_UInt64_String8base8Length_DEFAULT + 1]) {
     System_String8 string = array + System_UInt64_String8base8Length_DEFAULT - 1;
     System_Char8 n;
@@ -580,6 +716,14 @@ System_Size  stack_System_UInt64_toString8base8(System_UInt64 that, System_Char8
     }
     *(array + System_UInt64_String8base8Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_UInt64_toString8base8(System_UInt64 that) {
+    System_Char8 array[System_UInt64_String8base8Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt64_toString8base8(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_UInt64_toString8base16(System_UInt64 that, System_Char8 array[System_UInt64_String8base16Length_DEFAULT + 1]) {
@@ -606,6 +750,14 @@ System_Size  stack_System_UInt64_toString8base16(System_UInt64 that, System_Char
     return numbers;
 }
 
+System_String8  System_UInt64_toString8base16(System_UInt64 that) {
+    System_Char8 array[System_UInt64_String8base16Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt64_toString8base16(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_UInt64_toString8base10(System_UInt64 that, System_Char8 array[System_UInt64_String8base10Length_DEFAULT + 1]) {
     struct System_Decimal decimal; System_Stack_zero(decimal);
     System_Decimal_init__UInt64(&decimal, that);
@@ -630,6 +782,14 @@ System_Size  stack_System_UInt64_toString8base10(System_UInt64 that, System_Char
     }
     *(array + System_UInt64_String8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_UInt64_toString8base10(System_UInt64 that) {
+    System_Char8 array[System_UInt64_String8base10Length_DEFAULT + 1];
+    System_Size length = stack_System_UInt64_toString8base10(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_UInt64  System_UInt64_parsebase10(System_String8 that) {
@@ -715,6 +875,14 @@ System_Size  stack_System_Int8_toString8base2(System_Int8 that, System_Char8 arr
     return numbers;
 }
 
+System_String8  System_Int8_toString8base2(System_Int8 that) {
+    System_Char8 array[System_Int8_String8base2Length_DEFAULT + 1];
+    System_Size length = stack_System_Int8_toString8base2(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_Int8_toString8base4(System_Int8 that, System_Char8 array[System_Int8_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int8_String8base4Length_DEFAULT - 1;
     System_Char8 n;
@@ -740,6 +908,14 @@ System_Size  stack_System_Int8_toString8base4(System_Int8 that, System_Char8 arr
     if (isNegative) *(string) = '-';
     *(array + System_Int8_String8base4Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int8_toString8base4(System_Int8 that) {
+    System_Char8 array[System_Int8_String8base4Length_DEFAULT + 1];
+    System_Size length = stack_System_Int8_toString8base4(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_Int8_toString8base8(System_Int8 that, System_Char8 array[System_Int8_String8base8Length_DEFAULT + 1]) {
@@ -769,6 +945,14 @@ System_Size  stack_System_Int8_toString8base8(System_Int8 that, System_Char8 arr
     return numbers;
 }
 
+System_String8  System_Int8_toString8base8(System_Int8 that) {
+    System_Char8 array[System_Int8_String8base8Length_DEFAULT + 1];
+    System_Size length = stack_System_Int8_toString8base8(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_Int8_toString8base16(System_Int8 that, System_Char8 array[System_Int8_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int8_String8base16Length_DEFAULT - 1;
     System_Char8 n;
@@ -794,6 +978,14 @@ System_Size  stack_System_Int8_toString8base16(System_Int8 that, System_Char8 ar
     if (isNegative) *(string) = '-';
     *(array + System_Int8_String8base16Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int8_toString8base16(System_Int8 that) {
+    System_Char8 array[System_Int8_String8base16Length_DEFAULT + 1];
+    System_Size length = stack_System_Int8_toString8base16(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_Int8_toString8base10(System_Int8 that, System_Char8 array[System_Int8_String8base10Length_DEFAULT + 1]) {
@@ -823,6 +1015,14 @@ System_Size  stack_System_Int8_toString8base10(System_Int8 that, System_Char8 ar
     if (isNegative) *(string) = '-';
     *(array + System_Int8_String8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int8_toString8base10(System_Int8 that) {
+    System_Char8 array[System_Int8_String8base10Length_DEFAULT + 1];
+    System_Size length = stack_System_Int8_toString8base10(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 #endif
@@ -873,6 +1073,14 @@ System_Size  stack_System_Int16_toString8base2(System_Int16 that, System_Char8 a
     return numbers;
 }
 
+System_String8  System_Int16_toString8base2(System_Int16 that) {
+    System_Char8 array[System_Int16_String8base2Length_DEFAULT + 1];
+    System_Size length = stack_System_Int16_toString8base2(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_Int16_toString8base4(System_Int16 that, System_Char8 array[System_Int16_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int16_String8base4Length_DEFAULT - 1;
     System_Char8 n;
@@ -898,6 +1106,14 @@ System_Size  stack_System_Int16_toString8base4(System_Int16 that, System_Char8 a
     if (isNegative) *(string) = '-';
     *(array + System_Int16_String8base4Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int16_toString8base4(System_Int16 that) {
+    System_Char8 array[System_Int16_String8base4Length_DEFAULT + 1];
+    System_Size length = stack_System_Int16_toString8base4(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_Int16_toString8base8(System_Int16 that, System_Char8 array[System_Int16_String8base8Length_DEFAULT + 1]) {
@@ -927,6 +1143,14 @@ System_Size  stack_System_Int16_toString8base8(System_Int16 that, System_Char8 a
     return numbers;
 }
 
+System_String8  System_Int16_toString8base8(System_Int16 that) {
+    System_Char8 array[System_Int16_String8base8Length_DEFAULT + 1];
+    System_Size length = stack_System_Int16_toString8base8(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_Int16_toString8base16(System_Int16 that, System_Char8 array[System_Int16_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int16_String8base16Length_DEFAULT - 1;
     System_Char8 n;
@@ -952,6 +1176,14 @@ System_Size  stack_System_Int16_toString8base16(System_Int16 that, System_Char8 
     if (isNegative) *(string) = '-';
     *(array + System_Int16_String8base16Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int16_toString8base16(System_Int16 that) {
+    System_Char8 array[System_Int16_String8base16Length_DEFAULT + 1];
+    System_Size length = stack_System_Int16_toString8base16(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_Int16_toString8base10(System_Int16 that, System_Char8 array[System_Int16_String8base10Length_DEFAULT + 1]) {
@@ -981,6 +1213,14 @@ System_Size  stack_System_Int16_toString8base10(System_Int16 that, System_Char8 
     if (isNegative) *(string) = '-';
     *(array + System_Int16_String8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int16_toString8base10(System_Int16 that) {
+    System_Char8 array[System_Int16_String8base10Length_DEFAULT + 1];
+    System_Size length = stack_System_Int16_toString8base10(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 #endif
@@ -1031,6 +1271,14 @@ System_Size  stack_System_Int32_toString8base2(System_Int32 that, System_Char8 a
     return numbers;
 }
 
+System_String8  System_Int32_toString8base2(System_Int32 that) {
+    System_Char8 array[System_Int32_String8base2Length_DEFAULT + 1];
+    System_Size length = stack_System_Int32_toString8base2(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_Int32_toString8base4(System_Int32 that, System_Char8 array[System_Int32_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int32_String8base4Length_DEFAULT - 1;
     System_Char8 n;
@@ -1056,6 +1304,14 @@ System_Size  stack_System_Int32_toString8base4(System_Int32 that, System_Char8 a
     if (isNegative) *(string) = '-';
     *(array + System_Int32_String8base4Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int32_toString8base4(System_Int32 that) {
+    System_Char8 array[System_Int32_String8base4Length_DEFAULT + 1];
+    System_Size length = stack_System_Int32_toString8base4(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_Int32_toString8base8(System_Int32 that, System_Char8 array[System_Int32_String8base8Length_DEFAULT + 1]) {
@@ -1085,6 +1341,14 @@ System_Size  stack_System_Int32_toString8base8(System_Int32 that, System_Char8 a
     return numbers;
 }
 
+System_String8  System_Int32_toString8base8(System_Int32 that) {
+    System_Char8 array[System_Int32_String8base8Length_DEFAULT + 1];
+    System_Size length = stack_System_Int32_toString8base8(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_Int32_toString8base16(System_Int32 that, System_Char8 array[System_Int32_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int32_String8base16Length_DEFAULT - 1;
     System_Char8 n;
@@ -1110,6 +1374,14 @@ System_Size  stack_System_Int32_toString8base16(System_Int32 that, System_Char8 
     if (isNegative) *(string) = '-';
     *(array + System_Int32_String8base16Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int32_toString8base16(System_Int32 that) {
+    System_Char8 array[System_Int32_String8base16Length_DEFAULT + 1];
+    System_Size length = stack_System_Int32_toString8base16(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_Int32_toString8base10(System_Int32 that, System_Char8 array[System_Int32_String8base10Length_DEFAULT + 1]) {
@@ -1139,6 +1411,14 @@ System_Size  stack_System_Int32_toString8base10(System_Int32 that, System_Char8 
     if (isNegative) *(string) = '-';
     *(array + System_Int32_String8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int32_toString8base10(System_Int32 that) {
+    System_Char8 array[System_Int32_String8base10Length_DEFAULT + 1];
+    System_Size length = stack_System_Int32_toString8base10(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 #endif
@@ -1189,6 +1469,14 @@ System_Size  stack_System_Int64_toString8base2(System_Int64 that, System_Char8 a
     return numbers;
 }
 
+System_String8  System_Int64_toString8base2(System_Int64 that) {
+    System_Char8 array[System_Int64_String8base2Length_DEFAULT + 1];
+    System_Size length = stack_System_Int64_toString8base2(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_Int64_toString8base4(System_Int64 that, System_Char8 array[System_Int64_String8base4Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int64_String8base4Length_DEFAULT - 1;
     System_Char8 n;
@@ -1214,6 +1502,14 @@ System_Size  stack_System_Int64_toString8base4(System_Int64 that, System_Char8 a
     if (isNegative) *(string) = '-';
     *(array + System_Int64_String8base4Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int64_toString8base4(System_Int64 that) {
+    System_Char8 array[System_Int64_String8base4Length_DEFAULT + 1];
+    System_Size length = stack_System_Int64_toString8base4(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_Int64_toString8base8(System_Int64 that, System_Char8 array[System_Int64_String8base8Length_DEFAULT + 1]) {
@@ -1243,6 +1539,14 @@ System_Size  stack_System_Int64_toString8base8(System_Int64 that, System_Char8 a
     return numbers;
 }
 
+System_String8  System_Int64_toString8base8(System_Int64 that) {
+    System_Char8 array[System_Int64_String8base8Length_DEFAULT + 1];
+    System_Size length = stack_System_Int64_toString8base8(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
+}
+
 System_Size  stack_System_Int64_toString8base16(System_Int64 that, System_Char8 array[System_Int64_String8base16Length_DEFAULT + 1]) {
     System_String8 string = array + System_Int64_String8base16Length_DEFAULT - 1;
     System_Char8 n;
@@ -1268,6 +1572,14 @@ System_Size  stack_System_Int64_toString8base16(System_Int64 that, System_Char8 
     if (isNegative) *(string) = '-';
     *(array + System_Int64_String8base16Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int64_toString8base16(System_Int64 that) {
+    System_Char8 array[System_Int64_String8base16Length_DEFAULT + 1];
+    System_Size length = stack_System_Int64_toString8base16(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 System_Size  stack_System_Int64_toString8base10(System_Int64 that, System_Char8 array[System_Int64_String8base10Length_DEFAULT + 1]) {
@@ -1297,6 +1609,14 @@ System_Size  stack_System_Int64_toString8base10(System_Int64 that, System_Char8 
     if (isNegative) *(string) = '-';
     *(array + System_Int64_String8base10Length_DEFAULT) = 0;
     return numbers;
+}
+
+System_String8  System_Int64_toString8base10(System_Int64 that) {
+    System_Char8 array[System_Int64_String8base10Length_DEFAULT + 1];
+    System_Size length = stack_System_Int64_toString8base10(that, array);
+    System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(array, reture);
+    return reture;
 }
 
 #endif

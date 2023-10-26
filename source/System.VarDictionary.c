@@ -23,6 +23,10 @@ void base_System_VarDictionary_init(System_VarDictionary that, System_Size capac
 }
 
 void  base_System_VarDictionary_free(System_VarDictionary that) {
+    for (System_Size i = 0; i < that->length; ++i) {
+        System_Memory_free(array_item(that->key, i));
+        System_Memory_free(array_item(that->value, i));
+    }
     System_Memory_free(that->key);
     System_Memory_free(that->value);
 }
@@ -127,7 +131,7 @@ System_VarDictionaryEnumerator  new_System_VarDictionaryEnumerator(System_VarDic
 
 void  base_System_VarDictionaryEnumerator_init(System_VarDictionaryEnumerator that, System_VarDictionary array) {
 
-    if (!array) terminate(new_System_Exception("ArgumentNullException: array is null"));
+    if (!array) System_Exception_terminate(new_System_Exception("ArgumentNullException: array is null"));
 
     that->array = (System_VarDictionary)System_Memory_addReference((System_Object)array);
     that->index = -1;
@@ -141,15 +145,15 @@ void  base_System_VarDictionaryEnumerator_free(System_VarDictionaryEnumerator th
 
 System_Var  base_System_VarDictionaryEnumerator_get_current(System_VarDictionaryEnumerator that) {
 
-    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
-    if (that->index == -1) throw_return(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate"));
+    if (that->index == -2) System_Exception_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -1) { System_Exception_throw(new_System_Exception("InvalidOperationException: Index Out of Range. No items to enumerate")); return false; }
 
     return System_VarDictionary_get_index(that->array, that->index);
 }
 
 System_Bool  base_System_VarDictionaryEnumerator_moveNext(System_VarDictionaryEnumerator that) {
 
-    if (that->index == -2) terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
+    if (that->index == -2) System_Exception_terminate(new_System_Exception("InvalidOperationException: Enumerator already free"));
 
     System_Size new_index = ++(that->index);
     if (new_index < that->array->length) {
