@@ -60,9 +60,10 @@ export void System_Memory_reallocArray(System_Var ref that, System_Size count);
 export System_Bool System_Memory_isAllocated(System_Var that);
 export System_Var System_Memory_addReference(System_Var that);
 export void  System_Memory_freeClass(System_Var ref that);
+export void  System_Memory_freeStruct(System_Var that, System_Type type);
 export void  System_Memory_debug(void);
 
-#define System_Memory_free(THAT) (!THAT ? false : System_Memory_freeClass((System_Var ref)&THAT), true)
+#define System_Memory_free(THAT) System_Memory_freeClass((System_Var ref)&THAT)
 
 #define inline_System_Memory_equals(VAR0, VAR1, N)  (N == System_Memory_compare(VAR0, VAR1, N))
 
@@ -83,6 +84,7 @@ export void  System_Memory_debug(void);
 #define Memory_isAllocated  System_Memory_isAllocated
 #define Memory_addReference  System_Memory_addReference
 #define Memory_freeClass  System_Memory_freeClass
+#define Memory_freeStruct  System_Memory_freeStruct
 #define Memory_free  System_Memory_free
 
 #define inline_Memory_equals  inline_System_Memory_equals

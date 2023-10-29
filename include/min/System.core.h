@@ -6,6 +6,7 @@
 
 #include "System.Type.h" /* see System.Type.h */
 #include "System.Memory.h"
+#include "System.String.h"
 #include "System.String8.h"
 #include "System.Decimal.h"
 #include "System.values.auto.h"

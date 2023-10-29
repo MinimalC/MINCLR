@@ -2,6 +2,7 @@
 
 #include "System.arguments.c"
 #include "System.Memory.c"
+#include "System.String.c"
 #include "System.String8.c"
 #include "System.Type.c"
 

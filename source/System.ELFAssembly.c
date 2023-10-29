@@ -450,7 +450,10 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
             *address = (System_Size)assembly->link + relocation->addend; 
         break;
     case System_ELFAssembly_AMD64Relocation_64: 
-        if (symbol->value)
+        symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
+        if (symbol1 && symbol1->value) 
+            *address = (System_Size)assembly1->link + symbol1->value + relocation->addend;
+        else if (symbol->value)
             *address = (System_Size)assembly->link + symbol->value + relocation->addend; 
         break;
     case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:

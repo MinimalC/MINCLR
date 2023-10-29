@@ -20,6 +20,16 @@ void  System_Exception_throw(System_Exception that) {
     Debug_assert(that);
 
     System_Exception_current = that;
+}
+
+void  System_Exception_terminate(System_Exception that) {
+    Debug_assert(that);
+
+#if DEBUG
+    System_Console_write__string("TERMINIERT: ");
+#endif
+
+    System_Exception_throw(that);
 
 #if DEBUG
     Type type = that->base.type;
@@ -34,14 +44,6 @@ void  System_Exception_throw(System_Exception that) {
     else
         Console_writeLine("throws {0:string}", 1, type->name);
 #endif
-}
-
-void  System_Exception_terminate(System_Exception that) {
-    Debug_assert(that);
-#if DEBUG
-    System_Console_write__string("TERMINIERT: ");
-#endif
-    System_Exception_throw(that);
 
     System_Syscall_terminate(false);
 }
@@ -56,7 +58,7 @@ Bool  System_Exception_catch(System_Exception * that, System_Type type) {
         
     *that = System_Exception_current;
     System_Exception_current = null;
-#if DEBUG
+#if DEBUG == DEBUG_System_Exception
     System_Exception exception = *that;
     Type exceptionType = exception->base.type;
     if (!exceptionType) exceptionType = typeof(System_Exception);

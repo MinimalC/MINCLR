@@ -2,6 +2,9 @@
 #if !defined(have_System_Type)
 #include "System.Type.h"
 #endif
+#if !defined(have_System_String)
+#include "System.String.h"
+#endif
 #if !defined(have_Network_TCPSocket)
 #define have_Network_TCPSocket
 
@@ -181,29 +184,6 @@ typedef struct Network_SocketAddress {
 
 }  * Network_SocketAddress;
 
-typedef struct Network_MessageBody {    /* Scatter/gather array items */
-    System_String8 value;               /* Starting address */
-    System_Size length;                 /* Number of bytes to transfer */
-} * Network_MessageBody;
-
-export struct System_Type Network_MessageBodyType;
-
-enum {
-    Network_MessageHeader_ContentCapacity = 64,
-};
-
-typedef struct  Network_MessageHeader {
-    System_Var name;            /* Optional address */
-    System_UInt32 nameSize;     /* Size of address */
-    Network_MessageBody content;   /* Scatter/gather array */
-    System_Size contentCount;   /* # elements in contents */
-    System_Var control;         /* Ancillary data, see below */
-    System_Size controlCount;   /* Ancillary data buffer count */
-    Network_MessageFlags flags; /* Flags on received message */
-} * Network_MessageHeader;
-
-export struct System_Type Network_MessageHeaderType;
-
 typedef System_UInt16 Network_HTTPStatus;
 enum {
     Network_HTTPStatus_OK = 200,
@@ -226,13 +206,16 @@ export void  base_Network_TCPSocket_init(Network_TCPSocket that);
 export System_IntPtr  base_Network_TCPSocket_getSocketOption(Network_TCPSocket that, Network_SocketOption option);
 export void  base_Network_TCPSocket_setSocketOption(Network_TCPSocket that, Network_SocketOption option, System_IntPtr value);
 
+export void  base_Network_TCPSocket_close(Network_TCPSocket that);
 export void  base_Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address address, System_UInt16 port);
 export void  base_Network_TCPSocket_listen(Network_TCPSocket that, System_Size backlog);
 export Network_TCPSocket  base_Network_TCPSocket_accept(Network_TCPSocket that);
 export Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags);
 export Network_PollFlags  base_Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request);
-export Network_MessageHeader  base_Network_TCPSocket_receiveMessage(Network_TCPSocket that, Network_MessageFlags flags);
-export void  base_Network_TCPSocket_sendMessage(Network_TCPSocket that, Network_MessageHeader message, Network_MessageFlags flags);
-export void  base_Network_TCPSocket_close(Network_TCPSocket that);
+export System_String  base_Network_TCPSocket_receive(Network_TCPSocket that);
+export System_String  base_Network_TCPSocket_receive__flags(Network_TCPSocket that, Network_MessageFlags flags);
+export System_Size  stack_Network_TCPSocket_receive(Network_TCPSocket that, System_Char8 message[], System_Size length);
+export System_Size  stack_Network_TCPSocket_receive__flags(Network_TCPSocket that, System_Char8 message[], System_Size length, Network_MessageFlags flags);
+export void  base_Network_TCPSocket_send(Network_TCPSocket that, System_String message, Network_MessageFlags flags);
 
 #endif

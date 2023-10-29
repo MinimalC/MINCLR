@@ -24,24 +24,23 @@ System_String8 System_Directory_current = null;
 System_String8 System_Directory_get_current() {
 
     if (!System_Directory_current) {
-        Char8 buffer[4096]; System_Stack_zero(buffer);
+        System_Char8 buffer[4096]; System_Stack_zero(buffer);
 
         System_Syscall_getcwd(buffer, 4096);
         System_ErrorCode error = System_Syscall_get_Error();
         if (error) return null; // throw
 
-        Size length = System_String8_get_Length(buffer);
+        System_Size length = System_String8_get_Length(buffer);
         System_Directory_current = System_Memory_allocArray(typeof(System_Char8), length + 1);
         System_String8_copyTo(buffer, System_Directory_current);
     }
-    return System_Directory_current;
+    return (System_String8)System_Memory_addReference(System_Directory_current);
 }
 
 System_Bool System_Directory_change(System_String8 path) {
     System_Syscall_chdir(path);
     System_ErrorCode error = System_Syscall_get_Error();
     if (error) return false; // throw
-    if (System_Directory_current) Memory_free(System_Directory_current);
-    System_Directory_get_current();
+    if (System_Directory_current) System_Memory_free(System_Directory_current);
     return true;
 }

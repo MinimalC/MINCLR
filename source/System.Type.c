@@ -103,6 +103,10 @@ System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
             info = !they->functions.value ? null : array(they->functions.value) + f;
             if (info && fun == info->function) return info->value;
         }
+        if (!they->baseType && they != typeof(System_Object)) {
+            they = typeof(System_Object);
+            continue;
+        }
         they = they->baseType;
     }
     return null;
@@ -117,10 +121,8 @@ System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other)
     while (they) {
         if (other == they) return true;
         for (System_Size f = 0; f < they->interfaces.length; ++f) {
-            if (they->interfaces.value) {
-                info = !they->interfaces.value ? null : array(they->interfaces.value) + f;
-                if (info && other == info->interfaceType) return true;
-            }
+            info = !they->interfaces.value ? null : array(they->interfaces.value) + f;
+            if (info && other == info->interfaceType) return true;
         }
         they = they->baseType;
     }
