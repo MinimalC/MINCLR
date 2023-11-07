@@ -380,7 +380,7 @@ continue_IN:
     response->source.value = System_Memory_allocArray(typeof(System_Char8), position + 1);
     System_String8_copyTo(text1, response->source.value);
 
-    if (response->buffer.length && mime < Network_MimeTypes_Capacity && System_String8_startsWith("text/", Network_MimeTypes[mime].name))
+    if (response->buffer.length && System_String8_startsWith(Network_MimeTypes[mime].name, "text/"))
         System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->source.value, response->buffer.value);
     else
         System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->source.value);

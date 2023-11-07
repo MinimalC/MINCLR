@@ -29,6 +29,8 @@ IntPtr runSIGBUS(Size argc, Var argv[]) {
     System_IntPtr * intbus = (System_IntPtr *)++charbus;
 
     * intbus = 42;
+
+    return 0;
 }
 
 void System_Runtime_sigfault(System_Signal_Code code, System_Signal_Info info, System_Var context) {
@@ -42,11 +44,11 @@ int System_Runtime_main(int argc, char * argv[]) {
     System_Signal_unblock__code(System_Signal_Code_SIGILL);
     System_Signal_unblock__code(System_Signal_Code_SIGFPE);
     System_Signal_unblock__code(System_Signal_Code_SIGSEGV);
-    //System_Signal_unblock__code(System_Signal_Code_SIGBUS);
+    System_Signal_unblock__code(System_Signal_Code_SIGBUS);
     System_Signal_act(System_Signal_Code_SIGILL, System_Runtime_sigfault);
     System_Signal_act(System_Signal_Code_SIGFPE, System_Runtime_sigfault);
     System_Signal_act(System_Signal_Code_SIGSEGV, System_Runtime_sigfault);
-    //System_Signal_act(System_Signal_Code_SIGBUS, System_Runtime_sigfault);
+    System_Signal_act(System_Signal_Code_SIGBUS, System_Runtime_sigfault);
 
     System_Thread thread1 = System_Thread_create(runSIGSEGV, 0);
     System_Thread_join(thread1);
@@ -60,10 +62,11 @@ int System_Runtime_main(int argc, char * argv[]) {
     System_Thread_join(thread3);
     System_Memory_free(thread3);
 
-    /*System_Thread thread4 = System_Thread_create(runSIGBUS, 0);
-    System_Thread_join(thread4);
-    System_Memory_free(thread4);*/
-
     System_Console_writeLine__string("SUCCESS");
+
+    System_Thread thread4 = System_Thread_create(runSIGBUS, 0);
+    System_Thread_join(thread4);
+    System_Memory_free(thread4);
+
     return true;
 }

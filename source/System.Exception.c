@@ -19,6 +19,7 @@ thread System_Exception System_Exception_current = null;
 void  System_Exception_throw(System_Exception that) {
     Debug_assert(that);
 
+    if (System_Exception_current) System_Memory_free(System_Exception_current);
     System_Exception_current = that;
 }
 

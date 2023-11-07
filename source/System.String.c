@@ -17,7 +17,6 @@
 /*# System_String #*/
 
 void  System_String_free(System_String that) {
-System_Console_writeLine__string("System_String_free");
     Debug_assert(that);
     if (!that) return;
 
