@@ -2,6 +2,49 @@
 #include "../System.internal.h"
 #include <min/System.h>
 
+typedef struct Network_MimeType {
+    System_String8 extension;
+    System_String8 name;
+} * Network_MimeType;
+
+struct Network_MimeType  Network_MimeTypes[] = {
+    { "txt", "text/plain" },
+    { "md", "text/markdown" },
+    { "htm", "text/html" },
+    { "html", "text/html" },
+    { "xml", "text/xml" },
+    { "css", "text/css" },
+    { "csv", "text/csv" },
+    { "rtf", "text/rtf" },
+    { "js", "text/javascript" },
+    { "ttf", "font/ttf" },
+    { "otf", "font/otf" },
+    { "gif", "image/gif" },
+    { "tif", "image/tiff" },
+    { "tiff", "image/tiff" },
+    { "jpg", "image/jpeg" },
+    { "jpeg", "image/jpeg" },
+    { "png", "image/png" },
+    { "bmp", "image/bmp" },
+    { "svg", "image/svg+xml" },
+    { "ico", "image/vnd.microsoft.icon" },
+    { "bin", "application/octet-stream" },
+    { "exe", "application/octet-stream" },
+    { "iso", "application/x-iso9660-image" },
+    { "json", "application/json" },
+    { "sh", "application/x-sh" },
+    { "ps", "application/postscript" },
+    { "pdf", "application/pdf" },
+    { "zip", "application/zip" },
+    { "tar", "application/x-tar" },
+    { "gz", "application/gzip" },
+    { "7z", "application/x-7z-compressed" },
+    { "xz", "application/x-xz" },
+    { "deb", "application/x-deb" },
+};
+
+const System_Size Network_MimeTypes_Capacity = sizeof_array(Network_MimeTypes);
+
 typedef System_IntPtr Network_HTTPMethod;
 enum {
     Network_HTTPMethod_GET = 1,
@@ -175,6 +218,8 @@ typedef struct Network_HTTPResponse {
 
     System_String8Dictionary header;
 
+    /* System_Bool keepAlive; */
+
     struct System_String buffer;
 
 } * Network_HTTPResponse;
@@ -196,49 +241,6 @@ struct System_Type Network_HTTPResponseType = {
     .baseType = &System_ObjectType,
     .functions = { .length = sizeof_array(Network_HTTPResponseTypeFunctions), .value = &Network_HTTPResponseTypeFunctions, },
 };
-
-typedef struct Network_MimeType {
-    System_String8 extension;
-    System_String8 name;
-} * Network_MimeType;
-
-struct Network_MimeType  Network_MimeTypes[] = {
-    { "txt", "text/plain" },
-    { "md", "text/markdown" },
-    { "htm", "text/html" },
-    { "html", "text/html" },
-    { "xml", "text/xml" },
-    { "css", "text/css" },
-    { "csv", "text/csv" },
-    { "rtf", "text/rtf" },
-    { "js", "text/javascript" },
-    { "ttf", "font/ttf" },
-    { "otf", "font/otf" },
-    { "gif", "image/gif" },
-    { "tif", "image/tiff" },
-    { "tiff", "image/tiff" },
-    { "jpg", "image/jpeg" },
-    { "jpeg", "image/jpeg" },
-    { "png", "image/png" },
-    { "bmp", "image/bmp" },
-    { "svg", "image/svg+xml" },
-    { "ico", "image/vnd.microsoft.icon" },
-    { "bin", "application/octet-stream" },
-    { "exe", "application/octet-stream" },
-    { "iso", "application/x-iso9660-image" },
-    { "json", "application/json" },
-    { "sh", "application/x-sh" },
-    { "ps", "application/postscript" },
-    { "pdf", "application/pdf" },
-    { "zip", "application/zip" },
-    { "tar", "application/x-tar" },
-    { "gz", "application/gzip" },
-    { "7z", "application/x-7z-compressed" },
-    { "xz", "application/x-xz" },
-    { "deb", "application/x-deb" },
-};
-
-const System_Size Network_MimeTypes_Capacity = sizeof_array(Network_MimeTypes);
 
 Network_HTTPResponse Network_HTTPResponse_create(Network_HTTPStatus status) {
 
@@ -293,9 +295,14 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
         System_Memory_free(message);
         goto error;
     }
+    System_Memory_free(message);
 
-    for (System_Size i = 0; i < request->header->length; ++i)
-        System_Console_writeLine("HTTPService_serve: {0:string}: {1:string}", 2, array(request->header->key)[i], array(request->header->value)[i]);
+    for (System_Size i = 0; i < request->header->length; ++i) {
+        System_String8 key = array(request->header->key)[i];
+        System_String8 value = array(request->header->value)[i];
+        System_Console_writeLine("HTTPService_serve: {0:string}: {1:string}", 2, key, value);
+        // if (String8_equals(key, "Connection") && String8_equals(value, "keep-alive")) keepAlive = true;
+    }
 
     System_Console_writeLine("HTTPService_serve: request->uri.source {0:string}", 1, request->uri.source);
     if (request->uri.queryString)
@@ -307,7 +314,7 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     if (!String8_startsWith(requestPath, currentDirectory)) {
         System_Console_writeLine("HTTPService_serve: 500 Error {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
-        goto continue_IN;
+        goto respond;
     }
     if (System_Directory_exists(requestPath)) {
         System_Console_writeLine("HTTPService_serve: Folder {0:string}", 1, requestPath);
@@ -316,7 +323,7 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     if (!System_File_exists(requestPath)) {
         System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
-        goto continue_IN;
+        goto respond;
     }
     System_String8 requestExt = System_Path_getFileExtension(requestPath);
     System_Size mime = 0;
@@ -327,14 +334,14 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
         mime = 0;
         System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
-        goto continue_IN;
+        goto respond;
     }
     System_Console_writeLine("HTTPService_serve: File {0:string}", 1, requestPath);
     struct System_File file; System_Stack_zero(file);
     if (!stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) {
         System_Console_writeLine("HTTPService_serve: File Error {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
-        goto continue_IN;
+        goto respond;
     }
 
     response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
@@ -349,13 +356,13 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
 
     base_System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(fileSize));
     base_System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[mime].name);
+    base_System_String8Dictionary_add(response->header, "Connection", "close");
 
-continue_IN:
+respond:
     System_Memory_free(currentDirectory);
     System_Memory_free(requestExt);
     System_Memory_free(requestPath);
     System_Memory_free(request);
-    System_Memory_free(message);
 
     poller = base_Network_TCPSocket_poll(tcp, Network_PollFlags_OUT);
     if (!(poller & Network_PollFlags_OUT)) {

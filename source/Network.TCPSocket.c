@@ -163,7 +163,7 @@ Network_PollFlags  base_Network_TCPSocket_poll(Network_TCPSocket that, Network_P
         .outEvents = 0,
     };
     struct System_Syscall_timespec timeout = { .sec = 1, .nsec = 0 }; /* TODO */
-    System_Size reture = System_Syscall_spoll(&socketD, 1, &timeout, null);
+    System_Size reture = System_Syscall_ppoll(&socketD, 1, &timeout, null);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_poll Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
     return !reture ? 0 : socketD.outEvents;

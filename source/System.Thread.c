@@ -91,19 +91,24 @@ System_Bool System_Thread_join(System_Thread that) {
     return System_Thread_join__dontwait(that, false);
 }
 
+/* Now look, in System_Thread, if you join one, you want to wait until this ends. */
+
 System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
     Debug_assert(that);
-    System_IntPtr status = 0;
-    System_SIntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
-    that->returnValue = status >> 8;
-    System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) {
-        System_Console_writeLine("System_Thread_join Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-        that->isRunning = false;
-        that->threadId = 0;
-        return true;
+
+    if (that->threadId) {
+        System_IntPtr status = 0;
+        System_SIntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
+        that->returnValue = status >> 8;
+        System_ErrorCode errno = System_Syscall_get_Error();
+        if (errno) {
+            System_Console_writeLine("System_Thread_join Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+            that->isRunning = false;
+            that->threadId = 0;
+            return true;
+        }
+        return reture ? true : false;
     }
-    if (!reture) return false;
     that->isRunning = false;
     that->threadId = 0;
     /*System_Console_writeLine("System_Thread_join status {0:uint:hex}, reture {1:uint:hex}, isRunning {2:bool}, returnValue: {3:uint:hex}", 4, 

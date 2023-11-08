@@ -232,11 +232,11 @@ System_Size  System_Syscall_recvmsg(System_IntPtr socketId, System_Var messageHe
     return System_Syscall_call03(System_Syscall_Command_recvmsg, socketId, (System_IntPtr)messageHeader, flags);
 }
 
-System_Size  System_Syscall_sselect(System_Size count, System_Var read, System_Var write, System_Var except, System_Syscall_timespec timeout, System_Var sigmask) {
+System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_Var write, System_Var except, System_Syscall_timespec timeout, System_Var sigmask) {
     return System_Syscall_call06(System_Syscall_Command_pselect6, count, (System_IntPtr)read, (System_IntPtr)write, (System_IntPtr)except, (System_IntPtr)timeout, (System_IntPtr)sigmask);
 }
 
-System_Size  System_Syscall_spoll(System_Var pds, System_Size count, System_Syscall_timespec timeout, System_Var sigmask) {
+System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_Syscall_timespec timeout, System_Var sigmask) {
     return System_Syscall_call04(System_Syscall_Command_ppoll, (System_IntPtr)pds, count, (System_IntPtr)timeout, (System_IntPtr)sigmask);
 }
 

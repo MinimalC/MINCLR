@@ -95,8 +95,8 @@ export void  System_Syscall_sendmsg(System_IntPtr socketId, System_Var messageHe
 export System_IntPtr  System_Syscall_recv(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags);
 export System_IntPtr  System_Syscall_recvfrom(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
 export System_Size  System_Syscall_recvmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags);
-export System_Size  System_Syscall_sselect(System_Size count, System_Var read, System_Var write, System_Var except, System_Syscall_timespec timeout, System_Var sigmask);
-export System_Size  System_Syscall_spoll(System_Var pds, System_Size count, System_Syscall_timespec timeout, System_Var sigmask);
+export System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_Var write, System_Var except, System_Syscall_timespec timeout, System_Var sigmask);
+export System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_Syscall_timespec timeout, System_Var sigmask);
 
 #if defined(using_System)
 #define SyscallType  System_SyscallType
