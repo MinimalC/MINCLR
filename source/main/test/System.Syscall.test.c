@@ -23,7 +23,7 @@ int System_Runtime_main(int argc, char * argv[]) {
     struct System_TimeZone zone; Stack_clear(zone);
 
     System_Syscall_gettimeofday(&value, &zone);
-    System_Console_writeLine("gettimeofday: {0:int} {1:int} timezone: {2:int32} {3:int32}", 4, value.sec, value.msec, zone.minutesWest, zone.dstTime);
+    System_Console_writeLine("gettimeofday: {0:int} {1:int} timezone: {2:int32} {3:int32}", 4, value.sec, value.usec, zone.minutesWest, zone.dstTime);
 
 
     System_Size seconds, minutes, hours, days = 0;

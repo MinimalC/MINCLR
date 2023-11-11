@@ -43,3 +43,6 @@
 
 #include "System.Signal.c"
 #include "System.Thread.c"
+
+#include "System.ELF64Assembly.c"
+#include "Network.TCPSocket.c"

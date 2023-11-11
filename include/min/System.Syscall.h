@@ -41,7 +41,7 @@ export void  System_Syscall_terminate(System_Size code)  noreturn;
 typedef struct System_TimeSpan {
 
     System_SSize sec;
-    System_SSize msec;
+    System_SSize usec;
 
 } * System_TimeSpan;
 

@@ -4,7 +4,7 @@
 #include <min/System.Decimal.h>
 #include <min/System.Memory.h>
 #include <min/System.File.h>
-#include <min/System.ELFAssembly.h>
+#include <min/System.ELF64Assembly.h>
 
 int System_Runtime_main(int argc, char  * argv[]) {
 

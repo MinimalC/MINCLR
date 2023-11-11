@@ -27,7 +27,7 @@ enum {
     CLONE_IO = 0x80000000,
 };
 
-System_Bool sigiset = false;
+System_Bool System_Thread_sigiset = false;
 
 System_Thread System_Thread_create(function_System_Thread_main function, ...) {
     System_arguments args;
@@ -56,10 +56,10 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     *(--stack_top) = (System_Size)function;
     *(--stack_top) = (System_Size)System_Thread_boot;
 
-    if (!sigiset) {
+    if (!System_Thread_sigiset) {
         System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
         System_Signal_handle(System_Signal_Number_SIGCHILD, function_System_Signal_handler_DEFAULT);
-        sigiset = true;
+        System_Thread_sigiset = true;
     }
 
     System_SIntPtr reture = System_Syscall_clone(CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | System_Signal_Number_SIGCHILD, stack_top);
@@ -75,7 +75,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
 }
 
 void System_Thread_sleep(System_Size seconds) {
-    struct System_TimeSpan time = { .sec = seconds, .msec = 0, };
+    struct System_TimeSpan time = { .sec = seconds, .usec = 0, };
     System_Syscall_nanosleep(&time, &time);
 }
 

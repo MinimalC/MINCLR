@@ -15,7 +15,7 @@
 #include "System.Dictionary.h"
 /* #include "System.Directory.h" */
 #include "System.Runtime.h"
-#include "System.ELFAssembly.h"
+#include "System.ELF64Assembly.h"
 #include "System.Path.h"
 
 #include "Network.TCPSocket.h"

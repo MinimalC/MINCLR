@@ -22,7 +22,7 @@ asm(
 #include <min/System.Runtime.h>
 #endif
 #if !defined(have_System_ELFAssembly)
-#include <min/System.ELFAssembly.h>
+#include <min/System.ELF64Assembly.h>
 #endif
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>

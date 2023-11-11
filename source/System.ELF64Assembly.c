@@ -18,7 +18,7 @@
 #include <min/System.File.h>
 #endif
 #if !defined(have_System_ELFAssembly)
-#include <min/System.ELFAssembly.h>
+#include <min/System.ELF64Assembly.h>
 #endif
 #if !defined(code_System_ELF32Assembly)
 #define code_System_ELF32Assembly
