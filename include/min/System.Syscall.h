@@ -35,8 +35,8 @@ export thread System_ErrorCode System_Syscall_error;
 
 export void  System_Syscall_set_Error(System_ErrorCode error);
 export System_ErrorCode  System_Syscall_get_Error();
-export void  System_Syscall_terminate(System_Size code)  noreturn;
 
+export void  System_Syscall_terminate(System_Size code)  noreturn;
 
 typedef struct System_TimeSpan {
 
@@ -51,6 +51,9 @@ typedef struct System_TimeZone {
     System_Int32 dstTime;
 
 } * System_TimeZone;
+
+export void  System_Syscall_gettimeofday(System_TimeSpan value, System_TimeZone zone);
+export System_SSize  System_Syscall_time(void);
 
 typedef System_Var  System_Syscall_StandardFile;
 
@@ -104,8 +107,6 @@ export System_IntPtr  System_Syscall_recvfrom(System_IntPtr socketId, System_Var
 export System_Size  System_Syscall_recvmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags);
 export System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_Var write, System_Var except, System_TimeSpan timeout, System_Var sigmask);
 export System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_TimeSpan timeout, System_Var sigmask);
-
-export void  System_Syscall_gettimeofday(System_TimeSpan value, System_TimeZone zone);
 
 #if defined(using_System)
 #define SyscallType  System_SyscallType

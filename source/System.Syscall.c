@@ -83,6 +83,22 @@ void  System_Syscall_terminate(System_Size code)  {
     (void)System_Syscall_terminate(code);
 }
 
+void  System_Syscall_gettimeofday(System_TimeSpan value, System_TimeZone zone) {
+#if defined(use_System_Syscall_gettimeofday)
+    (void)System_Syscall_call02(System_Syscall_Command_gettimeofday, (System_IntPtr)value, (System_IntPtr)zone);
+#else
+    extern int __vdso_gettimeofday(System_TimeSpan value, System_TimeZone zone) weak; __vdso_gettimeofday(value, zone);
+#endif
+}
+
+System_SSize  System_Syscall_time(void) {
+#if defined(use_System_Syscall_time)
+    return System_Syscall_call01(System_Syscall_Command_time, null);
+#else
+    extern System_SSize __vdso_time(System_Var value) weak; return __vdso_time(null);
+#endif
+}
+
 System_Var  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode) {
     return (System_Var)System_Syscall_call03(System_Syscall_Command_open, (System_IntPtr)fileName, flags, mode);
 }
@@ -246,12 +262,6 @@ System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_V
 
 System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_TimeSpan timeout, System_Var sigmask) {
     return System_Syscall_call04(System_Syscall_Command_ppoll, (System_IntPtr)pds, count, (System_IntPtr)timeout, (System_IntPtr)sigmask);
-}
-
-void  System_Syscall_gettimeofday(System_TimeSpan value, System_TimeZone zone) {
-    (void)System_Syscall_call02(System_Syscall_Command_gettimeofday, (System_IntPtr)value, (System_IntPtr)zone);
-    /* extern int __vdso_gettimeofday(System_TimeSpan value, System_TimeZone zone) weak;
-    __vdso_gettimeofday(value, zone); */
 }
 
 #endif

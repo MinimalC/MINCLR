@@ -96,7 +96,7 @@ Size  System_String8_get_Length(String8 that) {
 }
 
 System_Size  System_String8_get_Length__max(System_String8 that, System_Size limit) {
-    Debug_assert(that);
+    if (!that) return 0;
     Size i = 0;
     while (limit && that[i]) { --limit; ++i; }
 #if DEBUG
@@ -190,7 +190,7 @@ Bool  System_String8_equalsSubstring(String8 that, String8 other, Size length) {
 }
 
 Bool  System_String8_isNullOrEmpty(String8 that) {
-    return !that || that[0] == '\0';
+    return !that || *that == '\0';
 }
 
 Bool  System_String8_startsWith(String8 that, String8 other) {

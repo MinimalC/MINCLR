@@ -385,9 +385,12 @@ void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
 }
 
 System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
+    Debug_assert(name);
 
     for (System_Size l = 0; l < System_ELF64Assembly_loadedCount; ++l) {
         System_ELF64Assembly assembly = System_ELF64Assembly_loaded[l];
+        if (!assembly->symbols) continue;
+        if (!assembly->symbolStrings) continue;
     for (System_Size i = 0; i < assembly->symbolsCount; ++i) {
         System_ELF64Assembly_SymbolEntry symbol = assembly->symbols + i;
         if (!symbol->sectionIndex || !symbol->value) continue;
@@ -401,9 +404,12 @@ System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getSymbol(System_String8 n
 }
 
 System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
+    Debug_assert(name);
 
     for (System_Size l = 0; l < System_ELF64Assembly_loadedCount; ++l) {
         System_ELF64Assembly assembly = System_ELF64Assembly_loaded[l];
+        if (!assembly->dynamicSymbols) continue;
+        if (!assembly->dynamicStrings) continue;
     for (System_Size i = 0; i < assembly->dynamicSymbolsCount; ++i) {
         System_ELF64Assembly_SymbolEntry symbol = assembly->dynamicSymbols + i;
         if (!symbol->sectionIndex || !symbol->value) continue;
@@ -416,22 +422,69 @@ System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getDynamicSymbol(System_St
     return null;
 }
 
+System_Var System_ELF64Assembly_nothing(void) { return null; }
+
 System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_UInt64 relocationOffset) {
+    if (!assembly->PLT_relocation) {
+        goto error;
+    }
+    if (!relocationOffset) {
+        goto error;
+    }
     System_ELF64Assembly_RelocationAddend relocation = (System_Var)assembly->PLT_relocation + relocationOffset;
-
-    System_ELF64Assembly_SymbolEntry symbol = !relocation->symbol ? null : assembly->dynamicSymbols + relocation->symbol;
-
+    if (!assembly->dynamicSymbols) {
+        goto error;
+    }
+    if (!relocation->symbol) {
+        goto error;
+    }
+    System_ELF64Assembly_SymbolEntry symbol =  assembly->dynamicSymbols + relocation->symbol;
+    if (!symbol) {
+        goto error;
+    }
+    if (!assembly->dynamicStrings) {
+        goto error;
+    }
     System_String8 name = assembly->dynamicStrings + symbol->name;
-
+    if (System_String8_isNullOrEmpty(name)) {
+        goto error;
+    }
+    System_ELF64Assembly assembly1 = null;
+    System_ELF64Assembly_SymbolEntry symbol1 = System_ELF64Assembly_getDynamicSymbol(name, &assembly1);
+    if (!symbol1) {
+        
+    }
+    if (!assembly->link) {
+        goto error;
+    }
+    if (!relocation->offset) {
+        goto error;
+    }
     System_Var * address = (System_Var *)(assembly->link + relocation->offset), old = *address;
 
-    *address = assembly->link + symbol->value;
-
+    if (assembly1 && symbol1) {
+        *address = assembly1->link + symbol1->value;
 #if DEBUG == DEBUG_System_ELFAssembly
     System_Console_writeLine("ELFAssembly_resolve: {0:string}, {1:uint:hex} old => new {2:uint:hex}", 3, name, old, *address);
+    System_Console_writeLine("   ELFSymbol1: bind {1:string}, type {2:string}, other {3:uint8:hex}, sectionIndex {4:uint16}, value {5:uint64:hex}, size {6:uint64}, {0:string}", 7, 
+        assembly1->dynamicStrings + symbol1->name, System_ELFAssembly_SymbolBinding_toString(System_ELFAssembly_SymbolEntry_BIND(symbol1->info)), 
+        System_ELFAssembly_SymbolType_toString(System_ELFAssembly_SymbolEntry_TYPE(symbol1->info)),
+        symbol1->other, symbol1->sectionIndex, symbol1->value, symbol1->size);
 #endif
-
+    }
+    else {
+        *address = assembly->link + symbol->value;
+#if DEBUG == DEBUG_System_ELFAssembly
+    System_Console_writeLine("ELFAssembly_resolve: {0:string}, {1:uint:hex} old => new {2:uint:hex}", 3, name, old, *address);
+    System_Console_writeLine("   ELFSymbol: bind {1:string}, type {2:string}, other {3:uint8:hex}, sectionIndex {4:uint16}, value {5:uint64:hex}, size {6:uint64}, {0:string}", 7, 
+        assembly->dynamicStrings + symbol->name, System_ELFAssembly_SymbolBinding_toString(System_ELFAssembly_SymbolEntry_BIND(symbol->info)), 
+        System_ELFAssembly_SymbolType_toString(System_ELFAssembly_SymbolEntry_TYPE(symbol->info)),
+        symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
+#endif
+    }
     return *address;
+error:
+    return System_ELF64Assembly_nothing;
 }
 
 void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64Assembly_RelocationAddend relocation) {
@@ -457,16 +510,14 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
             *address = (System_Size)assembly->link + symbol->value + relocation->addend; 
         break;
     case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:
-        if ((symbol->sectionIndex || symbol->value) && *address) {
-            *address += (System_Size)assembly->link;
-            break;
-        }
     case System_ELFAssembly_AMD64Relocation_GLOB_DAT: 
         symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->value) 
             *address = (System_Size)assembly1->link + symbol1->value;
         else if (symbol->value)
             *address = (System_Size)assembly->link + symbol->value; 
+        else if (*address)
+            *address += (System_Size)assembly->link;
         break;
     case System_ELFAssembly_AMD64Relocation_COPY: 
         symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);

@@ -28,13 +28,11 @@ void System_Runtime_relocate(System_Var base, System_ELF64Assembly_RelocationAdd
             *address = (System_Size)base + symbol->value + relocation->addend; 
         break;
     case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:
-        if ((symbol->sectionIndex || symbol->value) && *address) {
-            *address += (System_Size)base;
-            break;
-        }
     case System_ELFAssembly_AMD64Relocation_GLOB_DAT: 
         if (symbol->value)
             *address = (System_Size)base + symbol->value; 
+        else if (*address)
+            *address += (System_Size)base;
         break;
     case System_ELFAssembly_AMD64Relocation_COPY: 
         if (symbol->value && symbol->size)
@@ -254,9 +252,16 @@ void System_Runtime_readlink(System_Var base) {
             break;
         }
     }
+    for (i = 0; i < assembly->dynamicSymbolsCount; ++i) {
+        System_ELF64Assembly_SymbolEntry symbol = assembly->dynamicSymbols + i;
+        System_Console_writeLine("ELFSymbol: bind {1:string}, type {2:string}, other {3:uint8:hex}, sectionIndex {4:uint16}, value {5:uint64:hex}, size {6:uint64}, {0:string}", 7, 
+            assembly->dynamicStrings + symbol->name, System_ELFAssembly_SymbolBinding_toString(System_ELFAssembly_SymbolEntry_BIND(symbol->info)), 
+            System_ELFAssembly_SymbolType_toString(System_ELFAssembly_SymbolEntry_TYPE(symbol->info)),
+            symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
+    }
 #endif
 
-    // System_ELF64Assembly_loaded[System_ELF64Assembly_loadedCount++] = assembly;
+    System_ELF64Assembly_loaded[System_ELF64Assembly_loadedCount++] = assembly;
 }
 
 int System_Runtime_main(int argc, char  * argv[]) {

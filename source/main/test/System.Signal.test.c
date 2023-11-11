@@ -64,6 +64,7 @@ int System_Runtime_main(int argc, char * argv[]) {
 
     System_Console_writeLine__string("SUCCESS");
 
+    System_Console_writeLine__string("SIGBUS:");
     System_Thread thread4 = System_Thread_create(runSIGBUS, 0);
     System_Thread_join(thread4);
     System_Memory_free(thread4);

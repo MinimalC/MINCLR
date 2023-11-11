@@ -34,5 +34,18 @@ int System_Runtime_main(int argc, char * argv[]) {
 
     System_Console_writeLine("etwa {0:uint} Tage, {1:uint} Stunden, {2:uint} Minuten, {3:uint} Sekunden", 4, days, hours, minutes, seconds);
 
+
+    System_SSize now = System_Syscall_time();
+    System_Console_writeLine("time: now {0:int}", 1, now);
+
+    seconds, minutes, hours, days = 0;
+    rest = Math_divRem__UInt64(now,60,&seconds);
+    rest = Math_divRem__UInt64(rest,60,&minutes);
+    rest = Math_divRem__UInt64(rest,24,&hours);
+    days = rest / 24;
+
+    System_Console_writeLine("etwa {0:uint} Tage, {1:uint} Stunden, {2:uint} Minuten, {3:uint} Sekunden", 4, days, hours, minutes, seconds);
+
+
     return true;
 }
