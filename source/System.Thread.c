@@ -65,7 +65,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     System_SIntPtr reture = System_Syscall_clone(CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | System_Signal_Number_SIGCHILD, stack_top);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
-        System_Console_writeLine("System_Thread_create Error: {0:uint}", 1, errno);
+        System_Console_writeLine("System_Thread_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
         return null;
     }
     System_Thread that = System_Memory_allocClass(typeof(System_Thread));
@@ -77,6 +77,10 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
 void System_Thread_sleep(System_Size seconds) {
     struct System_TimeSpan time = { .sec = seconds, .usec = 0, };
     System_Syscall_nanosleep(&time, &time);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) {
+        System_Console_writeLine("System_Thread_sleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+    }
 }
 
 enum {
