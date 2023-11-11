@@ -19,5 +19,20 @@ int System_Runtime_main(int argc, char * argv[]) {
         Syscall_write(Syscall_StandardFile_STDOUT, isWrong, String8_get_Length(isWrong));
     }
 
+    struct System_TimeSpan value; Stack_zero(value);
+    struct System_TimeZone zone; Stack_zero(zone);
+
+    System_Syscall_gettimeofday(&value, &zone);
+    System_Console_writeLine("gettimeofday: {0:int} {1:int} timezone: {2:int32} {3:int32}", 4, value.sec, value.msec, zone.minutesWest, zone.dstTime);
+
+
+    System_Size seconds, minutes, hours, days = 0;
+    System_Size rest = Math_divRem__UInt64(value.sec,60,&seconds);
+    rest = Math_divRem__UInt64(rest,60,&minutes);
+    rest = Math_divRem__UInt64(rest,24,&hours);
+    days = rest / 24;
+
+    System_Console_writeLine("etwa {0:uint} Tage, {1:uint} Stunden, {2:uint} Minuten, {3:uint} Sekunden", 4, days, hours, minutes, seconds);
+
     return true;
 }

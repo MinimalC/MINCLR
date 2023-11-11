@@ -52,9 +52,9 @@ typedef System_fixed struct System_FileInfo {
     System_Int64 size;
     System_Int64 bulkSize;
     System_Int64 blocks;
-    struct System_Syscall_timespec accessTime;
-    struct System_Syscall_timespec modifyTime;
-    struct System_Syscall_timespec changeTime;
+    struct System_TimeSpan accessTime;
+    struct System_TimeSpan modifyTime;
+    struct System_TimeSpan changeTime;
 
     System_IntPtr __reserved[3];
 

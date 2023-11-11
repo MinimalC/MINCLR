@@ -222,6 +222,7 @@ System_Console_writeLine("System_Memory_Header({0:uint}): using typeof({1:string
             }
             /* expect null, if there is not enough space, move next */
             Debug_assert(!header->length);
+            if (((System_Var)mem64h + mem64h->length) - position < real_size) break;
             header->length = real_size;
             header->elementType = type;
             header->refCount = System_Memory_ReferenceState_Used;

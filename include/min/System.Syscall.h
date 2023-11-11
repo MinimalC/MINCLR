@@ -38,12 +38,19 @@ export System_ErrorCode  System_Syscall_get_Error();
 export void  System_Syscall_terminate(System_Size code)  noreturn;
 
 
-typedef struct System_Syscall_timespec {
+typedef struct System_TimeSpan {
 
-    System_Int64 sec;
-    System_Int64 nsec;
+    System_SSize sec;
+    System_SSize msec;
 
-} * System_Syscall_timespec;
+} * System_TimeSpan;
+
+typedef struct System_TimeZone {
+
+    System_Int32 minutesWest;
+    System_Int32 dstTime;
+
+} * System_TimeZone;
 
 typedef System_Var  System_Syscall_StandardFile;
 
@@ -71,7 +78,7 @@ export void System_Syscall_mmap__debug(void);
 export void  System_Syscall_munmap(System_Var address, System_Size length);
 export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
 
-export void  System_Syscall_nanosleep(System_Syscall_timespec request, System_Syscall_timespec remain);
+export void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain);
 
 export System_SIntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack);
 export System_SIntPtr  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage);
@@ -95,8 +102,10 @@ export void  System_Syscall_sendmsg(System_IntPtr socketId, System_Var messageHe
 export System_IntPtr  System_Syscall_recv(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags);
 export System_IntPtr  System_Syscall_recvfrom(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
 export System_Size  System_Syscall_recvmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags);
-export System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_Var write, System_Var except, System_Syscall_timespec timeout, System_Var sigmask);
-export System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_Syscall_timespec timeout, System_Var sigmask);
+export System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_Var write, System_Var except, System_TimeSpan timeout, System_Var sigmask);
+export System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_TimeSpan timeout, System_Var sigmask);
+
+export void  System_Syscall_gettimeofday(System_TimeSpan value, System_TimeZone zone);
 
 #if defined(using_System)
 #define SyscallType  System_SyscallType

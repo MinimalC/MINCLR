@@ -57,12 +57,12 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     *(--stack_top) = (System_Size)System_Thread_boot;
 
     if (!sigiset) {
-        System_Signal_unblock__code(System_Signal_Code_SIGCHILD);
-        System_Signal_handle(System_Signal_Code_SIGCHILD, function_System_Signal_handler_DEFAULT);
+        System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
+        System_Signal_handle(System_Signal_Number_SIGCHILD, function_System_Signal_handler_DEFAULT);
         sigiset = true;
     }
 
-    System_SIntPtr reture = System_Syscall_clone(CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | System_Signal_Code_SIGCHILD, stack_top);
+    System_SIntPtr reture = System_Syscall_clone(CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | System_Signal_Number_SIGCHILD, stack_top);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
         System_Console_writeLine("System_Thread_create Error: {0:uint}", 1, errno);
@@ -75,7 +75,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
 }
 
 void System_Thread_sleep(System_Size seconds) {
-    struct System_Syscall_timespec time = { .sec = seconds, .nsec = 0, };
+    struct System_TimeSpan time = { .sec = seconds, .msec = 0, };
     System_Syscall_nanosleep(&time, &time);
 }
 

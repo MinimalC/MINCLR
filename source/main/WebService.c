@@ -408,13 +408,13 @@ error:
 
 Bool System_Runtime_HitCTRLC = false;
 
-void System_Runtime_CTRLC(System_Signal_Code code) {
+void System_Runtime_CTRLC(System_Signal_Number number) {
     System_Runtime_HitCTRLC = true;
 }
 
-void System_Runtime_sigfault(System_Signal_Code code, System_Signal_Info info, System_Var context) {
-    System_Console_writeLine("{0:string}: code {1:uint32}, errno {2:uint32}, code1 {3:uint32}, sigfault.address {4:uint:hex}", 5,
-        System_Signal_Code_toString(code), info->code, info->errno, info->code1, info->sigfault.address);
+void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info info, System_Var context) {
+    System_Console_writeLine("{0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}, sigfault.address {4:uint:hex}", 5,
+        System_Signal_Number_toString(number), info->number, info->errno, info->code, info->sigfault.address);
     System_Syscall_terminate(false);
 }
 
@@ -426,15 +426,15 @@ int System_Runtime_main(int argc, char  * argv[]) {
     }
 
     struct System_Signal signal; System_Stack_zero(signal);
-    System_Signal_add(&signal, System_Signal_Code_SIGINT);
-    System_Signal_add(&signal, System_Signal_Code_SIGILL);
-    System_Signal_add(&signal, System_Signal_Code_SIGFPE);
-    System_Signal_add(&signal, System_Signal_Code_SIGSEGV);
+    System_Signal_add(&signal, System_Signal_Number_SIGINT);
+    System_Signal_add(&signal, System_Signal_Number_SIGILL);
+    System_Signal_add(&signal, System_Signal_Number_SIGFPE);
+    System_Signal_add(&signal, System_Signal_Number_SIGSEGV);
     System_Signal_unblock(&signal);
-    System_Signal_handle(System_Signal_Code_SIGINT, System_Runtime_CTRLC);
-    System_Signal_act(System_Signal_Code_SIGILL, System_Runtime_sigfault);
-    System_Signal_act(System_Signal_Code_SIGFPE, System_Runtime_sigfault);
-    System_Signal_act(System_Signal_Code_SIGSEGV, System_Runtime_sigfault);
+    System_Signal_handle(System_Signal_Number_SIGINT, System_Runtime_CTRLC);
+    System_Signal_act(System_Signal_Number_SIGILL, System_Runtime_sigfault);
+    System_Signal_act(System_Signal_Number_SIGFPE, System_Runtime_sigfault);
+    System_Signal_act(System_Signal_Number_SIGSEGV, System_Runtime_sigfault);
 
     System_Directory_change("www");
 

@@ -152,7 +152,7 @@ void  System_Syscall_mprotect(System_Var address, System_Size length, System_Int
     (void)System_Syscall_call03(System_Syscall_Command_mprotect, (System_IntPtr)address, length, flags);
 }
 
-void  System_Syscall_nanosleep(System_Syscall_timespec request, System_Syscall_timespec remain) {
+void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain) {
     (void)System_Syscall_call02(System_Syscall_Command_nanosleep, (System_IntPtr)request, (System_IntPtr)remain);
 }
 
@@ -174,6 +174,14 @@ void  System_Syscall_sigprocmask(System_IntPtr how, System_Var set, System_Var o
 
 void  System_Syscall_sched_yield(void) {
     (void)System_Syscall_call00(System_Syscall_Command_sched_yield);
+}
+
+System_IntPtr  System_Syscall_getpid(void) {
+    return System_Syscall_call00(System_Syscall_Command_getpid);
+}
+
+System_IntPtr  System_Syscall_gettid(void) {
+    return System_Syscall_call00(System_Syscall_Command_gettid);
 }
 
 System_IntPtr  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol) {
@@ -232,12 +240,18 @@ System_Size  System_Syscall_recvmsg(System_IntPtr socketId, System_Var messageHe
     return System_Syscall_call03(System_Syscall_Command_recvmsg, socketId, (System_IntPtr)messageHeader, flags);
 }
 
-System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_Var write, System_Var except, System_Syscall_timespec timeout, System_Var sigmask) {
+System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_Var write, System_Var except, System_TimeSpan timeout, System_Var sigmask) {
     return System_Syscall_call06(System_Syscall_Command_pselect6, count, (System_IntPtr)read, (System_IntPtr)write, (System_IntPtr)except, (System_IntPtr)timeout, (System_IntPtr)sigmask);
 }
 
-System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_Syscall_timespec timeout, System_Var sigmask) {
+System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_TimeSpan timeout, System_Var sigmask) {
     return System_Syscall_call04(System_Syscall_Command_ppoll, (System_IntPtr)pds, count, (System_IntPtr)timeout, (System_IntPtr)sigmask);
+}
+
+void  System_Syscall_gettimeofday(System_TimeSpan value, System_TimeZone zone) {
+    (void)System_Syscall_call02(System_Syscall_Command_gettimeofday, (System_IntPtr)value, (System_IntPtr)zone);
+    /* extern int __vdso_gettimeofday(System_TimeSpan value, System_TimeZone zone) weak;
+    __vdso_gettimeofday(value, zone); */
 }
 
 #endif
