@@ -19,8 +19,8 @@ int System_Runtime_main(int argc, char * argv[]) {
         Syscall_write(Syscall_StandardFile_STDOUT, isWrong, String8_get_Length(isWrong));
     }
 
-    struct System_TimeSpan value; Stack_zero(value);
-    struct System_TimeZone zone; Stack_zero(zone);
+    struct System_TimeSpan value; Stack_clear(value);
+    struct System_TimeZone zone; Stack_clear(zone);
 
     System_Syscall_gettimeofday(&value, &zone);
     System_Console_writeLine("gettimeofday: {0:int} {1:int} timezone: {2:int32} {3:int32}", 4, value.sec, value.msec, zone.minutesWest, zone.dstTime);

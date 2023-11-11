@@ -103,9 +103,9 @@ void System_Debug_writeHex(Size length, void  * value) {
     Size i, j, l, pos, length_div_columns_rem = length % hexdump_Columns, i_div_columns_rem;
 
 
-    Char8 scratch[System_UInt64_String8base16Length_DEFAULT + 1]; System_Stack_zero(scratch);
+    Char8 scratch[System_UInt64_String8base16Length_DEFAULT + 1]; System_Stack_clear(scratch);
 
-    Char8 buffer[hexdump_Space_VALUE]; System_Stack_zero(buffer);
+    Char8 buffer[hexdump_Space_VALUE]; System_Stack_clear(buffer);
     buffer[0] = '0';
     buffer[1] = 'x';
 

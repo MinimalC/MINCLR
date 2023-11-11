@@ -148,7 +148,7 @@ System_String8  Generic_T0_toString8base16(Generic_T0 that) {
 }
 
 System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal; System_Stack_zero(decimal);
+    struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__T0(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + Generic_T0_String8base10Length_DEFAULT - 1;

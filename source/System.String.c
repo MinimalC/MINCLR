@@ -24,7 +24,7 @@ void  System_String_free(System_String that) {
 }
 
 System_UInt64 System_String_getSipHash(System_String that) {
-    struct Crypto_SipHash48 sipHash48; System_Stack_zero(sipHash48);
+    struct Crypto_SipHash48 sipHash48; System_Stack_clear(sipHash48);
     Crypto_SipHash48_init(&sipHash48);
     Crypto_SipHash48_update(&sipHash48, that->value, that->length);
     return Crypto_SipHash48_final(&sipHash48);

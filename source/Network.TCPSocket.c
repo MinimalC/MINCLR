@@ -64,7 +64,7 @@ void  base_Network_TCPSocket_setSocketOption(Network_TCPSocket that, Network_Soc
 
 void  base_Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address address, System_UInt16 port) {
 
-    struct Network_SocketAddress socketAddress; System_Stack_zero(socketAddress);
+    struct Network_SocketAddress socketAddress; System_Stack_clear(socketAddress);
     socketAddress.family = Network_AddressFamily_IP4;
     socketAddress.port = System_UInt16_toNetworkOrder(port);
     for (Size i = 0; i < 16; ++i) {
@@ -90,7 +90,7 @@ Network_TCPSocket  base_Network_TCPSocket_accept(Network_TCPSocket that) {
 }
 
 Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags) {
-    struct Network_SocketAddress address; System_Stack_zero(address);
+    struct Network_SocketAddress address; System_Stack_clear(address);
     System_Size addressLength = sizeof(struct Network_SocketAddress);
     System_IntPtr reture = System_Syscall_accept(that->socketId, &address, &addressLength, flags);
     System_ErrorCode errno = System_Syscall_get_Error();
@@ -109,7 +109,7 @@ System_String  base_Network_TCPSocket_receive(Network_TCPSocket that) {
 
 System_String  base_Network_TCPSocket_receive__flags(Network_TCPSocket that, Network_MessageFlags flags) {
 
-    System_Char8 body[System_UInt16_Max]; System_Stack_zero(body);
+    System_Char8 body[System_UInt16_Max]; System_Stack_clear(body);
     System_Size length = stack_Network_TCPSocket_receive__flags(that, body, System_UInt16_Max, flags);
     System_String reture = System_Memory_allocClass(typeof(System_String));
     reture->length = length;

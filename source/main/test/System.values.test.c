@@ -6,7 +6,7 @@
 int System_Runtime_main(int argc, char * argv[]) {
 
     Size i;
-    Char8 scratch[100]; System_Stack_zero(scratch);
+    Char8 scratch[100]; System_Stack_clear(scratch);
 
 
     UInt8 the_uint8 = 127;

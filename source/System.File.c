@@ -17,7 +17,7 @@
 /*# System_File #*/
 
 System_Bool System_File_exists(System_String8 name) {
-    struct System_FileInfo info; System_Stack_zero(info);
+    struct System_FileInfo info; System_Stack_clear(info);
     base_System_FileInfo_init(&info, name);
     return System_FileInfo_isRegular(&info);
 }
@@ -90,7 +90,7 @@ void  base_System_File_write__string_size(File that, String8 value, Size count) 
 }
 
 void  base_System_File_writeEnd__arguments(File stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
-    Char8  message[System_String8_formatLimit_VALUE]; System_Stack_zero(message);
+    Char8  message[System_String8_formatLimit_VALUE]; System_Stack_clear(message);
     Size message_length = stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);
     base_System_File_write__string_size(stream, message, message_length);
 }

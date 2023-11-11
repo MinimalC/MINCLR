@@ -97,8 +97,8 @@ void System_Runtime_start(System_Var  * stack) {
         #endif
     }
 
-    String8 keys[256]; System_Stack_zero(keys);
-    String8 values[256]; System_Stack_zero(values);
+    String8 keys[256]; System_Stack_clear(keys);
+    String8 values[256]; System_Stack_clear(values);
     struct System_String8Dictionary dictionary = {
         .base = { .type = typeof(System_String8Dictionary), },
         .key = &keys, .value = &values, .capacity = 256, .length = 0,

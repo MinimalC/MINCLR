@@ -14,7 +14,7 @@
 struct System_Type System_DirectoryType = { .base = { .type = typeof(System_Type) }, .name = "Directory", };
 
 System_Bool System_Directory_exists(System_String8 name) {
-    struct System_FileInfo info; System_Stack_zero(info);
+    struct System_FileInfo info; System_Stack_clear(info);
     base_System_FileInfo_init(&info, name);
     return System_FileInfo_isDirectory(&info);
 }
@@ -24,7 +24,7 @@ System_String8 System_Directory_current = null;
 System_String8 System_Directory_get_current() {
 
     if (!System_Directory_current) {
-        System_Char8 buffer[4096]; System_Stack_zero(buffer);
+        System_Char8 buffer[4096]; System_Stack_clear(buffer);
 
         System_Syscall_getcwd(buffer, 4096);
         System_ErrorCode error = System_Syscall_get_Error();

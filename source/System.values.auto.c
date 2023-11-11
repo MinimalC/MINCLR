@@ -147,7 +147,7 @@ System_String8  System_UInt8_toString8base16(System_UInt8 that) {
 }
 
 System_Size  stack_System_UInt8_toString8base10(System_UInt8 that, System_Char8 array[System_UInt8_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal; System_Stack_zero(decimal);
+    struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__UInt8(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_UInt8_String8base10Length_DEFAULT - 1;
@@ -348,7 +348,7 @@ System_String8  System_UInt16_toString8base16(System_UInt16 that) {
 }
 
 System_Size  stack_System_UInt16_toString8base10(System_UInt16 that, System_Char8 array[System_UInt16_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal; System_Stack_zero(decimal);
+    struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__UInt16(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_UInt16_String8base10Length_DEFAULT - 1;
@@ -551,7 +551,7 @@ System_String8  System_UInt32_toString8base16(System_UInt32 that) {
 }
 
 System_Size  stack_System_UInt32_toString8base10(System_UInt32 that, System_Char8 array[System_UInt32_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal; System_Stack_zero(decimal);
+    struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__UInt32(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_UInt32_String8base10Length_DEFAULT - 1;
@@ -759,7 +759,7 @@ System_String8  System_UInt64_toString8base16(System_UInt64 that) {
 }
 
 System_Size  stack_System_UInt64_toString8base10(System_UInt64 that, System_Char8 array[System_UInt64_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal; System_Stack_zero(decimal);
+    struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__UInt64(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_UInt64_String8base10Length_DEFAULT - 1;
@@ -989,7 +989,7 @@ System_String8  System_Int8_toString8base16(System_Int8 that) {
 }
 
 System_Size  stack_System_Int8_toString8base10(System_Int8 that, System_Char8 array[System_Int8_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal; System_Stack_zero(decimal);
+    struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__Int8(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_Int8_String8base10Length_DEFAULT - 1;
@@ -1187,7 +1187,7 @@ System_String8  System_Int16_toString8base16(System_Int16 that) {
 }
 
 System_Size  stack_System_Int16_toString8base10(System_Int16 that, System_Char8 array[System_Int16_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal; System_Stack_zero(decimal);
+    struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__Int16(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_Int16_String8base10Length_DEFAULT - 1;
@@ -1385,7 +1385,7 @@ System_String8  System_Int32_toString8base16(System_Int32 that) {
 }
 
 System_Size  stack_System_Int32_toString8base10(System_Int32 that, System_Char8 array[System_Int32_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal; System_Stack_zero(decimal);
+    struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__Int32(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_Int32_String8base10Length_DEFAULT - 1;
@@ -1583,7 +1583,7 @@ System_String8  System_Int64_toString8base16(System_Int64 that) {
 }
 
 System_Size  stack_System_Int64_toString8base10(System_Int64 that, System_Char8 array[System_Int64_String8base10Length_DEFAULT + 1]) {
-    struct System_Decimal decimal; System_Stack_zero(decimal);
+    struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__Int64(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
     System_String8 string = array + System_Int64_String8base10Length_DEFAULT - 1;

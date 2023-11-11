@@ -102,10 +102,10 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
     Debug_assert(message);
     Debug_assert(message->length);
 
-    struct Network_HTTPRequest httpRequest; Stack_zero(httpRequest);
-    System_String8 keys[64]; Stack_zero(keys);
-    System_String8 values[64]; Stack_zero(values);
-    struct System_String8Dictionary httpHeader; Stack_zero(httpHeader);
+    struct Network_HTTPRequest httpRequest; Stack_clear(httpRequest);
+    System_String8 keys[64]; Stack_clear(keys);
+    System_String8 values[64]; Stack_clear(values);
+    struct System_String8Dictionary httpHeader; Stack_clear(httpHeader);
     httpHeader.capacity = 64;
     httpHeader.key = &keys;
     httpHeader.value = &values;
@@ -337,7 +337,7 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
         goto respond;
     }
     System_Console_writeLine("HTTPService_serve: File {0:string}", 1, requestPath);
-    struct System_File file; System_Stack_zero(file);
+    struct System_File file; System_Stack_clear(file);
     if (!stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) {
         System_Console_writeLine("HTTPService_serve: File Error {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
@@ -374,7 +374,7 @@ respond:
         goto error;
     }
 
-    System_Char8  text1[System_String8_formatLimit_VALUE]; Stack_zero(text1);
+    System_Char8  text1[System_String8_formatLimit_VALUE]; Stack_clear(text1);
     System_Size position = stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", text1 + position, 2, response->status, Network_HTTPStatus_toString(response->status));
     for (System_Size i = 0; i < base_System_String8Dictionary_get_Length(response->header); ++i) {
         System_String8 key = base_System_String8Dictionary_get_index(response->header, i);
@@ -425,7 +425,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
         return false;
     }
 
-    struct System_Signal signal; System_Stack_zero(signal);
+    struct System_Signal signal; System_Stack_clear(signal);
     System_Signal_add(&signal, System_Signal_Number_SIGINT);
     System_Signal_add(&signal, System_Signal_Number_SIGILL);
     System_Signal_add(&signal, System_Signal_Number_SIGFPE);

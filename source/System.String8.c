@@ -292,7 +292,7 @@ String8  System_String8_formatEnd(String8 format, Char8 suffix, ...) {
 }
 
 String8  System_String8_formatEnd__arguments(String8 format, Char8 suffix, Size argc, Var argv[]) {
-    Char8 message[System_String8_formatLimit_VALUE]; Stack_zero(message);
+    Char8 message[System_String8_formatLimit_VALUE]; Stack_clear(message);
     Size length = stack_System_String8_formatEnd__limit_arguments(format, suffix, System_String8_formatLimit_VALUE, message, argc, argv);
     return System_String8_copy(message);
 }
@@ -344,7 +344,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
 #endif
 
     Size i;
-    Char8  scratch[72]; Stack_zero(scratch);
+    Char8  scratch[72]; Stack_clear(scratch);
 
     // just don't write everything else
 

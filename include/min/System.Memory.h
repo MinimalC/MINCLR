@@ -38,7 +38,7 @@ export struct System_Type  System_MemoryType;
 export void  System_Memory_set(System_Var dest, System_Char8 src, System_Size n);
 
 /* void bzero(void *dest, size_t count) */
-export void  System_Memory_zero(System_Var dest, System_Size n);
+export void  System_Memory_clear(System_Var dest, System_Size n);
 
 /* void * memcpy ( void * destination, const void * source, size_t num ); */
 export void  System_Memory_copyTo(System_Var src, System_Size n, System_Var dest);
@@ -71,7 +71,7 @@ export void  System_Memory_debug(void);
 #define MemoryType  System_MemoryType
 
 #define Memory_set  System_Memory_set
-#define Memory_zero  System_Memory_zero
+#define Memory_clear  System_Memory_clear
 #define Memory_copyTo  System_Memory_copyTo
 #define Memory_moveTo  System_Memory_moveTo
 #define Memory_compare  System_Memory_compare

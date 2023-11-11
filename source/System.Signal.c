@@ -48,7 +48,7 @@ enum {
 
 void System_Signal_handle(System_Signal_Number number, function_System_Signal_handler handler) {
 
-    struct System_Signal_Action new; System_Stack_zero(new);
+    struct System_Signal_Action new; System_Stack_clear(new);
     new.handler = handler; 
     new.flags = SA_RESTORER; // | SA_RESTART | SA_NODEFER
     new.restorer = &System_Syscall_sigreturn;
@@ -67,7 +67,7 @@ void System_Signal_handle(System_Signal_Number number, function_System_Signal_ha
 
 void System_Signal_act(System_Signal_Number number, function_System_Signal_action action) {
 
-    struct System_Signal_Action new; System_Stack_zero(new);
+    struct System_Signal_Action new; System_Stack_clear(new);
     new.action = action; 
     new.flags = SA_RESTORER | SA_SIGINFO; // | SA_RESTART | SA_NODEFER
     new.restorer = &System_Syscall_sigreturn;
@@ -93,7 +93,7 @@ enum {
 
 System_Bool System_Signal_get__number(System_Signal_Number number) {
 
-    struct System_Signal sigset; System_Stack_zero(sigset);
+    struct System_Signal sigset; System_Stack_clear(sigset);
     System_Syscall_sigprocmask(SIG_SETMASK, null, &sigset, sizeof(struct System_Signal));
 
     System_ErrorCode errno = System_Syscall_get_Error();
@@ -104,7 +104,7 @@ System_Bool System_Signal_get__number(System_Signal_Number number) {
 
 void System_Signal_set__number(System_Signal_Number number) {
 
-    struct System_Signal sigset; System_Stack_zero(sigset);
+    struct System_Signal sigset; System_Stack_clear(sigset);
     sigset.mask[0] |= ((System_Signal_Number)1 << (number - 1));
     System_Syscall_sigprocmask(SIG_SETMASK, &sigset, null, sizeof(struct System_Signal));
 
@@ -114,7 +114,7 @@ void System_Signal_set__number(System_Signal_Number number) {
 
 void System_Signal_block__number(System_Signal_Number number) {
 
-    struct System_Signal sigset; System_Stack_zero(sigset);
+    struct System_Signal sigset; System_Stack_clear(sigset);
     sigset.mask[0] |= ((System_Signal_Number)1 << (number - 1));
     System_Syscall_sigprocmask(SIG_BLOCK, &sigset, null, sizeof(struct System_Signal));
 
@@ -124,7 +124,7 @@ void System_Signal_block__number(System_Signal_Number number) {
 
 void System_Signal_unblock__number(System_Signal_Number number) {
 
-    struct System_Signal sigset; System_Stack_zero(sigset);
+    struct System_Signal sigset; System_Stack_clear(sigset);
     sigset.mask[0] |= ((System_Signal_Number)1 << (number - 1));
     System_Syscall_sigprocmask(SIG_UNBLOCK, &sigset, null, sizeof(struct System_Signal));
 

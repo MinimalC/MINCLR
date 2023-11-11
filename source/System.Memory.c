@@ -47,7 +47,7 @@ SSize System_Memory_indexOf(Var ptr, Char8 needle, Size count) {
     return -1;
 }
 
-void System_Memory_zero(Var dest, Size n) {
+void System_Memory_clear(Var dest, Size n) {
     Debug_assert(n);
 
     Char8 *destBytes = (Char8 *)dest;
@@ -404,7 +404,7 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
     /* if MultiThreading, this should be done by System_GC */
 
     Size length = header->length;
-    System_Memory_zero(header, length);
+    System_Memory_clear(header, length);
     header->length = length;
     #if DEBUG == DEBUG_System_Memory
     header->type = typeof(System_Memory_Header);
