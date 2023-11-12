@@ -18,9 +18,7 @@
 
 void  System_String_free(System_String that) {
     Debug_assert(that);
-    if (!that) return;
-
-	System_Memory_free(that->value);
+	if (that->value) System_Memory_free(that->value);
 }
 
 System_UInt64 System_String_getSipHash(System_String that) {

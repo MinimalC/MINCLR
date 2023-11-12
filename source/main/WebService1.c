@@ -26,8 +26,8 @@ struct Network_MimeType  Network_MimeTypes[] = {
     { "jpeg", "image/jpeg" },
     { "png", "image/png" },
     { "bmp", "image/bmp" },
+    { "ico", "image/x-icon" },
     { "svg", "image/svg+xml" },
-    { "ico", "image/vnd.microsoft.icon" },
     { "bin", "application/octet-stream" },
     { "exe", "application/octet-stream" },
     { "iso", "application/x-iso9660-image" },
@@ -64,7 +64,7 @@ typedef struct Network_URI {
 } * Network_URI;
 
 void Network_URI_free(Network_URI that) {
-    System_Memory_free(that->source);
+    if (that->source) System_Memory_free(that->source);
 }
 
 typedef struct Network_HTTPRequest {
@@ -82,8 +82,8 @@ typedef struct Network_HTTPRequest {
 
 void base_Network_HTTPRequest_free(Network_HTTPRequest that) {
     Network_URI_free(&that->uri);
-    System_Memory_free(that->version);
-    System_Memory_free(that->header);
+    if (that->version) System_Memory_free(that->version);
+    if (that->header) System_Memory_free(that->header);
 }
 
 struct System_Type_FunctionInfo Network_HTTPRequestTypeFunctions[] = {
@@ -225,8 +225,8 @@ typedef struct Network_HTTPResponse {
 } * Network_HTTPResponse;
 
 void base_Network_HTTPResponse_free(Network_HTTPResponse that) {
+    if (that->header) System_Memory_free(that->header);
     System_Memory_freeStruct(&that->source, typeof(System_String));
-    System_Memory_free(that->header);
     System_Memory_freeStruct(&that->buffer, typeof(System_String));
 }
 
@@ -290,12 +290,11 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     }
 
     request = HTTPRequest_parse(message);
+    System_Memory_free(message);
     if (!request) {
         System_Console_writeLine("HTTPService_serve: request not parsed", 0);
-        System_Memory_free(message);
         goto error;
     }
-    System_Memory_free(message);
 
     for (System_Size i = 0; i < request->header->length; ++i) {
         System_String8 key = array(request->header->key)[i];
@@ -359,10 +358,10 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     base_System_String8Dictionary_add(response->header, "Connection", "close");
 
 respond:
-    System_Memory_free(currentDirectory);
-    System_Memory_free(requestExt);
-    System_Memory_free(requestPath);
-    System_Memory_free(request);
+    if (currentDirectory) System_Memory_free(currentDirectory);
+    if (requestExt) System_Memory_free(requestExt);
+    if (requestPath) System_Memory_free(requestPath);
+    if (request) System_Memory_free(request);
 
     poller = base_Network_TCPSocket_poll(tcp, Network_PollFlags_OUT);
     if (!(poller & Network_PollFlags_OUT)) {
@@ -395,7 +394,7 @@ respond:
     base_Network_TCPSocket_send(tcp, &response->source, Network_MessageFlags_NOSIGNAL);
     base_Network_TCPSocket_send(tcp, &response->buffer, Network_MessageFlags_NOSIGNAL);
 
-    System_Memory_free(response);
+    if (response) System_Memory_free(response);
 
     base_Network_TCPSocket_close(tcp);
     System_Memory_free(tcp);
