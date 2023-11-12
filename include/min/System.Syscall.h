@@ -8,6 +8,9 @@
 #if !defined(have_System_Syscall_Command)
 #include "System.Syscall.Command.h"
 #endif
+#if !defined(have_System_DateTime)
+#include "System.DateTime.h"
+#endif
 #if !defined(have_System_Syscall)
 #define have_System_Syscall
 
@@ -38,22 +41,8 @@ export System_ErrorCode  System_Syscall_get_Error();
 
 export void  System_Syscall_terminate(System_Size code)  noreturn;
 
-typedef struct System_TimeSpan {
-
-    System_SSize sec;
-    System_SSize usec;
-
-} * System_TimeSpan;
-
-typedef struct System_TimeZone {
-
-    System_Int32 minutesWest;
-    System_Int32 dstTime;
-
-} * System_TimeZone;
-
 export void  System_Syscall_gettimeofday(System_TimeSpan value, System_TimeZone zone);
-export System_SSize  System_Syscall_time(void);
+export System_Time  System_Syscall_time(void);
 
 typedef System_Var  System_Syscall_StandardFile;
 
