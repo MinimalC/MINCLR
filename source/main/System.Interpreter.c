@@ -66,7 +66,7 @@ void System_Runtime_selflink(System_Var base) {
         return; /* TODO throw */
     }
 #if DEBUG == DEBUG_System_ELFAssembly
-    System_Console_writeLine("ELF_Header: type {0:uint16}, machine {1:uint16}, version {2:uint32}, entryPoint 0x{3:uint:hex}, size {4:uint16}", 5,
+    System_Console_writeLine("ELFHeader: type {0:uint16}, machine {1:uint16}, version {2:uint32}, entryPoint 0x{3:uint:hex}, size {4:uint16}", 5,
         header->type, header->machine, header->version, header->entryPoint, header->size);
 #endif
     
@@ -83,8 +83,8 @@ void System_Runtime_selflink(System_Var base) {
         }
 
 #if DEBUG == DEBUG_System_ELFAssembly
-        System_Console_writeLine("ELF_ProgramHeader({0:uint}): type {1:uint32}, flags {2:uint32:bin}, offset {3:uint:hex}, virtualAddress {4:uint:hex}, physicalAddress {5:uint:hex}, fileSize {6:uint:hex}, memorySize {7:uint:hex}", 8, i,
-            program->type, program->flags, program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
+        System_Console_writeLine("ELFProgramHeader({0:uint}): type {1:string}, flags {2:uint32:bin}, offset {3:uint:hex}, virtualAddress {4:uint:hex}, physicalAddress {5:uint:hex}, fileSize {6:uint:hex}, memorySize {7:uint:hex}", 8, i,
+            System_ELFAssembly_ProgramType_toString(program->type), program->flags, program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
 #endif
     }
     System_ELF64Assembly_SymbolEntry dynamicSymbols = null;
@@ -168,7 +168,7 @@ void System_Runtime_readlink(System_Var base) {
         return; /* TODO throw */
     }
 #if DEBUG == DEBUG_System_ELFAssembly
-    System_Console_writeLine("ELF_Header: type {0:uint16}, machine {1:uint16}, version {2:uint32}, entryPoint 0x{3:uint:hex}, size {4:uint16}", 5,
+    System_Console_writeLine("ELFHeader: type {0:uint16}, machine {1:uint16}, version {2:uint32}, entryPoint 0x{3:uint:hex}, size {4:uint16}", 5,
         header->type, header->machine, header->version, header->entryPoint, header->size);
 #endif
     
@@ -183,8 +183,8 @@ void System_Runtime_readlink(System_Var base) {
         }
 
 #if DEBUG == DEBUG_System_ELFAssembly
-        System_Console_writeLine("ELF_ProgramHeader({0:uint}): type {1:uint32}, flags {2:uint32:bin}, offset {3:uint:hex}, virtualAddress {4:uint:hex}, physicalAddress {5:uint:hex}, fileSize {6:uint:hex}, memorySize {7:uint:hex}", 8, i,
-            program->type, program->flags, program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
+        System_Console_writeLine("ELFProgramHeader({0:uint}): type {1:string}, flags {2:uint32:bin}, offset {3:uint:hex}, virtualAddress {4:uint:hex}, physicalAddress {5:uint:hex}, fileSize {6:uint:hex}, memorySize {7:uint:hex}", 8, i,
+            System_ELFAssembly_ProgramType_toString(program->type), program->flags, program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
 #endif
     }
     /* Read all ELFAssembly_SectionHeaders */
@@ -198,7 +198,7 @@ void System_Runtime_readlink(System_Var base) {
             assembly->dynamicSymbolsCount = section->size / sizeof(struct System_ELF64Assembly_SymbolEntry);
 
 #if DEBUG == DEBUG_System_ELFAssembly
-        System_Console_writeLine("ELF_SectionHeader({0:uint}): name {1:string}, type {2:string}, flags {3:uint:bin}, offset {4:uint:hex}, size {5:uint:hex}, virtualAddress {6:uint:hex}, link {7:uint32}", 8, i,
+        System_Console_writeLine("ELFSectionHeader({0:uint}): name {1:string}, type {2:string}, flags {3:uint:bin}, offset {4:uint:hex}, size {5:uint:hex}, virtualAddress {6:uint:hex}, link {7:uint32}", 8, i,
             assembly->sectionsStrings + section->name, System_enum_getName(typeof(System_ELFAssembly_SectionType), section->type), 
             section->flags, section->offset, section->size, section->virtualAddress, section->link);
 #endif

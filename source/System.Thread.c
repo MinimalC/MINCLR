@@ -38,6 +38,27 @@ System_Thread System_Thread_create(function_System_Thread_main function, ...) {
     return System_Thread_create__arguments(function, argc, argv);
 }
 
+typedef struct System_Thread_CloneOptions {
+    
+    System_Size flags;       /* Flags bit mask */
+
+    System_Var pidFD;        /* Where to store PID file descriptor (pid_t *) */
+    System_Var childTid;     /* Where to store child TID, in child's memory (pid_t *) */
+    System_Var parentTid;    /* Where to store child TID, in parent's memory (int *) */
+
+    System_Size exitSignal;  /* Signal to deliver to parent on child termination */
+
+    System_Var stack;        /* Pointer to lowest byte of stack */
+    System_Size stackSize;   /* Size of stack */
+
+    System_Var tls;          /* Location of new TLS */
+
+    System_Var setTid;       /* Pointer to a pid_t array (since Linux 5.5) */
+    System_Size setTidSize;  /* Number of elements in set_tid (since Linux 5.5) */
+    System_Size cgroup;      /* File descriptor for target cgroup of child (since Linux 5.7) */
+
+} * System_Thread_CloneOptions;
+
 System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
 
     System_Var stack = System_Syscall_mmap(STACK_SIZE, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
@@ -62,13 +83,21 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
         System_Thread_sigiset = true;
     }
 
-    System_SIntPtr reture = System_Syscall_clone(CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | System_Signal_Number_SIGCHILD, stack_top);
+    System_Thread that = System_Memory_allocClass(typeof(System_Thread));
+
+    /* struct System_Thread_CloneOptions options; System_Stack_clear(options);
+    options.flags = CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO;
+    options.exitSignal = System_Signal_Number_SIGCHILD;
+    options.stack = stack_top;
+    options.stackSize = STACK_SIZE;
+    System_IntPtr reture = System_Syscall_clone3(&options, sizeof(struct System_Thread_CloneOptions)); */
+
+    System_IntPtr reture = System_Syscall_clone(CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | System_Signal_Number_SIGCHILD, stack_top);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
         System_Console_writeLine("System_Thread_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
         return null;
     }
-    System_Thread that = System_Memory_allocClass(typeof(System_Thread));
     that->threadId = reture;
     that->isRunning = true;
     return that;
@@ -102,7 +131,7 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
 
     if (that->threadId) {
         System_IntPtr status = 0;
-        System_SIntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
+        System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
         that->returnValue = status >> 8;
         System_ErrorCode errno = System_Syscall_get_Error();
         if (errno) {
@@ -122,6 +151,13 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
 
 void System_Thread_yield(void) {
     System_Syscall_sched_yield();
+}
+
+System_Var System_Thread_getLocalStorage(System_Size index) {
+
+    System_Console_writeLine("System_Thread_getLocalStorage index {0:uint}", 1, index);
+
+    return null;
 }
 
 #endif

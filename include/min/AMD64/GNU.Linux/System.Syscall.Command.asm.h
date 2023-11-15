@@ -335,6 +335,7 @@
 #define  System_Syscall_Command_pkey_alloc  330
 #define  System_Syscall_Command_pkey_free  331
 #define  System_Syscall_Command_statx  332
+#define  System_Syscall_Command_clone3  435
 
 #elif defined(code_System_Syscall_Command)
 [0] = { .name = "Syscall.Command.read", .value = System_Syscall_Command_read },
@@ -670,5 +671,6 @@
 [330] = { .name = "Syscall.Command.pkey_alloc", .value = System_Syscall_Command_pkey_alloc },
 [331] = { .name = "Syscall.Command.pkey_free", .value = System_Syscall_Command_pkey_free },
 [332] = { .name = "Syscall.Command.statx", .value = System_Syscall_Command_statx },
-#define System_Syscall_CommandType_fields_length_DEFAULT  333
+[333] = { .name = "Syscall.Command.clone3", .value = System_Syscall_Command_clone3 },
+#define System_Syscall_CommandType_fields_length_DEFAULT  334
 #endif

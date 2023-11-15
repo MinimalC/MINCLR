@@ -31,8 +31,7 @@ enum {
     System_ELFAssembly_ABI_SysV,
     System_ELFAssembly_ABI_HPUX,
     System_ELFAssembly_ABI_NetBSD,
-    System_ELFAssembly_ABI_GNU,
-    System_ELFAssembly_ABI_Linux = System_ELFAssembly_ABI_GNU,
+    System_ELFAssembly_ABI_Linux,
     System_ELFAssembly_ABI_Solaris = 6,
     System_ELFAssembly_ABI_AIX,
     System_ELFAssembly_ABI_IRIX,
@@ -112,7 +111,7 @@ enum {
     System_ELFAssembly_Machine_ME16 = 59,    /* Toyota ME16 processor */
     System_ELFAssembly_Machine_ST100 = 60,    /* STMicroelectronic ST100 processor */
     System_ELFAssembly_Machine_TINYJ = 61,    /* Advanced Logic Corp. Tinyj emb.fam */
-    System_ELFAssembly_Machine_X86_64 = 62,    /* AMD x86-64 architecture */
+    System_ELFAssembly_Machine_AMD64 = 62,    /* AMD x86-64 architecture */
     System_ELFAssembly_Machine_PDSP = 63,    /* Sony DSP Processor */
     System_ELFAssembly_Machine_PDP10 = 64,    /* Digital PDP-10 */
     System_ELFAssembly_Machine_PDP11 = 65,    /* Digital PDP-11 */
@@ -526,8 +525,8 @@ enum {
     System_ELFAssembly_AMD64Relocation_TLSDESC = 36,  /* TLS descriptor.  */
     System_ELFAssembly_AMD64Relocation_IRELATIVE = 37,  /* Adjust indirectly by program base */
     System_ELFAssembly_AMD64Relocation_RELATIVE64 = 38,  /* 64-bit adjust by program base */
-    /* 39 Reserved was R_X86_64_PC32_BND */
-    /* 40 Reserved was R_X86_64_PLT32_BND */
+    /* 39 Reserved was R_AMD64_PC32_BND */
+    /* 40 Reserved was R_AMD64_PLT32_BND */
     System_ELFAssembly_AMD64Relocation_GOTPCRELX = 41,  /* Load from 32 bit signed pc relative offset to GOT entry without REX prefix, relaxable.  */
     System_ELFAssembly_AMD64Relocation_REX_GOTPCRELX = 42,  /* Load from 32 bit signed pc relative offset to GOT entry with REX prefix, relaxable.  */
     /* System_ELFAssembly_AMD64Relocation_NUM = 43 */
@@ -786,6 +785,9 @@ typedef struct System_ELF64Assembly {
 
     System_Size * PLT;
 
+    System_Size threadStorageSize;
+    System_Var threadStorage;
+
 } * System_ELF64Assembly;
 
 export struct System_Type  System_ELF64AssemblyType;
@@ -808,6 +810,10 @@ export System_String8 System_ELFAssembly_AMD64Relocation_toString(System_UInt32 
 export System_String8 System_ELFAssembly_SymbolBinding_toString(System_UInt8 value);
 export System_String8 System_ELFAssembly_SymbolType_toString(System_UInt8 value);
 export System_String8 System_ELFAssembly_DynamicType_toString(System_ELFAssembly_DynamicType value);
+export System_String8 System_ELFAssembly_ProgramType_toString(System_ELFAssembly_ProgramType value);
+export System_String8 System_ELFAssembly_AssemblyType_toString(System_ELFAssembly_AssemblyType value);
+export System_String8 System_ELFAssembly_ABI_toString(System_ELFAssembly_ABI value);
+export System_String8 System_ELFAssembly_Machine_toString(System_ELFAssembly_Machine value);
 
 #endif
 #if !defined(have_System_ELFAssembly)

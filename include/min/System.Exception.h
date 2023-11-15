@@ -27,7 +27,7 @@ export struct System_Type  System_NotImplementedExceptionType;
 export struct System_Type  System_ArgumentExceptionType;
 export struct System_Type  System_InvalidExceptionType;
 
-export thread System_Exception  System_Exception_current;
+export System_Exception  System_Exception_current;
 
 typedef void delegate(System_Exception_init)(System_Exception that, System_String8 message);
 

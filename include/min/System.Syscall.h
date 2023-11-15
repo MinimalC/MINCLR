@@ -34,7 +34,7 @@ import System_IntPtr  System_Syscall_call06(System_Syscall_Command number, Syste
 #define Syscall_call06  System_Syscall_call06
 #endif
 
-export thread System_ErrorCode System_Syscall_error;
+export System_ErrorCode System_Syscall_error;
 
 export void  System_Syscall_set_Error(System_ErrorCode error);
 export System_ErrorCode  System_Syscall_get_Error();
@@ -72,8 +72,10 @@ export void  System_Syscall_mprotect(System_Var address, System_Size length, Sys
 
 export void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain);
 
-export System_SIntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack);
-export System_SIntPtr  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage);
+export System_IntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack);
+export System_IntPtr  System_Syscall_clone__tls(System_IntPtr flags, System_Var stack, System_Var tls);
+export System_IntPtr  System_Syscall_clone3(System_Var options, System_Size size);
+export System_IntPtr  System_Syscall_wait(System_IntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage);
 export void  System_Syscall_sched_yield(void);
 
 export void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_Var old);

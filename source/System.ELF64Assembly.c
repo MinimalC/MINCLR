@@ -64,24 +64,16 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
         if (print) System_Console_writeLine__string("NOELF");
         return; /* TODO throw */
     }
-    if (print == 2) {
-        System_Console_write("ELF_Header: type {0:uint16}, machine {1:uint16}, version {2:uint32}, entryPoint 0x{3:uint:hex}, size {4:uint16}", 5,
-            header->type, header->machine, header->version, header->entryPoint, header->size);
-        System_Console_write(", class {0:uint8}, endianess {1:uint8}, elfVersion {2:uint8}, abi {3:uint8}", 4,
-            header->class, header->endianess, header->elfVersion, header->abi);
+    if (print) {
+        System_Console_write("ELFHeader: type {0:string}, machine {1:uint16}, version {2:uint32}, entryPoint 0x{3:uint:hex}, size {4:uint16}", 5,
+            System_ELFAssembly_AssemblyType_toString(header->type), System_ELFAssembly_Machine_toString(header->machine), 
+            header->version, header->entryPoint, header->size);
+        System_Console_write(", class {0:uint8}, endianess {1:uint8}, elfVersion {2:uint8}, abi {3:string}", 4,
+            header->class, header->endianess, header->elfVersion, System_ELFAssembly_ABI_toString(header->abi));
         System_Console_write(", programHeaderOffset {0:uint:hex}, programHeaderSize {1:uint16}, programHeaderCount {2:uint16}", 3,
             header->programHeaderOffset, header->programHeaderSize, header->programHeaderCount);
         System_Console_writeLine(", sectionHeaderOffset {0:uint:hex}, sectionHeaderSize {1:uint16}, sectionHeaderCount {2:uint16}", 3,
             header->sectionHeaderOffset, header->sectionHeaderSize, header->sectionHeaderCount);
-    }
-    else if (print) {
-        System_Console_write("ELF_Header: type {0:string}, machine {1:string}, version {2:uint32}, entryPoint 0x{3:uint:hex}, size {4:uint16}", 5,
-            System_enum_getName(typeof(System_ELFAssembly_AssemblyType), header->type),
-            System_enum_getName(typeof(System_ELFAssembly_Machine), header->machine),
-            header->version, header->entryPoint, header->size);
-        System_Console_writeLine(", class {0:uint8}, endianess {1:uint8}, elfVersion {2:uint8}, abi {3:string}", 4,
-            header->class, header->endianess, header->elfVersion,
-            System_enum_getName(typeof(System_ELFAssembly_ABI), header->abi));
     }
     
     /* Read ELFAssembly_ProgramHeaders */
@@ -95,16 +87,9 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
             assembly->dynamics = (System_ELF64Assembly_DynamicEntry)(assembly->buffer + program->offset);
             assembly->dynamicsCount = program->fileSize / sizeof(struct System_ELFAssembly_DynamicEntry);
         }
-
-        if (print == 2) {
-        System_Console_writeLine("ELF_ProgramHeader({0:uint}): type {1:uint32}, flags {2:uint32:bin}, offset {3:uint:hex}, virtualAddress {4:uint:hex}, physicalAddress {5:uint:hex}, fileSize {6:uint:hex}, memorySize {7:uint:hex}", 8, i,
-            program->type, program->flags, program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
-        }
-        else if (print) {
-        System_Console_writeLine("ELF_ProgramHeader({0:uint}): type {1:string}, flags {2:uint32:bin}, offset {3:uint:hex}, virtualAddress {4:uint:hex}, physicalAddress {5:uint:hex}, fileSize {6:uint:hex}, memorySize {7:uint:hex}", 8, i,
-            System_enum_getName(typeof(System_ELFAssembly_ProgramType), program->type),
-            program->flags, program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
-        }
+        if (print)
+            System_Console_writeLine("ELFProgramHeader({0:uint}): type {1:string}, flags {2:uint32:bin}, offset {3:uint:hex}, virtualAddress {4:uint:hex}, physicalAddress {5:uint:hex}, fileSize {6:uint:hex}, memorySize {7:uint:hex}", 8, i,
+                System_ELFAssembly_ProgramType_toString(program->type), program->flags, program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
     }
 
     /* Read all ELFAssembly_SectionHeaders */
@@ -128,15 +113,10 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
             assembly->dynamicSymbolsCount = section->size / sizeof(struct System_ELF64Assembly_SymbolEntry);
 
         /* Write all ELFAssembly_SectionHeaders */
-        if (print == 2) {
-            System_Console_writeLine("ELF_SectionHeader({0:uint}): name {1:string}, type {2:uint32}, flags {3:uint:bin}, offset {4:uint:hex}, size {5:uint:hex}, virtualAddress {6:uint:hex}, link {7:uint32}", 8, i,
-                assembly->sectionsStrings + section->name, section->type, section->flags, section->offset, section->size, section->virtualAddress, section->link);
-        }
-        else if (print) {
-            System_Console_writeLine("ELF_SectionHeader({0:uint}): name {1:string}, type {2:string}, flags {3:uint:bin}, offset {4:uint:hex}, size {5:uint:hex}, virtualAddress {6:uint:hex}, link {7:uint32}", 8, i,
+        if (print)
+            System_Console_writeLine("ELFSectionHeader({0:uint}): name {1:string}, type {2:string}, flags {3:uint:bin}, offset {4:uint:hex}, size {5:uint:hex}, virtualAddress {6:uint:hex}, link {7:uint32}", 8, i,
                 assembly->sectionsStrings + section->name, System_enum_getName(typeof(System_ELFAssembly_SectionType), section->type), 
                 section->flags, section->offset, section->size, section->virtualAddress, section->link);
-        }
     }
 
     if (assembly->dynamics) {
@@ -299,6 +279,10 @@ void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
         if (program->type == System_ELFAssembly_ProgramType_Dynamic) {
             assembly->dynamics = (System_ELF64Assembly_DynamicEntry)(assembly->link + program->virtualAddress);
             assembly->dynamicsCount = program->fileSize / sizeof(struct System_ELFAssembly_DynamicEntry);
+        }
+        if (program->type == System_ELFAssembly_ProgramType_ThreadLocalStorage) {
+            assembly->threadStorage = assembly->link + program->virtualAddress;
+            assembly->threadStorageSize = program->memorySize;
         }
     }
     if (assembly->dynamics) {
@@ -565,7 +549,7 @@ System_String8 System_ELFAssembly_AMD64Relocation_toString(System_UInt32 value) 
     case System_ELFAssembly_AMD64Relocation_GLOB_DAT: return "GLOB_DAT";
     case System_ELFAssembly_AMD64Relocation_JUMP_SLOT: return "JUMP_SLOT";
     case System_ELFAssembly_AMD64Relocation_RELATIVE: return "RELATIVE";
-    default: return "UNKNOWN";
+    default: return "Unknown";
     }
 }
 
@@ -574,7 +558,7 @@ System_String8 System_ELFAssembly_SymbolBinding_toString(System_UInt8 value) {
     case System_ELFAssembly_SymbolBinding_LOCAL: return "LOCAL";
     case System_ELFAssembly_SymbolBinding_GLOBAL: return "GLOBAL";
     case System_ELFAssembly_SymbolBinding_WEAK: return "WEAK";
-    default: return "UNKNOWN";
+    default: return "Unknown";
     }
 }
 
@@ -585,7 +569,7 @@ System_String8 System_ELFAssembly_SymbolType_toString(System_UInt8 value) {
     case System_ELFAssembly_SymbolType_FUNCTION: return "FUNCTION";
     case System_ELFAssembly_SymbolType_SECTION: return "SECTION";
     case System_ELFAssembly_SymbolType_FILE: return "FILE";
-    default: return "UNKNOWN";
+    default: return "Unknown";
     }    
 }
 
@@ -634,49 +618,7 @@ System_String8 System_ELFAssembly_DynamicType_toString(System_ELFAssembly_Dynami
     case System_ELFAssembly_DynamicType_LOPROC: return "LOPROC";
     case System_ELFAssembly_DynamicType_HIPROC: return "HIPROC";
 
-/*    case System_ELFAssembly_DynamicType_MIPSNUM: return "MIPSNUM";
-    case System_ELFAssembly_DynamicType_VALRNGLO: return "VALRNGLO";
-    case System_ELFAssembly_DynamicType_GNU_PRELINKED: return "GNU_PRELINKED";
-    case System_ELFAssembly_DynamicType_GNU_CONFLICTSZ: return "GNU_CONFLICTSZ";
-    case System_ELFAssembly_DynamicType_GNU_LIBLISTSZ: return "GNU_LIBLISTSZ";
-    case System_ELFAssembly_DynamicType_CHECKSUM: return "CHECKSUM";
-    case System_ELFAssembly_DynamicType_PLTPADSZ: return "PLTPADSZ";
-    case System_ELFAssembly_DynamicType_MOVEENT: return "MOVEENT";
-    case System_ELFAssembly_DynamicType_MOVESZ: return "MOVESZ";
-    case System_ELFAssembly_DynamicType_FEATURE_1: return "FEATURE_1";
-    case System_ELFAssembly_DynamicType_POSFLAG_1: return "POSFLAG_1";
-    case System_ELFAssembly_DynamicType_SYMINSZ: return "SYMINSZ";
-    case System_ELFAssembly_DynamicType_SYMINENT: return "SYMINENT";
-    case System_ELFAssembly_DynamicType_VALRNGHI: return "VALRNGHI";
-    case System_ELFAssembly_DynamicType_VALNUM: return "VALNUM";
-    case System_ELFAssembly_DynamicType_ADDRRNGLO: return "ADDRRNGLO";
-    case System_ELFAssembly_DynamicType_GNU_HASH: return "GNU_HASH";
-    case System_ELFAssembly_DynamicType_TLSDESC_PLT: return "TLSDESC_PLT";
-    case System_ELFAssembly_DynamicType_TLSDESC_GOT: return "TLSDESC_GOT";
-    case System_ELFAssembly_DynamicType_GNU_CONFLICT: return "GNU_CONFLICT";
-    case System_ELFAssembly_DynamicType_GNU_LIBLIST: return "GNU_LIBLIST";
-    case System_ELFAssembly_DynamicType_CONFIG: return "CONFIG";
-    case System_ELFAssembly_DynamicType_DEPAUDIT: return "DEPAUDIT";
-    case System_ELFAssembly_DynamicType_AUDIT: return "AUDIT";
-    case System_ELFAssembly_DynamicType_PLTPAD: return "PLTPAD";
-    case System_ELFAssembly_DynamicType_MOVETAB: return "MOVETAB";
-    case System_ELFAssembly_DynamicType_SYMINFO: return "SYMINFO";
-    case System_ELFAssembly_DynamicType_ADDRRNGHI: return "ADDRRNGHI";
-    case System_ELFAssembly_DynamicType_ADDRNUM: return "ADDRNUM";
-    case System_ELFAssembly_DynamicType_VERSYM: return "VERSYM";
-    case System_ELFAssembly_DynamicType_RELACOUNT: return "RELACOUNT";
-    case System_ELFAssembly_DynamicType_RELCOUNT: return "RELCOUNT";
-    case System_ELFAssembly_DynamicType_FLAGS_1: return "FLAGS_1";
-    case System_ELFAssembly_DynamicType_VERDEF: return "VERDEF";
-    case System_ELFAssembly_DynamicType_VERDEFNUM: return "VERDEFNUM";
-    case System_ELFAssembly_DynamicType_VERNEED: return "VERNEED";
-    case System_ELFAssembly_DynamicType_VERNEEDNUM: return "VERNEEDNUM";
-    case System_ELFAssembly_DynamicType_VERSIONTAGNUM: return "VERSIONTAGNUM";
-    case System_ELFAssembly_DynamicType_AUXILIARY: return "AUXILIARY";
-    case System_ELFAssembly_DynamicType_FILTER: return "FILTER";
-    case System_ELFAssembly_DynamicType_EXTRANUM: return "EXTRANUM";*/
-
-    default: return "UNKNOWN";
+    default: return "Unknown";
     }    
 }
 
@@ -684,11 +626,30 @@ System_String8 System_ELFAssembly_DynamicType_toString(System_ELFAssembly_Dynami
 #if !defined(code_System_ELFAssembly)
 #define code_System_ELFAssembly
 
+System_String8 System_ELFAssembly_ABI_toString(System_ELFAssembly_ABI value) {
+    switch (value) {
+    case System_ELFAssembly_ABI_SysV: return "SysV";
+    case System_ELFAssembly_ABI_HPUX: return "HPUX";
+    case System_ELFAssembly_ABI_NetBSD: return "NetBSD";
+    case System_ELFAssembly_ABI_Linux: return "Linux";
+    case System_ELFAssembly_ABI_Solaris: return "Solaris";
+    case System_ELFAssembly_ABI_AIX: return "AIX";
+    case System_ELFAssembly_ABI_IRIX: return "IRIX";
+    case System_ELFAssembly_ABI_FreeBSD: return "FreeBSD";
+    case System_ELFAssembly_ABI_TRU64: return "TRU64";
+    case System_ELFAssembly_ABI_Modesto: return "Modesto";
+    case System_ELFAssembly_ABI_OpenBSD: return "OpenBSD";
+    case System_ELFAssembly_ABI_ARM_EABI: return "ARM_EABI";
+    case System_ELFAssembly_ABI_ARM: return "ARM";
+    case System_ELFAssembly_ABI_Standalone: return "Standalone";
+    default: return "Unknown";
+    }
+}
+
 struct System_Type_FieldInfo  System_ELFAssembly_ABITypeFields[] = {
     { .name = "SysV", .value = System_ELFAssembly_ABI_SysV },
     { .name = "HPUX", .value = System_ELFAssembly_ABI_HPUX },
     { .name = "NetBSD", .value = System_ELFAssembly_ABI_NetBSD },
-    { .name = "GNU", .value = System_ELFAssembly_ABI_GNU },
     { .name = "Linux", .value = System_ELFAssembly_ABI_Linux },
     { .name = "Solaris", .value = System_ELFAssembly_ABI_Solaris },
     { .name = "AIX", .value = System_ELFAssembly_ABI_AIX },
@@ -710,6 +671,21 @@ struct System_Type System_ELFAssembly_ABIType = { .base = { .type = typeof(Syste
     },
 };
 
+System_String8 System_ELFAssembly_AssemblyType_toString(System_ELFAssembly_AssemblyType value) {
+    switch (value) {
+    case System_ELFAssembly_AssemblyType_None: return "None";
+    case System_ELFAssembly_AssemblyType_Relocatable: return "Relocatable";
+    case System_ELFAssembly_AssemblyType_Executable: return "Executable";
+    case System_ELFAssembly_AssemblyType_Dynamic: return "Dynamic";
+    case System_ELFAssembly_AssemblyType_Core: return "Core";
+    case System_ELFAssembly_AssemblyType_OSSpecificLow: return "OSSpecificLow";
+    case System_ELFAssembly_AssemblyType_OSSpecificHigh: return "OSSpecificHigh";
+    case System_ELFAssembly_AssemblyType_ProcessorSpecificLow: return "ProcessorSpecificLow";
+    case System_ELFAssembly_AssemblyType_ProcessorSpecificHigh: return "ProcessorSpecificHigh";
+    default: return "Unknown";
+    }
+}
+
 struct System_Type_FieldInfo  System_ELFAssembly_AssemblyTypeTypeFields[] = {
     { .name = "None", .value = System_ELFAssembly_AssemblyType_None },
     { .name = "Relocatable", .value = System_ELFAssembly_AssemblyType_Relocatable },
@@ -729,6 +705,14 @@ struct System_Type System_ELFAssembly_AssemblyTypeType = { .base = { .type = typ
         .value = &System_ELFAssembly_AssemblyTypeTypeFields, .length = sizeof_array(System_ELFAssembly_AssemblyTypeTypeFields),
     },
 };
+
+System_String8 System_ELFAssembly_Machine_toString(System_ELFAssembly_Machine value) {
+    switch (value) {
+    case System_ELFAssembly_Machine_AMD64: return "AMD64";
+    case System_ELFAssembly_Machine_ARM: return "ARM";
+    default: return "Unknown";
+    }
+}
 
 struct System_Type_FieldInfo  System_ELFAssembly_MachineTypeFields[] = {
     { .name = "None", .value = System_ELFAssembly_Machine_None },
@@ -776,7 +760,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_MachineTypeFields[] = {
     { .name = "ME16", .value = System_ELFAssembly_Machine_ME16 },
     { .name = "ST100", .value = System_ELFAssembly_Machine_ST100 },
     { .name = "TINYJ", .value = System_ELFAssembly_Machine_TINYJ },
-    { .name = "X86_64", .value = System_ELFAssembly_Machine_X86_64 },
+    { .name = "AMD64", .value = System_ELFAssembly_Machine_AMD64 },
     { .name = "PDSP", .value = System_ELFAssembly_Machine_PDSP },
     { .name = "PDP10", .value = System_ELFAssembly_Machine_PDP10 },
     { .name = "PDP11", .value = System_ELFAssembly_Machine_PDP11 },
@@ -920,6 +904,24 @@ struct System_Type System_ELFAssembly_MachineType = { .base = { .type = typeof(S
         .value = &System_ELFAssembly_MachineTypeFields, .length = sizeof_array(System_ELFAssembly_MachineTypeFields),
     },
 };
+
+System_String8 System_ELFAssembly_ProgramType_toString(System_ELFAssembly_ProgramType value) {
+    switch (value) {
+        case System_ELFAssembly_ProgramType_Null: return "Null";
+        case System_ELFAssembly_ProgramType_Loadable: return "Loadable";
+        case System_ELFAssembly_ProgramType_Dynamic: return "Dynamic";
+        case System_ELFAssembly_ProgramType_Interpreter: return "Interpreter";
+        case System_ELFAssembly_ProgramType_AuxiliaryNote: return "AuxiliaryNote";
+        case System_ELFAssembly_ProgramType_SHLIB: return "SHLIB";
+        case System_ELFAssembly_ProgramType_ProgramHeader: return "ProgramHeader";
+        case System_ELFAssembly_ProgramType_ThreadLocalStorage: return "ThreadLocalStorage";
+        case System_ELFAssembly_ProgramType_NUMBER: return "NUMBER";
+        case System_ELFAssembly_ProgramType_GNU_EHFRAME: return "GNU_EHFRAME";
+        case System_ELFAssembly_ProgramType_GNU_Stack: return "GNU_Stack";
+        case System_ELFAssembly_ProgramType_GNU_ReadOnlyRelocation: return "GNU_ReadOnlyRelocation";
+        default: return "Unknown";
+    }
+}
 
 struct System_Type_FieldInfo  System_ELFAssembly_ProgramTypeTypeFields[] = {
     { .name = "Null", .value = System_ELFAssembly_ProgramType_Null },

@@ -1,6 +1,7 @@
 #define using_System
 #include <min/System.h>
 
+thread System_Size storage = 1;
 
 void Dummy0(System_Size argc, System_Var argv[]) {
 
@@ -23,6 +24,8 @@ void Dummy3(System_Size argc, System_Var argv[]) {
 
     System_Thread_sleep(2);
     System_Console_writeLine("This is Child{0:uint}", 1, argv[0]);
+
+    /* System_Console_writeLine("Storage: {0:uint}", 1, storage); */
 }
 
 int System_Runtime_main(int argc, char * argv[]) {

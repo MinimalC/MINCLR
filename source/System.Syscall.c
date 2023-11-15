@@ -65,7 +65,7 @@ struct System_Type System_ErrorCodeType = { .base = { .type = typeof(System_Type
 
 struct System_Type System_SyscallType = { .base = { .type = typeof(System_Type) }, .name = "Syscall", };
 
-thread System_ErrorCode System_Syscall_error = 0;
+System_ErrorCode System_Syscall_error = 0;
 
 void System_Syscall_set_Error(const System_ErrorCode error) {
     System_Syscall_error = error;
@@ -172,11 +172,19 @@ void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain) 
     (void)System_Syscall_call02(System_Syscall_Command_nanosleep, (System_IntPtr)request, (System_IntPtr)remain);
 }
 
-System_SIntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack) {
-    return (System_SIntPtr)System_Syscall_call02(System_Syscall_Command_clone, flags, (System_IntPtr)stack);
+System_IntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack) {
+    return (System_IntPtr)System_Syscall_call02(System_Syscall_Command_clone, flags, (System_IntPtr)stack);
 }
 
-System_SIntPtr  System_Syscall_wait(System_SIntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage) {
+System_IntPtr  System_Syscall_clone__tls(System_IntPtr flags, System_Var stack, System_Var tls) {
+    return (System_IntPtr)System_Syscall_call05(System_Syscall_Command_clone, flags, (System_IntPtr)stack, null, (System_IntPtr)tls, null);
+}
+
+System_IntPtr  System_Syscall_clone3(System_Var options, System_Size size) {
+    return (System_IntPtr)System_Syscall_call02(System_Syscall_Command_clone3, (System_IntPtr)options, size);
+}
+
+System_IntPtr  System_Syscall_wait(System_IntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage) {
     return System_Syscall_call04(System_Syscall_Command_wait4, id, (System_IntPtr)status, flags, (System_IntPtr)usage);
 }
 

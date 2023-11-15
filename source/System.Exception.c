@@ -14,7 +14,7 @@
 #if !defined(code_System_Exception)
 #define code_System_Exception
 
-thread System_Exception System_Exception_current = null;
+System_Exception System_Exception_current = null;
 
 void  System_Exception_throw(System_Exception that) {
     Debug_assert(that);
