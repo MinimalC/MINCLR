@@ -180,10 +180,6 @@ System_IntPtr  System_Syscall_clone__tls(System_IntPtr flags, System_Var stack, 
     return (System_IntPtr)System_Syscall_call05(System_Syscall_Command_clone, flags, (System_IntPtr)stack, null, (System_IntPtr)tls, null);
 }
 
-System_IntPtr  System_Syscall_clone3(System_Var options, System_Size size) {
-    return (System_IntPtr)System_Syscall_call02(System_Syscall_Command_clone3, (System_IntPtr)options, size);
-}
-
 System_IntPtr  System_Syscall_wait(System_IntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage) {
     return System_Syscall_call04(System_Syscall_Command_wait4, id, (System_IntPtr)status, flags, (System_IntPtr)usage);
 }
