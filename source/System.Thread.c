@@ -41,13 +41,10 @@ System_Thread System_Thread_create(function_System_Thread_main function, ...) {
 
 System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
 
-    /* System_Size tlsSize = 0;
-    for (Size i = 0; i < System_ELF64Assembly_loadedCount; ++i) {
-        System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
-        tlsSize += !assembly ? 0 : assembly->threadStorageSize;
-    }
+    System_Size tlsSize = System_Thread_getStorageSize();
     System_Var tls = !tlsSize ? null : System_Syscall_mmap(tlsSize, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
-        System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous); */
+        System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
+    if (tls) System_Thread_copyImageTo(tls);
 
     System_Var stack = System_Syscall_mmap(STACK_SIZE, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
         System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown);
@@ -63,6 +60,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
 
     *(--stack_top) = (System_Size)argc;
     *(--stack_top) = (System_Size)function;
+    *(--stack_top) = (System_Size)tls;
     *(--stack_top) = (System_Size)System_Thread_boot;
 
     if (!System_Thread_sigiset) {
@@ -71,15 +69,15 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
         System_Thread_sigiset = true;
     }
 
-    System_IntPtr reture = System_Syscall_clone(CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | System_Signal_Number_SIGCHILD, stack_top);
+    System_IntPtr flags = CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | CLONE_SETTLS;
+    System_IntPtr reture = System_Syscall_clone__tls(flags | System_Signal_Number_SIGCHILD, stack_top, !tls ? null : &tls);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
         System_Console_writeLine("System_Thread_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
         return null;
     }
     System_Thread that = System_Memory_allocClass(typeof(System_Thread));
-    that->threadId = reture;
-    that->isRunning = true;
+    that->threadId = (System_ProcessId)reture;
     return that;
 }
 
@@ -114,16 +112,14 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
         System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
         that->returnValue = status >> 8;
         System_ErrorCode errno = System_Syscall_get_Error();
+        if (errno || reture)
+            that->threadId = 0;
         if (errno) {
             System_Console_writeLine("System_Thread_join Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-            that->isRunning = false;
-            that->threadId = 0;
             return true;
         }
         return reture ? true : false;
     }
-    that->isRunning = false;
-    that->threadId = 0;
     /*System_Console_writeLine("System_Thread_join status {0:uint:hex}, reture {1:uint:hex}, isRunning {2:bool}, returnValue: {3:uint:hex}", 4, 
         status, reture, that->isRunning, that->returnValue);*/
     return true;
@@ -133,11 +129,12 @@ void System_Thread_yield(void) {
     System_Syscall_sched_yield();
 }
 
-System_Var System_Thread_getLocalStorage(System_Size index) {
+System_Var System_Thread_Unknown = 0;
 
-    System_Console_writeLine("System_Thread_getLocalStorage index {0:uint}", 1, index);
+System_Var System_Thread_getLocalStorage(System_Thread_TLSIndex index) {
+    Debug_assert(index);
 
-    return null;
+    return &System_Thread_Unknown;
 }
 
 #endif

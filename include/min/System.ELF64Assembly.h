@@ -815,6 +815,9 @@ export System_String8 System_ELFAssembly_AssemblyType_toString(System_ELFAssembl
 export System_String8 System_ELFAssembly_ABI_toString(System_ELFAssembly_ABI value);
 export System_String8 System_ELFAssembly_Machine_toString(System_ELFAssembly_Machine value);
 
+export System_Size System_Thread_getStorageSize();
+export void System_Thread_copyImageTo(System_Var tls);
+
 #endif
 #if !defined(have_System_ELFAssembly)
 #define have_System_ELFAssembly

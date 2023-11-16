@@ -14,8 +14,8 @@ export struct System_File  System_Console_StdIn;
 export struct System_File  System_Console_StdOut;
 export struct System_File  System_Console_StdErr;
 
-enum { System_Console_Arguments_Length = 256 };
-export System_String8 System_Console_Arguments[System_Console_Arguments_Length];
+export System_Var System_Console_Arguments;
+export System_Size System_Console_Arguments_Count;
 
 export void  System_Console_exit(const System_Size code) noreturn;
 

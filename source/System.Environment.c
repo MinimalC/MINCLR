@@ -8,7 +8,9 @@
 
 System_String8Dictionary System_Environment_Arguments = null;
 
-System_Size  System_Environment_AuxValues[System_Environment_AuxValues_Length] = { };
+System_Environment_AuxValue System_Environment_AuxValues = null;
+
+System_Size System_Environment_AuxValues_Count = 0;
 
 struct System_Type_FieldInfo  System_Environment_AuxTypeTypeFields[] = {
     { .name = "NULL", .value = System_Environment_AuxType_NULL },

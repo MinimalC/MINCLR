@@ -88,14 +88,14 @@ void System_Runtime_start(System_Var  * stack) {
             random = aux->value;
     }
 
-    System_Size i;
-
-    for (i = 0; i < argc; ++i) {
-        System_Console_Arguments[i] = argv[i];
-        #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
+    System_Console_Arguments_Count = argc;
+    System_Console_Arguments = argv;
+    #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
+    if (interp)
+    for (System_Size i = 0; i < System_Console_Arguments_Count; ++i) {
         System_Console_writeLine("System_Console_Arguments({0:uint}): {1:string}", 2, i, argv[i]);
-        #endif
     }
+    #endif
 
     String8 keys[256]; System_Stack_clear(keys);
     String8 values[256]; System_Stack_clear(values);
@@ -105,7 +105,7 @@ void System_Runtime_start(System_Var  * stack) {
     };
     if (interp) {
         System_Environment_Arguments = &dictionary;
-        for (i = 0; i < envc; ++i) {
+        for (System_Size i = 0; i < envc; ++i) {
             String8 key = envv[i];
             SSize sign = System_String8_indexOf(key, '=');
             if (sign > -1) *(key + sign) = '\0';
@@ -117,9 +117,11 @@ void System_Runtime_start(System_Var  * stack) {
         }
     }
     
-    for (i = 0; i < auxc; ++i) {
-        System_Environment_AuxValues[auxv[i].type] = auxv[i].value;
-        #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
+    System_Environment_AuxValues_Count = auxc;
+    System_Environment_AuxValues = auxv;
+    #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
+    if (interp)
+    for (System_Size i = 0; i < auxc; ++i) {
         switch (auxv[i].type) {
         case System_Environment_AuxType_EXECFN:
         case System_Environment_AuxType_PLATFORM:
@@ -129,8 +131,8 @@ void System_Runtime_start(System_Var  * stack) {
             System_Console_writeLine("System_Environment_AuxValue({0:uint}): type ({1:string}), value 0x{2:uint:hex}", 3, i, System_Environment_AuxType_toString(auxv[i].type), auxv[i].value);
             break;
         }
-        #endif
     }
+    #endif
 
 
     /* struct vdso_info info = { .valid = false }; */

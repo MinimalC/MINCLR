@@ -87,7 +87,7 @@ export struct System_Type  System_Environment64_AuxValueType;
 #define System_Environment_AuxValue  System_Environment64_AuxValue
 #endif
 
-enum { System_Environment_AuxValues_Length = System_Environment_AuxType_MINSIGSTKSZ };
-export System_Size System_Environment_AuxValues[System_Environment_AuxValues_Length];
+export System_Environment_AuxValue System_Environment_AuxValues;
+export System_Size System_Environment_AuxValues_Count;
 
 #endif

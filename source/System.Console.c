@@ -185,6 +185,4 @@ void System_Debug_writeLine__message(const System_String8 format, ...) {
     base_System_File_writeEnd__arguments(&System_Console_StdErr, format, '\n', argc, argv);
 }
 
-System_String8 System_Console_Arguments[System_Console_Arguments_Length] = { };
-
 #endif

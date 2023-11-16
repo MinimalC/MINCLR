@@ -55,7 +55,7 @@ typedef _Bool  System_Bool;
 #define used  __attribute__((used))
 #define noreturn  __attribute__((noreturn))
 #define nothrow  __attribute__((nothrow))
-/* #define thread  _Thread_local */
+#define thread  _Thread_local
 #define weak  __attribute__((weak))
 #endif
 

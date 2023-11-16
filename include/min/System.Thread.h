@@ -5,12 +5,12 @@
 #if !defined(have_System_Thread)
 #define have_System_Thread
 
+typedef System_Int32 System_ProcessId;
+
 typedef System_fixed struct System_Thread {
 	struct System_Object  base;
 
-    System_Size threadId;
-
-    System_Bool isRunning;
+    System_ProcessId threadId;
 
     System_IntPtr returnValue;
 
@@ -28,7 +28,17 @@ export System_Bool System_Thread_join(System_Thread that);
 export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait);
 import void System_Thread_boot(void);
 
+export System_Size System_Thread_getStorageSize();
+export void System_Thread_copyImageTo(System_Var tls);
+
+typedef struct System_Thread_TLSIndex {
+
+    System_Size module;
+    System_Size offset;
+
+} * System_Thread_TLSIndex;
+
 #define System_Thread_getLocalStorage  __tls_get_addr
-export System_Var System_Thread_getLocalStorage(System_Size index);
+export System_Var System_Thread_getLocalStorage(System_Thread_TLSIndex index);
 
 #endif

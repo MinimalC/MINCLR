@@ -202,6 +202,25 @@ System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64A
     return null;
 }
 
+System_Size System_Thread_getStorageSize() {
+
+    System_Size reture = 0;
+    for (System_Size i = 0; i < System_ELF64Assembly_loadedCount; ++i) {
+        System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
+        reture += assembly->threadStorageSize;
+    }
+    return ROUND(reture, 4096);
+}
+
+void System_Thread_copyImageTo(System_Var tls) {
+    for (System_Size i = 0, position = 0; i < System_ELF64Assembly_loadedCount; ++i) {
+        System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
+        System_Memory_copyTo(assembly->threadStorage, assembly->threadStorageSize, tls + position);
+        position += assembly->threadStorageSize;
+    }
+}
+
+
 void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
 
     if (!assembly->name) return; // throw
