@@ -269,11 +269,11 @@ enum {
     System_ELFAssembly_ProgramType_SHLIB,
     System_ELFAssembly_ProgramType_ProgramHeader,
     System_ELFAssembly_ProgramType_ThreadLocalStorage,
-    System_ELFAssembly_ProgramType_NUMBER,
-    /* System_ELFAssembly_ProgramType_OSSpecificLow = 0x60000000, */
-    System_ELFAssembly_ProgramType_GNU_EHFRAME = 0x6474e550,
+
+    System_ELFAssembly_ProgramType_GNU_EHFRAME = 0x6474e550, 
     System_ELFAssembly_ProgramType_GNU_Stack = 0x6474e551,
     System_ELFAssembly_ProgramType_GNU_ReadOnlyRelocation = 0x6474e552,
+    System_ELFAssembly_ProgramType_GNU_PROPERTY	= 0x6474e553,
 };
 
 export struct System_Type  System_ELFAssembly_ProgramTypeType;
@@ -284,8 +284,6 @@ enum {
     System_ELFAssembly_ProgramFlags_Executable,  /* Segment is executable */
     System_ELFAssembly_ProgramFlags_Writable,  /* Segment is writable */
     System_ELFAssembly_ProgramFlags_Readable = 4,  /* Segment is readable */
-    System_ELFAssembly_ProgramFlags_OSSpecific = 0x0ff00000,  /* OS-specific */
-    System_ELFAssembly_ProgramFlags_ProcessorSpecific = 0xf0000000,  /* Processor-specific */
 };
 
 export struct System_Type  System_ELFAssembly_ProgramFlagsType;
@@ -458,6 +456,7 @@ enum {
     System_ELFAssembly_SymbolBinding_LOCAL,
     System_ELFAssembly_SymbolBinding_GLOBAL,
     System_ELFAssembly_SymbolBinding_WEAK,
+    System_ELFAssembly_SymbolBinding_GNU_UNIQUE = 10,
 };
 
 export struct System_Type  System_ELFAssembly_SymbolBindingType;
@@ -469,9 +468,22 @@ enum {
     System_ELFAssembly_SymbolType_FUNCTION,
     System_ELFAssembly_SymbolType_SECTION,
     System_ELFAssembly_SymbolType_FILE,
+    System_ELFAssembly_SymbolType_COMMON,
+    System_ELFAssembly_SymbolType_TLS,
+    System_ELFAssembly_SymbolType_GNU_IFUNC = 10,
 };
 
 export struct System_Type  System_ELFAssembly_SymbolTypeType;
+
+typedef System_UInt8 System_ELFAssembly_SymbolVisibility;
+enum {
+    System_ELFAssembly_SymbolVisibility_DEFAULT,
+    System_ELFAssembly_SymbolVisibility_INTERNAL,
+    System_ELFAssembly_SymbolVisibility_HIDDEN,
+    System_ELFAssembly_SymbolVisibility_PROTECTED,
+};
+
+export struct System_Type  System_ELFAssembly_SymbolVisibilityType;
 
 typedef System_UInt16 System_ELFAssembly_SpecialSectionIndex;
 enum {
@@ -486,50 +498,50 @@ export struct System_Type  System_ELFAssembly_SpecialSectionIndexType;
 /* AMD x86-64 relocations.  */
 typedef System_UInt32 System_ELFAssembly_AMD64Relocation;
 enum {
-    System_ELFAssembly_AMD64Relocation_NONE = 0,  /* No reloc */
-    System_ELFAssembly_AMD64Relocation_64 = 1,  /* Direct 64 bit  */
-    System_ELFAssembly_AMD64Relocation_PC32 = 2,  /* PC relative 32 bit signed */
-    System_ELFAssembly_AMD64Relocation_GOT32 = 3,  /* 32 bit GOT entry */
-    System_ELFAssembly_AMD64Relocation_PLT32 = 4,  /* 32 bit PLT address */
-    System_ELFAssembly_AMD64Relocation_COPY = 5,  /* Copy symbol at runtime */
-    System_ELFAssembly_AMD64Relocation_GLOB_DAT = 6,  /* Create GOT entry */
-    System_ELFAssembly_AMD64Relocation_JUMP_SLOT = 7,  /* Create PLT entry */
-    System_ELFAssembly_AMD64Relocation_RELATIVE = 8,  /* Adjust by program base */
-    System_ELFAssembly_AMD64Relocation_GOTPCREL = 9,  /* 32 bit signed PC relative offset to GOT */
-    System_ELFAssembly_AMD64Relocation_32 = 10,  /* Direct 32 bit zero extended */
-    System_ELFAssembly_AMD64Relocation_32S = 11,  /* Direct 32 bit sign extended */
-    System_ELFAssembly_AMD64Relocation_16 = 12,  /* Direct 16 bit zero extended */
-    System_ELFAssembly_AMD64Relocation_PC16 = 13,  /* 16 bit sign extended pc relative */
-    System_ELFAssembly_AMD64Relocation_8 = 14,  /* Direct 8 bit sign extended  */
-    System_ELFAssembly_AMD64Relocation_PC8 = 15,  /* 8 bit sign extended pc relative */
-    System_ELFAssembly_AMD64Relocation_DTPMOD64 = 16,  /* ID of module containing symbol */
-    System_ELFAssembly_AMD64Relocation_DTPOFF64 = 17,  /* Offset in module's TLS block */
-    System_ELFAssembly_AMD64Relocation_TPOFF64 = 18,  /* Offset in initial TLS block */
-    System_ELFAssembly_AMD64Relocation_TLSGD = 19,  /* 32 bit signed PC relative offset to two GOT entries for GD symbol */
-    System_ELFAssembly_AMD64Relocation_TLSLD = 20,  /* 32 bit signed PC relative offset to two GOT entries for LD symbol */
-    System_ELFAssembly_AMD64Relocation_DTPOFF32 = 21,  /* Offset in TLS block */
-    System_ELFAssembly_AMD64Relocation_GOTTPOFF = 22,  /* 32 bit signed PC relative offset to GOT entry for IE symbol */
-    System_ELFAssembly_AMD64Relocation_TPOFF32 = 23,  /* Offset in initial TLS block */
-    System_ELFAssembly_AMD64Relocation_PC64 = 24,  /* PC relative 64 bit */
-    System_ELFAssembly_AMD64Relocation_GOTOFF64 = 25,  /* 64 bit offset to GOT */
-    System_ELFAssembly_AMD64Relocation_GOTPC32 = 26,  /* 32 bit signed pc relative offset to GOT */
-    System_ELFAssembly_AMD64Relocation_GOT64 = 27,  /* 64-bit GOT entry offset */
-    System_ELFAssembly_AMD64Relocation_GOTPCREL64 = 28,  /* 64-bit PC relative offset to GOT entry */
-    System_ELFAssembly_AMD64Relocation_GOTPC64 = 29,  /* 64-bit PC relative offset to GOT */
-    System_ELFAssembly_AMD64Relocation_GOTPLT64 = 30,  /* like GOT64, says PLT entry needed */
-    System_ELFAssembly_AMD64Relocation_PLTOFF64 = 31,  /* 64-bit GOT relative offset to PLT entry */
-    System_ELFAssembly_AMD64Relocation_SIZE32 = 32,  /* Size of symbol plus 32-bit addend */
-    System_ELFAssembly_AMD64Relocation_SIZE64 = 33,  /* Size of symbol plus 64-bit addend */
-    System_ELFAssembly_AMD64Relocation_GOTPC32_TLSDESC = 34,  /* GOT offset for TLS descriptor.  */
-    System_ELFAssembly_AMD64Relocation_TLSDESC_CALL = 35,  /* Marker for call through TLS descriptor.  */
-    System_ELFAssembly_AMD64Relocation_TLSDESC = 36,  /* TLS descriptor.  */
-    System_ELFAssembly_AMD64Relocation_IRELATIVE = 37,  /* Adjust indirectly by program base */
-    System_ELFAssembly_AMD64Relocation_RELATIVE64 = 38,  /* 64-bit adjust by program base */
+    System_ELFAssembly_AMD64_NONE = 0,  /* No reloc */
+    System_ELFAssembly_AMD64_64 = 1,  /* Direct 64 bit  */
+    System_ELFAssembly_AMD64_PC32 = 2,  /* PC relative 32 bit signed */
+    System_ELFAssembly_AMD64_GOT32 = 3,  /* 32 bit GOT entry */
+    System_ELFAssembly_AMD64_PLT32 = 4,  /* 32 bit PLT address */
+    System_ELFAssembly_AMD64_COPY = 5,  /* Copy symbol at runtime */
+    System_ELFAssembly_AMD64_GLOB_DAT = 6,  /* Create GOT entry */
+    System_ELFAssembly_AMD64_JUMP_SLOT = 7,  /* Create PLT entry */
+    System_ELFAssembly_AMD64_RELATIVE = 8,  /* Adjust by program base */
+    System_ELFAssembly_AMD64_GOTPCREL = 9,  /* 32 bit signed PC relative offset to GOT */
+    System_ELFAssembly_AMD64_32 = 10,  /* Direct 32 bit zero extended */
+    System_ELFAssembly_AMD64_32S = 11,  /* Direct 32 bit sign extended */
+    System_ELFAssembly_AMD64_16 = 12,  /* Direct 16 bit zero extended */
+    System_ELFAssembly_AMD64_PC16 = 13,  /* 16 bit sign extended pc relative */
+    System_ELFAssembly_AMD64_8 = 14,  /* Direct 8 bit sign extended  */
+    System_ELFAssembly_AMD64_PC8 = 15,  /* 8 bit sign extended pc relative */
+    System_ELFAssembly_AMD64_DTPMOD64 = 16,  /* ID of module containing symbol */
+    System_ELFAssembly_AMD64_DTPOFF64 = 17,  /* Offset in module's TLS block */
+    System_ELFAssembly_AMD64_TPOFF64 = 18,  /* Offset in initial TLS block */
+    System_ELFAssembly_AMD64_TLSGD = 19,  /* 32 bit signed PC relative offset to two GOT entries for GD symbol */
+    System_ELFAssembly_AMD64_TLSLD = 20,  /* 32 bit signed PC relative offset to two GOT entries for LD symbol */
+    System_ELFAssembly_AMD64_DTPOFF32 = 21,  /* Offset in TLS block */
+    System_ELFAssembly_AMD64_GOTTPOFF = 22,  /* 32 bit signed PC relative offset to GOT entry for IE symbol */
+    System_ELFAssembly_AMD64_TPOFF32 = 23,  /* Offset in initial TLS block */
+    System_ELFAssembly_AMD64_PC64 = 24,  /* PC relative 64 bit */
+    System_ELFAssembly_AMD64_GOTOFF64 = 25,  /* 64 bit offset to GOT */
+    System_ELFAssembly_AMD64_GOTPC32 = 26,  /* 32 bit signed pc relative offset to GOT */
+    System_ELFAssembly_AMD64_GOT64 = 27,  /* 64-bit GOT entry offset */
+    System_ELFAssembly_AMD64_GOTPCREL64 = 28,  /* 64-bit PC relative offset to GOT entry */
+    System_ELFAssembly_AMD64_GOTPC64 = 29,  /* 64-bit PC relative offset to GOT */
+    System_ELFAssembly_AMD64_GOTPLT64 = 30,  /* like GOT64, says PLT entry needed */
+    System_ELFAssembly_AMD64_PLTOFF64 = 31,  /* 64-bit GOT relative offset to PLT entry */
+    System_ELFAssembly_AMD64_SIZE32 = 32,  /* Size of symbol plus 32-bit addend */
+    System_ELFAssembly_AMD64_SIZE64 = 33,  /* Size of symbol plus 64-bit addend */
+    System_ELFAssembly_AMD64_GOTPC32_TLSDESC = 34,  /* GOT offset for TLS descriptor.  */
+    System_ELFAssembly_AMD64_TLSDESC_CALL = 35,  /* Marker for call through TLS descriptor.  */
+    System_ELFAssembly_AMD64_TLSDESC = 36,  /* TLS descriptor.  */
+    System_ELFAssembly_AMD64_IRELATIVE = 37,  /* Adjust indirectly by program base */
+    System_ELFAssembly_AMD64_RELATIVE64 = 38,  /* 64-bit adjust by program base */
     /* 39 Reserved was R_AMD64_PC32_BND */
     /* 40 Reserved was R_AMD64_PLT32_BND */
-    System_ELFAssembly_AMD64Relocation_GOTPCRELX = 41,  /* Load from 32 bit signed pc relative offset to GOT entry without REX prefix, relaxable.  */
-    System_ELFAssembly_AMD64Relocation_REX_GOTPCRELX = 42,  /* Load from 32 bit signed pc relative offset to GOT entry with REX prefix, relaxable.  */
-    /* System_ELFAssembly_AMD64Relocation_NUM = 43 */
+    System_ELFAssembly_AMD64_GOTPCRELX = 41,  /* Load from 32 bit signed pc relative offset to GOT entry without REX prefix, relaxable.  */
+    System_ELFAssembly_AMD64_REX_GOTPCRELX = 42,  /* Load from 32 bit signed pc relative offset to GOT entry with REX prefix, relaxable.  */
+    /* System_ELFAssembly_AMD64_NUM = 43 */
 };
 
 export struct System_Type  System_ELFAssembly_AMD64RelocationType;
@@ -806,7 +818,7 @@ export System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getSymbol(System_St
 export System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
 export System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64Assembly assembly, System_String8 name);
 
-export System_String8 System_ELFAssembly_AMD64Relocation_toString(System_UInt32 value);
+export System_String8 System_ELFAssembly_AMD64_toString(System_UInt32 value);
 export System_String8 System_ELFAssembly_SymbolBinding_toString(System_UInt8 value);
 export System_String8 System_ELFAssembly_SymbolType_toString(System_UInt8 value);
 export System_String8 System_ELFAssembly_DynamicType_toString(System_ELFAssembly_DynamicType value);
@@ -814,9 +826,6 @@ export System_String8 System_ELFAssembly_ProgramType_toString(System_ELFAssembly
 export System_String8 System_ELFAssembly_AssemblyType_toString(System_ELFAssembly_AssemblyType value);
 export System_String8 System_ELFAssembly_ABI_toString(System_ELFAssembly_ABI value);
 export System_String8 System_ELFAssembly_Machine_toString(System_ELFAssembly_Machine value);
-
-export System_Size System_Thread_getStorageSize();
-export void System_Thread_copyImageTo(System_Var tls);
 
 #endif
 #if !defined(have_System_ELFAssembly)

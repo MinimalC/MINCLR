@@ -11,6 +11,11 @@
 #if !defined(code_System_Thread)
 #define code_System_Thread
 
+export thread System_Size storage0 = 7;
+export thread System_Size storage1 = 56;
+export thread System_Size storage2 = 448;
+export thread System_Size storage3 = 3584;
+
 struct System_Type System_ThreadType = { .base = { .type = typeof(System_Type) }, .name = "Thread", .size = sizeof(struct System_Thread) };
 
 enum {
@@ -41,10 +46,7 @@ System_Thread System_Thread_create(function_System_Thread_main function, ...) {
 
 System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
 
-    System_Size tlsSize = System_Thread_getStorageSize();
-    System_Var tls = !tlsSize ? null : System_Syscall_mmap(tlsSize, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
-        System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
-    if (tls) System_Thread_copyImageTo(tls);
+    System_Var tls = System_Thread_createStorageImage();
 
     System_Var stack = System_Syscall_mmap(STACK_SIZE, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
         System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown);
@@ -104,8 +106,14 @@ System_Bool System_Thread_join(System_Thread that) {
 
 /* Now look, in System_Thread, if you join one, you want to wait until this ends. */
 
+void System_Thread_yield(void) {
+    System_Syscall_sched_yield();
+}
+
 System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
     Debug_assert(that);
+
+    System_Thread_yield();
 
     if (that->threadId) {
         System_IntPtr status = 0;
@@ -125,16 +133,15 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
     return true;
 }
 
-void System_Thread_yield(void) {
-    System_Syscall_sched_yield();
-}
-
-System_Var System_Thread_Unknown = 0;
-
 System_Var System_Thread_getLocalStorage(System_Thread_TLSIndex index) {
     Debug_assert(index);
 
-    return &System_Thread_Unknown;
+    if (index->module == 1) {
+
+        return (System_Var)index->offset;
+    }
+
+    System_Console_write__string("System_Thread_getLocalStorage!?");
 }
 
 #endif

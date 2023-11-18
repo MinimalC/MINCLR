@@ -2,7 +2,13 @@
 #if !defined(System_internal)
 #include "../System.internal.h"
 #endif
-#include <min/System.h>
+#include <min/System.Runtime.h>
+#include <min/System.Type.h>
+#include <min/System.Memory.h>
+#include <min/System.String8.h>
+#include <min/System.Console.h>
+#include <min/System.Environment.h>
+#include <min/System.ELF64Assembly.h>
 
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
 
@@ -19,26 +25,26 @@ void System_Runtime_relocate(System_Var base, System_ELF64Assembly_RelocationAdd
     System_ELF64Assembly_SymbolEntry symbol = !relocation->symbol ? null : dynamicSymbols + relocation->symbol;
 
     switch (relocation->type) {
-    case System_ELFAssembly_AMD64Relocation_RELATIVE: 
+    case System_ELFAssembly_AMD64_RELATIVE: 
         if (relocation->addend)
             *address = (System_Size)base + relocation->addend; 
         break;
-    case System_ELFAssembly_AMD64Relocation_64: 
+    case System_ELFAssembly_AMD64_64: 
         if (symbol->value)
             *address = (System_Size)base + symbol->value + relocation->addend; 
         break;
-    case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:
-    case System_ELFAssembly_AMD64Relocation_GLOB_DAT: 
+    case System_ELFAssembly_AMD64_JUMP_SLOT:
+    case System_ELFAssembly_AMD64_GLOB_DAT: 
         if (symbol->value)
             *address = (System_Size)base + symbol->value; 
         else if (*address)
             *address += (System_Size)base;
         break;
-    case System_ELFAssembly_AMD64Relocation_COPY: 
+    case System_ELFAssembly_AMD64_COPY: 
         if (symbol->value && symbol->size)
             System_Memory_copyTo(base + symbol->value, symbol->size, address);
         break;
-    case System_ELFAssembly_AMD64Relocation_32: 
+    case System_ELFAssembly_AMD64_32: 
         *address = (System_Size)base + (symbol->value & 0xFFFFFFFFUL); 
         break;
 #if DEBUG
@@ -361,5 +367,4 @@ int System_Runtime_main(int argc, char  * argv[]) {
     
     __asm__ __volatile__( "jmp *%%r11" : : : "memory" );
 
-    System_Syscall_terminate(false);
 }

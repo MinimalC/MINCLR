@@ -28,8 +28,7 @@ export System_Bool System_Thread_join(System_Thread that);
 export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait);
 import void System_Thread_boot(void);
 
-export System_Size System_Thread_getStorageSize();
-export void System_Thread_copyImageTo(System_Var tls);
+export System_Var System_Thread_createStorageImage();
 
 typedef struct System_Thread_TLSIndex {
 

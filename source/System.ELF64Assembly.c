@@ -17,6 +17,9 @@
 #if !defined(have_System_File)
 #include <min/System.File.h>
 #endif
+#if !defined(have_System_Thread)
+#include <min/System.Thread.h>
+#endif
 #if !defined(have_System_ELFAssembly)
 #include <min/System.ELF64Assembly.h>
 #endif
@@ -201,25 +204,6 @@ System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64A
     }
     return null;
 }
-
-System_Size System_Thread_getStorageSize() {
-
-    System_Size reture = 0;
-    for (System_Size i = 0; i < System_ELF64Assembly_loadedCount; ++i) {
-        System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
-        reture += assembly->threadStorageSize;
-    }
-    return ROUND(reture, 4096);
-}
-
-void System_Thread_copyImageTo(System_Var tls) {
-    for (System_Size i = 0, position = 0; i < System_ELF64Assembly_loadedCount; ++i) {
-        System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
-        System_Memory_copyTo(assembly->threadStorage, assembly->threadStorageSize, tls + position);
-        position += assembly->threadStorageSize;
-    }
-}
-
 
 void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
 
@@ -501,19 +485,22 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
     System_ELF64Assembly assembly1 = null;
 
     switch (relocation->type) {
-    case System_ELFAssembly_AMD64Relocation_RELATIVE: 
+    case System_ELFAssembly_AMD64_RELATIVE: 
         if (relocation->addend)
             *address = (System_Size)assembly->link + relocation->addend; 
         break;
-    case System_ELFAssembly_AMD64Relocation_64: 
+    case System_ELFAssembly_AMD64_64: 
         symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->value) 
             *address = (System_Size)assembly1->link + symbol1->value + relocation->addend;
         else if (symbol->value)
             *address = (System_Size)assembly->link + symbol->value + relocation->addend; 
         break;
-    case System_ELFAssembly_AMD64Relocation_JUMP_SLOT:
-    case System_ELFAssembly_AMD64Relocation_GLOB_DAT: 
+    case System_ELFAssembly_AMD64_32: 
+        *address = (System_Size)assembly->link + (symbol->value & 0xFFFFFFFFUL); 
+        break;
+    case System_ELFAssembly_AMD64_JUMP_SLOT:
+    case System_ELFAssembly_AMD64_GLOB_DAT: 
         symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->value) 
             *address = (System_Size)assembly1->link + symbol1->value;
@@ -522,36 +509,38 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
         else if (*address)
             *address += (System_Size)assembly->link;
         break;
-    case System_ELFAssembly_AMD64Relocation_COPY: 
+    case System_ELFAssembly_AMD64_COPY: 
         symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->value && symbol1->size) 
             System_Memory_copyTo(assembly1->link + symbol1->value, symbol1->size, address);
         else if (symbol->value && symbol->size)
             System_Memory_copyTo(assembly->link + symbol->value, symbol->size, address);
         break;
-    case System_ELFAssembly_AMD64Relocation_32: 
-        *address = (System_Size)assembly->link + (symbol->value & 0xFFFFFFFFUL); 
+    case System_ELFAssembly_AMD64_TPOFF64:
+        symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
+        if (symbol1 && symbol1->size) 
+            *address = symbol1->value;
         break;
 #if DEBUG
     default:
-        System_Console_writeLine("UNLINKED ELFRelocation: offset {0:uint:hex}, type {1:string}, symbol {2:uint32}, addend {3:uint:hex}, old {4:uint:hex}", 5,
-            relocation->offset, System_ELFAssembly_AMD64Relocation_toString(relocation->type), relocation->symbol, relocation->addend, old);
+        System_Console_writeLine("ELFRelocation unlinked: offset {0:uint:hex}, type {1:string}, symbol {2:uint32}, addend {3:uint}, old 0x{4:uint:hex}", 5,
+            relocation->offset, System_ELFAssembly_AMD64_toString(relocation->type), relocation->symbol, relocation->addend, old);
         break;
 #endif    
     }
 
 #if DEBUG == DEBUG_System_ELFAssembly
-    System_Console_writeLine("ELFRelocation: offset {0:uint:hex}, type {1:string}, symbol {2:uint32}, addend {3:uint:hex}, old {4:uint:hex} => new {5:uint:hex}", 6,
-        relocation->offset, System_ELFAssembly_AMD64Relocation_toString(relocation->type), relocation->symbol, relocation->addend, old, *address);
+    System_Console_writeLine("ELFRelocation: offset {0:uint:hex}, type {1:string}, symbol {2:uint32}, addend {3:uint}, old 0x{4:uint:hex} => new 0x{5:uint:hex}", 6,
+        relocation->offset, System_ELFAssembly_AMD64_toString(relocation->type), relocation->symbol, relocation->addend, old, *address);
 
     if (symbol1) {
-        System_Console_writeLine("      Symbol1: bind {1:string}, type {2:string}, other {3:uint8:hex}, sectionIndex {4:uint16}, value {5:uint64:hex}, size {6:uint64}, {0:string}", 7, 
+        System_Console_writeLine("      Symbol1: bind {1:string}, type {2:string}, other 0x{3:uint8:hex}, sectionIndex {4:uint16}, value 0x{5:uint64:hex}, size {6:uint64}, {0:string}", 7, 
             assembly1->dynamicStrings + symbol1->name, System_ELFAssembly_SymbolBinding_toString(System_ELFAssembly_SymbolEntry_BIND(symbol1->info)), 
             System_ELFAssembly_SymbolType_toString(System_ELFAssembly_SymbolEntry_TYPE(symbol1->info)),
             symbol1->other, symbol1->sectionIndex, symbol1->value, symbol1->size);
     }
     else if (symbol) {
-        System_Console_writeLine("       Symbol: bind {1:string}, type {2:string}, other {3:uint8:hex}, sectionIndex {4:uint16}, value {5:uint64:hex}, size {6:uint64}, {0:string}", 7, 
+        System_Console_writeLine("       Symbol: bind {1:string}, type {2:string}, other 0x{3:uint8:hex}, sectionIndex {4:uint16}, value 0x{5:uint64:hex}, size {6:uint64}, {0:string}", 7, 
             assembly->dynamicStrings + symbol->name, System_ELFAssembly_SymbolBinding_toString(System_ELFAssembly_SymbolEntry_BIND(symbol->info)), 
             System_ELFAssembly_SymbolType_toString(System_ELFAssembly_SymbolEntry_TYPE(symbol->info)),
             symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
@@ -559,15 +548,59 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
 #endif
 }
 
-System_String8 System_ELFAssembly_AMD64Relocation_toString(System_UInt32 value) {
+System_Var System_Thread_createStorageImage(void) {
+
+    System_Size size = 0;
+    for (System_Size i = 0; i < System_ELF64Assembly_loadedCount; ++i) {
+        System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
+        if (!assembly->threadStorageSize) continue;
+
+        size += assembly->threadStorageSize;
+    }
+    if (!size) return null;
+
+    size = ROUND(size, 4096);
+
+    System_Var tls = System_Syscall_mmap(size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
+        System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
+
+    if (!tls) return null; // throw
+
+    System_Size position = 0;
+    for (System_Size i = 0; i < System_ELF64Assembly_loadedCount; ++i) {
+        System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
+        if (!assembly->threadStorageSize) continue;
+
+        System_Memory_copyTo(assembly->threadStorage, assembly->threadStorageSize, tls + position);
+        position += assembly->threadStorageSize;
+    }
+    return tls;
+}
+
+System_String8 System_ELFAssembly_AMD64_toString(System_UInt32 value) {
     switch (value) {
-    case System_ELFAssembly_AMD64Relocation_NONE: return "NONE";
-    case System_ELFAssembly_AMD64Relocation_64: return "64";
-    case System_ELFAssembly_AMD64Relocation_PC32: return "PC32";
-    case System_ELFAssembly_AMD64Relocation_COPY: return "COPY";
-    case System_ELFAssembly_AMD64Relocation_GLOB_DAT: return "GLOB_DAT";
-    case System_ELFAssembly_AMD64Relocation_JUMP_SLOT: return "JUMP_SLOT";
-    case System_ELFAssembly_AMD64Relocation_RELATIVE: return "RELATIVE";
+    case System_ELFAssembly_AMD64_NONE: return "NONE";
+    case System_ELFAssembly_AMD64_64: return "64";
+    case System_ELFAssembly_AMD64_PC32: return "PC32";
+    case System_ELFAssembly_AMD64_COPY: return "COPY";
+    case System_ELFAssembly_AMD64_GLOB_DAT: return "GLOB_DAT";
+    case System_ELFAssembly_AMD64_JUMP_SLOT: return "JUMP_SLOT";
+    case System_ELFAssembly_AMD64_RELATIVE: return "RELATIVE";
+    case System_ELFAssembly_AMD64_GOTPCREL: return "GOTPCREL";
+    case System_ELFAssembly_AMD64_32: return "32";
+    case System_ELFAssembly_AMD64_32S: return "32S";
+    case System_ELFAssembly_AMD64_16: return "16";
+    case System_ELFAssembly_AMD64_PC16: return "PC16";
+    case System_ELFAssembly_AMD64_8: return "8";
+    case System_ELFAssembly_AMD64_PC8: return "PC8";
+    case System_ELFAssembly_AMD64_DTPMOD64: return "DTPMOD64";
+    case System_ELFAssembly_AMD64_DTPOFF64: return "DTPOFF64";
+    case System_ELFAssembly_AMD64_TPOFF64: return "TPOFF64";
+    case System_ELFAssembly_AMD64_TLSGD: return "TLDGD";
+    case System_ELFAssembly_AMD64_TLSLD: return "TLDLD";
+    case System_ELFAssembly_AMD64_DTPOFF32: return "DTPOFF32";
+    case System_ELFAssembly_AMD64_GOTTPOFF: return "GOTTPOFF";
+    case System_ELFAssembly_AMD64_TPOFF32: return "TPOFF32";
     default: return "Unknown";
     }
 }
@@ -577,6 +610,7 @@ System_String8 System_ELFAssembly_SymbolBinding_toString(System_UInt8 value) {
     case System_ELFAssembly_SymbolBinding_LOCAL: return "LOCAL";
     case System_ELFAssembly_SymbolBinding_GLOBAL: return "GLOBAL";
     case System_ELFAssembly_SymbolBinding_WEAK: return "WEAK";
+    case System_ELFAssembly_SymbolBinding_GNU_UNIQUE: return "GNU_UNIQUE";
     default: return "Unknown";
     }
 }
@@ -588,6 +622,19 @@ System_String8 System_ELFAssembly_SymbolType_toString(System_UInt8 value) {
     case System_ELFAssembly_SymbolType_FUNCTION: return "FUNCTION";
     case System_ELFAssembly_SymbolType_SECTION: return "SECTION";
     case System_ELFAssembly_SymbolType_FILE: return "FILE";
+    case System_ELFAssembly_SymbolType_COMMON: return "COMMON";
+    case System_ELFAssembly_SymbolType_TLS: return "TLS";
+    case System_ELFAssembly_SymbolType_GNU_IFUNC: return "GNU_IFUNC";
+    default: return "Unknown";
+    }    
+}
+
+System_String8 System_ELFAssembly_SymbolVisibility_toString(System_UInt8 value) {
+    switch (value) {
+    case System_ELFAssembly_SymbolVisibility_DEFAULT: return "DEFAULT";
+    case System_ELFAssembly_SymbolVisibility_INTERNAL: return "INTERNAL";
+    case System_ELFAssembly_SymbolVisibility_HIDDEN: return "HIDDEN";
+    case System_ELFAssembly_SymbolVisibility_PROTECTED: return "PROTECTED";
     default: return "Unknown";
     }    
 }
@@ -934,10 +981,11 @@ System_String8 System_ELFAssembly_ProgramType_toString(System_ELFAssembly_Progra
         case System_ELFAssembly_ProgramType_SHLIB: return "SHLIB";
         case System_ELFAssembly_ProgramType_ProgramHeader: return "ProgramHeader";
         case System_ELFAssembly_ProgramType_ThreadLocalStorage: return "ThreadLocalStorage";
-        case System_ELFAssembly_ProgramType_NUMBER: return "NUMBER";
+
         case System_ELFAssembly_ProgramType_GNU_EHFRAME: return "GNU_EHFRAME";
         case System_ELFAssembly_ProgramType_GNU_Stack: return "GNU_Stack";
         case System_ELFAssembly_ProgramType_GNU_ReadOnlyRelocation: return "GNU_ReadOnlyRelocation";
+        case System_ELFAssembly_ProgramType_GNU_PROPERTY: return "GNU_PROPERTY";
         default: return "Unknown";
     }
 }
@@ -951,7 +999,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_ProgramTypeTypeFields[] = {
     { .name = "SHLIB", .value = System_ELFAssembly_ProgramType_SHLIB },
     { .name = "ProgramHeader", .value = System_ELFAssembly_ProgramType_ProgramHeader },
     { .name = "ThreadLocalStorage", .value = System_ELFAssembly_ProgramType_ThreadLocalStorage },
-    { .name = "NUMBER", .value = System_ELFAssembly_ProgramType_NUMBER },
+
     { .name = "GNU_EHFRAME", .value = System_ELFAssembly_ProgramType_GNU_EHFRAME },
     { .name = "GNU_Stack", .value = System_ELFAssembly_ProgramType_GNU_Stack },
     { .name = "GNU_ReadOnlyRelocation", .value = System_ELFAssembly_ProgramType_GNU_ReadOnlyRelocation },
@@ -970,8 +1018,6 @@ struct System_Type_FieldInfo  System_ELFAssembly_ProgramFlagsTypeFields[] = {
     { .name = "Executable", .value = System_ELFAssembly_ProgramFlags_Executable },
     { .name = "Writable", .value = System_ELFAssembly_ProgramFlags_Writable },
     { .name = "Readable", .value = System_ELFAssembly_ProgramFlags_Readable },
-    { .name = "OSSpecific", .value = System_ELFAssembly_ProgramFlags_OSSpecific },
-    { .name = "ProcessorSpecific", .value = System_ELFAssembly_ProgramFlags_ProcessorSpecific },
 };
 
 struct System_Type System_ELFAssembly_ProgramFlagsType = { .base = { .type = typeof(System_Type) },
@@ -1141,49 +1187,49 @@ struct System_Type System_ELFAssembly_DynamicTypeType = { .base = { .type = type
 
 
 struct System_Type_FieldInfo  System_ELFAssembly_AMD64RelocationTypeFields[] = {
-    { .name = "NONE", .value = System_ELFAssembly_AMD64Relocation_NONE },
-    { .name = "64", .value = System_ELFAssembly_AMD64Relocation_64 },
-    { .name = "PC32", .value = System_ELFAssembly_AMD64Relocation_PC32 },
-    { .name = "GOT32", .value = System_ELFAssembly_AMD64Relocation_GOT32 },
-    { .name = "PLT32", .value = System_ELFAssembly_AMD64Relocation_PLT32 },
-    { .name = "COPY", .value = System_ELFAssembly_AMD64Relocation_COPY },
-    { .name = "GLOB_DAT", .value = System_ELFAssembly_AMD64Relocation_GLOB_DAT },
-    { .name = "JUMP_SLOT", .value = System_ELFAssembly_AMD64Relocation_JUMP_SLOT },
-    { .name = "RELATIVE", .value = System_ELFAssembly_AMD64Relocation_RELATIVE },
-    { .name = "GOTPCREL", .value = System_ELFAssembly_AMD64Relocation_GOTPCREL },
-    { .name = "32", .value = System_ELFAssembly_AMD64Relocation_32 },
-    { .name = "32S", .value = System_ELFAssembly_AMD64Relocation_32S },
-    { .name = "16", .value = System_ELFAssembly_AMD64Relocation_16 },
-    { .name = "PC16", .value = System_ELFAssembly_AMD64Relocation_PC16 },
-    { .name = "8", .value = System_ELFAssembly_AMD64Relocation_8 },
-    { .name = "PC8", .value = System_ELFAssembly_AMD64Relocation_PC8 },
-    { .name = "DTPMOD64", .value = System_ELFAssembly_AMD64Relocation_DTPMOD64 },
-    { .name = "DTPOFF64", .value = System_ELFAssembly_AMD64Relocation_DTPOFF64 },
-    { .name = "TPOFF64", .value = System_ELFAssembly_AMD64Relocation_TPOFF64 },
-    { .name = "TLSGD", .value = System_ELFAssembly_AMD64Relocation_TLSGD },
-    { .name = "TLSLD", .value = System_ELFAssembly_AMD64Relocation_TLSLD },
-    { .name = "DTPOFF32", .value = System_ELFAssembly_AMD64Relocation_DTPOFF32 },
-    { .name = "GOTTPOFF", .value = System_ELFAssembly_AMD64Relocation_GOTTPOFF },
-    { .name = "TPOFF32", .value = System_ELFAssembly_AMD64Relocation_TPOFF32 },
-    { .name = "PC64", .value = System_ELFAssembly_AMD64Relocation_PC64 },
-    { .name = "GOTOFF64", .value = System_ELFAssembly_AMD64Relocation_GOTOFF64 },
-    { .name = "GOTPC32", .value = System_ELFAssembly_AMD64Relocation_GOTPC32 },
-    { .name = "GOT64", .value = System_ELFAssembly_AMD64Relocation_GOT64 },
-    { .name = "GOTPCREL64", .value = System_ELFAssembly_AMD64Relocation_GOTPCREL64 },
-    { .name = "GOTPC64", .value = System_ELFAssembly_AMD64Relocation_GOTPC64 },
-    { .name = "GOTPLT64", .value = System_ELFAssembly_AMD64Relocation_GOTPLT64 },
-    { .name = "PLTOFF64", .value = System_ELFAssembly_AMD64Relocation_PLTOFF64 },
-    { .name = "SIZE32", .value = System_ELFAssembly_AMD64Relocation_SIZE32 },
-    { .name = "SIZE64", .value = System_ELFAssembly_AMD64Relocation_SIZE64 },
-    { .name = "GOTPC32_TLSDESC", .value = System_ELFAssembly_AMD64Relocation_GOTPC32_TLSDESC },
-    { .name = "TLSDESC_CALL", .value = System_ELFAssembly_AMD64Relocation_TLSDESC_CALL },
-    { .name = "TLSDESC", .value = System_ELFAssembly_AMD64Relocation_TLSDESC },
-    { .name = "IRELATIVE", .value = System_ELFAssembly_AMD64Relocation_IRELATIVE },
-    { .name = "RELATIVE64", .value = System_ELFAssembly_AMD64Relocation_RELATIVE64 },
-    /* 39 Reserved was System_ELFAssembly_AMD64Relocation_PC32_BND */
-    /* 40 Reserved was System_ELFAssembly_AMD64Relocation_PLT32_BND */
-    { .name = "GOTPCRELX", .value = System_ELFAssembly_AMD64Relocation_GOTPCRELX },
-    { .name = "REX_GOTPCRELX", .value = System_ELFAssembly_AMD64Relocation_REX_GOTPCRELX },
+    { .name = "NONE", .value = System_ELFAssembly_AMD64_NONE },
+    { .name = "64", .value = System_ELFAssembly_AMD64_64 },
+    { .name = "PC32", .value = System_ELFAssembly_AMD64_PC32 },
+    { .name = "GOT32", .value = System_ELFAssembly_AMD64_GOT32 },
+    { .name = "PLT32", .value = System_ELFAssembly_AMD64_PLT32 },
+    { .name = "COPY", .value = System_ELFAssembly_AMD64_COPY },
+    { .name = "GLOB_DAT", .value = System_ELFAssembly_AMD64_GLOB_DAT },
+    { .name = "JUMP_SLOT", .value = System_ELFAssembly_AMD64_JUMP_SLOT },
+    { .name = "RELATIVE", .value = System_ELFAssembly_AMD64_RELATIVE },
+    { .name = "GOTPCREL", .value = System_ELFAssembly_AMD64_GOTPCREL },
+    { .name = "32", .value = System_ELFAssembly_AMD64_32 },
+    { .name = "32S", .value = System_ELFAssembly_AMD64_32S },
+    { .name = "16", .value = System_ELFAssembly_AMD64_16 },
+    { .name = "PC16", .value = System_ELFAssembly_AMD64_PC16 },
+    { .name = "8", .value = System_ELFAssembly_AMD64_8 },
+    { .name = "PC8", .value = System_ELFAssembly_AMD64_PC8 },
+    { .name = "DTPMOD64", .value = System_ELFAssembly_AMD64_DTPMOD64 },
+    { .name = "DTPOFF64", .value = System_ELFAssembly_AMD64_DTPOFF64 },
+    { .name = "TPOFF64", .value = System_ELFAssembly_AMD64_TPOFF64 },
+    { .name = "TLSGD", .value = System_ELFAssembly_AMD64_TLSGD },
+    { .name = "TLSLD", .value = System_ELFAssembly_AMD64_TLSLD },
+    { .name = "DTPOFF32", .value = System_ELFAssembly_AMD64_DTPOFF32 },
+    { .name = "GOTTPOFF", .value = System_ELFAssembly_AMD64_GOTTPOFF },
+    { .name = "TPOFF32", .value = System_ELFAssembly_AMD64_TPOFF32 },
+    { .name = "PC64", .value = System_ELFAssembly_AMD64_PC64 },
+    { .name = "GOTOFF64", .value = System_ELFAssembly_AMD64_GOTOFF64 },
+    { .name = "GOTPC32", .value = System_ELFAssembly_AMD64_GOTPC32 },
+    { .name = "GOT64", .value = System_ELFAssembly_AMD64_GOT64 },
+    { .name = "GOTPCREL64", .value = System_ELFAssembly_AMD64_GOTPCREL64 },
+    { .name = "GOTPC64", .value = System_ELFAssembly_AMD64_GOTPC64 },
+    { .name = "GOTPLT64", .value = System_ELFAssembly_AMD64_GOTPLT64 },
+    { .name = "PLTOFF64", .value = System_ELFAssembly_AMD64_PLTOFF64 },
+    { .name = "SIZE32", .value = System_ELFAssembly_AMD64_SIZE32 },
+    { .name = "SIZE64", .value = System_ELFAssembly_AMD64_SIZE64 },
+    { .name = "GOTPC32_TLSDESC", .value = System_ELFAssembly_AMD64_GOTPC32_TLSDESC },
+    { .name = "TLSDESC_CALL", .value = System_ELFAssembly_AMD64_TLSDESC_CALL },
+    { .name = "TLSDESC", .value = System_ELFAssembly_AMD64_TLSDESC },
+    { .name = "IRELATIVE", .value = System_ELFAssembly_AMD64_IRELATIVE },
+    { .name = "RELATIVE64", .value = System_ELFAssembly_AMD64_RELATIVE64 },
+    /* 39 Reserved was System_ELFAssembly_AMD64_PC32_BND */
+    /* 40 Reserved was System_ELFAssembly_AMD64_PLT32_BND */
+    { .name = "GOTPCRELX", .value = System_ELFAssembly_AMD64_GOTPCRELX },
+    { .name = "REX_GOTPCRELX", .value = System_ELFAssembly_AMD64_REX_GOTPCRELX },
 };
 
 struct System_Type System_ELFAssembly_AMD64RelocationType = { .base = { .type = typeof(System_Type) },
