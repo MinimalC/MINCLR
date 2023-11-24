@@ -799,6 +799,7 @@ typedef struct System_ELF64Assembly {
 
     System_Size threadStorageSize;
     System_Var threadStorage;
+    System_Size threadStorageOffset;
 
 } * System_ELF64Assembly;
 

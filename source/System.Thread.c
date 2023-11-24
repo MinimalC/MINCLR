@@ -11,10 +11,10 @@
 #if !defined(code_System_Thread)
 #define code_System_Thread
 
-export thread System_Size storage0 = 7;
-export thread System_Size storage1 = 56;
-export thread System_Size storage2 = 448;
-export thread System_Size storage3 = 3584;
+export thread System_Var __Storage = (System_Var)1;
+export thread System_Size __ErrorCode = 3;
+export thread System_Exception __Exception = (System_Exception)7;
+export thread struct System_Thread __Current = { .base = { .type = typeof(System_Thread) }, .threadId = 31, .returnValue = 63, };
 
 struct System_Type System_ThreadType = { .base = { .type = typeof(System_Type) }, .name = "Thread", .size = sizeof(struct System_Thread) };
 
@@ -133,15 +133,9 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
     return true;
 }
 
-System_Var System_Thread_getLocalStorage(System_Thread_TLSIndex index) {
-    Debug_assert(index);
+System_Var __tls_get_addr(System_Var index) {
 
-    if (index->module == 1) {
-
-        return (System_Var)index->offset;
-    }
-
-    System_Console_write__string("System_Thread_getLocalStorage!?");
+    return null; // throw
 }
 
 #endif

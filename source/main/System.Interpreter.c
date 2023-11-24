@@ -9,6 +9,7 @@
 #include <min/System.Console.h>
 #include <min/System.Environment.h>
 #include <min/System.ELF64Assembly.h>
+#include <min/System.Thread.h>
 
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
 
@@ -33,6 +34,9 @@ void System_Runtime_relocate(System_Var base, System_ELF64Assembly_RelocationAdd
         if (symbol->value)
             *address = (System_Size)base + symbol->value + relocation->addend; 
         break;
+    case System_ELFAssembly_AMD64_32: 
+        *address = (System_Size)base + (symbol->value & 0xFFFFFFFFUL); 
+        break;
     case System_ELFAssembly_AMD64_JUMP_SLOT:
     case System_ELFAssembly_AMD64_GLOB_DAT: 
         if (symbol->value)
@@ -44,18 +48,13 @@ void System_Runtime_relocate(System_Var base, System_ELF64Assembly_RelocationAdd
         if (symbol->value && symbol->size)
             System_Memory_copyTo(base + symbol->value, symbol->size, address);
         break;
-    case System_ELFAssembly_AMD64_32: 
-        *address = (System_Size)base + (symbol->value & 0xFFFFFFFFUL); 
-        break;
 #if DEBUG
     default:
-        System_Console_write__string("UNLINKED ");
-
-        System_Console_writeLine("INTERP Relocation: offset {0:uint:hex}, type {1:uint32:hex}, symbol {2:uint32:hex}, addend {3:uint:hex}; address {4:uint:hex}: old {5:uint:hex} => new {6:uint:hex}", 7,
+        System_Console_writeLine("INTERP ELFRelocation unlinked: offset {0:uint:hex}, type {1:uint32:hex}, symbol {2:uint32:hex}, addend {3:uint:hex}; address {4:uint:hex}: old {5:uint:hex} => new {6:uint:hex}", 7,
             relocation->offset, relocation->type, relocation->symbol, relocation->addend, address, oldies, *address);
 
         if (symbol)
-            System_Console_writeLine("INTERP Relocation Symbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6, 
+            System_Console_writeLine("       Symbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6, 
                 dynamicStrings + symbol->name, symbol->info, symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
         break;
 #endif 
@@ -337,6 +336,9 @@ int System_Runtime_main(int argc, char  * argv[]) {
     System_ELF64Assembly_read__print(assembly, name, false);
 #endif
     System_ELF64Assembly_link(assembly);
+
+    System_Var tls = System_Thread_createStorageImage();
+    if (tls) System_Syscall_arch_prctl(0x1002, (System_IntPtr)tls);
 
     System_ELF64Assembly assembly1;
     System_ELF64Assembly_SymbolEntry symbol1;

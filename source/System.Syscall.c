@@ -204,6 +204,14 @@ System_IntPtr  System_Syscall_gettid(void) {
     return System_Syscall_call00(System_Syscall_Command_gettid);
 }
 
+System_IntPtr  System_Syscall_prctl(System_IntPtr option, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5) {
+    return System_Syscall_call05(System_Syscall_Command_prctl, option, arg2, arg3, arg4, arg5);
+}
+
+System_IntPtr  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg) {
+    return System_Syscall_call02(System_Syscall_Command_arch_prctl, option, arg);
+}
+
 System_IntPtr  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol) {
     return System_Syscall_call03(System_Syscall_Command_socket, addressFamily, socketType, protocol);
 }

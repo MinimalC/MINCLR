@@ -30,14 +30,6 @@ import void System_Thread_boot(void);
 
 export System_Var System_Thread_createStorageImage();
 
-typedef struct System_Thread_TLSIndex {
-
-    System_Size module;
-    System_Size offset;
-
-} * System_Thread_TLSIndex;
-
-#define System_Thread_getLocalStorage  __tls_get_addr
-export System_Var System_Thread_getLocalStorage(System_Thread_TLSIndex index);
+export System_Var __tls_get_addr(System_Var index);
 
 #endif

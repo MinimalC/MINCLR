@@ -11,6 +11,7 @@
 #define DEBUG_System_Exception 6
 #define DEBUG_System_Syscall_mmap 7
 #define DEBUG_System_ELFAssembly 8
+#define DEBUG_System_Thread 9
 
 #if defined(NDEBUG)
 #undef NDEBUG

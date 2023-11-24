@@ -49,8 +49,6 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
 
     if (assembly->name) return; // throw
 
-    assembly->name = name;
-
     if (!assembly->buffer) {
         struct System_File file; System_Stack_clear(file);
         if (!stack_System_File_open(&file, name, System_File_Mode_readOnly)) return;
@@ -68,7 +66,7 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
         return; /* TODO throw */
     }
     if (print) {
-        System_Console_write("ELFHeader: type {0:string}, machine {1:uint16}, version {2:uint32}, entryPoint 0x{3:uint:hex}, size {4:uint16}", 5,
+        System_Console_write("ELFHeader: type {0:string}, machine {1:string}, version {2:uint32}, entryPoint 0x{3:uint:hex}, size {4:uint16}", 5,
             System_ELFAssembly_AssemblyType_toString(header->type), System_ELFAssembly_Machine_toString(header->machine), 
             header->version, header->entryPoint, header->size);
         System_Console_write(", class {0:uint8}, endianess {1:uint8}, elfVersion {2:uint8}, abi {3:string}", 4,
@@ -141,6 +139,9 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
             case System_ELFAssembly_DynamicType_NEEDED:
                 assembly->needed[assembly->neededCount++] = assembly->dynamicStrings + dynamic->value; 
                 break;
+            case System_ELFAssembly_DynamicType_SONAME:
+                assembly->name = assembly->dynamicStrings + dynamic->value;
+                break;
             }
         }
         if (print) {
@@ -185,6 +186,8 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
                 symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
         }
     }
+
+    if (!assembly->name) assembly->name = name;
 }
 
 void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 name) {
@@ -380,7 +383,7 @@ System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getSymbol(System_String8 n
         if (!assembly->symbolStrings) continue;
     for (System_Size i = 0; i < assembly->symbolsCount; ++i) {
         System_ELF64Assembly_SymbolEntry symbol = assembly->symbols + i;
-        if (!symbol->sectionIndex || !symbol->value) continue;
+        if (!symbol->sectionIndex) continue;
         if (System_String8_equals(assembly->symbolStrings + symbol->name, name)) {
             *out_assembly = assembly;
             return symbol;
@@ -399,7 +402,7 @@ System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getDynamicSymbol(System_St
         if (!assembly->dynamicStrings) continue;
     for (System_Size i = 0; i < assembly->dynamicSymbolsCount; ++i) {
         System_ELF64Assembly_SymbolEntry symbol = assembly->dynamicSymbols + i;
-        if (!symbol->sectionIndex || !symbol->value) continue;
+        if (!symbol->sectionIndex) continue;
         if (System_String8_equals(assembly->dynamicStrings + symbol->name, name)) {
             *out_assembly = assembly;
             return symbol;
@@ -503,23 +506,23 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
     case System_ELFAssembly_AMD64_GLOB_DAT: 
         symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->value) 
-            *address = (System_Size)assembly1->link + symbol1->value;
+            *address = (System_Size)assembly1->link + symbol1->value + relocation->addend;
         else if (symbol->value)
-            *address = (System_Size)assembly->link + symbol->value; 
+            *address = (System_Size)assembly->link + symbol->value + relocation->addend; 
         else if (*address)
             *address += (System_Size)assembly->link;
         break;
     case System_ELFAssembly_AMD64_COPY: 
         symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->value && symbol1->size) 
-            System_Memory_copyTo(assembly1->link + symbol1->value, symbol1->size, address);
+            System_Memory_copyTo(assembly1->link + symbol1->value + relocation->addend, symbol1->size, address);
         else if (symbol->value && symbol->size)
-            System_Memory_copyTo(assembly->link + symbol->value, symbol->size, address);
+            System_Memory_copyTo(assembly->link + symbol->value + relocation->addend, symbol->size, address);
         break;
     case System_ELFAssembly_AMD64_TPOFF64:
         symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
-        if (symbol1 && symbol1->size) 
-            *address = symbol1->value;
+        if (symbol1 && symbol1->size)
+            *address = assembly->threadStorageOffset + symbol1->value + relocation->addend;
         break;
 #if DEBUG
     default:
@@ -555,18 +558,22 @@ System_Var System_Thread_createStorageImage(void) {
         System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
         if (!assembly->threadStorageSize) continue;
 
+        if (size && !assembly->threadStorageOffset)
+            assembly->threadStorageOffset = size;
+
         size += assembly->threadStorageSize;
     }
     if (!size) return null;
 
     size = ROUND(size, 4096);
 
-    System_Var tls = System_Syscall_mmap(size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
+    System_Size * tls = System_Syscall_mmap(size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
         System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
 
     if (!tls) return null; // throw
 
     System_Size position = 0;
+
     for (System_Size i = 0; i < System_ELF64Assembly_loadedCount; ++i) {
         System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
         if (!assembly->threadStorageSize) continue;
@@ -574,6 +581,10 @@ System_Var System_Thread_createStorageImage(void) {
         System_Memory_copyTo(assembly->threadStorage, assembly->threadStorageSize, tls + position);
         position += assembly->threadStorageSize;
     }
+
+    #if DEBUG == DEBUG_System_Thread
+    System_Console_writeLine("System_Thread_createStorageImage: size {0:uint}, length {1:uint}, offset {2:uint:hex}", 3, size, position, tls);
+    #endif
     return tls;
 }
 
