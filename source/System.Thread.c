@@ -5,6 +5,9 @@
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>
 #endif
+#if !defined(have_System_ELFAssembly)
+#include <min/System.ELFAssembly.h>
+#endif
 #if !defined(have_System_Thread)
 #include <min/System.Thread.h>
 #endif
@@ -15,6 +18,15 @@ export thread System_Var __Storage = (System_Var)1;
 export thread System_Size __ErrorCode = 3;
 export thread System_Exception __Exception = (System_Exception)7;
 export thread struct System_Thread __Current = { .base = { .type = typeof(System_Thread) }, .threadId = 31, .returnValue = 63, };
+
+System_Var System_Thread_createStorage(void) {
+    return System_ELF64Assembly_createThread();
+}
+
+System_Var __tls_get_addr(System_Var index) {
+
+    return null; // throw
+}
 
 struct System_Type System_ThreadType = { .base = { .type = typeof(System_Type) }, .name = "Thread", .size = sizeof(struct System_Thread) };
 
@@ -46,7 +58,7 @@ System_Thread System_Thread_create(function_System_Thread_main function, ...) {
 
 System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
 
-    System_Var tls = System_Thread_createStorageImage();
+    System_Var tls = System_Thread_createStorage();
 
     System_Var stack = System_Syscall_mmap(STACK_SIZE, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
         System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown);
@@ -131,11 +143,6 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
     /*System_Console_writeLine("System_Thread_join status {0:uint:hex}, reture {1:uint:hex}, isRunning {2:bool}, returnValue: {3:uint:hex}", 4, 
         status, reture, that->isRunning, that->returnValue);*/
     return true;
-}
-
-System_Var __tls_get_addr(System_Var index) {
-
-    return null; // throw
 }
 
 #endif

@@ -22,7 +22,7 @@ asm(
 #include <min/System.Runtime.h>
 #endif
 #if !defined(have_System_ELFAssembly)
-#include <min/System.ELF64Assembly.h>
+#include <min/System.ELFAssembly.h>
 #endif
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>
@@ -134,14 +134,6 @@ void System_Runtime_start(System_Var  * stack) {
     }
     #endif
 
-
-    /* struct vdso_info info = { .valid = false }; */
-
-    /*if (auxv[i].type == System_Environment_AuxType_SYSINFO_EHDR) {
-        vdso_init_from_sysinfo_ehdr(&info, (System_ELFAssembly_Header)auxv[i].value);
-        continue;
-    }*/
-
     function_System_Runtime_main entry = &System_Runtime_main;
     System_String8 entryName = "System_Runtime_main";
     if (interp) {
@@ -155,7 +147,7 @@ void System_Runtime_start(System_Var  * stack) {
             }
         }
         System_ELF64Assembly assembly1 = null;
-        System_ELF64Assembly_SymbolEntry symbol1 = System_ELF64Assembly_getSymbol(fileName, &assembly1);
+        System_ELF64Assembly_Symbol symbol1 = System_ELF64Assembly_getSymbol(fileName, &assembly1);
         System_Size * symbol1_value = null;
         if (symbol1) {
             symbol1_value = (System_Size *)(assembly1->link + symbol1->value);

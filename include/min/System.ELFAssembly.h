@@ -608,28 +608,16 @@ typedef struct System_ELF32Assembly_SectionHeader {
 export struct System_Type  System_ELF32Assembly_SectionHeaderType;
 
 
-typedef struct System_ELF32Assembly_SymbolEntry {
+typedef struct System_ELF32Assembly_Symbol {
     System_UInt32  name;    /* Symbol name (string tbl index) */
     System_UInt32  value;    /* Symbol value */
     System_UInt32  size;    /* Symbol size */
     System_UInt8  info;    /* Symbol type and binding */
     System_UInt8  other;    /* Symbol visibility */
     System_UInt16  sectionIndex;    /* Section index */
-} * System_ELF32Assembly_SymbolEntry;
+} * System_ELF32Assembly_Symbol;
 
-export struct System_Type  System_ELF32Assembly_SymbolEntryType;
-
-typedef struct System_ELF32Assembly_VersionDefinition {
-    System_UInt16  version;    /* Version revision */
-    System_UInt16  flags;    /* Version information */
-    System_UInt16  index;      /* Version Index */
-    System_UInt16  count;      /* Number of associated aux entries */
-    System_UInt32  hash;    /* Version name hash value */
-    System_UInt32  aux;      /* Offset in bytes to verdaux array */
-    System_UInt32  next;    /* Offset in bytes to next verdef entry */
-} * System_ELF32Assembly_VersionDefinition;
-
-export struct System_Type  System_ELF32Assembly_VersionDefinitionType;
+export struct System_Type  System_ELF32Assembly_SymbolType;
 
 typedef struct System_ELF32Assembly_DynamicEntry {
     System_Int32  tag;      /* Dynamic entry type */
@@ -637,11 +625,6 @@ typedef struct System_ELF32Assembly_DynamicEntry {
 } * System_ELF32Assembly_DynamicEntry;
 
 export struct System_Type  System_ELF32Assembly_DynamicEntryType;
-
-typedef struct System_ELF32Assembly_Verdaux {
-    System_UInt32  name;    /* Version or dependency names */
-    System_UInt32  next;    /* Offset in bytes to next verdaux entry */
-} * System_ELF32Assembly_Verdaux;
 
 #define System_ELF32Assembly_Relocation_SYMBOL(i) ( (i) >> 8 )
 #define System_ELF32Assembly_Relocation_TYPE(i)   ( (System_UInt8)((i) & 0xff) )
@@ -706,34 +689,16 @@ typedef struct System_ELF64Assembly_SectionHeader {
 
 export struct System_Type  System_ELF64Assembly_SectionHeaderType;
 
-typedef struct System_ELF64Assembly_SymbolEntry {
+typedef struct System_ELF64Assembly_Symbol {
     System_UInt32  name;    /* Symbol name (string tbl index) */
     System_UInt8  info;    /* Symbol type and binding */
     System_UInt8  other;    /* Symbol visibility */
     System_UInt16  sectionIndex;    /* Section index */
     System_UInt64  value;    /* Symbol value */
     System_UInt64  size;    /* Symbol size */
-} * System_ELF64Assembly_SymbolEntry;
+} * System_ELF64Assembly_Symbol;
 
-export struct System_Type  System_ELF64Assembly_SymbolEntryType;
-
-typedef struct System_ELF64Assembly_VersionDefinition {
-    System_UInt16  version;    /* Version revision */
-    System_UInt16  flags;    /* Version information */
-    System_UInt16  index;      /* Version Index */
-    System_UInt16  count;      /* Number of associated aux entries */
-    System_UInt32  hash;    /* Version name hash value */
-    System_UInt32  aux;      /* Offset in bytes to verdaux array */
-    System_UInt32  next;    /* Offset in bytes to next verdef entry */
-} * System_ELF64Assembly_VersionDefinition;
-
-export struct System_Type  System_ELF64Assembly_VersionDefinitionType;
-
-typedef struct System_ELF64Assembly_Verdaux {
-    System_UInt32  name;    /* Version or dependency names */
-    System_UInt32  next;    /* Offset in bytes to next verdaux entry */
-} * System_ELF64Assembly_Verdaux;
-
+export struct System_Type  System_ELF64Assembly_SymbolType;
 
 typedef struct System_ELF64Assembly_DynamicEntry {
     System_Int64  tag;      /* Dynamic entry type */
@@ -746,18 +711,10 @@ typedef struct System_ELF64Assembly_Relocation {
     System_UInt64  offset;
     System_UInt32  type;
     System_UInt32  symbol;
+    System_Int64  addend;
 } * System_ELF64Assembly_Relocation;
 
 export struct System_Type  System_ELF64Assembly_RelocationType;
-
-typedef struct System_ELF64Assembly_RelocationAddend {
-    System_UInt64  offset;
-    System_UInt32  type;
-    System_UInt32  symbol;
-    System_Int64  addend;
-} * System_ELF64Assembly_RelocationAddend;
-
-export struct System_Type  System_ELF64Assembly_RelocationAddendType;
 
 typedef struct System_ELF64Assembly {
     struct System_Object base;
@@ -774,14 +731,14 @@ typedef struct System_ELF64Assembly {
     System_String8 sectionsStrings;
 
     System_Size symbolsCount;
-    System_ELF64Assembly_SymbolEntry symbols;
+    System_ELF64Assembly_Symbol symbols;
     System_String8 symbolStrings;
 
     System_Size dynamicsCount;
     System_ELF64Assembly_DynamicEntry dynamics;
 
     System_Size dynamicSymbolsCount;
-    System_ELF64Assembly_SymbolEntry dynamicSymbols;
+    System_ELF64Assembly_Symbol dynamicSymbols;
     System_String8 dynamicStrings;
 
     System_Size neededCount;
@@ -790,10 +747,10 @@ typedef struct System_ELF64Assembly {
     System_Var link;
 
     System_Size GOT_relocationCount;
-    System_ELF64Assembly_RelocationAddend GOT_relocation;
+    System_ELF64Assembly_Relocation GOT_relocation;
 
     System_Size PLT_relocationCount;
-    System_ELF64Assembly_RelocationAddend PLT_relocation;
+    System_ELF64Assembly_Relocation PLT_relocation;
 
     System_Size * PLT;
 
@@ -812,12 +769,14 @@ export System_ELF64Assembly  new_System_ELF64Assembly();
 export void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 name);
 export void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print);
 export void System_ELF64Assembly_link(System_ELF64Assembly assembly);
-export void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64Assembly_RelocationAddend relocation);
+export void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64Assembly_Relocation relocation);
 import System_Var System_ELF64Assembly_jump(System_ELF64Assembly assembly, System_UInt64 relocationOffset);
 export System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_UInt64 relocationOffset);
-export System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
-export System_ELF64Assembly_SymbolEntry System_ELF64Assembly_getDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
+export System_ELF64Assembly_Symbol System_ELF64Assembly_getSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
+export System_ELF64Assembly_Symbol System_ELF64Assembly_getDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
 export System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64Assembly assembly, System_String8 name);
+
+export System_Var System_ELF64Assembly_createThread(void);
 
 export System_String8 System_ELFAssembly_AMD64_toString(System_UInt32 value);
 export System_String8 System_ELFAssembly_SymbolBinding_toString(System_UInt8 value);
@@ -832,19 +791,18 @@ export System_String8 System_ELFAssembly_Machine_toString(System_ELFAssembly_Mac
 #if !defined(have_System_ELFAssembly)
 #define have_System_ELFAssembly
 
-#define System_ELFAssembly_SymbolEntry_BIND(i)   ( (i) >> 4 )
-#define System_ELFAssembly_SymbolEntry_TYPE(i)   ( (i) & 0xf )
-#define System_ELFAssembly_SymbolEntry_INFO(b,t) ( ((b) << 4) + ((t) & 0xf ) )
+#define System_ELFAssembly_Symbol_BIND(i)   ( (i) >> 4 )
+#define System_ELFAssembly_Symbol_TYPE(i)   ( (i) & 0xf )
+#define System_ELFAssembly_Symbol_INFO(b,t) ( ((b) << 4) + ((t) & 0xf ) )
 
 #if System_Size_Bits == 32
+#warning TODO: System_Size_Bits == 32
 #define System_ELFAssembly  System_ELF32Assembly
 #define System_ELFAssemblyType  System_ELF32AssemblyType
 #define System_ELFAssembly_Header  System_ELF32Assembly_Header
 #define System_ELFAssembly_ProgramHeader  System_ELF32Assembly_ProgramHeader
 #define System_ELFAssembly_SectionHeader  System_ELF32Assembly_SectionHeader
-#define System_ELFAssembly_SymbolEntry  System_ELF32Assembly_SymbolEntry
-#define System_ELFAssembly_VersionDefinition  System_ELF32Assembly_VersionDefinition
-#define System_ELFAssembly_Verdaux  System_ELF32Assembly_Verdaux
+#define System_ELFAssembly_Symbol  System_ELF32Assembly_Symbol
 #define System_ELFAssembly_DynamicEntry  System_ELF32Assembly_DynamicEntry
 #define System_ELFAssembly_Relocation_SYMBOL  System_ELF32Assembly_Relocation_SYMBOL
 #define System_ELFAssembly_Relocation_TYPE  System_ELF32Assembly_Relocation_TYPE
@@ -856,9 +814,7 @@ export System_String8 System_ELFAssembly_Machine_toString(System_ELFAssembly_Mac
 #define System_ELFAssembly_Header  System_ELF64Assembly_Header
 #define System_ELFAssembly_ProgramHeader  System_ELF64Assembly_ProgramHeader
 #define System_ELFAssembly_SectionHeader  System_ELF64Assembly_SectionHeader
-#define System_ELFAssembly_SymbolEntry  System_ELF64Assembly_SymbolEntry
-#define System_ELFAssembly_VersionDefinition  System_ELF64Assembly_VersionDefinition
-#define System_ELFAssembly_Verdaux  System_ELF64Assembly_Verdaux
+#define System_ELFAssembly_Symbol  System_ELF64Assembly_Symbol
 #define System_ELFAssembly_DynamicEntry  System_ELF64Assembly_DynamicEntry
 #define System_ELFAssembly_Relocation_SYMBOL  System_ELF64Assembly_Relocation_SYMBOL
 #define System_ELFAssembly_Relocation_TYPE  System_ELF64Assembly_Relocation_TYPE

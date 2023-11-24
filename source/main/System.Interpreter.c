@@ -8,7 +8,7 @@
 #include <min/System.String8.h>
 #include <min/System.Console.h>
 #include <min/System.Environment.h>
-#include <min/System.ELF64Assembly.h>
+#include <min/System.ELFAssembly.h>
 #include <min/System.Thread.h>
 
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
@@ -17,13 +17,13 @@ System_Var Environment_GetGlobalOffsetTable() {
     System_Var reture; asm("lea _GLOBAL_OFFSET_TABLE_(%%rip),%0" : "=r"(reture) ); return reture;
 }
 
-void System_Runtime_relocate(System_Var base, System_ELF64Assembly_RelocationAddend relocation, System_ELF64Assembly_SymbolEntry dynamicSymbols, System_String8 dynamicStrings) {
+void System_Runtime_relocate(System_Var base, System_ELF64Assembly_Relocation relocation, System_ELF64Assembly_Symbol dynamicSymbols, System_String8 dynamicStrings) {
 
     if (!relocation->type) return;
 
     System_Size * address = (System_Size * )((System_Size)base + relocation->offset), oldies = *address;
 
-    System_ELF64Assembly_SymbolEntry symbol = !relocation->symbol ? null : dynamicSymbols + relocation->symbol;
+    System_ELF64Assembly_Symbol symbol = !relocation->symbol ? null : dynamicSymbols + relocation->symbol;
 
     switch (relocation->type) {
     case System_ELFAssembly_AMD64_RELATIVE: 
@@ -92,9 +92,9 @@ void System_Runtime_selflink(System_Var base) {
             System_ELFAssembly_ProgramType_toString(program->type), program->flags, program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
 #endif
     }
-    System_ELF64Assembly_SymbolEntry dynamicSymbols = null;
+    System_ELF64Assembly_Symbol dynamicSymbols = null;
     System_String8 dynamicStrings = null;
-    System_ELF64Assembly_RelocationAddend GOT_relocation = null, PLT_relocation = null;
+    System_ELF64Assembly_Relocation GOT_relocation = null, PLT_relocation = null;
     System_Size GOT_relocationCount = 0, PLT_relocationCount = 0;
     System_Size * PLT = null;
     for (i = 0; i < dynamicsCount; ++i) {
@@ -105,23 +105,23 @@ void System_Runtime_selflink(System_Var base) {
         }
         if (dynamic->tag == System_ELFAssembly_DynamicType_SYMTAB) {
             dynamic->value = (System_Size)base + dynamic->value;
-            dynamicSymbols = (System_ELF64Assembly_SymbolEntry)(dynamic->value); 
+            dynamicSymbols = (System_ELF64Assembly_Symbol)(dynamic->value); 
         }
         //if (dynamic->tag == System_ELFAssembly_DynamicType_SYMENT)
         if (dynamic->tag == System_ELFAssembly_DynamicType_RELA) {
             dynamic->value = (System_Size)base + dynamic->value;
-            GOT_relocation = (System_ELF64Assembly_RelocationAddend)(dynamic->value); 
+            GOT_relocation = (System_ELF64Assembly_Relocation)(dynamic->value); 
         }
         // if (dynamic->tag == System_ELFAssembly_DynamicType_RELAENT) 
         if (dynamic->tag == System_ELFAssembly_DynamicType_RELASZ)
-            GOT_relocationCount = !dynamic->value ? null : dynamic->value / sizeof(struct System_ELF64Assembly_RelocationAddend);
+            GOT_relocationCount = !dynamic->value ? null : dynamic->value / sizeof(struct System_ELF64Assembly_Relocation);
 
         if (dynamic->tag == System_ELFAssembly_DynamicType_JMPREL) {
             dynamic->value = (System_Size)base + dynamic->value;
-            PLT_relocation = (System_ELF64Assembly_RelocationAddend)(dynamic->value);
+            PLT_relocation = (System_ELF64Assembly_Relocation)(dynamic->value);
         }
         if (dynamic->tag == System_ELFAssembly_DynamicType_PLTRELSZ)
-            PLT_relocationCount = !dynamic->value ? null : dynamic->value / sizeof(struct System_ELF64Assembly_RelocationAddend);
+            PLT_relocationCount = !dynamic->value ? null : dynamic->value / sizeof(struct System_ELF64Assembly_Relocation);
 
         if (dynamic->tag == System_ELFAssembly_DynamicType_PLTGOT) {
             dynamic->value = (System_Size)base + dynamic->value;
@@ -200,7 +200,7 @@ void System_Runtime_readlink(System_Var base) {
         System_ELF64Assembly_SectionHeader section = (System_ELF64Assembly_SectionHeader)((System_Var)sections + (i * header->sectionHeaderSize));
 
         if (System_String8_equals(assembly->sectionsStrings + section->name, ".dynsym"))
-            assembly->dynamicSymbolsCount = section->size / sizeof(struct System_ELF64Assembly_SymbolEntry);
+            assembly->dynamicSymbolsCount = section->size / sizeof(struct System_ELF64Assembly_Symbol);
 
 #if DEBUG == DEBUG_System_ELFAssembly
         System_Console_writeLine("ELFSectionHeader({0:uint}): name {1:string}, type {2:string}, flags {3:uint:bin}, offset {4:uint:hex}, size {5:uint:hex}, virtualAddress {6:uint:hex}, link {7:uint32}", 8, i,
@@ -215,21 +215,21 @@ void System_Runtime_readlink(System_Var base) {
             assembly->dynamicStrings = (System_String8)(base + dynamic->value); 
         }
         if (dynamic->tag == System_ELFAssembly_DynamicType_SYMTAB) {
-            assembly->dynamicSymbols = (System_ELF64Assembly_SymbolEntry)(base + dynamic->value); 
+            assembly->dynamicSymbols = (System_ELF64Assembly_Symbol)(base + dynamic->value); 
         }
         //if (dynamic->tag == System_ELFAssembly_DynamicType_SYMENT)
         if (dynamic->tag == System_ELFAssembly_DynamicType_RELA) {
-            assembly->GOT_relocation = (System_ELF64Assembly_RelocationAddend)(base + dynamic->value); 
+            assembly->GOT_relocation = (System_ELF64Assembly_Relocation)(base + dynamic->value); 
         }
         // if (dynamic->tag == System_ELFAssembly_DynamicType_RELAENT) 
         if (dynamic->tag == System_ELFAssembly_DynamicType_RELASZ)
-            assembly->GOT_relocationCount = !dynamic->value ? null : dynamic->value / sizeof(struct System_ELF64Assembly_RelocationAddend);
+            assembly->GOT_relocationCount = !dynamic->value ? null : dynamic->value / sizeof(struct System_ELF64Assembly_Relocation);
 
         if (dynamic->tag == System_ELFAssembly_DynamicType_JMPREL) {
-            assembly->PLT_relocation = (System_ELF64Assembly_RelocationAddend)(base + dynamic->value);
+            assembly->PLT_relocation = (System_ELF64Assembly_Relocation)(base + dynamic->value);
         }
         if (dynamic->tag == System_ELFAssembly_DynamicType_PLTRELSZ)
-            assembly->PLT_relocationCount = !dynamic->value ? null : dynamic->value / sizeof(struct System_ELF64Assembly_RelocationAddend);
+            assembly->PLT_relocationCount = !dynamic->value ? null : dynamic->value / sizeof(struct System_ELF64Assembly_Relocation);
 
         if (dynamic->tag == System_ELFAssembly_DynamicType_PLTGOT) {
             assembly->PLT = (System_Size *)(base + dynamic->value);
@@ -258,10 +258,10 @@ void System_Runtime_readlink(System_Var base) {
         }
     }
     for (i = 0; i < assembly->dynamicSymbolsCount; ++i) {
-        System_ELF64Assembly_SymbolEntry symbol = assembly->dynamicSymbols + i;
+        System_ELF64Assembly_Symbol symbol = assembly->dynamicSymbols + i;
         System_Console_writeLine("ELFSymbol: bind {1:string}, type {2:string}, other {3:uint8:hex}, sectionIndex {4:uint16}, value {5:uint64:hex}, size {6:uint64}, {0:string}", 7, 
-            assembly->dynamicStrings + symbol->name, System_ELFAssembly_SymbolBinding_toString(System_ELFAssembly_SymbolEntry_BIND(symbol->info)), 
-            System_ELFAssembly_SymbolType_toString(System_ELFAssembly_SymbolEntry_TYPE(symbol->info)),
+            assembly->dynamicStrings + symbol->name, System_ELFAssembly_SymbolBinding_toString(System_ELFAssembly_Symbol_BIND(symbol->info)), 
+            System_ELFAssembly_SymbolType_toString(System_ELFAssembly_Symbol_TYPE(symbol->info)),
             symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
     }
 #endif
@@ -337,11 +337,11 @@ int System_Runtime_main(int argc, char  * argv[]) {
 #endif
     System_ELF64Assembly_link(assembly);
 
-    System_Var tls = System_Thread_createStorageImage();
+    System_Var tls = System_Thread_createStorage();
     if (tls) System_Syscall_arch_prctl(0x1002, (System_IntPtr)tls);
 
     System_ELF64Assembly assembly1;
-    System_ELF64Assembly_SymbolEntry symbol1;
+    System_ELF64Assembly_Symbol symbol1;
     System_Size * symbol1_value;
 
     symbol1 = System_ELF64Assembly_getSymbol("System_ELF64Assembly_loadedCount", &assembly1);

@@ -28,7 +28,7 @@ export System_Bool System_Thread_join(System_Thread that);
 export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait);
 import void System_Thread_boot(void);
 
-export System_Var System_Thread_createStorageImage();
+export System_Var System_Thread_createStorage(void);
 
 export System_Var __tls_get_addr(System_Var index);
 
