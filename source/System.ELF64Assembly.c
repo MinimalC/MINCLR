@@ -559,7 +559,7 @@ System_Var System_ELF64Assembly_createThread(void) {
     }
 
     #if DEBUG == DEBUG_System_Thread
-    System_Console_writeLine("System_Thread_createStorage: size {0:uint}, length {1:uint}, offset {2:uint:hex}", 3, size, position, tls);
+    System_Console_writeLine("System_Thread_createStorage: offset 0x{2:uint:hex}, size {0:uint}, length {1:uint}", 3, size, position, tls);
     #endif
     return tls;
 }

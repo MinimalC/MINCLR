@@ -5,14 +5,14 @@
 #if !defined(have_System_Thread)
 #define have_System_Thread
 
-typedef System_Int32 System_ProcessId;
+typedef System_Int32 System_Thread_PID;
 
 typedef System_fixed struct System_Thread {
 	struct System_Object  base;
 
-    System_ProcessId threadId;
+    System_Thread_PID threadId;
 
-    System_IntPtr returnValue;
+    System_Int32 returnValue;
 
 }  * System_Thread;
 
@@ -29,8 +29,6 @@ export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool 
 import void System_Thread_boot(void);
 
 export System_Var System_Thread_createStorage(void);
-export System_Size System_Thread_Storage_getErrorCode(void);
-export void System_Thread_Storage_setErrorCode(System_Size value);
 
 export System_Var __tls_get_addr(System_Var index);
 

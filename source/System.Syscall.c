@@ -172,16 +172,24 @@ void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain) 
     (void)System_Syscall_call02(System_Syscall_Command_nanosleep, (System_IntPtr)request, (System_IntPtr)remain);
 }
 
-System_IntPtr  System_Syscall_clone(System_IntPtr flags, System_Var stack) {
-    return (System_IntPtr)System_Syscall_call02(System_Syscall_Command_clone, flags, (System_IntPtr)stack);
+System_Thread_PID  System_Syscall_clone(System_IntPtr flags, System_Var stack) {
+    return (System_Thread_PID)System_Syscall_call02(System_Syscall_Command_clone, flags, (System_IntPtr)stack);
 }
 
-System_IntPtr  System_Syscall_clone__tls(System_IntPtr flags, System_Var stack, System_Var tls) {
-    return (System_IntPtr)System_Syscall_call05(System_Syscall_Command_clone, flags, (System_IntPtr)stack, null, (System_IntPtr)tls, null);
+System_Thread_PID  System_Syscall_clone__tls(System_IntPtr flags, System_Var stack, System_Var tls) {
+    return (System_Thread_PID)System_Syscall_call05(System_Syscall_Command_clone, flags, (System_IntPtr)stack, null, (System_IntPtr)tls, null);
 }
 
-System_IntPtr  System_Syscall_wait(System_IntPtr id, System_IntPtr * status, System_IntPtr flags, System_Var usage) {
+System_Thread_PID  System_Syscall_clone__full(System_IntPtr flags, System_Var stack, System_Var parent_threadId, System_Var tls, System_Var child_threadId) {
+    return (System_Thread_PID)System_Syscall_call05(System_Syscall_Command_clone, flags, (System_IntPtr)stack, (System_IntPtr)parent_threadId, (System_IntPtr)tls, (System_IntPtr)child_threadId);
+}
+
+System_Thread_PID  System_Syscall_wait(System_Thread_PID id, System_IntPtr * status, System_IntPtr flags, System_Var usage) {
     return System_Syscall_call04(System_Syscall_Command_wait4, id, (System_IntPtr)status, flags, (System_IntPtr)usage);
+}
+
+System_Thread_PID  System_Syscall_waitid(System_IntPtr idType, System_Thread_PID id, System_Var siginfo, System_IntPtr options) {
+    return System_Syscall_call04(System_Syscall_Command_waitid, idType, id, (System_IntPtr)siginfo, options);
 }
 
 void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_Var old) {
@@ -190,6 +198,14 @@ void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_V
 
 void  System_Syscall_sigprocmask(System_IntPtr how, System_Var set, System_Var old, System_IntPtr setsize) {
     (void)System_Syscall_call04(System_Syscall_Command_rt_sigprocmask, how, (System_IntPtr)set, (System_IntPtr)old, setsize);
+}
+
+void  System_Syscall_sigqueue(System_Thread_PID id, System_IntPtr signal, System_IntPtr value) {
+    (void)System_Syscall_call03(System_Syscall_Command_rt_sigqueueinfo, (System_IntPtr)id, signal, value);
+}
+
+System_IntPtr System_Syscall_sigwait(System_Var set, System_Var info, System_TimeSpan timeout) {
+    return System_Syscall_call03(System_Syscall_Command_rt_sigtimedwait, (System_IntPtr)set, (System_IntPtr)info, (System_IntPtr)timeout);
 }
 
 void  System_Syscall_sched_yield(void) {

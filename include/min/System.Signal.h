@@ -90,8 +90,8 @@ typedef struct System_Signal_Info {
             System_Int32 pid;    /* Which child.  */
             System_UInt32 uid;    /* Real user ID of sending process.  */
             System_Int32 status;    /* Exit value or signal.  */
-            System_Int64 utime;
-            System_Int64 stime;
+            System_Size value;
+            System_Size value1;
         } sigchild;
 
         /* SIGILL, SIGFPE, SIGSEGV, SIGBUS.  */
@@ -127,13 +127,15 @@ typedef struct System_Signal_Action {
         function_System_Signal_handler handler;
         function_System_Signal_action action;
     };
-    unsigned long flags;
+    System_IntPtr flags;
     void (*restorer)(void);
     struct System_Signal signal;
 } * System_Signal_Action;
 
 export void System_Signal_handle(System_Signal_Number number, function_System_Signal_handler handler);
+export void System_Signal_handle__flags(System_Signal_Number number, function_System_Signal_handler handler, System_IntPtr flags);
 export void System_Signal_act(System_Signal_Number number, function_System_Signal_action action);
+export void System_Signal_act__flags(System_Signal_Number number, function_System_Signal_action action, System_IntPtr flags);
 export System_Bool System_Signal_get__number(System_Signal_Number number);
 export void System_Signal_set__number(System_Signal_Number number);
 export void System_Signal_block__number(System_Signal_Number number);

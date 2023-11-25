@@ -1,10 +1,7 @@
 #define using_System
 #include <min/System.h>
 
-import thread System_Var __Storage;
-import thread System_Size __ErrorCode;
-import thread System_Exception __Exception;
-import thread struct System_Thread __Current;
+import thread System_Thread __Current;
 
 void Dummy0(System_Size argc, System_Var argv[]) {
 
@@ -21,19 +18,18 @@ System_IntPtr Dummy2(System_Size argc, System_Var argv[]) {
 
     System_Thread_sleep(4);
     System_Console_writeLine("This is Child{0:uint}", 1, argv[0]);
-    return 0;
+    return true;
 }
 void Dummy3(System_Size argc, System_Var argv[]) {
 
     System_Thread_sleep(2);
-    System_Console_writeLine("This is Child{0:uint}", 1, argv[0]);
 
-    System_Console_writeLine("System_Thread_Storage: {0:uint}", 1, __Storage);
-    System_Console_writeLine("System_Thread_ErrorCode: {0:uint}", 1, __ErrorCode);
-    System_Size errorCode = System_Thread_Storage_getErrorCode();
-    System_Thread_Storage_setErrorCode(++errorCode);
-    System_Console_writeLine("System_Thread_Exception: {0:uint}", 1, __Exception);
-    System_Console_writeLine("System_Thread_Current: base.type 0x{0:uint:hex}, threadId {1:uint}, returnValue {2:uint}", 3, __Current.base.type, __Current.threadId, __Current.returnValue);
+    System_Console_writeLine("__Current: 0x{0:uint:hex}", 1, __Current);
+
+    if (__Current)
+        System_Console_writeLine("__Current: base.type 0x{0:uint:hex}, threadId {1:uint}, returnValue {2:uint}", 3, __Current->base.type, __Current->threadId, __Current->returnValue);
+
+    return;
 }
 
 void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info info, System_Var context) {
@@ -53,46 +49,43 @@ int System_Runtime_main(int argc, char * argv[]) {
     System_Signal_act(System_Signal_Number_SIGFPE, System_Runtime_sigfault);
     System_Signal_act(System_Signal_Number_SIGSEGV, System_Runtime_sigfault);
 
-    System_Thread dummy0 = System_Thread_create((function_System_Thread_main)Dummy0, 1, 0);
-    System_Thread dummy1 = System_Thread_create(Dummy1, 1, 1);
-    System_Thread dummy2 = System_Thread_create(Dummy2, 1, 2);
-    System_Thread dummy3 = System_Thread_create((function_System_Thread_main)Dummy3, 1, 3);
-    System_Thread dummy4 = System_Thread_create((function_System_Thread_main)Dummy3, 1, 4);
+    System_Thread_PID pid = 0;
+    pid = System_Syscall_getpid();
+    System_Console_writeLine("Process PID: {0:uint32}", 1, pid);
+
+    System_Size dummyC = 0;
+    System_Thread dummys[64]; System_Stack_clear(dummys);
+
+    dummys[dummyC++] = System_Thread_create((function_System_Thread_main)Dummy0, 1, 0);
+    dummys[dummyC++] = System_Thread_create(Dummy1, 1, 1);
+    dummys[dummyC++] = System_Thread_create(Dummy2, 1, 2);
+    dummys[dummyC++] = System_Thread_create((function_System_Thread_main)Dummy3, 1, 3);
+    dummys[dummyC++] = System_Thread_create((function_System_Thread_main)Dummy3, 1, 4);
 
     /*System_Console_writeLine__string("Wait on Child0");
     System_Bool reture = System_Thread_join(dummy0);*/
 
+    System_Bool retures[64]; System_Stack_clear(retures);
+
     while (1) {
-        System_Bool reture0 = false, reture1 = false, reture2 = false;
 
-        if (dummy0->threadId) {
-            reture0 = System_Thread_join__dontwait(dummy0, true);
-            if (!reture0) System_Console_writeLine__string("Wait on Child0");
-            else System_Console_writeLine("Wait on Child0. Returning {0:uint:hex}", 1, dummy0->returnValue);
-        }
+        for (System_Size i = 0; i < dummyC; ++i)
+            if (dummys[i]->threadId) {
+                retures[i] = System_Thread_join__dontwait(dummys[i], true);
+                if (!retures[i]) System_Console_writeLine("Wait on Child{0:uint}", 1, i);
+                else System_Console_writeLine("Wait on Child{0:uint}. Returning {1:uint:hex}", 2, i, dummys[i]->returnValue);
+            }
 
-        if (dummy1->threadId) {
-            reture1 = System_Thread_join__dontwait(dummy1, true);
-            if (!reture1) System_Console_writeLine__string("Wait on Child1");
-            else System_Console_writeLine("Wait on Child1. Returning {0:uint:hex}", 1, dummy1->returnValue);
-        }
-
-        if (dummy2->threadId) {
-            reture2 = System_Thread_join__dontwait(dummy2, true);
-            if (!reture2) System_Console_writeLine__string("Wait on Child2");
-            else System_Console_writeLine("Wait on Child2. Returning {0:uint:hex}", 1, dummy2->returnValue);
-        }
-
-        if (!dummy0->threadId && !dummy1->threadId && !dummy2->threadId) break;
+        System_Size r = 0;
+        for (System_Size i = 0; i < dummyC; ++i)
+            if (retures[i]) ++r;
+        if (r == dummyC) break;
 
         System_Thread_sleep(1);
     }
 
-    System_Memory_free(dummy0);
-    System_Memory_free(dummy1);
-    System_Memory_free(dummy2);
-    System_Memory_free(dummy3);
-    System_Memory_free(dummy4);
+    for (System_Size i = 0; i < dummyC; ++i)
+        System_Memory_free(dummys[i]);
     
     System_Console_writeLine__string("This is Parent");
 

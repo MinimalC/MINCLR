@@ -15,6 +15,8 @@ struct System_Type System_TimeType = { .base = { .type = typeof(System_Type) }, 
 
 struct System_Type System_TimeSpanType = { .base = { .type = typeof(System_Type) }, .name = "TimeSpan", .size = sizeof(struct System_TimeSpan) };
 
+struct System_Type System_TimeSpecType = { .base = { .type = typeof(System_Type) }, .name = "TimeSpec", .size = sizeof(struct System_TimeSpec) };
+
 struct System_Type System_TimeZoneType = { .base = { .type = typeof(System_Type) }, .name = "TimeZone", .size = sizeof(struct System_TimeZone) };
 
 struct System_Type System_DateTimeType = { .base = { .type = typeof(System_Type) }, .name = "DateTime", .size = sizeof(struct System_DateTime) };

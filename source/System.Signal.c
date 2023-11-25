@@ -18,8 +18,9 @@ String8 System_Signal_Number_toString(System_Signal_Number value) {
     case System_Signal_Number_SIGSEGV: return "SIGSEGV";
     case System_Signal_Number_SIGBUS: return "SIGBUS";
     case System_Signal_Number_SIGINT: return "SIGINT";
+    case System_Signal_Number_SIGCHILD: return "SIGCHILD";
     }
-    return "UNKNOWN";
+    return "Unknown";
 }
 
 /*# System_Signal #*/
@@ -30,33 +31,30 @@ struct System_Type System_SignalType = { .base = { .type = typeof(System_Type) }
 #define __sigword(sig) ((unsigned)((sig) - 1) / (8 * sizeof (unsigned long)))*/
 
 enum {
-    SA_INTERRUPT = 0x20000000, /* Historical no-op.  */
-
-    SA_NOCLDSTOP = 1, /* Don't send SIGCHLD when children stop.  */
-    SA_NOCLDWAIT = 2, /* Don't create zombie on child death.  */
-    SA_NODEFER = 0x40000000, /* Don't automatically block the signal when its handler is being executed.  */
-    SA_NOMASK = SA_NODEFER,
-
-    SA_ONSTACK = 0x08000000, /* Use signal stack by using `sa_restorer'. */
-    SA_RESTART = 0x10000000, /* Restart syscall on signal return.  */
-    SA_RESETHAND = 0x80000000, /* Reset to SIG_DFL on entry to handler.  */
-    SA_ONESHOT = SA_RESETHAND,
+    SA_NOCHILDSTOP = 1, /* Don't send SIGCHLD when children stop.  */
+    SA_NOCHILDWAIT = 2, /* Don't create zombie on child death.  */
+    SA_SIGINFO = 4,   /* Invoke signal-catching function with three arguments instead of one.  */
 
     SA_RESTORER = 0x04000000,
-    SA_SIGINFO = 4,  /* Invoke signal-catching function with three arguments instead of one.  */
+    SA_ONSTACK = 0x08000000, /* Use signal stack by using `sa_restorer'. */
+    SA_RESTART = 0x10000000, /* Restart syscall on signal return.  */
+    SA_INTERRUPT = 0x20000000, /* Historical no-op.  */
+    SA_NODEFER = 0x40000000, /* Don't automatically block the signal when its handler is being executed.  */
+    SA_NOMASK = SA_NODEFER,
+    SA_RESETHAND = 0x80000000, /* Reset to SIG_DFL on entry to handler.  */
+    SA_ONESHOT = SA_RESETHAND,
 };
 
 void System_Signal_handle(System_Signal_Number number, function_System_Signal_handler handler) {
+    System_Signal_handle__flags(number, handler, 0);
+}
+
+void System_Signal_handle__flags(System_Signal_Number number, function_System_Signal_handler handler, System_IntPtr flags) {
 
     struct System_Signal_Action new; System_Stack_clear(new);
     new.handler = handler; 
-    new.flags = SA_RESTORER; // | SA_RESTART | SA_NODEFER
+    new.flags = flags | SA_RESTORER; /* not SA_SIGINFO */
     new.restorer = &System_Syscall_sigreturn;
-
-    /*unsigned __word = __sigword (number);
-    unsigned long __mask = __sigmask (number);
-    //System_Console_writeLine("SIGWORD: {0:uint}, SIGMASK: {1:uint}", 2, __word, __mask);
-    new.signal.mask[__word] |= __mask;*/
 
     new.signal.mask[0] |= (1 << (number - 1));
 
@@ -66,16 +64,15 @@ void System_Signal_handle(System_Signal_Number number, function_System_Signal_ha
 }
 
 void System_Signal_act(System_Signal_Number number, function_System_Signal_action action) {
+    System_Signal_act__flags(number, action, 0);
+}
+
+void System_Signal_act__flags(System_Signal_Number number, function_System_Signal_action action, System_IntPtr flags) {
 
     struct System_Signal_Action new; System_Stack_clear(new);
     new.action = action; 
-    new.flags = SA_RESTORER | SA_SIGINFO; // | SA_RESTART | SA_NODEFER
+    new.flags = flags | SA_RESTORER | SA_SIGINFO;
     new.restorer = &System_Syscall_sigreturn;
-
-    /*unsigned __word = __sigword (number);
-    unsigned long __mask = __sigmask (number);
-    //System_Console_writeLine("SIGWORD: {0:uint}, SIGMASK: {1:uint}", 2, __word, __mask);
-    new.signal.mask[__word] |= __mask;*/
 
     new.signal.mask[0] |= (1 << (number - 1));
 
@@ -83,6 +80,7 @@ void System_Signal_act(System_Signal_Number number, function_System_Signal_actio
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("System_Signal_act Code: {0:uint:hex} Error: {1:string}", 2, number, enum_getName(typeof(System_ErrorCode), errno));
 }
+
 
 /* Values for the HOW argument to `sigprocmask'. */
 enum {

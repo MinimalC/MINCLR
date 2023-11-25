@@ -8,29 +8,16 @@
 #if !defined(have_System_ELFAssembly)
 #include <min/System.ELFAssembly.h>
 #endif
+#if !defined(have_System_Signal)
+#include <min/System.Signal.h>
+#endif
 #if !defined(have_System_Thread)
 #include <min/System.Thread.h>
 #endif
 #if !defined(code_System_Thread)
 #define code_System_Thread
 
-export thread System_Var __Storage = (System_Var)1;
-export thread System_Size __ErrorCode = 3;
-export thread System_Exception __Exception = (System_Exception)7;
-export thread struct System_Thread __Current = { .base = { .type = typeof(System_Thread) }, .threadId = 31, .returnValue = 63, };
-
-System_Size System_Thread_Storage_getErrorCode(void) {
-
-    System_Console_writeLine("System_Thread_Storage_getErrorCode: __ErrorCode {0:uint}", 1, __ErrorCode);
-
-    return __ErrorCode;
-}
-
-void System_Thread_Storage_setErrorCode(System_Size value) {
-
-    __ErrorCode = value;
-    System_Console_writeLine("System_Thread_Storage_setErrorCode: __ErrorCode {0:uint}", 1, __ErrorCode);
-}
+export thread System_Thread __Current = null;
 
 System_Var System_Thread_createStorage(void) {
     return System_ELF64Assembly_createThread();
@@ -52,9 +39,17 @@ enum {
     CLONE_FS = 0x00000200,
     CLONE_FILES = 0x00000400,
     CLONE_SIGHAND = 0x00000800,
+    CLONE_PTRACE = 0x00002000,
+    CLONE_VFORK = 0x00004000,
     CLONE_PARENT = 0x00008000,
     CLONE_THREAD = 0x00010000,
+    CLONE_SYSVSEM = 0x00040000,
     CLONE_SETTLS = 0x00080000,
+    CLONE_PARENT_SETTID = 0x00100000,
+    CLONE_CHILD_CLEARTID = 0x00200000,
+    CLONE_DETACHED = 0x00400000,
+    CLONE_UNTRACED = 0x00800000,
+    CLONE_CHILD_SETTID = 0x01000000,
     CLONE_IO = 0x80000000,
 };
 
@@ -69,6 +64,13 @@ System_Thread System_Thread_create(function_System_Thread_main function, ...) {
     return System_Thread_create__arguments(function, argc, argv);
 }
 
+void System_Thread_sigchild(System_Signal_Number number, System_Signal_Info info, System_Var context) {
+    System_Console_writeLine("{0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}"
+        ", sigchild.pid {4:int32}, sigchild.status {5:int32}, sigchild.value0 {6:uint}, sigchild.value1 {7:uint}", 8,
+        System_Signal_Number_toString(number), info->number, info->errno, info->code, 
+        info->sigchild.pid, info->sigchild.status, info->sigchild.value, info->sigchild.value1);
+}
+
 System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
 
     System_Var tls = System_Thread_createStorage();
@@ -77,6 +79,8 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
         System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown);
 
     if (!stack) return 0; // throw
+
+    System_Thread that = System_Memory_allocClass(typeof(System_Thread));
 
     System_Size * stack_top = stack + STACK_SIZE;
 
@@ -88,23 +92,29 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     *(--stack_top) = (System_Size)argc;
     *(--stack_top) = (System_Size)function;
     *(--stack_top) = (System_Size)tls;
+    *(--stack_top) = (System_Size)that;
     *(--stack_top) = (System_Size)System_Thread_boot;
 
     if (!System_Thread_sigiset) {
         System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
-        System_Signal_handle(System_Signal_Number_SIGCHILD, function_System_Signal_handler_DEFAULT);
+        System_Signal_act__flags(System_Signal_Number_SIGCHILD, System_Thread_sigchild, SA_NOCHILDSTOP);
         System_Thread_sigiset = true;
     }
 
-    System_IntPtr flags = CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_IO | CLONE_SETTLS;
-    System_IntPtr reture = System_Syscall_clone__tls(flags | System_Signal_Number_SIGCHILD, stack_top, !tls ? null : &tls);
+    System_IntPtr flags = /* CLONE_THREAD */ CLONE_SIGHAND | CLONE_VM | CLONE_FS | CLONE_FILES | (!tls ? 0 : CLONE_SETTLS) | CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID;
+    System_Thread_PID reture = System_Syscall_clone__full(flags | System_Signal_Number_SIGCHILD, stack_top, &that->threadId, !tls ? null : &tls, &that->threadId);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
         System_Console_writeLine("System_Thread_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
         return null;
     }
-    System_Thread that = System_Memory_allocClass(typeof(System_Thread));
-    that->threadId = (System_ProcessId)reture;
+    #if DEBUG == DEBUG_System_Thread
+    if (!that->threadId) {
+        System_Console_writeLine("System_Thread_create Error: no that->threadId. reture {0:int32}", 1, reture);
+        that->threadId = reture;
+    }
+    System_Console_writeLine("System_Thread_create: threadId {0:int32}", 1, that->threadId);
+    #endif
     return that;
 }
 
@@ -119,10 +129,20 @@ void System_Thread_sleep(System_Size seconds) {
 
 enum {
     WNOHANG = 1, /* Don't block waiting.  */
+    WUNTRACED = 2,
     WSTOPPED = 2, /* Report stopped child (same as WUNTRACED). */
+    WEXITED = 4,
     WCONTINUED = 8, /* Report continued child.  */
+    WNOWAIT = 0x01000000,   /* Don't reap, just poll status.  */
+    WTHREAD = 0x20000000,
     WALL = 0x40000000,   /* Wait for any child.  */
     WCLONE = 0x80000000, /* Wait for cloned process.  */
+};
+
+enum {
+    WAITID_ALL, /* Wait for any child.  */
+    WAITID_TID, /* Wait for specified process.  */
+    WAITID_GID  /* Wait for members of process group.  */
 };
 
 System_Bool System_Thread_join(System_Thread that) {
@@ -138,23 +158,31 @@ void System_Thread_yield(void) {
 System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
     Debug_assert(that);
 
-    System_Thread_yield();
-
     if (that->threadId) {
         System_IntPtr status = 0;
         System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
         that->returnValue = status >> 8;
+
+        /* struct System_Signal signal; Stack_clear(signal);
+        struct System_Signal_Info info; Stack_clear(info);
+        struct System_TimeSpan timeout; Stack_clear(timeout);
+        System_Signal_add(&signal, System_Signal_Number_SIGCHILD);
+        timeout.sec = !dontwait ? -1 : 0;
+        timeout.usec = !dontwait ? -1 : 0;
+        System_IntPtr reture = System_Syscall_sigwait(&signal, &info, !dontwait ? &timeout : null); */
+
         System_ErrorCode errno = System_Syscall_get_Error();
-        if (errno || reture)
-            that->threadId = 0;
         if (errno) {
-            System_Console_writeLine("System_Thread_join Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+            System_Console_writeLine("System_Thread_join {0:uint} Error: {1:string}", 2, that->threadId, enum_getName(typeof(System_ErrorCode), errno));
+            that->threadId = 0;
             return true;
         }
+        if (reture == that->threadId) that->threadId = 0;
         return reture ? true : false;
     }
-    /*System_Console_writeLine("System_Thread_join status {0:uint:hex}, reture {1:uint:hex}, isRunning {2:bool}, returnValue: {3:uint:hex}", 4, 
-        status, reture, that->isRunning, that->returnValue);*/
+#if DEBUG == DEBUG_System_Thread
+    System_Console_write__string("System_Thread_join Error: was terminated\n");
+#endif
     return true;
 }
 
