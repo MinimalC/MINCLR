@@ -17,6 +17,10 @@
 #if !defined(code_System_Thread)
 #define code_System_Thread
 
+struct System_Type  System_ProcessType = { .base = { .type = typeof(System_Type) }, .name = "Process" };
+
+struct System_Type System_ThreadType = { .base = { .type = typeof(System_Type) }, .name = "Thread", .size = sizeof(struct System_Thread) };
+
 export thread System_Thread __Current = null;
 
 System_Var System_Thread_createStorage(void) {
@@ -28,7 +32,9 @@ System_Var __tls_get_addr(System_Var index) {
     return null; // throw
 }
 
-struct System_Type System_ThreadType = { .base = { .type = typeof(System_Type) }, .name = "Thread", .size = sizeof(struct System_Thread) };
+void System_Thread_yield(void) {
+    System_Syscall_sched_yield();
+}
 
 enum {
     STACK_SIZE = (8 * 1024 * 1024)
@@ -145,14 +151,38 @@ enum {
     WAITID_GID  /* Wait for members of process group.  */
 };
 
-System_Bool System_Thread_join(System_Thread that) {
-    return System_Thread_join__dontwait(that, false);
+System_Bool System_Thread_join2(System_Thread that) {
+    return System_Thread_join2__dontwait(that, false);
 }
 
-/* Now look, in System_Thread, if you join one, you want to wait until this ends. */
+System_Bool System_Thread_join2__dontwait(System_Thread that, System_Bool dontwait) {
+    Debug_assert(that);
 
-void System_Thread_yield(void) {
-    System_Syscall_sched_yield();
+    if (that->threadId) {
+        struct System_Signal signal; Stack_clear(signal);
+        struct System_Signal_Info info; Stack_clear(info);
+        struct System_TimeSpan timeout; Stack_clear(timeout);
+        System_Signal_add(&signal, System_Signal_Number_SIGCHILD);
+        timeout.sec = !dontwait ? -1 : 0;
+        System_IntPtr reture = System_Syscall_sigwait(&signal, &info, !dontwait ? &timeout : null);
+
+        System_ErrorCode errno = System_Syscall_get_Error();
+        if (errno) {
+            System_Console_writeLine("System_Thread_join2 {0:uint} Error: {1:string}", 2, that->threadId, enum_getName(typeof(System_ErrorCode), errno));
+            that->threadId = 0;
+            return true;
+        }
+        if (reture == that->threadId) that->threadId = 0;
+        return reture ? true : false;
+    }
+#if DEBUG == DEBUG_System_Thread
+    System_Console_write__string("System_Thread_join2: was terminated\n");
+#endif
+    return true;
+}
+
+System_Bool System_Thread_join(System_Thread that) {
+    return System_Thread_join__dontwait(that, false);
 }
 
 System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
@@ -162,14 +192,6 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
         System_IntPtr status = 0;
         System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
         that->returnValue = status >> 8;
-
-        /* struct System_Signal signal; Stack_clear(signal);
-        struct System_Signal_Info info; Stack_clear(info);
-        struct System_TimeSpan timeout; Stack_clear(timeout);
-        System_Signal_add(&signal, System_Signal_Number_SIGCHILD);
-        timeout.sec = !dontwait ? -1 : 0;
-        timeout.usec = !dontwait ? -1 : 0;
-        System_IntPtr reture = System_Syscall_sigwait(&signal, &info, !dontwait ? &timeout : null); */
 
         System_ErrorCode errno = System_Syscall_get_Error();
         if (errno) {
@@ -181,7 +203,7 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
         return reture ? true : false;
     }
 #if DEBUG == DEBUG_System_Thread
-    System_Console_write__string("System_Thread_join Error: was terminated\n");
+    System_Console_write__string("System_Thread_join: was terminated\n");
 #endif
     return true;
 }

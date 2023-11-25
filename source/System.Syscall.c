@@ -139,6 +139,7 @@ void System_Syscall_chdir(System_String8 path) {
     (void)System_Syscall_call01(System_Syscall_Command_chdir, (System_IntPtr)path);
 }
 
+
 internal System_Size System_Syscall_mmapCount = 0;
 
 System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_IntPtr map) {
@@ -168,9 +169,11 @@ void  System_Syscall_mprotect(System_Var address, System_Size length, System_Int
     (void)System_Syscall_call03(System_Syscall_Command_mprotect, (System_IntPtr)address, length, flags);
 }
 
+
 void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain) {
     (void)System_Syscall_call02(System_Syscall_Command_nanosleep, (System_IntPtr)request, (System_IntPtr)remain);
 }
+
 
 System_Thread_PID  System_Syscall_clone(System_IntPtr flags, System_Var stack) {
     return (System_Thread_PID)System_Syscall_call02(System_Syscall_Command_clone, flags, (System_IntPtr)stack);
@@ -192,6 +195,7 @@ System_Thread_PID  System_Syscall_waitid(System_IntPtr idType, System_Thread_PID
     return System_Syscall_call04(System_Syscall_Command_waitid, idType, id, (System_IntPtr)siginfo, options);
 }
 
+
 void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_Var old) {
     (void)System_Syscall_call03(System_Syscall_Command_rt_sigaction, signal, (System_IntPtr)action, (System_IntPtr)old);
 }
@@ -212,12 +216,14 @@ void  System_Syscall_sched_yield(void) {
     (void)System_Syscall_call00(System_Syscall_Command_sched_yield);
 }
 
-System_IntPtr  System_Syscall_getpid(void) {
-    return System_Syscall_call00(System_Syscall_Command_getpid);
+System_Thread_PID  System_Process_Id = 0;
+
+System_Thread_PID  System_Syscall_getpid(void) {
+    return (System_Thread_PID)System_Syscall_call00(System_Syscall_Command_getpid);
 }
 
-System_IntPtr  System_Syscall_gettid(void) {
-    return System_Syscall_call00(System_Syscall_Command_gettid);
+System_Thread_PID  System_Syscall_gettid(void) {
+    return (System_Thread_PID)System_Syscall_call00(System_Syscall_Command_gettid);
 }
 
 System_IntPtr  System_Syscall_prctl(System_IntPtr option, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5) {
@@ -227,6 +233,7 @@ System_IntPtr  System_Syscall_prctl(System_IntPtr option, System_IntPtr arg2, Sy
 System_IntPtr  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg) {
     return System_Syscall_call02(System_Syscall_Command_arch_prctl, option, arg);
 }
+
 
 System_IntPtr  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol) {
     return System_Syscall_call03(System_Syscall_Command_socket, addressFamily, socketType, protocol);

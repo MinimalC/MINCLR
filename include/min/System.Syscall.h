@@ -34,7 +34,7 @@ import System_IntPtr  System_Syscall_call06(System_Syscall_Command number, Syste
 #define Syscall_call06  System_Syscall_call06
 #endif
 
-export System_ErrorCode System_Syscall_error;
+export System_ErrorCode  System_Syscall_error;
 
 export void  System_Syscall_set_Error(System_ErrorCode error);
 export System_ErrorCode  System_Syscall_get_Error();
@@ -59,21 +59,19 @@ export System_Size  System_Syscall_lseek(System_Var filePtr, System_Size offset,
 export void  System_Syscall_fsync(System_Var filePtr);
 export void  System_Syscall_close(System_Var filePtr);
 export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, System_Var stat, System_IntPtr flags);
-
-export void System_Syscall_getcwd(System_String8 buffer, System_Size length);
-export void System_Syscall_chdir(System_String8 path);
+export void  System_Syscall_getcwd(System_String8 buffer, System_Size length);
+export void  System_Syscall_chdir(System_String8 path);
 
 export System_Var  System_Syscall_mmap(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags);
 export System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
 export System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
-export void System_Syscall_mmap__debug(void);
+export void  System_Syscall_mmap__debug(void);
 export void  System_Syscall_munmap(System_Var address, System_Size length);
 export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
 
 export void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain);
 
-typedef System_Int32 System_Thread_PID;
-
+typedef System_Int32  System_Thread_PID;
 export System_Thread_PID  System_Syscall_clone(System_IntPtr flags, System_Var stack);
 export System_Thread_PID  System_Syscall_clone__tls(System_IntPtr flags, System_Var stack, System_Var tls);
 export System_Thread_PID  System_Syscall_clone__full(System_IntPtr flags, System_Var stack, System_Var parent_threadId, System_Var tls, System_Var child_threadId);
@@ -87,8 +85,9 @@ export void  System_Syscall_sigqueue(System_Thread_PID id, System_IntPtr signal,
 export System_IntPtr  System_Syscall_sigwait(System_Var set, System_Var info, System_TimeSpan timeout);
 export void  System_Syscall_sched_yield(void);
 
-export System_IntPtr  System_Syscall_getpid(void);
-export System_IntPtr  System_Syscall_gettid(void);
+export System_Thread_PID  System_Process_Id;
+export System_Thread_PID  System_Syscall_getpid(void);
+export System_Thread_PID  System_Syscall_gettid(void);
 export System_IntPtr  System_Syscall_prctl(System_IntPtr option, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5);
 export System_IntPtr  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg);
 

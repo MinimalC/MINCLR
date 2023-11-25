@@ -49,9 +49,7 @@ int System_Runtime_main(int argc, char * argv[]) {
     System_Signal_act(System_Signal_Number_SIGFPE, System_Runtime_sigfault);
     System_Signal_act(System_Signal_Number_SIGSEGV, System_Runtime_sigfault);
 
-    System_Thread_PID pid = 0;
-    pid = System_Syscall_getpid();
-    System_Console_writeLine("Process PID: {0:uint32}", 1, pid);
+    System_Console_writeLine("System_Process_Id: {0:uint32}", 1, System_Process_Id);
 
     System_Size dummyC = 0;
     System_Thread dummys[64]; System_Stack_clear(dummys);
