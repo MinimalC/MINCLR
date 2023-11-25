@@ -30,6 +30,8 @@ void Dummy3(System_Size argc, System_Var argv[]) {
 
     System_Console_writeLine("System_Thread_Storage: {0:uint}", 1, __Storage);
     System_Console_writeLine("System_Thread_ErrorCode: {0:uint}", 1, __ErrorCode);
+    System_Size errorCode = System_Thread_Storage_getErrorCode();
+    System_Thread_Storage_setErrorCode(++errorCode);
     System_Console_writeLine("System_Thread_Exception: {0:uint}", 1, __Exception);
     System_Console_writeLine("System_Thread_Current: base.type 0x{0:uint:hex}, threadId {1:uint}, returnValue {2:uint}", 3, __Current.base.type, __Current.threadId, __Current.returnValue);
 }
@@ -59,11 +61,6 @@ int System_Runtime_main(int argc, char * argv[]) {
 
     /*System_Console_writeLine__string("Wait on Child0");
     System_Bool reture = System_Thread_join(dummy0);*/
-
-    System_Console_writeLine("System_Thread_Storage: {0:uint}", 1, __Storage);
-    System_Console_writeLine("System_Thread_ErrorCode: {0:uint}", 1, __ErrorCode);
-    System_Console_writeLine("System_Thread_Exception: {0:uint}", 1, __Exception);
-    System_Console_writeLine("System_Thread_Current: base.type 0x{0:uint:hex}, threadId {1:uint}, returnValue {2:uint}", 3, __Current.base.type, __Current.threadId, __Current.returnValue);
 
     while (1) {
         System_Bool reture0 = false, reture1 = false, reture2 = false;

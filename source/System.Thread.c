@@ -19,6 +19,19 @@ export thread System_Size __ErrorCode = 3;
 export thread System_Exception __Exception = (System_Exception)7;
 export thread struct System_Thread __Current = { .base = { .type = typeof(System_Thread) }, .threadId = 31, .returnValue = 63, };
 
+System_Size System_Thread_Storage_getErrorCode(void) {
+
+    System_Console_writeLine("System_Thread_Storage_getErrorCode: __ErrorCode {0:uint}", 1, __ErrorCode);
+
+    return __ErrorCode;
+}
+
+void System_Thread_Storage_setErrorCode(System_Size value) {
+
+    __ErrorCode = value;
+    System_Console_writeLine("System_Thread_Storage_setErrorCode: __ErrorCode {0:uint}", 1, __ErrorCode);
+}
+
 System_Var System_Thread_createStorage(void) {
     return System_ELF64Assembly_createThread();
 }
