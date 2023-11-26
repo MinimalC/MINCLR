@@ -28,8 +28,6 @@ export void System_Thread_sleep(System_Size seconds);
 export void System_Thread_yield(void);
 export System_Bool System_Thread_join(System_Thread that);
 export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait);
-export System_Bool System_Thread_join2(System_Thread that);
-export System_Bool System_Thread_join2__dontwait(System_Thread that, System_Bool dontwait);
 import void System_Thread_boot(void);
 
 export System_Var System_Thread_createStorage(void);

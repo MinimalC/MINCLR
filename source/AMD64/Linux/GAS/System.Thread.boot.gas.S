@@ -20,11 +20,11 @@ System_Thread_boot:
     movq (%rsp),%r10    /* arg0: that */
     movl %eax,12(%r10)  /* that->returnValue */ 
 
-    movq System_Process_Id@GOTPCREL(%rip), %rdi
+    /*movl System_Process_Id@GOTPCREL(%rip), %edi
     movq $129,%rax      # System_Syscall_Command_rt_sigqueueinfo
     movq $17,%rsi       # System_Signal_Number_SIGCHILD
-    movl 8(%r10),%edx   # that->threadId
-    syscall
+    movq $0,%rdx
+    syscall*/
 
     movl 12(%r10),%edi    
     movq $60,%rax    /* System_Syscall_Command_exit */
