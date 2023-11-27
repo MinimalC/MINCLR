@@ -14,14 +14,15 @@
 #if !defined(have_System_Thread)
 #include <min/System.Thread.h>
 #endif
+#if !defined(have_System_Atomic)
+#include <min/System.Atomic.h>
+#endif
 #if !defined(code_System_Thread)
 #define code_System_Thread
 
-struct System_Type  System_ProcessType = { .base = { .type = typeof(System_Type) }, .name = "Process" };
-
 struct System_Type System_ThreadType = { .base = { .type = typeof(System_Type) }, .name = "Thread", .size = sizeof(struct System_Thread) };
 
-export thread System_Thread __Current = null;
+export thread System_Thread System_Thread_Current = null;
 
 System_Var System_Thread_createStorage(void) {
     return System_ELF64Assembly_createThread();
@@ -104,15 +105,15 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     if (!System_Thread_sigiset) {
         System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
         #if DEBUG == DEBUG_System_Thread
-        System_Signal_act(System_Signal_Number_SIGCHILD, System_Thread_sigchild);
+        System_Signal_act__flags(System_Signal_Number_SIGCHILD, System_Thread_sigchild, 0);
         #else
-        System_Signal_handle(System_Signal_Number_SIGCHILD, function_System_Signal_handler_DEFAULT);
+        System_Signal_handle__flags(System_Signal_Number_SIGCHILD, function_System_Signal_handler_DEFAULT, 0);
         #endif
         System_Thread_sigiset = true;
     }
 
     System_IntPtr flags = CLONE_SIGHAND | CLONE_VM | CLONE_FS | CLONE_FILES | (!tls ? 0 : CLONE_SETTLS) | CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID;
-    System_Thread_PID reture = System_Syscall_clone__full(flags | System_Signal_Number_SIGCHILD, stack_top, &that->threadId, !tls ? null : &tls, &that->threadId);
+    System_Thread_TID reture = System_Syscall_clone__full(flags | System_Signal_Number_SIGCHILD, stack_top, &that->threadId, !tls ? null : &tls, &that->threadId);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
         System_Console_writeLine("System_Thread_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
@@ -156,12 +157,11 @@ System_Bool System_Thread_join(System_Thread that) {
 }
 
 System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
-    Debug_assert(that);
 
     if (that->threadId) {
         System_IntPtr status = 0;
-        System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait, null);
-        that->returnValue = status >> 8;
+        System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait);
+        if (reture == that->threadId) that->returnValue = status >> 8;
 
         System_ErrorCode errno = System_Syscall_get_Error();
         if (errno) {
@@ -169,8 +169,11 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
             that->threadId = 0;
             return true;
         }
-        if (reture == that->threadId) that->threadId = 0;
-        return reture ? true : false;
+        if (reture == that->threadId) {
+            that->threadId = 0;
+            return true;
+        }
+        return false;
     }
 #if DEBUG == DEBUG_System_Thread
     System_Console_write__string("System_Thread_join: was terminated\n");

@@ -1,5 +1,5 @@
 #define using_System
-#include <min/System.values.auto.h>
+#include <min/System.Integers.auto.h>
 #include <min/System.Console.h>
 #include <min/System.Memory.h>
 

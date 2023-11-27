@@ -29,9 +29,9 @@ int System_Runtime_main(int argc, char * argv[]) {
     System_Console_write("System_Syscall_time: now {0:int}, ", 1, now);
 
     System_Size seconds, minutes, hours, days = 0;
-    System_Size rest = Math_divRem__UInt64(value.sec,60,&seconds);
-    rest = Math_divRem__UInt64(rest,60,&minutes);
-    rest = Math_divRem__UInt64(rest,24,&hours);
+    System_Size rest = System_UInt64_divRem(value.sec,60,&seconds);
+    rest = System_UInt64_divRem(rest,60,&minutes);
+    rest = System_UInt64_divRem(rest,24,&hours);
     days = rest / 24;
     System_Console_writeLine("das sind etwa {0:uint} Tage, {1:uint} Stunden, {2:uint} Minuten, {3:uint} Sekunden", 4, days, hours, minutes, seconds);
 

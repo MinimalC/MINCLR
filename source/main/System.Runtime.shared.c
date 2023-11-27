@@ -134,7 +134,7 @@ void System_Runtime_start(System_Var  * stack) {
     }
     #endif
 
-    System_Process_Id = System_Syscall_getpid();
+    System_Thread_PID = System_Syscall_getpid();
 
     function_System_Runtime_main entry = &System_Runtime_main;
     System_String8 entryName = "System_Runtime_main";

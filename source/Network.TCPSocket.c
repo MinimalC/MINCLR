@@ -3,7 +3,7 @@
 #include "System.internal.h"
 #endif
 #if !defined(have_System_UInt32)
-#include <min/System.values.auto.h>
+#include <min/System.Integers.auto.h>
 #endif
 #if !defined(have_System_Memory)
 #include <min/System.Memory.h>

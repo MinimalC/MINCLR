@@ -4,7 +4,7 @@
 #include "System.internal.h"
 #endif
 #if !defined(have_System_UInt8Array)
-#include <min/System.valueArrays.auto.h>
+#include <min/System.IntegerArrays.auto.h>
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
@@ -85,7 +85,7 @@ struct System_Type System_UInt8ArrayType = { .base = { .type = typeof(System_Typ
 #include "System.internal.h"
 #endif
 #if !defined(have_System_UInt16Array)
-#include <min/System.valueArrays.auto.h>
+#include <min/System.IntegerArrays.auto.h>
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
@@ -166,7 +166,7 @@ struct System_Type System_UInt16ArrayType = { .base = { .type = typeof(System_Ty
 #include "System.internal.h"
 #endif
 #if !defined(have_System_UInt32Array)
-#include <min/System.valueArrays.auto.h>
+#include <min/System.IntegerArrays.auto.h>
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
@@ -247,7 +247,7 @@ struct System_Type System_UInt32ArrayType = { .base = { .type = typeof(System_Ty
 #include "System.internal.h"
 #endif
 #if !defined(have_System_UInt64Array)
-#include <min/System.valueArrays.auto.h>
+#include <min/System.IntegerArrays.auto.h>
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
@@ -328,7 +328,7 @@ struct System_Type System_UInt64ArrayType = { .base = { .type = typeof(System_Ty
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Int8Array)
-#include <min/System.valueArrays.auto.h>
+#include <min/System.IntegerArrays.auto.h>
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
@@ -409,7 +409,7 @@ struct System_Type System_Int8ArrayType = { .base = { .type = typeof(System_Type
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Int16Array)
-#include <min/System.valueArrays.auto.h>
+#include <min/System.IntegerArrays.auto.h>
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
@@ -490,7 +490,7 @@ struct System_Type System_Int16ArrayType = { .base = { .type = typeof(System_Typ
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Int32Array)
-#include <min/System.valueArrays.auto.h>
+#include <min/System.IntegerArrays.auto.h>
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
@@ -571,7 +571,7 @@ struct System_Type System_Int32ArrayType = { .base = { .type = typeof(System_Typ
 #include "System.internal.h"
 #endif
 #if !defined(have_System_Int64Array)
-#include <min/System.valueArrays.auto.h>
+#include <min/System.IntegerArrays.auto.h>
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>

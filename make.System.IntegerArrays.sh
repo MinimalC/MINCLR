@@ -21,8 +21,8 @@
 ./make.Generic.T.awk Namespace=System Type=Int64 generic/valueArrayEnumeratorT.awk.h generic/valueArrayEnumeratorT.awk.c
 
 
-file_h="include/min/System.valueArrays.auto.h"
-file_c="source/System.valueArrays.auto.c"
+file_h="include/min/System.IntegerArrays.auto.h"
+file_c="source/System.IntegerArrays.auto.c"
 echo -n > $file_h
 echo -n > $file_c
 

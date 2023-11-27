@@ -10,7 +10,7 @@
 /* seeAlso valueArrayEnumeratorT */
 /* GENERIC */
 #if !defined(have_Generic_T0)
-#include "System.values.auto.h"
+#include "System.Integers.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"

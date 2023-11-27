@@ -15,7 +15,7 @@
 #include <min/System.Console.h>
 #endif
 #if !defined(have_System_Int64)
-#include <min/System.values.auto.h>
+#include <min/System.Integers.auto.h>
 #endif
 #if !defined(code_System_Char8)
 #define code_System_Char8

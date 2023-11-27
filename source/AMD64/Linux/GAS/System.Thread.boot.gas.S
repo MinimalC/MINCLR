@@ -8,7 +8,7 @@ System_Thread_boot:
     movq $4098,%rdi /* ARCH_SET_FS */
     movq 8(%rsp),%rsi /* arg1: tls */
     syscall
-    movq __Current@GOTTPOFF(%rip), %rax
+    movq System_Thread_Current@GOTTPOFF(%rip), %rax
     movq (%rsp),%rdi
     movq %rdi,%fs:(%rax)
 
@@ -20,10 +20,10 @@ System_Thread_boot:
     movq (%rsp),%r10    /* arg0: that */
     movl %eax,12(%r10)  /* that->returnValue */ 
 
-    /*movl System_Process_Id@GOTPCREL(%rip), %edi
-    movq $129,%rax      # System_Syscall_Command_rt_sigqueueinfo
-    movq $17,%rsi       # System_Signal_Number_SIGCHILD
-    movq $0,%rdx
+    /*movl System_Thread_PID@GOTPCREL(%rip), %edi
+    movl 8(%r10),%esi   # that->threadId
+    movq $234,%rax      # System_Syscall_Command_tgkill
+    movq $17,%rdx       # System_Signal_Number_SIGCHILD
     syscall*/
 
     movl 12(%r10),%edi    

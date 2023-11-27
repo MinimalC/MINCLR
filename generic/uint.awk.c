@@ -9,7 +9,7 @@
 #include <min/System.String8.h>
 #endif
 #if !defined(have_Generic_T0)
-#include <min/System.values.auto.h>
+#include <min/System.Integers.auto.h>
 #endif
 #if !defined(code_Generic_T0)
 #define code_Generic_T0
@@ -22,159 +22,159 @@ System_Bool  Generic_T0_isPrintable(Generic_T0 that) {
     return inline_Generic_T0_isPrintable(that);
 }
 
-System_Size  stack_Generic_T0_toString8base2(Generic_T0 that, System_Char8 array[Generic_T0_String8base2Length_DEFAULT + 1]) {
-    System_String8 string = array + Generic_T0_String8base2Length_DEFAULT - 1;
+System_Size  stack_Generic_T0_toString8base2(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base2 + 1]) {
+    System_String8 string = array + Generic_T0_String8Capacity_base2 - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
-    for (i = 0; i < Generic_T0_String8base2Length_DEFAULT; ++i) {
+    for (i = 0; i < Generic_T0_String8Capacity_base2; ++i) {
         n = (that >> i) & 1;
         *(string - i) = '0' + n;
         if (!n && i > 0) ++zeroes;
         else zeroes = 0;
     }
     string = array;
-    System_Size numbers = Generic_T0_String8base2Length_DEFAULT - zeroes;
+    System_Size numbers = Generic_T0_String8Capacity_base2 - zeroes;
     if (zeroes) {
-        for (i = 0; i < Generic_T0_String8base2Length_DEFAULT; ++i) {
+        for (i = 0; i < Generic_T0_String8Capacity_base2; ++i) {
             if (i < numbers) *(string + i) = *(string + i + zeroes);
 //            else *(string + i) = 'x';
             else *(string + i) = 0;
         }
     }
-    *(array + Generic_T0_String8base2Length_DEFAULT) = 0;
+    *(array + Generic_T0_String8Capacity_base2) = 0;
     return numbers;
 }
 
 System_String8  Generic_T0_toString8base2(Generic_T0 that) {
-    System_Char8 array[Generic_T0_String8base2Length_DEFAULT + 1];
+    System_Char8 array[Generic_T0_String8Capacity_base2 + 1];
     System_Size length = stack_Generic_T0_toString8base2(that, array);
     System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
     System_String8_copyTo(array, reture);
     return reture;
 }
 
-System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1]) {
-    System_String8 string = array + Generic_T0_String8base4Length_DEFAULT - 1;
+System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base4 + 1]) {
+    System_String8 string = array + Generic_T0_String8Capacity_base4 - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
-    for (i = 0; i < Generic_T0_String8base4Length_DEFAULT; ++i) {
+    for (i = 0; i < Generic_T0_String8Capacity_base4; ++i) {
         n = (that >> (i * 2)) & 3;
         *(string - i) = '0' + n;
         if (!n && i > 0) ++zeroes;
         else zeroes = 0;
     }
     string = array;
-    System_Size numbers = Generic_T0_String8base4Length_DEFAULT - zeroes;
+    System_Size numbers = Generic_T0_String8Capacity_base4 - zeroes;
     if (zeroes) {
-        for (i = 0; i < Generic_T0_String8base4Length_DEFAULT; ++i) {
+        for (i = 0; i < Generic_T0_String8Capacity_base4; ++i) {
             if (i < numbers) *(string + i) = *(string + i + zeroes);
 //            else *(string + i) = 'x';
             else *(string + i) = 0;
         }
     }
-    *(array + Generic_T0_String8base4Length_DEFAULT) = 0;
+    *(array + Generic_T0_String8Capacity_base4) = 0;
     return numbers;
 }
 
 System_String8  Generic_T0_toString8base4(Generic_T0 that) {
-    System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1];
+    System_Char8 array[Generic_T0_String8Capacity_base4 + 1];
     System_Size length = stack_Generic_T0_toString8base4(that, array);
     System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
     System_String8_copyTo(array, reture);
     return reture;
 }
 
-System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1]) {
-    System_String8 string = array + Generic_T0_String8base8Length_DEFAULT - 1;
+System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base8 + 1]) {
+    System_String8 string = array + Generic_T0_String8Capacity_base8 - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
-    for (i = 0; i < Generic_T0_String8base8Length_DEFAULT; ++i) {
+    for (i = 0; i < Generic_T0_String8Capacity_base8; ++i) {
         n = (that >> (i * 3)) & 7;
         *(string - i) = '0' + n;
         if (!n && i > 0) ++zeroes;
         else zeroes = 0;
     }
     string = array;
-    System_Size numbers = Generic_T0_String8base8Length_DEFAULT - zeroes;
+    System_Size numbers = Generic_T0_String8Capacity_base8 - zeroes;
     if (zeroes) {
-        for (i = 0; i < Generic_T0_String8base8Length_DEFAULT; ++i) {
+        for (i = 0; i < Generic_T0_String8Capacity_base8; ++i) {
             if (i < numbers) *(string + i) = *(string + i + zeroes);
 //            else *(string + i) = 'x';
             else *(string + i) = 0;
         }
     }
-    *(array + Generic_T0_String8base8Length_DEFAULT) = 0;
+    *(array + Generic_T0_String8Capacity_base8) = 0;
     return numbers;
 }
 
 System_String8  Generic_T0_toString8base8(Generic_T0 that) {
-    System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1];
+    System_Char8 array[Generic_T0_String8Capacity_base8 + 1];
     System_Size length = stack_Generic_T0_toString8base8(that, array);
     System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
     System_String8_copyTo(array, reture);
     return reture;
 }
 
-System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1]) {
-    System_String8 string = array + Generic_T0_String8base16Length_DEFAULT - 1;
+System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base16 + 1]) {
+    System_String8 string = array + Generic_T0_String8Capacity_base16 - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
-    for (i = 0; i < Generic_T0_String8base16Length_DEFAULT; ++i) {
+    for (i = 0; i < Generic_T0_String8Capacity_base16; ++i) {
         n = (that >> (i * 4)) & 0xF;
         *(string - i) = n > 9 ? 'A' + (n - 10) : '0' + n;
         if (!n && i > 0) ++zeroes;
         else zeroes = 0;
     }
     string = array;
-    System_Size numbers = Generic_T0_String8base16Length_DEFAULT - zeroes;
+    System_Size numbers = Generic_T0_String8Capacity_base16 - zeroes;
     if (!numbers) { numbers = 1; --zeroes; }
     if (zeroes) {
-        for (i = 0; i < Generic_T0_String8base16Length_DEFAULT; ++i) {
+        for (i = 0; i < Generic_T0_String8Capacity_base16; ++i) {
             if (i < numbers) *(string + i) = *(string + i + zeroes);
 //            else *(string + i) = 'x';
             else *(string + i) = 0;
         }
     }
-    *(array + Generic_T0_String8base16Length_DEFAULT) = 0;
+    *(array + Generic_T0_String8Capacity_base16) = 0;
     return numbers;
 }
 
 System_String8  Generic_T0_toString8base16(Generic_T0 that) {
-    System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1];
+    System_Char8 array[Generic_T0_String8Capacity_base16 + 1];
     System_Size length = stack_Generic_T0_toString8base16(that, array);
     System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
     System_String8_copyTo(array, reture);
     return reture;
 }
 
-System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]) {
+System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base10 + 1]) {
     struct System_Decimal decimal; System_Stack_clear(decimal);
     System_Decimal_init__T0(&decimal, that);
     System_String8 decimal_string = decimal.value + System_Decimal_Capacity_DEFAULT - 1;
-    System_String8 string = array + Generic_T0_String8base10Length_DEFAULT - 1;
+    System_String8 string = array + Generic_T0_String8Capacity_base10 - 1;
     System_Char8 n;
     System_Size i, zeroes = 0;
-    for (i = 0; i < Generic_T0_String8base10Length_DEFAULT; ++i) {
+    for (i = 0; i < Generic_T0_String8Capacity_base10; ++i) {
         n = *(decimal_string - i);
         *(string - i) = '0' + n;
         if (!n && i > 0) ++zeroes;
         else zeroes = 0;
     }
     string = array;
-    System_Size numbers = Generic_T0_String8base10Length_DEFAULT - zeroes;
+    System_Size numbers = Generic_T0_String8Capacity_base10 - zeroes;
     if (zeroes) {
-        for (i = 0; i < Generic_T0_String8base10Length_DEFAULT; ++i) {
+        for (i = 0; i < Generic_T0_String8Capacity_base10; ++i) {
             if (i < numbers) *(string + i) = *(string + i + zeroes);
 //            else *(string + i) = 'x';
             else *(string + i) = 0;
         }
     }
-    *(array + Generic_T0_String8base10Length_DEFAULT) = 0;
+    *(array + Generic_T0_String8Capacity_base10) = 0;
     return numbers;
 }
 
 System_String8  Generic_T0_toString8base10(Generic_T0 that) {
-    System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1];
+    System_Char8 array[Generic_T0_String8Capacity_base10 + 1];
     System_Size length = stack_Generic_T0_toString8base10(that, array);
     System_String8 reture = (System_String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
     System_String8_copyTo(array, reture);
@@ -226,6 +226,14 @@ Generic_T0  Generic_T0_parsebase10(System_String8 that) {
 
     return reture;
 }
+
+#if defined(have_AMD64)
+#else
+Generic_T0  Generic_T0_divRem(Generic_T0 divident, Generic_T0 divisor, Generic_T0 ref remainder) {
+    *remainder = divident % divisor;
+    return divident / divisor;
+}
+#endif
 
 Generic_T0  Generic_T0_toNetworkOrder(Generic_T0 that) {
     return inline_Generic_T0_toNetworkOrder(that);

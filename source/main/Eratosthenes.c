@@ -12,7 +12,7 @@ Bool Eratosthenes_IsPrime(UInt64 n, UInt64 * minimalquotient, UInt64 * quotient)
 
 	UInt64 primeI = 2, primeN = 3, primeN_hoch2 = 9, quotient1 = 0, remainder = 0;
 
-    /* UInt64 div2 = System_Math_divRem(n, 2, &remainder); */
+    /* UInt64 div2 = System_UInt64_divRem(n, 2, &remainder); */
 
 	while (0U < ++primeI) {
 		/* now primeI => [ 3 ] == 5 */
@@ -38,7 +38,7 @@ Bool Eratosthenes_IsPrime(UInt64 n, UInt64 * minimalquotient, UInt64 * quotient)
         }
 
 
-        quotient1 = System_Math_divRem__UInt64(n, primeN, &remainder);
+        quotient1 = System_UInt64_divRem(n, primeN, &remainder);
 
     	if ( remainder == 0 ) {
             *minimalquotient = primeN;
@@ -68,7 +68,7 @@ int System_Runtime_main(int argc, char *argv[]) {
 
     //System_Char8 nP[] = "n                    P                     \n";
     System_Char8 P[] = "                       \n";
-    System_Char8 decimol[System_UInt64_String8base10Length_DEFAULT + 1] = { };
+    System_Char8 decimol[System_UInt64_String8Capacity_base10 + 1] = { };
 
 	UInt64 n = 5U;
 	UInt64 minimalquotient = 0, quotient = 0; /* knownPrimesL_remainder = 0; */

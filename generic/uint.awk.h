@@ -38,18 +38,20 @@ export struct System_Type  Generic_T0Type;
 ##else
 ##error "Unknown Type. System.uint.awk implements UInt8, UInt16, UInt32 and UInt64"
 ##endif
-#define Generic_T0_String8base2Length_DEFAULT  #b2L
-#define Generic_T0_String8base4Length_DEFAULT  #b4L
-#define Generic_T0_String8base8Length_DEFAULT  #b8L
-#define Generic_T0_String8base16Length_DEFAULT  #b16L
-#define Generic_T0_String8base10Length_DEFAULT  #b10L
+enum {
+    Generic_T0_String8Capacity_base2 = #b2L,
+    Generic_T0_String8Capacity_base4 = #b4L,
+    Generic_T0_String8Capacity_base8 = #b8L,
+    Generic_T0_String8Capacity_base16 = #b16L,
+    Generic_T0_String8Capacity_base10 = #b10L,
+};
 export System_Bool  Generic_T0_isPrintable(Generic_T0 that);
 #define inline_Generic_T0_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
-export System_Size  stack_Generic_T0_toString8base2(Generic_T0 that, System_Char8 array[Generic_T0_String8base2Length_DEFAULT + 1]);
-export System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1]);
-export System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1]);
-export System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1]);
-export System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]);
+export System_Size  stack_Generic_T0_toString8base2(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base2 + 1]);
+export System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base4 + 1]);
+export System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base8 + 1]);
+export System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base16 + 1]);
+export System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base10 + 1]);
 export System_String8  Generic_T0_toString8base2(Generic_T0 that);
 export System_String8  Generic_T0_toString8base4(Generic_T0 that);
 export System_String8  Generic_T0_toString8base8(Generic_T0 that);
@@ -57,10 +59,19 @@ export System_String8  Generic_T0_toString8base16(Generic_T0 that);
 export System_String8  Generic_T0_toString8base10(Generic_T0 that);
 export Generic_T0  Generic_T0_parsebase10(System_String8 that);
 export Generic_T0  Generic_T0_toNetworkOrder(Generic_T0 that);
+
+#if defined(have_AMD64)
+import Generic_T0  Generic_T0_divRem(Generic_T0 divident, Generic_T0 divisor, Generic_T0 ref remainder);
+#else
+export Generic_T0  Generic_T0_divRem(Generic_T0 divident, Generic_T0 divisor, Generic_T0 ref remainder);
+#endif
+
 ##if Type == "UInt16"
 #define inline_Generic_T0_toNetworkOrder(n)  ( ( ( n & 0xFF00 ) >> 8  ) | ( (n & 0x00FF ) << 8 ) )
+
 ##else if Type == "UInt32"
 #define inline_Generic_T0_toNetworkOrder(n)  ( ( ( n & 0xFF000000 ) >> 24  ) | ( ( n & 0x00FF0000 ) >> 8  ) | ( ( n & 0x0000FF00 ) << 8  ) | ( (n & 0x000000FF ) << 24 ) )
+
 ##else if Type == "UInt64"
 #define inline_Generic_T0_toNetworkOrder(n):
 	((((n) & 0xff00000000000000) >> 56)
@@ -72,7 +83,9 @@ export Generic_T0  Generic_T0_toNetworkOrder(Generic_T0 that);
     |(((n) & 0x000000000000ff00) << 40)
     |(((n) & 0x00000000000000ff) << 56))
 #end
+
 ##else if Type == "UInt8"
+#define inline_Generic_T0_add(a, b)  ((a) == 0 ? (b) : ((b) == 0 ? (a) : ((b) > 0 ? (Generic_T0_Max - (b) > (a) ? (a) + (b) : 0) : ((Generic_T0_Min - (b) < (a)) ? (a) + (b) : 0))))
 #define inline_Generic_T0_toNetworkOrder(n)  ( n )
 ##else
 ##error "Unknown Type. System.uint.awk implements UInt8, UInt16, UInt32 and UInt64"

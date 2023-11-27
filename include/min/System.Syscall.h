@@ -71,23 +71,23 @@ export void  System_Syscall_mprotect(System_Var address, System_Size length, Sys
 
 export void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain);
 
-typedef System_Int32  System_Thread_PID;
-export System_Thread_PID  System_Syscall_clone(System_IntPtr flags, System_Var stack);
-export System_Thread_PID  System_Syscall_clone__tls(System_IntPtr flags, System_Var stack, System_Var tls);
-export System_Thread_PID  System_Syscall_clone__full(System_IntPtr flags, System_Var stack, System_Var parent_threadId, System_Var tls, System_Var child_threadId);
-export System_Thread_PID  System_Syscall_wait(System_Thread_PID id, System_IntPtr * status, System_IntPtr flags, System_Var usage);
-export System_Thread_PID  System_Syscall_waitid(System_IntPtr idType, System_Thread_PID id, System_Var siginfo, System_IntPtr options);
+typedef System_Int32  System_Thread_TID;
+export System_Thread_TID  System_Syscall_clone(System_IntPtr flags, System_Var stack);
+export System_Thread_TID  System_Syscall_clone__tls(System_IntPtr flags, System_Var stack, System_Var tls);
+export System_Thread_TID  System_Syscall_clone__full(System_IntPtr flags, System_Var stack, System_Var parent_threadId, System_Var tls, System_Var child_threadId);
+export System_Thread_TID  System_Syscall_wait(System_Thread_TID id, System_IntPtr * status, System_IntPtr flags);
+export System_Thread_TID  System_Syscall_waitid(System_IntPtr idType, System_Thread_TID id, System_Var siginfo, System_IntPtr options);
 
 export void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_Var old);
 export void  System_Syscall_sigprocmask(System_IntPtr how, System_Var set, System_Var old, System_IntPtr setsize);
 import void  System_Syscall_sigreturn(void);
-export void  System_Syscall_sigqueue(System_Thread_PID id, System_IntPtr signal, System_IntPtr value);
+export void  System_Syscall_sigqueue(System_Thread_TID id, System_IntPtr signal, System_IntPtr value);
 export System_IntPtr  System_Syscall_sigwait(System_Var set, System_Var info, System_TimeSpan timeout);
 export void  System_Syscall_sched_yield(void);
 
-export System_Thread_PID  System_Process_Id;
-export System_Thread_PID  System_Syscall_getpid(void);
-export System_Thread_PID  System_Syscall_gettid(void);
+export System_Thread_TID  System_Thread_PID;
+export System_Thread_TID  System_Syscall_getpid(void);
+export System_Thread_TID  System_Syscall_gettid(void);
 export System_IntPtr  System_Syscall_prctl(System_IntPtr option, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5);
 export System_IntPtr  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg);
 

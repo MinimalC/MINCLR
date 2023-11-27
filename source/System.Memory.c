@@ -8,8 +8,8 @@
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>
 #endif
-#if !defined(have_System_Math)
-#include <min/System.Math.h>
+#if !defined(have_System_UInt8)
+#include <min/System.Integers.auto.h>
 #endif
 #if !defined(have_System_Console)
 #include <min/System.Console.h>
@@ -177,7 +177,7 @@ System_Console_writeLine("System_Memory_ProcessVars({0:uint}): new length {1:uin
             mem64h = (System_Memory_Page)map;
 #if DEBUG == DEBUG_System_Memory
             Size payload;
-            Size pageSize = System_Math_divRem__UInt64(max - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(struct System_Object), &payload);
+            Size pageSize = System_UInt64_divRem(max - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(struct System_Object), &payload);
 #endif
             mem64h->length = max;
             array(mem64k->value)[i] = mem64h;

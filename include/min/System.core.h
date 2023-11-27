@@ -9,8 +9,8 @@
 #include "System.String.h"
 #include "System.String8.h"
 #include "System.Decimal.h"
-#include "System.values.auto.h"
-#include "System.valueArrays.auto.h"
+#include "System.Integers.auto.h"
+#include "System.IntegerArrays.auto.h"
 
 #include "System.VarArray.h"
 #include "System.VarDictionary.h"
@@ -30,6 +30,7 @@
 #include "System.Environment.h"
 #include "System.Signal.h"
 #include "System.Thread.h"
+#include "System.Atomic.h"
 
 #include "Crypto.SipHash48.h"
 

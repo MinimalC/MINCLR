@@ -39,25 +39,25 @@ export struct System_Type  Generic_T0Type;
 ##else
 ##error "Unknown Type. System.int.awk implements Int8, Int16, Int32 and Int64."
 ##endif
-
-#define Generic_T0_String8base2Length_DEFAULT  #(b2L + 1)
-#define Generic_T0_String8base4Length_DEFAULT  #(b4L + 1)
-#define Generic_T0_String8base8Length_DEFAULT  #(b8L + 1)
-#define Generic_T0_String8base16Length_DEFAULT  #(b16L + 1)
-#define Generic_T0_String8base10Length_DEFAULT  #(b10L + 1)
-
+enum {
+    Generic_T0_String8Capacity_base2 = #(b2L + 1),
+    Generic_T0_String8Capacity_base4 = #(b4L + 1),
+    Generic_T0_String8Capacity_base8 = #(b8L + 1),
+    Generic_T0_String8Capacity_base16 = #(b16L + 1),
+    Generic_T0_String8Capacity_base10 = #(b10L + 1),
+};
 export System_Bool  Generic_T0_isPrintable(Generic_T0 that);
-export System_Size  stack_Generic_T0_toString8base2(Generic_T0 that, System_Char8 array[Generic_T0_String8base2Length_DEFAULT + 1]);
-export System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array[Generic_T0_String8base4Length_DEFAULT + 1]);
-export System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array[Generic_T0_String8base8Length_DEFAULT + 1]);
-export System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 array[Generic_T0_String8base16Length_DEFAULT + 1]);
-export System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8base10Length_DEFAULT + 1]);;
+#define inline_Generic_T0_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
+export System_Size  stack_Generic_T0_toString8base2(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base2 + 1]);
+export System_Size  stack_Generic_T0_toString8base4(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base4 + 1]);
+export System_Size  stack_Generic_T0_toString8base8(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base8 + 1]);
+export System_Size  stack_Generic_T0_toString8base16(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base16 + 1]);
+export System_Size  stack_Generic_T0_toString8base10(Generic_T0 that, System_Char8 array[Generic_T0_String8Capacity_base10 + 1]);;
 export System_String8  Generic_T0_toString8base2(Generic_T0 that);
 export System_String8  Generic_T0_toString8base4(Generic_T0 that);
 export System_String8  Generic_T0_toString8base8(Generic_T0 that);
 export System_String8  Generic_T0_toString8base16(Generic_T0 that);
 export System_String8  Generic_T0_toString8base10(Generic_T0 that);
-#define inline_Generic_T0_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 #if defined(using_Generic)
 #define T0Type  Generic_T0Type
 #define T0_isPrintable  Generic_T0_isPrintable

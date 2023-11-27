@@ -16,8 +16,6 @@
 #include "System.ICollection.c"
 #include "System.IStream.c"
 
-#include "System.Math.c"
-
 #include "System.Object.c"
 
 #include "Crypto.SipHash48.c"
@@ -25,8 +23,8 @@
 #include "System.Exception.c"
 #include "System.Syscall.c"
 
-#include "System.values.auto.c"
-#include "System.valueArrays.auto.c"
+#include "System.Integers.auto.c"
+#include "System.IntegerArrays.auto.c"
 
 #include "System.VarArray.c"
 #include "System.VarDictionary.c"
@@ -43,6 +41,7 @@
 
 #include "System.Signal.c"
 #include "System.Thread.c"
+#include "System.Atomic.c"
 
 #include "System.ELF64Assembly.c"
 #include "Network.TCPSocket.c"

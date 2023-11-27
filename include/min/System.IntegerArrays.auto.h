@@ -1,7 +1,7 @@
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System_UInt8)
-#include "System.values.auto.h"
+#include "System.Integers.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"
@@ -80,7 +80,7 @@ export System_IEnumerator  base_System_UInt8Array_getEnumerator(System_UInt8Arra
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System_UInt16)
-#include "System.values.auto.h"
+#include "System.Integers.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"
@@ -159,7 +159,7 @@ export System_IEnumerator  base_System_UInt16Array_getEnumerator(System_UInt16Ar
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System_UInt32)
-#include "System.values.auto.h"
+#include "System.Integers.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"
@@ -238,7 +238,7 @@ export System_IEnumerator  base_System_UInt32Array_getEnumerator(System_UInt32Ar
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System_UInt64)
-#include "System.values.auto.h"
+#include "System.Integers.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"
@@ -317,7 +317,7 @@ export System_IEnumerator  base_System_UInt64Array_getEnumerator(System_UInt64Ar
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System_Int8)
-#include "System.values.auto.h"
+#include "System.Integers.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"
@@ -396,7 +396,7 @@ export System_IEnumerator  base_System_Int8Array_getEnumerator(System_Int8Array 
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System_Int16)
-#include "System.values.auto.h"
+#include "System.Integers.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"
@@ -475,7 +475,7 @@ export System_IEnumerator  base_System_Int16Array_getEnumerator(System_Int16Arra
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System_Int32)
-#include "System.values.auto.h"
+#include "System.Integers.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"
@@ -554,7 +554,7 @@ export System_IEnumerator  base_System_Int32Array_getEnumerator(System_Int32Arra
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(have_System_Int64)
-#include "System.values.auto.h"
+#include "System.Integers.auto.h"
 #endif
 #if !defined(have_System_IEnumerable)
 #include "System.IEnumerable.h"

@@ -37,26 +37,26 @@ typedef _Bool  System_Bool;
 #define align(x)  __declspec(align(x))
 #define artificial /* artificial */
 #define asm /* asm */
-/* #define const  __declspec((const)) */
 #define deprecated(msg)  __declspec(deprecated(msg))
 #define used  /* used */
 #define noreturn  __declspec(noreturn)
 #define nothrow  __declspec(nothrow)
-/* #define thread  __declspec(thread) */
 #define weak  __declspec(weak)
+#define thread  __declspec(thread)
+#define atomic  /* _Atomic */
 
 #else /* if GNUCC */
 #define import  extern
 #define align(x)  __attribute__((aligned(x)))
 #define artificial  __attribute__((artificial))
 #define asm  __asm__ __volatile__
-/* #define const  __attribute__ ((__const__)) */
 #define deprecated(msg)  __attribute__((deprecated(msg)))
 #define used  __attribute__((used))
 #define noreturn  __attribute__((noreturn))
 #define nothrow  __attribute__((nothrow))
-#define thread  _Thread_local
 #define weak  __attribute__((weak))
+#define thread  _Thread_local
+#define atomic  _Atomic
 #endif
 
 #if !defined(export)

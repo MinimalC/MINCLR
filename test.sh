@@ -23,4 +23,4 @@ $INTERP ./System.Signal.test >> $REPORT 2>&1 ; echo >> $REPORT
 $INTERP ./System.Syscall.test >> $REPORT 2>&1 ; echo >> $REPORT
 $INTERP ./System.Thread.test >> $REPORT 2>&1 ; echo >> $REPORT
 $INTERP ./System.string8.test >> $REPORT 2>&1 ; echo >> $REPORT
-$INTERP ./System.values.test >> $REPORT 2>&1 ; echo >> $REPORT
+$INTERP ./System.Integers.test >> $REPORT 2>&1 ; echo >> $REPORT
