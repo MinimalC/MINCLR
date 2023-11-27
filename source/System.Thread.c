@@ -105,15 +105,15 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     if (!System_Thread_sigiset) {
         System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
         #if DEBUG == DEBUG_System_Thread
-        System_Signal_act__flags(System_Signal_Number_SIGCHILD, System_Thread_sigchild, 0);
+        System_Signal_act__flags(System_Signal_Number_SIGCHILD, System_Thread_sigchild, SA_NOCHILDSTOP);
         #else
-        System_Signal_handle__flags(System_Signal_Number_SIGCHILD, function_System_Signal_handler_DEFAULT, 0);
+        System_Signal_handle__flags(System_Signal_Number_SIGCHILD, function_System_Signal_handler_IGNORE, SA_NOCHILDSTOP);
         #endif
         System_Thread_sigiset = true;
     }
 
-    System_IntPtr flags = CLONE_SIGHAND | CLONE_VM | CLONE_FS | CLONE_FILES | (!tls ? 0 : CLONE_SETTLS) | CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID;
-    System_Thread_TID reture = System_Syscall_clone__full(flags | System_Signal_Number_SIGCHILD, stack_top, &that->threadId, !tls ? null : &tls, &that->threadId);
+    System_IntPtr flags = /* CLONE_THREAD */ CLONE_SIGHAND | CLONE_VM | CLONE_FS | CLONE_FILES | (!tls ? 0 : CLONE_SETTLS) | CLONE_PARENT_SETTID /* CLONE_CHILD_CLEARTID */;
+    System_Thread_TID reture = System_Syscall_clone__full(flags | System_Signal_Number_SIGCHILD, stack_top, &that->threadId, !tls ? null : &tls, null /* &that->threadId */);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
         System_Console_writeLine("System_Thread_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
@@ -177,6 +177,25 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
     }
 #if DEBUG == DEBUG_System_Thread
     System_Console_write__string("System_Thread_join: was terminated\n");
+#endif
+    return true;
+}
+
+System_Bool System_Thread_join2(System_Thread that) {
+    return System_Thread_join__dontwait(that, false);
+}
+
+System_Bool System_Thread_join2__dontwait(System_Thread that, System_Bool dontwait) {
+
+    while (!System_Atomic_expectDefault__int32((atomic System_Int32 *)&that->threadId)) {
+        if (dontwait) return false;
+
+        System_Syscall_wait(-1, null, true);
+        System_Atomic_delay();
+        System_Thread_yield();
+    }
+#if DEBUG == DEBUG_System_Thread
+    System_Console_write__string("System_Thread_join2: was terminated\n");
 #endif
     return true;
 }

@@ -9,7 +9,7 @@ System_Thread_boot:
     movq 8(%rsp),%rsi /* arg1: tls */
     syscall
     movq System_Thread_Current@GOTTPOFF(%rip), %rax
-    movq (%rsp),%rdi
+    movq (%rsp),%rdi    /* arg0: that */
     movq %rdi,%fs:(%rax)
 
     movq 16(%rsp),%r11  /* arg2: function */
@@ -18,7 +18,10 @@ System_Thread_boot:
     addq $32,%rsi
     call *%r11
     movq (%rsp),%r10    /* arg0: that */
-    movl %eax,12(%r10)  /* that->returnValue */ 
+    movl $0,%edi
+    lock xchgl %eax,12(%r10)  /* that->returnValue */ 
+    lock xchgl %edi,8(%r10)  /* that->threadId */ 
+    mfence
 
     /*movl System_Thread_PID@GOTPCREL(%rip), %edi
     movl 8(%r10),%esi   # that->threadId

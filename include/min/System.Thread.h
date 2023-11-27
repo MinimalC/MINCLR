@@ -7,12 +7,21 @@
 
 typedef System_Int32  System_Thread_TID;
 
+enum {
+    System_Thread_MemoryOrder_Relaxed,   // relaxed
+    System_Thread_MemoryOrder_Consume,   // consume
+    System_Thread_MemoryOrder_Acquire,   // acquire
+    System_Thread_MemoryOrder_Release,   // release
+    System_Thread_MemoryOrder_Acquire_Release,   // acquire/release
+    System_Thread_MemoryOrder_Sequentially_Consistent    // sequentially consistent
+};
+
 typedef System_fixed struct System_Thread {
 	struct System_Object  base;
 
-    System_Thread_TID threadId;
+    atomic System_Thread_TID threadId;
 
-    System_Int32 returnValue;
+    atomic System_Int32 returnValue;
 
 }  * System_Thread;
 
@@ -29,10 +38,11 @@ export System_Thread System_Thread_create__arguments(function_System_Thread_main
 export void System_Thread_sleep(System_Size seconds);
 export void System_Thread_yield(void);
 import void System_Thread_boot(void);
+export System_Var System_Thread_createStorage(void);
+export System_Var __tls_get_addr(System_Var index);
 export System_Bool System_Thread_join(System_Thread that);
 export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait);
-export System_Var System_Thread_createStorage(void);
-
-export System_Var __tls_get_addr(System_Var index);
+export System_Bool System_Thread_join2(System_Thread that);
+export System_Bool System_Thread_join2__dontwait(System_Thread that, System_Bool dontwait);
 
 #endif

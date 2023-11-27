@@ -93,8 +93,8 @@ int System_Runtime_main(int argc, char * argv[]) {
     while (true) {
 
         for (System_Size i = 0; i < dummyC; ++i)
-            if (dummys[i]->threadId) {
-                retures[i] = System_Thread_join__dontwait(dummys[i], true);
+            if (!retures[i]) {
+                retures[i] = System_Thread_join2__dontwait(dummys[i], true);
                 if (!retures[i]) System_Console_writeLine("Wait on Child{0:uint}", 1, i);
                 else System_Console_writeLine("This is Child{0:uint}, returning {1:uint:hex}", 2, i, dummys[i]->returnValue);
             }
