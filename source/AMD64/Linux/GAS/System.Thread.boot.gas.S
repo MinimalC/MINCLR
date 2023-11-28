@@ -1,6 +1,4 @@
 # Gemeinfrei. Public Domain.
-#include <System.internal.h>
-#include <min/System.asm.h>
 .text
 .global System_Thread_boot
 .type   System_Thread_boot,@function
@@ -58,18 +56,16 @@ terminate_have_that:
     movq $11,%rax       # System_Syscall_Command_munmap
     movq 16(%rbx),%rdi  # that->stack
     syscall
-#if DEBUG == DEBUG_System_Syscall_mmap
+/* if DEBUG == DEBUG_System_Syscall_mmap
     movq System_Syscall_mmapCount@GOTPCREL(%rip),%rsi
-    lock decq (%rsi)
-#endif
+    lock decq (%rsi) */
     movq $0,16(%rbx)
     movq 24(%rbx),%rdi  # that->tls
     cmpq $0,%rdi
     je terminate_no_tls
     syscall
-#if DEBUG == DEBUG_System_Syscall_mmap
-    lock decq (%rsi)
-#endif
+/* if DEBUG == DEBUG_System_Syscall_mmap
+    lock decq (%rsi) */
     movq $0,24(%rbx)
 
 terminate_no_tls:
