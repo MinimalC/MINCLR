@@ -1,17 +1,7 @@
 #define using_System
 #include <min/System.h>
 
-typedef struct Parent {
-
-    atomic System_Size  number;
-
-} * Parent;
-
-struct Parent Parent_current = {
-
-    .number = 1
-
-};
+atomic System_Size  number = 1;
 
 void Dummy0(System_Size argc, System_Var argv[]) {
 
@@ -22,7 +12,7 @@ System_IntPtr Dummy1(System_Size argc, System_Var argv[]) {
 
     System_Thread_sleep(4);
 
-    if (System_Atomic_expect(&Parent_current.number, 3, 4))
+    if (System_Atomic_expect(&number, 3, 4))
         System_Console_writeLine("Child{0:uint}: This was 3, now this is 4", 1, argv[0]);
     else
         System_Console_writeLine("Child{0:uint}: This wasn't 3", 1, argv[0]);
@@ -34,7 +24,7 @@ System_IntPtr Dummy2(System_Size argc, System_Var argv[]) {
 
     System_Thread_sleep(4);
 
-    if (!System_Atomic_expect(&Parent_current.number, 2, 3))
+    if (!System_Atomic_expect(&number, 2, 3))
         System_Console_writeLine("Child{0:uint}: This wasn't 2", 1, argv[0]);
     else
         System_Console_writeLine("Child{0:uint}: This was 2, now this is 3", 1, argv[0]);
@@ -44,8 +34,8 @@ System_IntPtr Dummy2(System_Size argc, System_Var argv[]) {
 }
 System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
 
-    System_Size old_number = Parent_current.number;
-    if (System_Atomic_expect(&Parent_current.number, 1, 2))
+    System_Size old_number = number;
+    if (System_Atomic_expect(&number, 1, 2))
         System_Console_writeLine("Child{0:uint}: This was 1, now this is 2", 1, argv[0]);
     else
         System_Console_writeLine("Child{0:uint}: This wasn't 1", 1, argv[0]);

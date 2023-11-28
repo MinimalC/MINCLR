@@ -2,16 +2,9 @@
 #if !defined(have_System_asm)
 #define have_System_asm
 
-/*  Now you can easily do #if DEBUG.
-    You need to #define DEBUG 0 for yourself, for example
-#if !defined(NODEBUG) || !defined(RELEASE)
-#define DEBUG 0
-#else
-#define DEBUG 1
-#endif
-*/
+/*  Use System.internal.h to set DEBUG */
 #if !defined(DEBUG)
-#define DEBUG 1
+#define DEBUG 0
 #endif
 
 /* Compiler: MSVCC */

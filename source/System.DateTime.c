@@ -1,6 +1,6 @@
 /* Gemeinfrei. Public Domain. */
 #if !defined(System_internal)
-#include "System.internal.h"
+#include <System.internal.h>
 #endif
 #if !defined(have_System_DateTime)
 #include <min/System.DateTime.h>
@@ -15,22 +15,15 @@ struct System_Type System_TimeType = { .base = { .type = typeof(System_Type) }, 
 
 struct System_Type System_TimeSpanType = { .base = { .type = typeof(System_Type) }, .name = "TimeSpan", .size = sizeof(struct System_TimeSpan) };
 
-struct System_Type System_TimeSpecType = { .base = { .type = typeof(System_Type) }, .name = "TimeSpec", .size = sizeof(struct System_TimeSpec) };
-
 struct System_Type System_TimeZoneType = { .base = { .type = typeof(System_Type) }, .name = "TimeZone", .size = sizeof(struct System_TimeZone) };
 
 struct System_Type System_DateTimeType = { .base = { .type = typeof(System_Type) }, .name = "DateTime", .size = sizeof(struct System_DateTime) };
 
 System_String8 System_DateTime_toString(System_DateTime that) {
 
-    return System_String8_format("{0:int}.{1:uint}.{2:uint} {3:uint}:{4:uint}:{5:uint}", 6,
+    return System_String8_format("{0:uint}.{1:uint}.{2:uint} {3:uint}:{4:uint}:{5:uint}", 6,
         that->monthday, that->month, that->year, that->hour, that->minute, that->second);
 }
-
-/*
- * Igor Sysoev
- * Nginx, Inc.
- */
 
 System_DateTime System_DateTime_now(void) {
 

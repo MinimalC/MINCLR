@@ -18,15 +18,6 @@ typedef struct System_TimeSpan {
 
 export struct System_Type  System_TimeSpanType;
 
-typedef struct System_TimeSpec {
-
-    System_Int32 sec;
-    System_Int32 usec;
-
-} * System_TimeSpec;
-
-export struct System_Type  System_TimeSpecType;
-
 typedef struct System_TimeZone {
 
     System_Int32 minutesWest;

@@ -19,16 +19,9 @@ IntPtr runSIGFPE(Size argc, Var argv[]) {
     float quotient = divident / divisor;
 }
 
-const System_STRING8 bus = "F       ";
-
 IntPtr runSIGBUS(Size argc, Var argv[]) {
 
     __asm__("pushf\norl $0x40000,(%rsp)\npopf");
-    
-    System_Char8 * charbus = (System_Char8 *)&bus;
-    System_IntPtr * intbus = (System_IntPtr *)++charbus;
-
-    * intbus = 42;
 
     return 0;
 }

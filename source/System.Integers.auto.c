@@ -2,7 +2,7 @@
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
 #if !defined(System_internal)
-#include "System.internal.h"
+#include <System.internal.h>
 #endif
 #if !defined(have_System_Char8)
 #include <min/System.String8.h>
@@ -211,7 +211,7 @@ System_UInt8  System_UInt8_toNetworkOrder(System_UInt8 that) {
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
 #if !defined(System_internal)
-#include "System.internal.h"
+#include <System.internal.h>
 #endif
 #if !defined(have_System_Char8)
 #include <min/System.String8.h>
@@ -422,7 +422,7 @@ System_UInt16  System_UInt16_toNetworkOrder(System_UInt16 that) {
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
 #if !defined(System_internal)
-#include "System.internal.h"
+#include <System.internal.h>
 #endif
 #if !defined(have_System_Char8)
 #include <min/System.String8.h>
@@ -638,7 +638,7 @@ System_UInt32  System_UInt32_toNetworkOrder(System_UInt32 that) {
 /* AUTOGEN */
 /* Gemeinfrei. Public Domain. */
 #if !defined(System_internal)
-#include "System.internal.h"
+#include <System.internal.h>
 #endif
 #if !defined(have_System_Char8)
 #include <min/System.String8.h>
@@ -863,7 +863,7 @@ System_UInt64  System_UInt64_toNetworkOrder(System_UInt64 that) {
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(System_internal)
-#include "System.internal.h"
+#include <System.internal.h>
 #endif
 #if !defined(have_System_Int8)
 #include <min/System.Integers.auto.h>
@@ -1061,7 +1061,7 @@ System_String8  System_Int8_toString8base10(System_Int8 that) {
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(System_internal)
-#include "System.internal.h"
+#include <System.internal.h>
 #endif
 #if !defined(have_System_Int16)
 #include <min/System.Integers.auto.h>
@@ -1259,7 +1259,7 @@ System_String8  System_Int16_toString8base10(System_Int16 that) {
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(System_internal)
-#include "System.internal.h"
+#include <System.internal.h>
 #endif
 #if !defined(have_System_Int32)
 #include <min/System.Integers.auto.h>
@@ -1457,7 +1457,7 @@ System_String8  System_Int32_toString8base10(System_Int32 that) {
 /* Gemeinfrei. Public Domain. */
 /* AUTOGEN */
 #if !defined(System_internal)
-#include "System.internal.h"
+#include <System.internal.h>
 #endif
 #if !defined(have_System_Int64)
 #include <min/System.Integers.auto.h>

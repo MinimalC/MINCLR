@@ -1,5 +1,5 @@
 /* Gemeinfrei. Public Domain. */
-#include "../System.internal.h"
+#include <System.internal.h>
 #include <min/System.h>
 
 typedef struct Network_MimeType {
