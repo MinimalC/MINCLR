@@ -36,7 +36,7 @@ IntPtr runSIGBUS(Size argc, Var argv[]) {
 void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info info, System_Var context) {
     System_Console_writeLine("{0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}, sigfault.address {4:uint:hex}", 5,
         System_Signal_Number_toString(number), info->number, info->errno, info->code, info->sigfault.address);
-    System_Syscall_terminate(false);
+    System_Thread_terminate(null, false);
 }
 
 int System_Runtime_main(int argc, char * argv[]) {

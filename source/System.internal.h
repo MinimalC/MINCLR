@@ -4,14 +4,14 @@
 #define System_internal
 #define using_System
 
-#define DEBUG_System_Object  2
-#define DEBUG_System_String8_format  3
-#define DEBUG_System_Memory 4
-#define DEBUG_System_Console_Environment_Arguments 5
-#define DEBUG_System_Exception 6
-#define DEBUG_System_Syscall_mmap 7
-#define DEBUG_System_ELFAssembly 8
-#define DEBUG_System_Thread 9
+#define DEBUG_System_Object  4
+#define DEBUG_System_String8_format  8
+#define DEBUG_System_Memory 16
+#define DEBUG_System_Console_Environment_Arguments 32
+#define DEBUG_System_Exception 64
+#define DEBUG_System_Syscall_mmap 128
+#define DEBUG_System_ELFAssembly 256
+#define DEBUG_System_Thread 512
 
 #if defined(NDEBUG)
 #undef NDEBUG

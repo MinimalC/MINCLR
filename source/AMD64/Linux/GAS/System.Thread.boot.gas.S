@@ -4,33 +4,67 @@
 .type   System_Thread_boot,@function
 System_Thread_boot:
 
-    movq $158,%rax /* System_Syscall_Command_arch_prctl */
-    movq $4098,%rdi /* ARCH_SET_FS */
-    movq 8(%rsp),%rsi /* arg1: tls */
+    movq $158,%rax  # System_Syscall_Command_arch_prctl
+    movq $4098,%rdi   # ARCH_SET_FS
+    movq (%rsp),%rbx    # arg0: that
+    movq 24(%rbx),%rsi  # that->tls
     syscall
-    movq System_Thread_Current@GOTTPOFF(%rip), %rax
-    movq (%rsp),%rdi    /* arg0: that */
-    movq %rdi,%fs:(%rax)
+    movq System_Thread_Current@GOTTPOFF(%rip),%rax
+    movq %rbx,%fs:(%rax)
 
-    movq 16(%rsp),%r11  /* arg2: function */
-    movq 24(%rsp),%rdi  /* arg3: argc */
-    movq %rsp,%rsi      /* arg4: argv */
-    addq $32,%rsi
+    movq 8(%rsp),%r11   # arg2: function
+    movq 16(%rsp),%rdi  # arg3: argc
+    movq %rsp,%rsi      # arg4: argv
+    addq $24,%rsi
     call *%r11
-    movq (%rsp),%r10    /* arg0: that */
-    movl $0,%edi
-    lock xchgl %eax,12(%r10)  /* that->returnValue */ 
-    lock xchgl %edi,8(%r10)  /* that->threadId */ 
+    movq %rax,%rsi
+    movq (%rsp),%rdi
+    jmp System_Thread_terminate
+
+.size System_Thread_boot,.-System_Thread_boot
+
+.global System_Thread_terminate
+.type   System_Thread_terminate,@function
+System_Thread_terminate:
+
+    movq %rdi,%rbx  # arg0: that
+    movq %rsi,%rcx  # arg1: returnValue
+
+    cmpq $0,%rbx
+    jne have_that
+    movq System_Thread_Current@GOTTPOFF(%rip),%rbx
+    movq %fs:(%rbx),%rbx
+    cmpq $0,%rbx
+    je no_tls
+
+have_that:
+    movl $0,%esi
+    lock xchgl %ecx,12(%rbx)  # that->returnValue
+    lock xchgl %esi,8(%rbx)   # that->threadId
     mfence
 
     /*movl System_Thread_PID@GOTPCREL(%rip), %edi
-    movl 8(%r10),%esi   # that->threadId
+    movl 8(%rdi),%esi   # that->threadId
     movq $234,%rax      # System_Syscall_Command_tgkill
     movq $17,%rdx       # System_Signal_Number_SIGCHILD
     syscall*/
 
-    movl 12(%r10),%edi    
-    movq $60,%rax    /* System_Syscall_Command_exit */
+    movq $11,%rax       # System_Syscall_Command_munmap
+    movq 16(%rbx),%rdi  # that->stack
+    syscall
+    movq System_Syscall_mmapCount@GOTPCREL(%rip),%rsi
+    lock decq (%rsi)
+    movq $0,16(%rbx)
+    movq 24(%rbx),%rdi  # that->tls
+    cmpq $0,%rdi
+    je no_tls
+    syscall
+    lock decq (%rsi)
+    movq $0,24(%rbx)
+
+no_tls:
+    movq $60,%rax       # System_Syscall_Command_exit
+    movl %ecx,%edi    
     syscall
 
-.size System_Thread_boot,.-System_Thread_boot
+.size System_Thread_terminate,.-System_Thread_terminate

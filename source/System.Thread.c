@@ -29,7 +29,6 @@ System_Var System_Thread_createStorage(void) {
 }
 
 System_Var __tls_get_addr(System_Var index) {
-
     return null; // throw
 }
 
@@ -88,6 +87,8 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     if (!stack) return 0; // throw
 
     System_Thread that = System_Memory_allocClass(typeof(System_Thread));
+    that->stack = stack;
+    that->tls = tls;
 
     System_Size * stack_top = stack + STACK_SIZE;
 
@@ -98,29 +99,37 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
 
     *(--stack_top) = (System_Size)argc;
     *(--stack_top) = (System_Size)function;
-    *(--stack_top) = (System_Size)tls;
     *(--stack_top) = (System_Size)that;
     *(--stack_top) = (System_Size)System_Thread_boot;
 
     if (!System_Thread_sigiset) {
         System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
+        System_IntPtr signal_flags = 0;
+        #if !defined(use_System_Thread_SIGCHILD)
+        signal_flags = SA_NOCHILDSTOP | SA_NOCHILDWAIT;
+        #endif
         #if DEBUG == DEBUG_System_Thread
-        System_Signal_act__flags(System_Signal_Number_SIGCHILD, System_Thread_sigchild, SA_NOCHILDSTOP);
+        System_Signal_act__flags(System_Signal_Number_SIGCHILD, System_Thread_sigchild, signal_flags);
         #else
-        System_Signal_handle__flags(System_Signal_Number_SIGCHILD, function_System_Signal_handler_IGNORE, SA_NOCHILDSTOP);
+        System_Signal_handle__flags(System_Signal_Number_SIGCHILD, function_System_Signal_handler_IGNORE, signal_flags);
         #endif
         System_Thread_sigiset = true;
     }
 
-    System_IntPtr flags = /* CLONE_THREAD */ CLONE_SIGHAND | CLONE_VM | CLONE_FS | CLONE_FILES | (!tls ? 0 : CLONE_SETTLS) | CLONE_PARENT_SETTID /* CLONE_CHILD_CLEARTID */;
-    System_Thread_TID reture = System_Syscall_clone__full(flags | System_Signal_Number_SIGCHILD, stack_top, &that->threadId, !tls ? null : &tls, null /* &that->threadId */);
+    System_IntPtr flags = CLONE_SIGHAND | CLONE_VM | CLONE_FS | CLONE_FILES | (!tls ? 0 : CLONE_SETTLS) | CLONE_PARENT_SETTID;
+    #if defined(use_System_Thread_SIGCHILD)
+    flags |= System_Signal_Number_SIGCHILD; /* CLONE_CHILD_CLEARTID */
+    #else
+    flags |= CLONE_THREAD;
+    #endif
+    System_Thread_TID reture = System_Syscall_clone__full(flags, stack_top, &that->threadId, !tls ? null : &tls, null);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
         System_Console_writeLine("System_Thread_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
         return null;
     }
     #if DEBUG == DEBUG_System_Thread
-    System_Console_writeLine("System_Thread_create: threadId {0:int32}", 1, that->threadId);
+    System_Console_writeLine("System_Thread_create: {0:int32}", 1, that->threadId);
     #endif
     return that;
 }
@@ -129,9 +138,7 @@ void System_Thread_sleep(System_Size seconds) {
     struct System_TimeSpan time = { .sec = seconds, .usec = 0, };
     System_Syscall_nanosleep(&time, &time);
     System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) {
-        System_Console_writeLine("System_Thread_sleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-    }
+    if (errno) System_Console_writeLine("System_Thread_sleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
 enum {
@@ -158,6 +165,10 @@ System_Bool System_Thread_join(System_Thread that) {
 
 System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
 
+#if defined(use_System_Thread_SIGCHILD)
+
+    System_Atomic_fence();
+
     if (that->threadId) {
         System_IntPtr status = 0;
         System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait);
@@ -175,27 +186,24 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
         }
         return false;
     }
-#if DEBUG == DEBUG_System_Thread
-    System_Console_write__string("System_Thread_join: was terminated\n");
-#endif
-    return true;
-}
 
-System_Bool System_Thread_join2(System_Thread that) {
-    return System_Thread_join__dontwait(that, false);
-}
+#else /* if !defined(use_System_Thread_SIGCHILD) */
 
-System_Bool System_Thread_join2__dontwait(System_Thread that, System_Bool dontwait) {
+    System_Atomic_fence();
 
     while (!System_Atomic_expectDefault__int32((atomic System_Int32 *)&that->threadId)) {
         if (dontwait) return false;
 
-        System_Syscall_wait(-1, null, true);
-        System_Atomic_delay();
+        // System_Atomic_delay();
         System_Thread_yield();
+
+        System_Atomic_fence();
     }
+
+#endif
+
 #if DEBUG == DEBUG_System_Thread
-    System_Console_write__string("System_Thread_join2: was terminated\n");
+    System_Console_write__string("System_Thread_join: was terminated\n");
 #endif
     return true;
 }

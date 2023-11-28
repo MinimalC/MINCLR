@@ -52,7 +52,7 @@ System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
 
     System_Thread_sleep(2);
 
-    System_Console_writeLine("This is Child{0:uint}", 1, argv[0]);
+    System_Console_writeLine("This is Child{0:uint}. gettid: {1:int32}", 2, argv[0], System_Syscall_gettid());
     if (!System_Thread_Current)
         System_Console_write__string("System_Thread_Current: 0x0\n");
     else
@@ -63,7 +63,7 @@ System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
 void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info info, System_Var context) {
     System_Console_writeLine("{0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}, sigfault.address {4:uint:hex}", 5,
         System_Signal_Number_toString(number), info->number, info->errno, info->code, info->sigfault.address);
-    System_Syscall_terminate(false);
+    System_Thread_terminate(System_Thread_Current, false);
 }
 
 int System_Runtime_main(int argc, char * argv[]) {
@@ -94,7 +94,7 @@ int System_Runtime_main(int argc, char * argv[]) {
 
         for (System_Size i = 0; i < dummyC; ++i)
             if (!retures[i]) {
-                retures[i] = System_Thread_join2__dontwait(dummys[i], true);
+                retures[i] = System_Thread_join__dontwait(dummys[i], true);
                 if (!retures[i]) System_Console_writeLine("Wait on Child{0:uint}", 1, i);
                 else System_Console_writeLine("This is Child{0:uint}, returning {1:uint:hex}", 2, i, dummys[i]->returnValue);
             }

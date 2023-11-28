@@ -2,6 +2,9 @@
 #if !defined(System_internal)
 #include "System.internal.h"
 #endif
+#if !defined(have_System_Atomic)
+#include <min/System.Atomic.h>
+#endif
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>
 #endif
@@ -140,29 +143,35 @@ void System_Syscall_chdir(System_String8 path) {
 }
 
 
-internal System_Size System_Syscall_mmapCount = 0;
+atomic System_Size System_Syscall_mmapCount = 0;
 
 System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_IntPtr map) {
-    ++System_Syscall_mmapCount;
+    System_Atomic_increment(&System_Syscall_mmapCount);
+    System_Atomic_fence();
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, -1, 0);
 }
 
 System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr page, System_IntPtr map, System_Var file, System_IntPtr offset) {
-    ++System_Syscall_mmapCount;
+    System_Atomic_increment(&System_Syscall_mmapCount);
+    System_Atomic_fence();
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, (System_IntPtr)file, offset);
 }
 
 System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr page, System_IntPtr map, System_Var file, System_IntPtr offset) {
-    ++System_Syscall_mmapCount;
+    System_Atomic_increment(&System_Syscall_mmapCount);
+    System_Atomic_fence();
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, initialAddress, length, page, map, (System_IntPtr)file, offset);
 }
 
-void System_Syscall_mmap__debug(void) {
-    if (System_Syscall_mmapCount) System_Console_writeLine("System_Syscall_mmap__debug: called {0:uint} times without munmap.", 1, System_Syscall_mmapCount);
+void  System_Syscall_munmap(System_Var address, System_Size length) {
+    System_Atomic_decrement(&System_Syscall_mmapCount);
+    System_Atomic_fence();
+    (void)System_Syscall_call02(System_Syscall_Command_munmap, (System_IntPtr)address, length);
 }
 
-void  System_Syscall_munmap(System_Var address, System_Size length) {
-    (void)System_Syscall_call02(System_Syscall_Command_munmap, (System_IntPtr)address, length);
+void System_Syscall_mmap__debug(void) {
+    System_Atomic_fence();
+    if (System_Syscall_mmapCount) System_Console_writeLine("System_Syscall_mmap__debug: called {0:uint} times without munmap.", 1, System_Syscall_mmapCount);
 }
 
 void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags) {
