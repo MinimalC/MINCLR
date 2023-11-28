@@ -4,14 +4,17 @@
 .type   System_Thread_boot,@function
 System_Thread_boot:
 
-    movq $158,%rax  # System_Syscall_Command_arch_prctl
-    movq $4098,%rdi   # ARCH_SET_FS
     movq (%rsp),%rbx    # arg0: that
     movq 24(%rbx),%rsi  # that->tls
+    cmpq $0,%rsi
+    je boot_no_tls
+    movq $158,%rax      # System_Syscall_Command_arch_prctl
+    movq $4098,%rdi     # ARCH_SET_FS
     syscall
     movq System_Thread_Current@GOTTPOFF(%rip),%rax
     movq %rbx,%fs:(%rax)
 
+boot_no_tls:
     movq 8(%rsp),%r11   # arg2: function
     movq 16(%rsp),%rdi  # arg3: argc
     movq %rsp,%rsi      # arg4: argv
@@ -23,6 +26,7 @@ System_Thread_boot:
 
 .size System_Thread_boot,.-System_Thread_boot
 
+.text
 .global System_Thread_terminate
 .type   System_Thread_terminate,@function
 System_Thread_terminate:
@@ -31,13 +35,13 @@ System_Thread_terminate:
     movq %rsi,%rcx  # arg1: returnValue
 
     cmpq $0,%rbx
-    jne have_that
+    jne terminate_have_that
     movq System_Thread_Current@GOTTPOFF(%rip),%rbx
     movq %fs:(%rbx),%rbx
     cmpq $0,%rbx
-    je no_tls
+    je terminate_no_tls
 
-have_that:
+terminate_have_that:
     movl $0,%esi
     lock xchgl %ecx,12(%rbx)  # that->returnValue
     lock xchgl %esi,8(%rbx)   # that->threadId
@@ -57,12 +61,12 @@ have_that:
     movq $0,16(%rbx)
     movq 24(%rbx),%rdi  # that->tls
     cmpq $0,%rdi
-    je no_tls
+    je terminate_no_tls
     syscall
     lock decq (%rsi)
     movq $0,24(%rbx)
 
-no_tls:
+terminate_no_tls:
     movq $60,%rax       # System_Syscall_Command_exit
     movl %ecx,%edi    
     syscall
