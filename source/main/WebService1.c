@@ -317,7 +317,7 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     }
     if (System_Directory_exists(requestPath)) {
         System_Console_writeLine("HTTPService_serve: Folder {0:string}", 1, requestPath);
-        System_String8_replace(&requestPath, System_String8_concat(requestPath, "index.html"));
+        System_String8_exchange(&requestPath, System_String8_concat(requestPath, "index.html"));
     }
     if (!System_File_exists(requestPath)) {
         System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);

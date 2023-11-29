@@ -327,6 +327,10 @@ int System_Runtime_main(int argc, char  * argv[]) {
 #endif
 
     System_Runtime_selflink(base);
+
+    System_Var tls = System_Thread_createStorage();
+    if (tls) System_Syscall_arch_prctl(0x1002, (System_IntPtr)tls);
+
     System_Runtime_readlink(vdso);
 
     System_ELF64Assembly assembly = (System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly));
@@ -336,9 +340,6 @@ int System_Runtime_main(int argc, char  * argv[]) {
     System_ELF64Assembly_read__print(assembly, name, false);
 #endif
     System_ELF64Assembly_link(assembly);
-
-    System_Var tls = System_Thread_createStorage();
-    if (tls) System_Syscall_arch_prctl(0x1002, (System_IntPtr)tls);
 
     System_ELF64Assembly assembly1;
     System_ELF64Assembly_Symbol symbol1;

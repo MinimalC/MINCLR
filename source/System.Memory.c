@@ -189,8 +189,11 @@ System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pag
 
         /* NOW lookup for freedom */
 
+#if DEBUG == DEBUG_System_Memory
         Size index1 = 0;
+#endif
         Var position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
+        Object position_object = null;
         while (position < ((System_Var)mem64h + mem64h->length)) {
             System_Memory_Header header = (System_Memory_Header)position;
 
@@ -202,14 +205,18 @@ System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pag
                 Debug_assert(header->length);
                 Debug_assert(header->elementType);
                 position += header->length;
+#if DEBUG == DEBUG_System_Memory
                 ++index1;
+#endif
                 continue;
             }
             /* expect second if this is free, if there is not enough space, move next */
             if (header->length && !header->elementType) {
                 if (header->length != real_size && header->length < real_size + sizeof(struct System_Memory_Header)) {
                     position += header->length;
+#if DEBUG == DEBUG_System_Memory
                     ++index1;
+#endif
                     continue;
                 }
                 /* create a new free header for empty space, change lengths */

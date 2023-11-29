@@ -65,6 +65,14 @@ struct System_Type System_String8Type = { .base = { .type = typeof(System_Type) 
 
 System_STRING8  System_String8_Empty = "";
 
+String8  System_String8_exchange(String8 ref that, String8 other) {
+    Debug_assert(that);
+    String8 old = *that;
+    *that = other;
+    if (old) Memory_free(old);
+    return other;
+}
+
 SSize  System_String8_indexOf__size(String8 that, Char8 character, Size length) {
     SSize i = 0;
     if (length == 0) return -1;
@@ -203,12 +211,6 @@ Bool  System_String8_endsWith(String8 that, String8 other) {
     SSize diff = String8_get_Length(that) - length1;
     if (diff < 1) return false;
     return System_String8_equalsSubstring(that + diff, other, length1);
-}
-
-void  System_String8_replace(String8 ref that, String8 other) {
-    String8 old = *that;
-    *that = other;
-    Memory_free(old);
 }
 
 System_String8Array System_String8_split(System_String8 that, System_Char8 separator) {

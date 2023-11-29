@@ -10,9 +10,9 @@ INTERP=
 #INTERP=./System.Interpreter
 REPORT=System.test...report
 
-$INTERP ./ELFAssembly.read Crypto.SipHash.test > ELFAssembly.read...report 2>&1
+$INTERP ./ELFAssembly.read SipHash48 > ELFAssembly.read...report 2>&1
 echo -n > $REPORT
-$INTERP ./Crypto.SipHash.test >> $REPORT 2>&1 ; echo >> $REPORT
+$INTERP ./SipHash48 System.Type System_Type >> $REPORT 2>&1 ; echo >> $REPORT
 $INTERP ./System.Exception.test >> $REPORT 2>&1 ; echo >> $REPORT
 $INTERP ./System.File.test >> $REPORT 2>&1 ; echo >> $REPORT
 $INTERP ./System.FileInfo.test >> $REPORT 2>&1 ; echo >> $REPORT

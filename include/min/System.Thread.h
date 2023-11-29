@@ -32,13 +32,11 @@ export System_Thread System_Thread_create(function_System_Thread_main function, 
 export System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]);
 export void System_Thread_sleep(System_Size seconds);
 export void System_Thread_yield(void);
-import void System_Thread_boot(void);
+import void System_Thread_boot(void) noreturn;
+import void System_Thread_terminate(System_Thread that, System_IntPtr returnValue) noreturn;
 export System_Var System_Thread_createStorage(void);
 export System_Var __tls_get_addr(System_Var index);
-import void System_Thread_terminate(System_Thread that, System_IntPtr returnValue);
 export System_Bool System_Thread_join(System_Thread that);
 export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait);
-export System_Bool System_Thread_join2(System_Thread that);
-export System_Bool System_Thread_join2__dontwait(System_Thread that, System_Bool dontwait);
 
 #endif

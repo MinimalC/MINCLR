@@ -134,58 +134,51 @@ void System_Runtime_start(System_Var  * stack) {
     }
     #endif
 
-    System_Thread_PID = System_Syscall_getpid();
-
     function_System_Runtime_main entry = &System_Runtime_main;
     System_String8 entryName = "System_Runtime_main";
     if (interp) {
-        System_String8 fileName = System_Path_getFileName(name);
-        for (System_String8 n = fileName; *n; ++n) {
-            switch (*n) {
-            // case TODO
-            case '.':
-                *n = '_';
-                break;
+        System_String8 original_fileName = System_Path_getFileName(name);
+        for (System_String8 n = original_fileName; *n; ++n)
+            switch (*n) { /* TODO */
+            case '.': *n = '_'; break;
             }
-        }
+        System_String8 fileName = original_fileName;
+        System_Size * symbol1_value = null;
         System_ELF64Assembly assembly1 = null;
         System_ELF64Assembly_Symbol symbol1 = System_ELF64Assembly_getSymbol(fileName, &assembly1);
-        System_Size * symbol1_value = null;
         if (symbol1) {
             symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
             entry = (function_System_Runtime_main)(symbol1_value);
             entryName = (System_String8)System_Memory_addReference((System_Var)fileName);
         }
-        else {
-            System_String8 fileName2 = System_String8_concat(fileName, "_main");
-            symbol1 = System_ELF64Assembly_getSymbol(fileName2, &assembly1);
+        if (!symbol1) {
+            fileName = System_String8_concat(original_fileName, "_main");
+            symbol1 = System_ELF64Assembly_getSymbol(fileName, &assembly1);
             if (symbol1) {
                 symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
                 entry = (function_System_Runtime_main)(symbol1_value);
-                entryName = (System_String8)System_Memory_addReference((System_Var)fileName2);
+                entryName = (System_String8)System_Memory_addReference((System_Var)fileName);
             }
-            else {
-                System_Memory_free(fileName2);
-                fileName2 = System_String8_concat("main_", fileName);
-                symbol1 = System_ELF64Assembly_getSymbol(fileName2, &assembly1);
-                if (symbol1) {
-                    symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
-                    entry = (function_System_Runtime_main)(symbol1_value);
-                    entryName = (System_String8)System_Memory_addReference((System_Var)fileName2);
-                }
-            }
-            System_Memory_free(fileName2);
         }
-        System_Memory_free(fileName);
+        if (!symbol1) {
+            fileName = System_String8_exchange(&fileName, System_String8_concat("main_", original_fileName));
+            symbol1 = System_ELF64Assembly_getSymbol(fileName, &assembly1);
+            if (symbol1) {
+                symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+                entry = (function_System_Runtime_main)(symbol1_value);
+                entryName = (System_String8)System_Memory_addReference((System_Var)fileName);
+            }
+        }
+        if (fileName) System_Memory_free(fileName);
+        System_Memory_free(original_fileName);
     }
-
+    System_Thread_PID = System_Syscall_getpid();
     #if DEBUG == DEBUG_System_ELFAssembly
-    if (interp) System_Console_writeLine__string("This is INTERP");
+    if (interp) System_Console_writeLine("This is INTERP, PID ", 1, System_Thread_PID);
     System_Console_writeLine("AddressOf System_Runtime_stack: {0:uint:hex}", 1, System_Runtime_stack);
     System_Console_writeLine("AddressOf {0:string}: {1:uint:hex}", 2, entryName, entry);
     System_Console_writeLine("System_Runtime_start: argc {0:uint}, envc {1:uint}, auxc {2:uint}: {3:string}", 4, argc, envc, auxc, argv[0]);
     #endif
-
     System_Memory_free(entryName);
 
     int reture = entry(argc, argv);

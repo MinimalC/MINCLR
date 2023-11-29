@@ -17,22 +17,18 @@ typedef System_fixed struct Crypto_SipHash48 {
 export struct System_Type  Crypto_SipHash48Type;
 
 export Crypto_SipHash48  new_Crypto_SipHash48();
-export void  base_Crypto_SipHash48_init(Crypto_SipHash48 that);
+export void  Crypto_SipHash48_init(Crypto_SipHash48 that);
+export void  Crypto_SipHash48_init__key(Crypto_SipHash48 that, System_Char8 key[16]);
 export void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_Var input, System_Size length);
 export System_UInt64  Crypto_SipHash48_final(Crypto_SipHash48 that);
-
-#define Crypto_SipHash48_init  base_Crypto_SipHash48_init
 
 #if defined(using_Crypto)
 #define SipHash48  Crypto_SipHash48
 #define SipHash48Type  Crypto_SipHash48Type
-
 #define new_SipHash48  new_Crypto_SipHash48
-#define function_SipHash48_init  function_Crypto_SipHash48_init
-#define base_SipHash48_init  base_Crypto_SipHash48_init
+#define SipHash48_init  Crypto_SipHash48_init
+#define SipHash48_init__key  Crypto_SipHash48_init__key
 #define SipHash48_update  Crypto_SipHash48_update
 #define SipHash48_final  Crypto_SipHash48_final
-#define SipHash48_init  Crypto_SipHash48_init
 #endif
-
 #endif
