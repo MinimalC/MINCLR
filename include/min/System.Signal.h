@@ -115,6 +115,23 @@ typedef struct System_Signal_Info {
     
 } * System_Signal_Info;
 
+typedef System_IntPtr System_Signal_Flags;
+enum {
+    System_Signal_Flags_NOCHILDSTOP = 1, /* Don't send SIGCHLD when children stop.  */
+    System_Signal_Flags_NOCHILDWAIT = 2, /* Don't create zombie on child death.  */
+    System_Signal_Flags_SIGINFO = 4,   /* Invoke signal-catching function with three arguments instead of one.  */
+
+    System_Signal_Flags_RESTORER = 0x04000000,
+    System_Signal_Flags_ONSTACK = 0x08000000, /* Use signal stack by using `sa_restorer'. */
+    System_Signal_Flags_RESTART = 0x10000000, /* Restart syscall on signal return.  */
+    System_Signal_Flags_INTERRUPT = 0x20000000, /* Historical no-op.  */
+    System_Signal_Flags_NODEFER = 0x40000000, /* Don't automatically block the signal when its handler is being executed.  */
+    System_Signal_Flags_NOMASK = System_Signal_Flags_NODEFER,
+    System_Signal_Flags_RESETHAND = 0x80000000, /* Reset to SIG_DFL on entry to handler.  */
+    System_Signal_Flags_ONESHOT = System_Signal_Flags_RESETHAND,
+};
+export struct System_Type System_Signal_FlagsType;
+
 typedef void delegate(System_Signal_handler)(System_Signal_Number number);
 typedef void delegate(System_Signal_action)(System_Signal_Number number, System_Signal_Info info, System_Var context);
 
@@ -127,15 +144,15 @@ typedef struct System_Signal_Action {
         function_System_Signal_handler handler;
         function_System_Signal_action action;
     };
-    System_IntPtr flags;
+    System_Signal_Flags flags;
     void (*restorer)(void);
     struct System_Signal signal;
 } * System_Signal_Action;
 
 export void System_Signal_handle(System_Signal_Number number, function_System_Signal_handler handler);
-export void System_Signal_handle__flags(System_Signal_Number number, function_System_Signal_handler handler, System_IntPtr flags);
+export void System_Signal_handle__flags(System_Signal_Number number, function_System_Signal_handler handler, System_Signal_Flags flags);
 export void System_Signal_act(System_Signal_Number number, function_System_Signal_action action);
-export void System_Signal_act__flags(System_Signal_Number number, function_System_Signal_action action, System_IntPtr flags);
+export void System_Signal_act__flags(System_Signal_Number number, function_System_Signal_action action, System_Signal_Flags flags);
 export System_Bool System_Signal_get__number(System_Signal_Number number);
 export void System_Signal_set__number(System_Signal_Number number);
 export void System_Signal_block__number(System_Signal_Number number);

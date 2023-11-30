@@ -1,9 +1,12 @@
 /* Gemeinfrei. Public Domain. */
 
 #include "System.arguments.c"
-#include "System.Memory.c"
 #include "System.String.c"
 #include "System.String8.c"
+
+#include "System.Thread.c"
+#include "System.Memory.c"
+
 #include "System.Type.c"
 
 #include "System.Array.c"
@@ -40,7 +43,6 @@
 #include "System.Path.c"
 
 #include "System.Signal.c"
-#include "System.Thread.c"
 #include "System.Atomic.c"
 
 #include "System.ELF64Assembly.c"

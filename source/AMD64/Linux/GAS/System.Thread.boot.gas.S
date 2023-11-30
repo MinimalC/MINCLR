@@ -56,16 +56,16 @@ terminate_have_that:
     movq $11,%rax       # System_Syscall_Command_munmap
     movq 16(%rbx),%rdi  # that->stack
     syscall
-/* if DEBUG == DEBUG_System_Syscall_mmap
+/* if DEBUG == DEBUG_System_Syscall_mmap */
     movq System_Syscall_mmapCount@GOTPCREL(%rip),%rsi
-    lock decq (%rsi) */
+    lock decq (%rsi)
     movq $0,16(%rbx)
     movq 24(%rbx),%rdi  # that->tls
     cmpq $0,%rdi
     je terminate_no_tls
     syscall
-/* if DEBUG == DEBUG_System_Syscall_mmap
-    lock decq (%rsi) */
+/* if DEBUG == DEBUG_System_Syscall_mmap */
+    lock decq (%rsi)
     movq $0,24(%rbx)
 
 terminate_no_tls:

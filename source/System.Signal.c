@@ -30,30 +30,15 @@ struct System_Type System_SignalType = { .base = { .type = typeof(System_Type) }
 /*#define __sigmask(sig) (((unsigned long) 1) << ((unsigned)((sig) - 1) % (8 * sizeof (unsigned long))))
 #define __sigword(sig) ((unsigned)((sig) - 1) / (8 * sizeof (unsigned long)))*/
 
-enum {
-    SA_NOCHILDSTOP = 1, /* Don't send SIGCHLD when children stop.  */
-    SA_NOCHILDWAIT = 2, /* Don't create zombie on child death.  */
-    SA_SIGINFO = 4,   /* Invoke signal-catching function with three arguments instead of one.  */
-
-    SA_RESTORER = 0x04000000,
-    SA_ONSTACK = 0x08000000, /* Use signal stack by using `sa_restorer'. */
-    SA_RESTART = 0x10000000, /* Restart syscall on signal return.  */
-    SA_INTERRUPT = 0x20000000, /* Historical no-op.  */
-    SA_NODEFER = 0x40000000, /* Don't automatically block the signal when its handler is being executed.  */
-    SA_NOMASK = SA_NODEFER,
-    SA_RESETHAND = 0x80000000, /* Reset to SIG_DFL on entry to handler.  */
-    SA_ONESHOT = SA_RESETHAND,
-};
-
 void System_Signal_handle(System_Signal_Number number, function_System_Signal_handler handler) {
     System_Signal_handle__flags(number, handler, 0);
 }
 
-void System_Signal_handle__flags(System_Signal_Number number, function_System_Signal_handler handler, System_IntPtr flags) {
+void System_Signal_handle__flags(System_Signal_Number number, function_System_Signal_handler handler, System_Signal_Flags flags) {
 
     struct System_Signal_Action new; System_Stack_clear(new);
     new.handler = handler; 
-    new.flags = flags | SA_RESTORER; /* not SA_SIGINFO */
+    new.flags = flags | System_Signal_Flags_RESTORER; /* not System_Signal_Flags_SIGINFO */
     new.restorer = &System_Syscall_sigreturn;
 
     new.signal.mask[0] |= (1 << (number - 1));
@@ -67,11 +52,11 @@ void System_Signal_act(System_Signal_Number number, function_System_Signal_actio
     System_Signal_act__flags(number, action, 0);
 }
 
-void System_Signal_act__flags(System_Signal_Number number, function_System_Signal_action action, System_IntPtr flags) {
+void System_Signal_act__flags(System_Signal_Number number, function_System_Signal_action action, System_Signal_Flags flags) {
 
     struct System_Signal_Action new; System_Stack_clear(new);
     new.action = action; 
-    new.flags = flags | SA_RESTORER | SA_SIGINFO;
+    new.flags = flags | System_Signal_Flags_RESTORER | System_Signal_Flags_SIGINFO;
     new.restorer = &System_Syscall_sigreturn;
 
     new.signal.mask[0] |= (1 << (number - 1));

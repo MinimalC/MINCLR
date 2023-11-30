@@ -143,48 +143,36 @@ void System_Syscall_chdir(System_String8 path) {
 }
 
 
-#if DEBUG == DEBUG_System_Syscall_mmap
 atomic System_Size System_Syscall_mmapCount = 0;
-#endif
 
 System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_IntPtr map) {
-#if DEBUG == DEBUG_System_Syscall_mmap
     System_Atomic_increment(&System_Syscall_mmapCount);
     System_Atomic_fence();
-#endif
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, -1, 0);
 }
 
 System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr page, System_IntPtr map, System_Var file, System_IntPtr offset) {
-#if DEBUG == DEBUG_System_Syscall_mmap
     System_Atomic_increment(&System_Syscall_mmapCount);
     System_Atomic_fence();
-#endif
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, (System_IntPtr)file, offset);
 }
 
 System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr page, System_IntPtr map, System_Var file, System_IntPtr offset) {
-#if DEBUG == DEBUG_System_Syscall_mmap
     System_Atomic_increment(&System_Syscall_mmapCount);
     System_Atomic_fence();
-#endif
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, initialAddress, length, page, map, (System_IntPtr)file, offset);
 }
 
 void  System_Syscall_munmap(System_Var address, System_Size length) {
-#if DEBUG == DEBUG_System_Syscall_mmap
     System_Atomic_decrement(&System_Syscall_mmapCount);
     System_Atomic_fence();
-#endif
     (void)System_Syscall_call02(System_Syscall_Command_munmap, (System_IntPtr)address, length);
 }
 
-#if DEBUG == DEBUG_System_Syscall_mmap
 void System_Syscall_mmap__debug(void) {
     System_Atomic_fence();
     if (System_Syscall_mmapCount) System_Console_writeLine("System_Syscall_mmap__debug: called {0:uint} times without munmap.", 1, System_Syscall_mmapCount);
 }
-#endif
 
 void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags) {
     (void)System_Syscall_call03(System_Syscall_Command_mprotect, (System_IntPtr)address, length, flags);
@@ -247,12 +235,21 @@ System_Thread_TID  System_Syscall_gettid(void) {
     return (System_Thread_TID)System_Syscall_call00(System_Syscall_Command_gettid);
 }
 
-System_IntPtr  System_Syscall_prctl(System_IntPtr option, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5) {
-    return System_Syscall_call05(System_Syscall_Command_prctl, option, arg2, arg3, arg4, arg5);
+void  System_Syscall_prctl(System_IntPtr option, System_IntPtr arg1) {
+    (void)System_Syscall_prctl4(option, arg1, 0, 0, 0);
+}
+void  System_Syscall_prctl2(System_IntPtr option, System_IntPtr arg1, System_IntPtr arg2) {
+    (void)System_Syscall_prctl4(option, arg1, arg2, 0, 0);
+}
+void  System_Syscall_prctl3(System_IntPtr option, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3) {
+    (void)System_Syscall_prctl4(option, arg1, arg2, arg3, 0);
+}
+void  System_Syscall_prctl4(System_IntPtr option, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4) {
+    (void)System_Syscall_call05(System_Syscall_Command_prctl, option, arg1, arg2, arg3, arg4);
 }
 
-System_IntPtr  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg) {
-    return System_Syscall_call02(System_Syscall_Command_arch_prctl, option, arg);
+void  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg1) {
+    (void)System_Syscall_call02(System_Syscall_Command_arch_prctl, option, arg1);
 }
 
 

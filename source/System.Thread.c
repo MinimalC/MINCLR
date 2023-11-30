@@ -28,6 +28,23 @@ System_Var System_Thread_createStorage(void) {
     return System_ELF64Assembly_createThread();
 }
 
+enum {
+    ARCH_SET_GS = 0x1001,
+    ARCH_SET_FS = 0x1002,
+    ARCH_GET_FS = 0x1003,
+    ARCH_GET_GS = 0x1004,
+};
+
+System_Var System_Thread_getRegister(void) {
+    System_Var fs = null;
+    System_Syscall_arch_prctl(ARCH_GET_FS, (System_IntPtr)&fs);
+    return fs;
+}
+
+void System_Thread_setRegister(System_Var fs) {
+    if (fs) System_Syscall_arch_prctl(ARCH_SET_FS, (System_IntPtr)fs);
+}
+
 System_Var __tls_get_addr(System_Var index) {
     return null; // throw
 }
@@ -106,7 +123,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
         System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
         System_IntPtr signal_flags = 0;
         #if !defined(use_System_Thread_SIGCHILD)
-        signal_flags = SA_NOCHILDSTOP | SA_NOCHILDWAIT;
+        signal_flags = System_Signal_Flags_NOCHILDSTOP | System_Signal_Flags_NOCHILDWAIT;
         #endif
         #if DEBUG == DEBUG_System_Thread
         System_Signal_act__flags(System_Signal_Number_SIGCHILD, System_Thread_sigchild, signal_flags);
@@ -190,13 +207,9 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
 #else /* if !defined(use_System_Thread_SIGCHILD) */
 
     System_Atomic_fence();
-
-    while (!System_Atomic_expectDefault__int32((atomic System_Int32 *)&that->threadId)) {
+    while (!System_Atomic_expect__int32((atomic System_Int32 *)&that->threadId, 0, 0)) {
         if (dontwait) return false;
-
-        // System_Atomic_delay();
         System_Thread_yield();
-
         System_Atomic_fence();
     }
 

@@ -88,8 +88,11 @@ export void  System_Syscall_sched_yield(void);
 export System_Thread_TID  System_Thread_PID;
 export System_Thread_TID  System_Syscall_getpid(void);
 export System_Thread_TID  System_Syscall_gettid(void);
-export System_IntPtr  System_Syscall_prctl(System_IntPtr option, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4, System_IntPtr arg5);
-export System_IntPtr  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg);
+export void  System_Syscall_prctl(System_IntPtr option, System_IntPtr arg1);
+export void  System_Syscall_prctl2(System_IntPtr option, System_IntPtr arg1, System_IntPtr arg2);
+export void  System_Syscall_prctl3(System_IntPtr option, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3);
+export void  System_Syscall_prctl4(System_IntPtr option, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4);
+export void  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg);
 
 export System_IntPtr  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol);
 export void  System_Syscall_bind(System_IntPtr socketId, System_Var socketAddress, System_Size socketAddressLength);

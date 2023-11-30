@@ -159,10 +159,8 @@ void System_Runtime_selflink(System_Var base) {
             System_Runtime_relocate(base, PLT_relocation + i, dynamicSymbols, dynamicStrings);
 }
 
-void System_Runtime_readlink(System_Var base) {
+void System_Runtime_readlink(System_ELF64Assembly assembly, System_Var base) {
     System_Size i;
-
-    System_ELF64Assembly assembly = System_Memory_allocClass(typeof(System_ELF64Assembly));
 
     assembly->link = base;
 
@@ -328,10 +326,8 @@ int System_Runtime_main(int argc, char  * argv[]) {
 
     System_Runtime_selflink(base);
 
-    System_Var tls = System_Thread_createStorage();
-    if (tls) System_Syscall_arch_prctl(0x1002, (System_IntPtr)tls);
-
-    System_Runtime_readlink(vdso);
+    System_ELF64Assembly assembly_vdso = System_Memory_allocClass(typeof(System_ELF64Assembly));
+    System_Runtime_readlink(assembly_vdso, vdso);
 
     System_ELF64Assembly assembly = (System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly));
 #if DEBUG == DEBUG_System_ELFAssembly
@@ -358,11 +354,22 @@ int System_Runtime_main(int argc, char  * argv[]) {
             *symbol1_value = (System_Size)System_ELF64Assembly_loaded[i];
     }
 
+    extern System_Var  System_Memory_ProcessVars[];
+    symbol1 = System_ELF64Assembly_getSymbol("System_Memory_ProcessVars", &assembly1);
+    if (symbol1) {
+        symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+        for (System_Size i = 0; i < 4; ++i, ++symbol1_value) /* TODO: sizeof_array(System_Memory_ProcessVars) */
+            *symbol1_value = (System_Size)System_Memory_ProcessVars[i];
+    }
+
     System_Var entry = assembly->link + assembly->header->entryPoint;
     // System_Var entry = (System_Var)System_Environment_AuxValues[System_Environment_AuxType_ENTRY];
 #if DEBUG == DEBUG_System_ELFAssembly
     System_Console_writeLine("INTERP JUMPING to 0x{0:uint:hex}, with stack on 0x{1:uint:hex}", 2, entry, System_Runtime_stack);
 #endif
+
+    System_Var tls = System_Thread_createStorage();
+    if (tls) System_Thread_setRegister(tls);
 
     register System_Var entry0 __asm__("r11") = entry;
     // register System_Var exit0 __asm__("rdx") = ;

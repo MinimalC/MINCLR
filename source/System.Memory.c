@@ -146,14 +146,17 @@ struct System_Type  System_Memory_HeaderType = {
 };
 #endif
 
-internal System_Var  System_Memory_ProcessVars[] = { 0, 0, 0, 0 };
+export System_Var  System_Memory_ProcessVars[] = { 0, 0, 0, 0 };
+
+export thread System_Var  System_Memory_ThreadVars[] = { 0, 0, 0, 0 };
 
 System_Var  System_Memory_alloc__internal_min_i_max(System_Type type, System_Size length, System_Size min, System_Size index, System_Size max) {
 
     Size real_size = sizeof(struct System_Memory_Header) + type->size * length;
 
     System_Var map;
-    System_VarArray mem64k = System_Memory_ProcessVars[index];
+    System_VarArray mem64k;
+    mem64k = System_Memory_ProcessVars[index];
     if (!mem64k) {
         map = System_Syscall_mmap(min, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
         if (!map) return null;
@@ -262,7 +265,8 @@ System_Var  System_Memory_alloc__internal(System_Type type, System_Size length) 
 Size System_Memory_debug__min_i_max(System_Size min, System_Size index, System_Size max) {
     Size unfree = 0;
 
-    System_VarArray mem64k = System_Memory_ProcessVars[index];
+    System_VarArray mem64k;
+    mem64k = System_Memory_ProcessVars[index];
     if (!mem64k) return 0;
 
     System_Memory_Page mem64h = null;
@@ -348,8 +352,11 @@ Bool System_Memory_isAllocated(Var that) {
 
     static Size indexL = sizeof_array(System_Memory_ProcessVars);
 
+    System_Var * vars;
+    vars = System_Memory_ProcessVars;
+
     for (Size index = 0; index < indexL; ++index) {
-        System_VarArray mem64k = System_Memory_ProcessVars[index];
+        System_VarArray mem64k = vars[index];
         if (!mem64k) continue;
 
         for (Size i = 0; i < mem64k->length; ++i) {
