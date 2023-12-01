@@ -15,6 +15,7 @@ System_Bool System_Atomic_readLock(System_Atomic that) {
 }
 
 System_Bool System_Atomic_readLock__dontwait(System_Atomic that, System_Bool dontwait) {
+    if (that->writers != -1)
     while (!System_Atomic_expect__int32(&that->writers, 0, -1)) {
         if (dontwait) return false;
         System_Atomic_delay();
@@ -27,7 +28,7 @@ System_Bool System_Atomic_readLock__dontwait(System_Atomic that, System_Bool don
 
 void System_Atomic_readUnlock(System_Atomic that) {
     System_Int32 reader = System_Atomic_decrement__int32(&that->readers);
-    if (!reader) 
+    if (!reader)
         while (-1 == System_Atomic_expect__int32(&that->writers, -1, 0)) {
             System_Atomic_delay();
             System_Atomic_fence();
@@ -45,8 +46,13 @@ System_Bool System_Atomic_writeLock__dontwait(System_Atomic that, System_Bool do
         System_Atomic_delay();
         System_Atomic_fence();
     }
+    if (that->readers)
+    while (!System_Atomic_expect__int32(&that->readers, 0, 0)) {
+        System_Atomic_delay();
+        System_Atomic_fence();
+    }
     System_Atomic_fence();
-    return true;    
+    return true;
 }
 
 void System_Atomic_writeUnlock(System_Atomic that) {
