@@ -10,13 +10,58 @@
 
 struct System_Type System_AtomicType = { .base = { .type = typeof(System_Type) }, .name = "Atomic", .size = sizeof(struct System_Atomic) };
 
+System_Bool System_Atomic_readLock(System_Atomic that) {
+    return System_Atomic_readLock__dontwait(that, false);
+}
+
+System_Bool System_Atomic_readLock__dontwait(System_Atomic that, System_Bool dontwait) {
+    while (!System_Atomic_expect__int32(&that->writers, 0, -1)) {
+        if (dontwait) return false;
+        System_Atomic_delay();
+        System_Atomic_fence();
+    }
+    System_Atomic_increment__int32(&that->readers);
+    System_Atomic_fence();
+    return true;
+}
+
+void System_Atomic_readUnlock(System_Atomic that) {
+    System_Int32 reader = System_Atomic_decrement__int32(&that->readers);
+    if (!reader) 
+        while (-1 == System_Atomic_expect__int32(&that->writers, -1, 0)) {
+            System_Atomic_delay();
+            System_Atomic_fence();
+        }
+    System_Atomic_fence();
+}
+
+System_Bool System_Atomic_writeLock(System_Atomic that) {
+    return System_Atomic_writeLock__dontwait(that, false);
+}
+
+System_Bool System_Atomic_writeLock__dontwait(System_Atomic that, System_Bool dontwait) {
+    while (!System_Atomic_expect__int32(&that->writers, 0, 1)) {
+        if (dontwait) return false;
+        System_Atomic_delay();
+        System_Atomic_fence();
+    }
+    System_Atomic_fence();
+    return true;    
+}
+
+void System_Atomic_writeUnlock(System_Atomic that) {
+    System_Atomic_decrement__int32(&that->writers);
+    System_Atomic_fence();
+}
+
+
 void System_Atomic_fence() {
     __asm__("mfence");
 }
 
 void System_Atomic_delay() {
     __asm__ __volatile__ (
-        "nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;" /*"nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;"*/
+        "nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;  nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;"
     );
 }
 
@@ -87,53 +132,4 @@ System_Int32 System_Atomic_increment__int32(atomic System_Int32 * that) {
 System_Int32 System_Atomic_decrement__int32(atomic System_Int32 * that) {
     __asm__ ("lock decl %0" : "=m" (*that) : "m" (*that));
     return *that;
-}
-
-
-System_Bool System_Atomic_readLock(System_Atomic that) {
-    return System_Atomic_readLock__dontwait(that, false);
-}
-
-System_Bool System_Atomic_readLock__dontwait(System_Atomic that, System_Bool dontwait) {
-
-    while (!System_Atomic_expect(&that->writers, 0, 0)) {
-        if (dontwait) return false;
-        System_Atomic_delay();
-        System_Atomic_fence();
-    }
-    System_Atomic_increment(&that->readers);
-    System_Atomic_fence();
-    return true;
-}
-
-void System_Atomic_readUnlock(System_Atomic that) {
-    System_Atomic_decrement(&that->readers);
-    System_Atomic_fence();
-}
-
-System_Bool System_Atomic_writeLock(System_Atomic that) {
-    return System_Atomic_writeLock__dontwait(that, false);
-}
-
-System_Bool System_Atomic_writeLock__dontwait(System_Atomic that, System_Bool dontwait) {
-    System_Size writer;
-    if (!dontwait) writer = System_Atomic_increment(&that->writers);
-    System_Atomic_fence();
-    while (!System_Atomic_expect(&that->readers, 0, 0)) {
-        if (dontwait) return false;
-        System_Atomic_delay();
-        System_Atomic_fence();
-    }
-    if (dontwait) writer = System_Atomic_increment(&that->writers);
-    System_Atomic_fence();
-    while (!System_Atomic_expect(&that->writers, writer, writer)) {
-        System_Atomic_delay();
-        System_Atomic_fence();
-    }
-    return true;    
-}
-
-void System_Atomic_writeUnlock(System_Atomic that) {
-    System_Atomic_decrement(&that->writers);
-    System_Atomic_fence();
 }

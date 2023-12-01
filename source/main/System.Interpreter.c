@@ -354,13 +354,13 @@ int System_Runtime_main(int argc, char  * argv[]) {
             *symbol1_value = (System_Size)System_ELF64Assembly_loaded[i];
     }
 
-    extern System_Var  System_Memory_ProcessVars[];
+    /*extern System_Var  System_Memory_ProcessVars[];
     symbol1 = System_ELF64Assembly_getSymbol("System_Memory_ProcessVars", &assembly1);
     if (symbol1) {
         symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
-        for (System_Size i = 0; i < 4; ++i, ++symbol1_value) /* TODO: sizeof_array(System_Memory_ProcessVars) */
+        for (System_Size i = 0; i < 4; ++i, ++symbol1_value)    TODO: sizeof_array(System_Memory_ProcessVars)
             *symbol1_value = (System_Size)System_Memory_ProcessVars[i];
-    }
+    }*/
 
     System_Var entry = assembly->link + assembly->header->entryPoint;
     // System_Var entry = (System_Var)System_Environment_AuxValues[System_Environment_AuxType_ENTRY];

@@ -184,8 +184,6 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
 
 #if defined(use_System_Thread_SIGCHILD)
 
-    System_Atomic_fence();
-
     if (that->threadId) {
         System_IntPtr status = 0;
         System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait);

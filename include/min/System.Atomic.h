@@ -7,9 +7,9 @@
 
 typedef System_fixed struct System_Atomic {
 
-    atomic System_Size readers;
+    atomic System_Int32 readers;
 
-    atomic System_Size writers;
+    atomic System_Int32 writers;
 
 }  * System_Atomic;
 
