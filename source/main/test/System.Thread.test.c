@@ -15,55 +15,51 @@ void Dummy0(System_Size argc, System_Var argv[]) {
         System_Console_writeLine("System_Thread_Current: 0x{0:uint:hex}, base.type 0x{1:uint:hex}, threadId {2:int32}, returnValue {3:uint32}", 4, System_Thread_Current, System_Thread_Current->base.type, System_Thread_Current->threadId, System_Thread_Current->returnValue);
 
     System_Thread_sleep(4);
-    System_Console_writeLine("This is Child{0:uint}", 1, argv[0]);
+    System_Console_writeLine("Child{0:uint}.", 1, argv[0]);
 
-    if (System_Atomic_readLock(&rwlock)) {
-        System_Console_writeLine("Child{0:uint} read number {1:uint:bin}", 2, argv[0], number);
-        System_Atomic_readUnlock(&rwlock);
+    System_Size i = 0;
+    while (!System_Atomic_readLock__dontwait(&rwlock, true)) {
+        if (i != System_Size_Max) ++i;
+        System_Atomic_delay();
+        System_Atomic_fence();
     }
-    else {
-        System_Console_writeLine("Child{0:uint} no read", 1, argv[0]);
-    }
+    System_Console_writeLine("Child{0:uint}: {1:uint}. read number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_readUnlock(&rwlock);
 }
 
 System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
 
-    /* System_Size old_number = number;
-    if (System_Atomic_expect(&number, 1, 2))
-        System_Console_writeLine("Child{0:uint}: This was 1, now this is 2", 1, argv[0]);
-    else
-        System_Console_writeLine("Child{0:uint}: This wasn't 1", 1, argv[0]);*/
-
-
-    if (System_Atomic_writeLock(&rwlock)) {
-        //System_Atomic_delay();
-        number |= (System_Size)argv[0];
-        System_Console_writeLine("Child{0:uint} write number {1:uint:bin}", 2, argv[0], number);
-        System_Atomic_writeUnlock(&rwlock);
+    System_Size i = 0;
+    while (!System_Atomic_writeLock__dontwait(&rwlock, true)) {
+        if (i != System_Size_Max) ++i;
+        System_Atomic_delay();
+        System_Atomic_fence();
     }
-    else {
-        System_Console_writeLine("Child{0:uint} no write", 1, argv[0]);
-    }
+    number |= (System_Size)argv[0];
+    System_Console_writeLine("Child{0:uint}: {1:uint}. write number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_writeUnlock(&rwlock);
 
     System_Thread_sleep(2);
     System_Console_writeLine("Child{0:uint}.", 1, argv[0]);
 
-    if (System_Atomic_readLock(&rwlock)) {
-        System_Console_writeLine("Child{0:uint} read number {1:uint:bin}", 2, argv[0], number);
-        System_Atomic_readUnlock(&rwlock);
+    i = 0;
+    while (!System_Atomic_readLock__dontwait(&rwlock, true)) {
+        if (i != System_Size_Max) ++i;
+        System_Atomic_delay();
+        System_Atomic_fence();
     }
-    else {
-        System_Console_writeLine("Child{0:uint} no read", 1, argv[0]);
+    System_Console_writeLine("Child{0:uint}: {1:uint}. read number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_readUnlock(&rwlock);
+
+    i = 0;
+    while (!System_Atomic_writeLock__dontwait(&rwlock, true)) {
+        if (i != System_Size_Max) ++i;
+        System_Atomic_delay();
+        System_Atomic_fence();
     }
-    if (System_Atomic_writeLock__dontwait(&rwlock, true)) {
-        // System_Atomic_delay();
-        number &= ~(System_Size)argv[0];
-        System_Console_writeLine("Child{0:uint} write number {1:uint:bin}", 2, argv[0], number);
-        System_Atomic_writeUnlock(&rwlock);
-    }
-    else {
-        System_Console_writeLine("Child{0:uint} no write", 1, argv[0]);
-    }
+    number &= ~(System_Size)argv[0];
+    System_Console_writeLine("Child{0:uint}: {1:uint}. write number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_writeUnlock(&rwlock);
 
     return true;
 }
@@ -97,6 +93,17 @@ int System_Runtime_main(int argc, char * argv[]) {
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 4);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 8);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 16);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 32);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 64);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 128);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 256);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 512);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 1024);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 2048);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 4096);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 8192);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 16384);
+    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 32768);
 
     System_Bool retures[64]; System_Stack_clear(retures);
 
@@ -106,7 +113,7 @@ int System_Runtime_main(int argc, char * argv[]) {
             if (!retures[i]) {
                 retures[i] = System_Thread_join__dontwait(dummys[i], true);
                 if (!retures[i]) System_Console_writeLine("Wait on Child{0:uint}", 1, i);
-                else System_Console_writeLine("This is Child{0:uint}, returning {1:uint:hex}", 2, i, dummys[i]->returnValue);
+                else System_Console_writeLine("Child{0:uint} returning {1:uint:hex}.", 2, i, dummys[i]->returnValue);
             }
 
         System_Size r = 0;
