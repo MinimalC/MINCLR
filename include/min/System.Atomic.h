@@ -17,6 +17,12 @@ export struct System_Type  System_AtomicType;
 
 export void System_Atomic_fence();
 export void System_Atomic_delay();
+export void System_Atomic_delay2();
+export void System_Atomic_delay4();
+export void System_Atomic_delay8();
+export void System_Atomic_delay16();
+export void System_Atomic_delay32();
+export void System_Atomic_delay64();
 
 export System_Bool System_Atomic_expect(atomic System_Size * that, System_Size comparison, System_Size value);
 export System_Size System_Atomic_exchange(atomic System_Size * that, System_Size value);
