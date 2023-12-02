@@ -270,20 +270,20 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     Network_TCPSocket tcp = argv[0];
 
     struct { int on; int seconds; } linger = { 1, 0 };
-    base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_LINGER, (System_IntPtr)&linger);
+    Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_LINGER, (System_IntPtr)&linger);
 
     Network_PollFlags poller = 0;
     System_String message = null;
     Network_HTTPRequest request = null;
     Network_HTTPResponse response = null;
 
-    poller = base_Network_TCPSocket_poll(tcp, Network_PollFlags_IN);
+    poller = Network_TCPSocket_poll(tcp, Network_PollFlags_IN);
     if (!(poller & Network_PollFlags_IN)) {
         System_Console_writeLine("HTTPService_serve: Error Poll IN {0:bool}", 1, (poller & Network_PollFlags_IN));  
         goto error;
     }
 
-    message = base_Network_TCPSocket_receive(tcp);
+    message = Network_TCPSocket_receive(tcp);
     if (!message) {
         System_Console_writeLine("HTTPService_serve: No Message", 0);
         goto error;
@@ -363,7 +363,7 @@ respond:
     if (requestPath) System_Memory_free(requestPath);
     if (request) System_Memory_free(request);
 
-    poller = base_Network_TCPSocket_poll(tcp, Network_PollFlags_OUT);
+    poller = Network_TCPSocket_poll(tcp, Network_PollFlags_OUT);
     if (!(poller & Network_PollFlags_OUT)) {
         System_Console_writeLine("HTTPService_serve: Error Poll OUT {0:bool}", 1, (poller & Network_PollFlags_OUT));  
         goto error;
@@ -391,16 +391,16 @@ respond:
     else
         System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->source.value);
 
-    base_Network_TCPSocket_send(tcp, &response->source, Network_MessageFlags_NOSIGNAL);
-    base_Network_TCPSocket_send(tcp, &response->buffer, Network_MessageFlags_NOSIGNAL);
+    Network_TCPSocket_send(tcp, &response->source, Network_MessageFlags_NOSIGNAL);
+    Network_TCPSocket_send(tcp, &response->buffer, Network_MessageFlags_NOSIGNAL);
 
     if (response) System_Memory_free(response);
 
-    base_Network_TCPSocket_close(tcp);
+    Network_TCPSocket_close(tcp);
     System_Memory_free(tcp);
     return true;
 error:
-    base_Network_TCPSocket_close(tcp);
+    Network_TCPSocket_close(tcp);
     System_Memory_free(tcp);
     return false;
 }
@@ -438,27 +438,27 @@ int System_Runtime_main(int argc, char  * argv[]) {
     System_Directory_change("www");
 
     Network_TCPSocket tcp = new_Network_TCPSocket();
-    base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEADDR, true);
-    base_Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEPORT, true);
+    Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEADDR, true);
+    Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_REUSEPORT, true);
 
     Network_IP4Address ip4 = { .address32 = inline_System_UInt32_toNetworkOrder(0x7F000001) }; // { 127, 0, 0, 1 }
     System_UInt16 port = 8081;
-    base_Network_TCPSocket_bind(tcp, ip4, port);
+    Network_TCPSocket_bind(tcp, ip4, port);
     System_Console_writeLine("WebService Network_IP4Address: {0:uint8}.{1:uint8}.{2:uint8}.{3:uint8}:{4:uint16}", 5, 
         ip4.address[0], ip4.address[1], ip4.address[2], ip4.address[3], port);
 
-    base_Network_TCPSocket_listen(tcp, 512);
+    Network_TCPSocket_listen(tcp, 512);
 
     while (true) {
 
         if (System_Runtime_HitCTRLC) break;
      
-        Network_TCPSocket tcp1 = base_Network_TCPSocket_accept(tcp);
+        Network_TCPSocket tcp1 = Network_TCPSocket_accept(tcp);
         if (!tcp1) continue;
         
         System_Thread thread1 = System_Thread_create(HTTPService_serve, 1, tcp1);
         if (!thread1) {
-            base_Network_TCPSocket_close(tcp1);
+            Network_TCPSocket_close(tcp1);
             System_Memory_free(tcp1);
             continue;
         }
@@ -468,7 +468,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
         System_Memory_free(thread1);
     }
 
-    base_Network_TCPSocket_close(tcp);
+    Network_TCPSocket_close(tcp);
     System_Memory_free(tcp);
     return false;
 }
