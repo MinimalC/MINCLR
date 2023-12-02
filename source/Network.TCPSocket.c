@@ -30,24 +30,24 @@
 
 Network_TCPSocket  new_Network_TCPSocket() {
     Network_TCPSocket that = (Network_TCPSocket)System_Memory_allocClass(typeof(Network_TCPSocket));
-    base_Network_TCPSocket_init(that);
+    Network_TCPSocket_init(that);
     return that;
 }
 
-void  base_Network_TCPSocket_init(Network_TCPSocket that) {
+void  Network_TCPSocket_init(Network_TCPSocket that) {
 
     that->socketId = System_Syscall_socket(Network_AddressFamily_IP4, Network_SocketType_STREAM, 0);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
-void  base_Network_TCPSocket_close(Network_TCPSocket that) {
+void  Network_TCPSocket_close(Network_TCPSocket that) {
     if (!that->socketId) return;
     System_Syscall_close((System_Var)that->socketId);
     that->socketId = null;
 }
 
-System_IntPtr  base_Network_TCPSocket_getSocketOption(Network_TCPSocket that, Network_SocketOption option) {
+System_IntPtr  Network_TCPSocket_getSocketOption(Network_TCPSocket that, Network_SocketOption option) {
     System_IntPtr reture = 0;
     System_Size retureSize = sizeof(System_IntPtr);
     System_Syscall_getsockopt(that->socketId, Network_SocketLevel_SOCKET, option, &reture, &retureSize);
@@ -56,13 +56,13 @@ System_IntPtr  base_Network_TCPSocket_getSocketOption(Network_TCPSocket that, Ne
     return reture;
 }
 
-void  base_Network_TCPSocket_setSocketOption(Network_TCPSocket that, Network_SocketOption option, System_IntPtr value) {
+void  Network_TCPSocket_setSocketOption(Network_TCPSocket that, Network_SocketOption option, System_IntPtr value) {
     System_Syscall_setsockopt(that->socketId, Network_SocketLevel_SOCKET, option, &value, sizeof(System_IntPtr));
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_setSocketOption Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
-void  base_Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address address, System_UInt16 port) {
+void  Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address address, System_UInt16 port) {
 
     struct Network_SocketAddress socketAddress; System_Stack_clear(socketAddress);
     socketAddress.family = Network_AddressFamily_IP4;
@@ -79,17 +79,17 @@ void  base_Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address add
     if (errno) System_Console_writeLine("Network_TCPSocket_bind Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
-void  base_Network_TCPSocket_listen(Network_TCPSocket that, System_Size backlog) {
+void  Network_TCPSocket_listen(Network_TCPSocket that, System_Size backlog) {
     System_Syscall_listen(that->socketId, backlog);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_listen Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
-Network_TCPSocket  base_Network_TCPSocket_accept(Network_TCPSocket that) {
-    return base_Network_TCPSocket_accept__flags(that, 0);
+Network_TCPSocket  Network_TCPSocket_accept(Network_TCPSocket that) {
+    return Network_TCPSocket_accept__flags(that, 0);
 }
 
-Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags) {
+Network_TCPSocket  Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags) {
     struct Network_SocketAddress address; System_Stack_clear(address);
     System_Size addressLength = sizeof(struct Network_SocketAddress);
     System_IntPtr reture = System_Syscall_accept(that->socketId, &address, &addressLength, flags);
@@ -103,11 +103,11 @@ Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket that, 
     return new;
 }
 
-System_String  base_Network_TCPSocket_receive(Network_TCPSocket that) {
-    return base_Network_TCPSocket_receive__flags(that, 0);
+System_String  Network_TCPSocket_receive(Network_TCPSocket that) {
+    return Network_TCPSocket_receive__flags(that, 0);
 }
 
-System_String  base_Network_TCPSocket_receive__flags(Network_TCPSocket that, Network_MessageFlags flags) {
+System_String  Network_TCPSocket_receive__flags(Network_TCPSocket that, Network_MessageFlags flags) {
 
     System_Char8 body[System_UInt16_Max]; System_Stack_clear(body);
     System_Size length = stack_Network_TCPSocket_receive__flags(that, body, System_UInt16_Max, flags);
@@ -144,7 +144,7 @@ System_Size  stack_Network_TCPSocket_receive__flags(Network_TCPSocket that, Syst
     return reture;
 }
 
-void  base_Network_TCPSocket_send(Network_TCPSocket that, System_String message, Network_MessageFlags flags) {
+void  Network_TCPSocket_send(Network_TCPSocket that, System_String message, Network_MessageFlags flags) {
     System_Syscall_send(that->socketId, message->value, message->length, flags);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_send Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
@@ -156,7 +156,7 @@ typedef struct Network_PollDescriptor {
     Network_PollFlags outEvents;
 } * Network_PollDescriptor;
 
-Network_PollFlags  base_Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request) {
+Network_PollFlags  Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request) {
     struct Network_PollDescriptor socketD = {
         .socketId = (System_UInt32)that->socketId,
         .inEvents = request,

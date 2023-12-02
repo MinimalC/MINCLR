@@ -191,7 +191,7 @@ enum {
     Network_HTTPStatus_Error = 500,
 };
 
-typedef System_fixed struct Network_TCPSocket {
+typedef System_fixed /* final */ struct Network_TCPSocket {
     struct System_Object base;
 
     System_IntPtr socketId;
@@ -201,21 +201,21 @@ typedef System_fixed struct Network_TCPSocket {
 export struct System_Type  Network_TCPSocketType;
 
 export Network_TCPSocket  new_Network_TCPSocket();
-export void  base_Network_TCPSocket_init(Network_TCPSocket that);
+export void  Network_TCPSocket_init(Network_TCPSocket that);
 
-export System_IntPtr  base_Network_TCPSocket_getSocketOption(Network_TCPSocket that, Network_SocketOption option);
-export void  base_Network_TCPSocket_setSocketOption(Network_TCPSocket that, Network_SocketOption option, System_IntPtr value);
+export System_IntPtr  Network_TCPSocket_getSocketOption(Network_TCPSocket that, Network_SocketOption option);
+export void  Network_TCPSocket_setSocketOption(Network_TCPSocket that, Network_SocketOption option, System_IntPtr value);
 
-export void  base_Network_TCPSocket_close(Network_TCPSocket that);
-export void  base_Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address address, System_UInt16 port);
-export void  base_Network_TCPSocket_listen(Network_TCPSocket that, System_Size backlog);
-export Network_TCPSocket  base_Network_TCPSocket_accept(Network_TCPSocket that);
-export Network_TCPSocket  base_Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags);
-export Network_PollFlags  base_Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request);
-export System_String  base_Network_TCPSocket_receive(Network_TCPSocket that);
-export System_String  base_Network_TCPSocket_receive__flags(Network_TCPSocket that, Network_MessageFlags flags);
+export void  Network_TCPSocket_close(Network_TCPSocket that);
+export void  Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address address, System_UInt16 port);
+export void  Network_TCPSocket_listen(Network_TCPSocket that, System_Size backlog);
+export Network_TCPSocket  Network_TCPSocket_accept(Network_TCPSocket that);
+export Network_TCPSocket  Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags);
+export Network_PollFlags  Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request);
+export System_String  Network_TCPSocket_receive(Network_TCPSocket that);
+export System_String  Network_TCPSocket_receive__flags(Network_TCPSocket that, Network_MessageFlags flags);
 export System_Size  stack_Network_TCPSocket_receive(Network_TCPSocket that, System_Char8 message[], System_Size length);
 export System_Size  stack_Network_TCPSocket_receive__flags(Network_TCPSocket that, System_Char8 message[], System_Size length, Network_MessageFlags flags);
-export void  base_Network_TCPSocket_send(Network_TCPSocket that, System_String message, Network_MessageFlags flags);
+export void  Network_TCPSocket_send(Network_TCPSocket that, System_String message, Network_MessageFlags flags);
 
 #endif
