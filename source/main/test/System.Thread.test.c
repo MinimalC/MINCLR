@@ -4,7 +4,7 @@
 atomic System_Size  number = 0;
 struct System_Atomic rwlock = { };
 
-void Dummy0(System_Size argc, System_Var argv[]) {
+System_Bool Dummy0(System_Size argc, System_Var argv[]) {
 
     System_Console_writeLine("System_Thread_TID: {0:uint32}", 1, System_Syscall_gettid());
     System_Var fs = System_Thread_getRegister();
@@ -25,6 +25,8 @@ void Dummy0(System_Size argc, System_Var argv[]) {
     }
     System_Console_writeLine("Child{0:uint}: {1:uint}. read number {2:uint:bin}", 3, argv[0], i, number);
     System_Atomic_readUnlock(&rwlock);
+    
+    return false;
 }
 
 System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
@@ -61,7 +63,7 @@ System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
     System_Console_writeLine("Child{0:uint}: {1:uint}. write number {2:uint:bin}", 3, argv[0], i, number);
     System_Atomic_writeUnlock(&rwlock);
 
-    return true;
+    return (System_IntPtr)argv[0];
 }
 
 void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info info, System_Var context) {
