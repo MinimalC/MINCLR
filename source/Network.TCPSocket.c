@@ -156,10 +156,10 @@ typedef struct Network_PollDescriptor {
     Network_PollFlags outEvents;
 } * Network_PollDescriptor;
 
-Network_PollFlags  Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request) {
+Network_PollFlags  Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags inFlags) {
     struct Network_PollDescriptor socketD = {
         .socketId = (System_UInt32)that->socketId,
-        .inEvents = request,
+        .inEvents = inFlags,
         .outEvents = 0,
     };
     struct System_TimeSpan timeout = { .sec = 3, .usec = 0 }; /* TODO */
@@ -168,6 +168,31 @@ Network_PollFlags  Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFl
     if (errno) System_Console_writeLine("Network_TCPSocket_poll Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
     return !reture ? 0 : socketD.outEvents;
 }
+
+
+void  Network_TCPSocket_pollAny(Network_TCPSocket that[], System_Size count, Network_PollFlags inFlags, Network_PollFlags outFlags[]) {
+    Debug_assert(that);
+    Debug_assert(outFlags);
+    if (count > 512) { Debug_assert(count <= 512); count = 512; }
+    struct Network_PollDescriptor socketsD[512]; Stack_clear(socketsD);
+    for (System_Size i = 0; i < count; ++i) {
+        if (!that[i] || !that[i]->socketId) continue;
+        socketsD[i].socketId = that[i]->socketId;
+        socketsD[i].inEvents = inFlags;
+    }
+    struct System_TimeSpan timeout = { .sec = 3, .usec = 0 }; /* TODO */
+    System_Size reture = System_Syscall_ppoll(&socketsD, count, &timeout, null);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("Network_TCPSocket_poll Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+    for (System_Size i = 0; i < count; ++i) {
+        if (!that[i] || !that[i]->socketId) {
+            outFlags[i] = 0;
+            continue;
+        }
+        outFlags[i] = socketsD[i].outEvents;
+    }
+}
+
 
 struct System_Type Network_TCPSocketType = { .base = { .type = typeof(System_Type) }, 
     .name = "TCPSocket", 
