@@ -34,9 +34,19 @@ Network_TCPSocket  new_Network_TCPSocket() {
     return that;
 }
 
-void  Network_TCPSocket_init(Network_TCPSocket that) {
+Network_TCPSocket  new_Network_TCPSocket__flags(System_IntPtr flags) {
+    Network_TCPSocket that = (Network_TCPSocket)System_Memory_allocClass(typeof(Network_TCPSocket));
+    Network_TCPSocket_init__flags(that, flags);
+    return that;
+}
 
-    that->socketId = System_Syscall_socket(Network_AddressFamily_IP4, Network_SocketType_STREAM, 0);
+void  Network_TCPSocket_init(Network_TCPSocket that) {
+    Network_TCPSocket_init__flags(that, 0);
+}
+
+void  Network_TCPSocket_init__flags(Network_TCPSocket that, System_IntPtr flags) {
+
+    that->socketId = System_Syscall_socket(Network_AddressFamily_IP4, Network_SocketType_STREAM | flags, 0);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
@@ -181,7 +191,7 @@ void  Network_TCPSocket_pollAny(Network_TCPSocket that[], System_Size count, Net
         socketsD[i].inEvents = inFlags;
     }
     struct System_TimeSpan timeout = { .sec = 3, .usec = 0 }; /* TODO */
-    System_Size reture = System_Syscall_ppoll(&socketsD, count, &timeout, null);
+    System_Size reture = System_Syscall_ppoll(socketsD, count, &timeout, null);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_poll Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
     for (System_Size i = 0; i < count; ++i) {

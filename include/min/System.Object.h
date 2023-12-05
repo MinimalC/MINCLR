@@ -15,11 +15,19 @@ export struct System_Type  System_ObjectType;
 
 typedef void delegate(System_Object_free)(System_Object that);
 typedef void delegate(System_Object_init)(System_Object that);
+typedef void delegate(System_Object_init1)(System_Object that, System_Var arg1);
+typedef void delegate(System_Object_init2)(System_Object that, System_Var arg1, System_Var arg2);
+typedef void delegate(System_Object_init3)(System_Object that, System_Var arg1, System_Var arg2, System_Var arg3);
+typedef void delegate(System_Object_init4)(System_Object that, System_Var arg1, System_Var arg2, System_Var arg3, System_Var arg4);
 typedef System_UInt64 delegate(System_Object_getSipHash)(System_Object that);
 
 export System_Object  new_System_Object();
 export void  base_System_Object_free(System_Object that);
 export void  base_System_Object_init(System_Object that);
+export void  base_System_Object_init1(System_Object that, System_Var arg1);
+export void  base_System_Object_init2(System_Object that, System_Var arg1, System_Var arg2);
+export void  base_System_Object_init3(System_Object that, System_Var arg1, System_Var arg2, System_Var arg3);
+export void  base_System_Object_init4(System_Object that, System_Var arg1, System_Var arg2, System_Var arg3, System_Var arg4);
 export System_UInt64  base_System_Object_getSipHash(System_Object that);
 export System_Type  System_Object_get_Type(System_Object that);
 export System_Bool  System_Object_isInstanceof(System_Object that, System_Type type);

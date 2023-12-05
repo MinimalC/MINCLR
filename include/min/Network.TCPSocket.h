@@ -203,7 +203,9 @@ typedef System_fixed /* final */ struct Network_TCPSocket {
 export struct System_Type  Network_TCPSocketType;
 
 export Network_TCPSocket  new_Network_TCPSocket();
+export Network_TCPSocket  new_Network_TCPSocket__flags(System_IntPtr flags);
 export void  Network_TCPSocket_init(Network_TCPSocket that);
+export void  Network_TCPSocket_init__flags(Network_TCPSocket that, System_IntPtr flags);
 
 export System_IntPtr  Network_TCPSocket_getSocketOption(Network_TCPSocket that, Network_SocketOption option);
 export void  Network_TCPSocket_setSocketOption(Network_TCPSocket that, Network_SocketOption option, System_IntPtr value);

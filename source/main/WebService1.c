@@ -269,8 +269,7 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     }
     Network_TCPSocket tcp = argv[0];
 
-    struct { int on; int seconds; } linger = { 1, 0 };
-    Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_LINGER, (System_IntPtr)&linger);
+    Network_TCPSocket_setSocketOption(tcp, Network_SocketOption_LINGER, 1UL << 32);
 
     Network_PollFlags poller = 0;
     System_String message = null;

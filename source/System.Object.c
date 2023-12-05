@@ -35,16 +35,32 @@ System_Object  System_Object_asInstanceof(System_Object that, System_Type type) 
 }
 
 void  base_System_Object_free(Object that) {
-	unused(that)
+	unused(that);
 }
 
 void  base_System_Object_init(Object that) {
-	unused(that)
+	unused(that);
+}
+
+void  base_System_Object_init1(Object that, System_Var arg1) {
+	unused(that); unused(arg1);
+}
+
+void  base_System_Object_init2(Object that, System_Var arg1, System_Var arg2) {
+	unused(that); unused(arg1); unused(arg2);
+}
+
+void  base_System_Object_init3(Object that, System_Var arg1, System_Var arg2, System_Var arg3) {
+	unused(that); unused(arg1); unused(arg2); unused(arg3);
+}
+
+void  base_System_Object_init4(Object that, System_Var arg1, System_Var arg2, System_Var arg3, System_Var arg4) {
+	unused(that); unused(arg1); unused(arg2); unused(arg3); unused(arg4);
 }
 
 Object  new_System_Object() {
     System_Object that = (System_Object)System_Memory_allocClass(typeof(System_Object));
-    /* base_System_Object_init(that); */
+    base_System_Object_init(that);
     return that;
 }
 
@@ -57,18 +73,20 @@ System_UInt64 base_System_Object_getSipHash(System_Object that) {
 }
 
 struct System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {
-    [0] = { .function = base_System_Object_init, .value = base_System_Object_init },
-    [1] = { .function = base_System_Object_free, .value = base_System_Object_free },
-    [2] = { .function = base_System_Object_getSipHash, .value = base_System_Object_getSipHash },
+    { .function = base_System_Object_init, .value = base_System_Object_init },
+    { .function = base_System_Object_init1, .value = base_System_Object_init1 },
+    { .function = base_System_Object_init2, .value = base_System_Object_init2 },
+    { .function = base_System_Object_init3, .value = base_System_Object_init3 },
+    { .function = base_System_Object_init4, .value = base_System_Object_init4 },
+    { .function = base_System_Object_free, .value = base_System_Object_free },
+    { .function = base_System_Object_getSipHash, .value = base_System_Object_getSipHash },
 };
 
 struct System_Type System_ObjectType = { .base = { .type = typeof(System_Type) },
 	.name = "Object",
 	.size = sizeof(struct System_Object),
 	.baseType = null, /* this is System_Object */
-	.functions  = { 
-        .length = sizeof_array(System_ObjectTypeFunctions), .value = &System_ObjectTypeFunctions
-    },
+	.functions  = { .length = sizeof_array(System_ObjectTypeFunctions), .value = &System_ObjectTypeFunctions },
 };
 
 #endif

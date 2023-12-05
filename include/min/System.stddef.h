@@ -87,7 +87,7 @@ typedef _Bool  System_Bool;
 #define System_fixed  const
 #endif
 
-#define unused(names)  (void)(names);
+#define unused(names)  (void)(names)
 
 #if defined(have_ARM)
 #define breakpoint  asm("bkpt")
