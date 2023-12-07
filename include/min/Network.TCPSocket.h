@@ -63,8 +63,8 @@ enum {
   Network_SocketType_PACKET = 10,   /* Linux specific way of getting packets at the dev level.  For writing rarp and other similar things on the user level. */
 
   /* Flags to be ORed into the type parameter of socket and socketpair.  */
-  Network_SocketType_CLOSEONEXEC = 0x02000000,    /* Atomically set close-on-exec flag for the new descriptor(s).  */
-  Network_SocketType_NONBLOCK = 0x00004000,       /* Atomically mark descriptor(s) as non-blocking.  */
+  Network_SocketType_CLOSEONEXEC = 02000000, /* Atomically set close-on-exec flag for the new descriptor(s).  */
+  Network_SocketType_NONBLOCK    = 04000,    /* Atomically mark descriptor(s) as non-blocking.  */
 };
 
 typedef System_IntPtr Network_IPProtocol;
@@ -123,8 +123,6 @@ enum {
     Network_SocketOption_LINGER = 13,
     Network_SocketOption_BSDCOMPAT = 14,
     Network_SocketOption_REUSEPORT = 15,
-
-    Network_SocketOption_NONBLOCK = 04000,
 };
 
 typedef System_UShort Network_PollFlags;
@@ -139,25 +137,25 @@ enum {
 
 typedef System_UInt32 Network_MessageFlags;
 enum {
-    Network_MessageFlags_OUTOFBAND = 0x01,  /* Process out-of-band data.  */
-    Network_MessageFlags_PEEK    = 0x02,  /* Peek at incoming messages.  */
-    Network_MessageFlags_DONTROUTE  = 0x04,  /* Don't use local routing.  */
-    Network_MessageFlags_TRYHARD    = Network_MessageFlags_DONTROUTE, /* DECnet uses a different name.  */
-    Network_MessageFlags_CTRUNC    = 0x08,  /* Control data lost before delivery.  */
-    Network_MessageFlags_PROXY    = 0x10,  /* Supply or ask second address.  */
-    Network_MessageFlags_TRUNC    = 0x20,
-    Network_MessageFlags_DONTWAIT  = 0x40, /* Nonblocking IO.  */
+    Network_MessageFlags_OUTOFBAND      = 1,  /* Process out-of-band data.  */
+    Network_MessageFlags_PEEK           = 2,  /* Peek at incoming messages.  */
+    Network_MessageFlags_DONTROUTE      = 4,  /* Don't use local routing.  */
+    Network_MessageFlags_TRYHARD        = Network_MessageFlags_DONTROUTE, /* DECnet uses a different name.  */
+    Network_MessageFlags_CTRUNC         = 8,  /* Control data lost before delivery.  */
+    Network_MessageFlags_PROXY          = 0x10,  /* Supply or ask second address.  */
+    Network_MessageFlags_TRUNC          = 0x20,
+    Network_MessageFlags_DONTWAIT       = 0x40, /* Nonblocking IO.  */
     Network_MessageFlags_ENDOFRECORD    = 0x80, /* End of record.  */
-    Network_MessageFlags_WAITALL    = 0x100, /* Wait for a full request.  */
-    Network_MessageFlags_FIN    = 0x200,
-    Network_MessageFlags_SYN    = 0x400,
-    Network_MessageFlags_CONFIRM    = 0x800, /* Confirm path validity.  */
-    Network_MessageFlags_RST    = 0x1000,
-    Network_MessageFlags_ERRQUEUE  = 0x2000, /* Fetch message from error queue.  */
-    Network_MessageFlags_NOSIGNAL  = 0x4000, /* Do not generate SIGPIPE.  */
-    Network_MessageFlags_MORE    = 0x8000,  /* Sender will send more.  */
-    Network_MessageFlags_WAITFORONE  = 0x10000, /* Wait for at least one packet to return.*/
-    Network_MessageFlags_CMSG_CLOEXEC  = 0x40000000  /* Set close_on_exit for file descriptor received through SCM_RIGHTS.  */
+    Network_MessageFlags_WAITALL        = 0x100, /* Wait for a full request.  */
+    Network_MessageFlags_FIN            = 0x200,
+    Network_MessageFlags_SYN            = 0x400,
+    Network_MessageFlags_CONFIRM        = 0x800, /* Confirm path validity.  */
+    Network_MessageFlags_RST            = 0x1000,
+    Network_MessageFlags_ERRQUEUE       = 0x2000, /* Fetch message from error queue.  */
+    Network_MessageFlags_NOSIGNAL       = 0x4000, /* Do not generate SIGPIPE.  */
+    Network_MessageFlags_MORE           = 0x8000,  /* Sender will send more.  */
+    Network_MessageFlags_WAITFORONE     = 0x10000, /* Wait for at least one packet to return.*/
+    Network_MessageFlags_CMSG_CLOEXEC   = 0x40000000  /* Set close_on_exit for file descriptor received through SCM_RIGHTS.  */
 };
 
 typedef union Network_IP4Address {
@@ -193,10 +191,12 @@ enum {
     Network_HTTPStatus_Error = 500,
 };
 
+typedef System_Int32  Network_Socket_SID;
+
 typedef System_fixed /* final */ struct Network_TCPSocket {
     struct System_Object base;
 
-    System_IntPtr socketId;
+    Network_Socket_SID socketId;
 
 }  * Network_TCPSocket;
 

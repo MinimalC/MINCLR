@@ -38,7 +38,7 @@ void System_Signal_handle__flags(System_Signal_Number number, function_System_Si
 
     struct System_Signal_Action new; System_Stack_clear(new);
     new.handler = handler; 
-    new.flags = flags | System_Signal_Flags_RESTORER; /* not System_Signal_Flags_SIGINFO */
+    new.flags = flags | System_Signal_Flags_RESTORER;
     new.restorer = &System_Syscall_sigreturn;
 
     new.signal.mask[0] |= (1 << (number - 1));
@@ -56,7 +56,7 @@ void System_Signal_act__flags(System_Signal_Number number, function_System_Signa
 
     struct System_Signal_Action new; System_Stack_clear(new);
     new.action = action; 
-    new.flags = flags | System_Signal_Flags_RESTORER | System_Signal_Flags_SIGINFO;
+    new.flags = flags | System_Signal_Flags_SIGINFO | System_Signal_Flags_RESTORER;
     new.restorer = &System_Syscall_sigreturn;
 
     new.signal.mask[0] |= (1 << (number - 1));

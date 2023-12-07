@@ -121,7 +121,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
 
     if (!System_Thread_sigiset) {
         System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
-        System_IntPtr signal_flags = 0;
+        System_IntPtr signal_flags = System_Signal_Flags_RESTART;
         #if !defined(use_System_Thread_SIGCHILD)
         signal_flags = System_Signal_Flags_NOCHILDSTOP | System_Signal_Flags_NOCHILDWAIT;
         #endif

@@ -94,20 +94,35 @@ export void  System_Syscall_prctl3(System_IntPtr option, System_IntPtr arg1, Sys
 export void  System_Syscall_prctl4(System_IntPtr option, System_IntPtr arg1, System_IntPtr arg2, System_IntPtr arg3, System_IntPtr arg4);
 export void  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg);
 
-export System_IntPtr  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol);
-export void  System_Syscall_bind(System_IntPtr socketId, System_Var socketAddress, System_Size socketAddressLength);
-export void  System_Syscall_listen(System_IntPtr socketId, System_Size backlog);
-export System_IntPtr  System_Syscall_accept(System_IntPtr socketId, System_Var socketAddress, System_Size * addressLength, System_IntPtr flags);
-export void  System_Syscall_getsockname(System_IntPtr socketId, System_Var socketAddress, System_Size * addressLength);
-export void  System_Syscall_getpeername(System_IntPtr socketId, System_Var socketAddress, System_Size * addressLength);
-export void  System_Syscall_getsockopt(System_IntPtr socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size * optionLength);
-export void  System_Syscall_setsockopt(System_IntPtr socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size optionLength);
-export void  System_Syscall_send(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags);
-export void  System_Syscall_sendto(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
-export void  System_Syscall_sendmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags);
-export System_IntPtr  System_Syscall_recv(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags);
-export System_IntPtr  System_Syscall_recvfrom(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
-export System_Size  System_Syscall_recvmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags);
+typedef System_IntPtr System_File_ControlCommand;
+enum {
+    System_File_ControlCommand_DuplicateFileDescriptor = 0,
+    System_File_ControlCommand_GetFileDescriptorFlags = 1,
+    System_File_ControlCommand_SetFileDescriptorFlags = 2,
+    System_File_ControlCommand_GetFileStatusFlags = 3,
+    System_File_ControlCommand_SetFileStatusFlags = 4,
+};
+
+export System_IntPtr  System_Syscall_fcntl(System_IntPtr fileId, System_IntPtr command);
+export System_IntPtr  System_Syscall_fcntl1(System_IntPtr fileId, System_IntPtr command, System_IntPtr arg1);
+export System_IntPtr  System_Syscall_ioctl(System_IntPtr fileId, System_IntPtr request);
+export System_IntPtr  System_Syscall_ioctl1(System_IntPtr fileId, System_IntPtr request, System_IntPtr arg1);
+
+typedef System_Int32  Network_Socket_SID;
+export Network_Socket_SID  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol);
+export void  System_Syscall_bind(Network_Socket_SID socketId, System_Var socketAddress, System_Size socketAddressLength);
+export void  System_Syscall_listen(Network_Socket_SID socketId, System_Size backlog);
+export Network_Socket_SID  System_Syscall_accept(Network_Socket_SID socketId, System_Var socketAddress, System_Size * addressLength, System_IntPtr flags);
+export void  System_Syscall_getsockname(Network_Socket_SID socketId, System_Var socketAddress, System_Size * addressLength);
+export void  System_Syscall_getpeername(Network_Socket_SID socketId, System_Var socketAddress, System_Size * addressLength);
+export void  System_Syscall_getsockopt(Network_Socket_SID socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size * optionLength);
+export void  System_Syscall_setsockopt(Network_Socket_SID socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size optionLength);
+export void  System_Syscall_send(Network_Socket_SID socketId, System_Var buffer, System_Size length, System_IntPtr flags);
+export void  System_Syscall_sendto(Network_Socket_SID socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
+export void  System_Syscall_sendmsg(Network_Socket_SID socketId, System_Var messageHeader, System_IntPtr flags);
+export System_Size  System_Syscall_recv(Network_Socket_SID socketId, System_Var buffer, System_Size length, System_IntPtr flags);
+export System_Size  System_Syscall_recvfrom(Network_Socket_SID socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength);
+export System_Size  System_Syscall_recvmsg(Network_Socket_SID socketId, System_Var messageHeader, System_IntPtr flags);
 export System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_Var write, System_Var except, System_TimeSpan timeout, System_Var sigmask);
 export System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, System_TimeSpan timeout, System_Var sigmask);
 

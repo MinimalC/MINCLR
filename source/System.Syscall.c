@@ -37,7 +37,7 @@ struct System_Type_FieldInfo  System_Syscall_CommandTypeFields[] = {
 struct System_Type System_Syscall_CommandType = { .base = { .type = typeof(System_Type) },
     .name = "Syscall.Command",
     .size = sizeof(System_Syscall_Command),
-	.fields = { 
+	.fields = {
         .value = &System_Syscall_CommandTypeFields, .length = sizeof_array(System_Syscall_CommandTypeFields),
     },
 };
@@ -55,7 +55,7 @@ struct System_Type_FieldInfo  System_ErrorCodeTypeFields[] = {
 struct System_Type System_ErrorCodeType = { .base = { .type = typeof(System_Type) },
     .name = "ErrorCode",
     .size = sizeof(System_ErrorCode),
-	.fields = { 
+	.fields = {
         .value = &System_ErrorCodeTypeFields, .length = sizeof_array(System_ErrorCodeTypeFields),
     },
 };
@@ -253,60 +253,75 @@ void  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg1) {
 }
 
 
-System_IntPtr  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol) {
-    return System_Syscall_call03(System_Syscall_Command_socket, addressFamily, socketType, protocol);
+System_IntPtr  System_Syscall_fcntl(System_IntPtr fileId, System_IntPtr command) {
+    return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_fcntl, fileId, command, 0);
+}
+System_IntPtr  System_Syscall_fcntl1(System_IntPtr fileId, System_IntPtr command, System_IntPtr arg1) {
+    return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_fcntl, fileId, command, arg1);
 }
 
-void  System_Syscall_bind(System_IntPtr socketId, System_Var socketAddress, System_Size addressLength) {
-    (void)System_Syscall_call03(System_Syscall_Command_bind, socketId, (System_IntPtr)socketAddress, addressLength);
+System_IntPtr  System_Syscall_ioctl(System_IntPtr fileId, System_IntPtr request) {
+    return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_ioctl, fileId, request, 0);
+}
+System_IntPtr  System_Syscall_ioctl1(System_IntPtr fileId, System_IntPtr request, System_IntPtr arg1) {
+    return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_ioctl, fileId, request, arg1);
 }
 
-void  System_Syscall_listen(System_IntPtr socketId, System_Size backlog) {
-    (void)System_Syscall_call02(System_Syscall_Command_listen, socketId, backlog);
+
+Network_Socket_SID  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol) {
+    return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_socket, addressFamily, socketType, protocol);
 }
 
-System_IntPtr  System_Syscall_accept(System_IntPtr socketId, System_Var socketAddress, System_Size * addressLength, System_IntPtr flags) {
-    return System_Syscall_call04(System_Syscall_Command_accept4, socketId, (System_IntPtr)socketAddress, (System_IntPtr)addressLength, flags);
+void  System_Syscall_bind(Network_Socket_SID socketId, System_Var socketAddress, System_Size addressLength) {
+    (void)System_Syscall_call03(System_Syscall_Command_bind, (System_IntPtr)socketId, (System_IntPtr)socketAddress, addressLength);
 }
 
-void  System_Syscall_getsockname(System_IntPtr socketId, System_Var socketAddress, System_Size * addressLength) {
-    (void)System_Syscall_call03(System_Syscall_Command_getsockname, socketId, (System_IntPtr)socketAddress, (System_IntPtr)addressLength);
+void  System_Syscall_listen(Network_Socket_SID socketId, System_Size backlog) {
+    (void)System_Syscall_call02(System_Syscall_Command_listen, (System_IntPtr)socketId, backlog);
 }
 
-void  System_Syscall_getpeername(System_IntPtr socketId, System_Var socketAddress, System_Size * addressLength) {
-    (void)System_Syscall_call03(System_Syscall_Command_getpeername, socketId, (System_IntPtr)socketAddress, (System_IntPtr)addressLength);
+Network_Socket_SID  System_Syscall_accept(Network_Socket_SID socketId, System_Var socketAddress, System_Size * addressLength, System_IntPtr flags) {
+    return (System_IntPtr)System_Syscall_call04(System_Syscall_Command_accept4, (System_IntPtr)socketId, (System_IntPtr)socketAddress, (System_IntPtr)addressLength, flags);
 }
 
-void  System_Syscall_getsockopt(System_IntPtr socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size * optionLength) {
-    (void)System_Syscall_call05(System_Syscall_Command_getsockopt, socketId, level, optionName, (System_IntPtr)optionValue, (System_IntPtr)optionLength);
+void  System_Syscall_getsockname(Network_Socket_SID socketId, System_Var socketAddress, System_Size * addressLength) {
+    (void)System_Syscall_call03(System_Syscall_Command_getsockname, (System_IntPtr)socketId, (System_IntPtr)socketAddress, (System_IntPtr)addressLength);
 }
 
-void  System_Syscall_setsockopt(System_IntPtr socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size optionLength) {
-    (void)System_Syscall_call05(System_Syscall_Command_setsockopt, socketId, level, optionName, (System_IntPtr)optionValue, optionLength);
+void  System_Syscall_getpeername(Network_Socket_SID socketId, System_Var socketAddress, System_Size * addressLength) {
+    (void)System_Syscall_call03(System_Syscall_Command_getpeername, (System_IntPtr)socketId, (System_IntPtr)socketAddress, (System_IntPtr)addressLength);
 }
 
-void  System_Syscall_send(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags) {
+void  System_Syscall_getsockopt(Network_Socket_SID socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size * optionLength) {
+    (void)System_Syscall_call05(System_Syscall_Command_getsockopt, (System_IntPtr)socketId, level, optionName, (System_IntPtr)optionValue, (System_IntPtr)optionLength);
+}
+
+void  System_Syscall_setsockopt(Network_Socket_SID socketId, System_IntPtr level, System_IntPtr optionName, System_Var optionValue, System_Size optionLength) {
+    (void)System_Syscall_call05(System_Syscall_Command_setsockopt, (System_IntPtr)socketId, level, optionName, (System_IntPtr)optionValue, optionLength);
+}
+
+void  System_Syscall_send(Network_Socket_SID socketId, System_Var buffer, System_Size length, System_IntPtr flags) {
     (void)System_Syscall_sendto(socketId, buffer, length, flags, null, 0);
 }
 
-void  System_Syscall_sendto(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength) {
-    (void)System_Syscall_call06(System_Syscall_Command_sendto, socketId, (System_IntPtr)buffer, length, flags, (System_IntPtr)socketAddress, addressLength);
+void  System_Syscall_sendto(Network_Socket_SID socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength) {
+    (void)System_Syscall_call06(System_Syscall_Command_sendto, (System_IntPtr)socketId, (System_IntPtr)buffer, length, flags, (System_IntPtr)socketAddress, addressLength);
 }
 
-void  System_Syscall_sendmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags) {
-    (void)System_Syscall_call03(System_Syscall_Command_sendmsg, socketId, (System_IntPtr)messageHeader, flags);
+void  System_Syscall_sendmsg(Network_Socket_SID socketId, System_Var messageHeader, System_IntPtr flags) {
+    (void)System_Syscall_call03(System_Syscall_Command_sendmsg, (System_IntPtr)socketId, (System_IntPtr)messageHeader, flags);
 }
 
-System_IntPtr  System_Syscall_recv(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags) {
+System_Size  System_Syscall_recv(Network_Socket_SID socketId, System_Var buffer, System_Size length, System_IntPtr flags) {
     return System_Syscall_recvfrom(socketId, buffer, length, flags, null, 0);
 }
 
-System_IntPtr  System_Syscall_recvfrom(System_IntPtr socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength) {
-    return System_Syscall_call06(System_Syscall_Command_recvfrom, socketId, (System_IntPtr)buffer, length, flags, (System_IntPtr)socketAddress, addressLength);
+System_Size  System_Syscall_recvfrom(Network_Socket_SID socketId, System_Var buffer, System_Size length, System_IntPtr flags, System_Var socketAddress, System_Size addressLength) {
+    return System_Syscall_call06(System_Syscall_Command_recvfrom, (System_IntPtr)socketId, (System_IntPtr)buffer, length, flags, (System_IntPtr)socketAddress, addressLength);
 }
 
-System_Size  System_Syscall_recvmsg(System_IntPtr socketId, System_Var messageHeader, System_IntPtr flags) {
-    return System_Syscall_call03(System_Syscall_Command_recvmsg, socketId, (System_IntPtr)messageHeader, flags);
+System_Size  System_Syscall_recvmsg(Network_Socket_SID socketId, System_Var messageHeader, System_IntPtr flags) {
+    return System_Syscall_call03(System_Syscall_Command_recvmsg, (System_IntPtr)socketId, (System_IntPtr)messageHeader, flags);
 }
 
 System_Size  System_Syscall_pselect(System_Size count, System_Var read, System_Var write, System_Var except, System_TimeSpan timeout, System_Var sigmask) {
