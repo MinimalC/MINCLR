@@ -434,7 +434,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
                     incoming[n] = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
                 for (System_Size n = 0; n < 8; ++n) {
                     if (incoming[n]) {
-                        Network_TCPSocket_setSocketOption(incoming[n], Network_SocketOption_LINGER, true);
+                        Network_TCPSocket_setSocketOption(incoming[n], Network_SocketOption_LINGER, 1UL << 32);
 
                         System_Console_writeLine("HTTPService_serve: ACCEPT: socket {0:uint}", 1, socketC);
                         sockets[socketC++] = incoming[n];
@@ -448,18 +448,21 @@ int System_Runtime_main(int argc, char  * argv[]) {
             System_String message = Network_TCPSocket_receive__flags(sockets[i], 0);
             if (!message) {
                 System_Console_writeLine("HTTPService_serve: No Message", 0);
+                Network_TCPSocket_close(sockets[i]);
                 continue;
             }
             Network_HTTPRequest request = HTTPRequest_parse(message);
             System_Memory_free(message);
             if (!request) {
                 System_Console_writeLine("HTTPService_serve: Message not parsed", 0);
+                Network_TCPSocket_close(sockets[i]);
                 continue;
             }
             responses[i] = HTTPService_serve(request);
             System_Memory_free(request);
             if (!responses[i]) {
                 System_Console_writeLine("HTTPService_serve: No response", 0);
+                Network_TCPSocket_close(sockets[i]);
                 continue;
             }
         }
@@ -504,7 +507,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
             }
         }
 
-        if (!active) System_Thread_millisleep(300);
+        if (!active) System_Thread_millisleep(500);
     }
 
     for (System_Size i = 1; i < socketC; ++i) {
