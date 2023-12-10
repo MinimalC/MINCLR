@@ -184,8 +184,7 @@ Network_PollFlags  Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFl
     return !reture ? 0 : socketD.outEvents;
 }
 
-
-void  Network_TCPSocket_pollAny(Network_TCPSocket that[], System_Size count, Network_PollFlags inFlags, Network_PollFlags outFlags[]) {
+System_Size  Network_TCPSocket_pollAny(Network_TCPSocket that[], System_Size count, Network_PollFlags inFlags, Network_PollFlags outFlags[]) {
     Debug_assert(that);
     Debug_assert(outFlags);
     if (count > 512) { Debug_assert(count <= 512); count = 512; }
@@ -206,7 +205,7 @@ void  Network_TCPSocket_pollAny(Network_TCPSocket that[], System_Size count, Net
             outFlags[i] = 0;
         else
             outFlags[i] = socketsD[i].outEvents;
+    return reture;
 }
-
 
 #endif

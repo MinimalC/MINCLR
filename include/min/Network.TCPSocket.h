@@ -216,7 +216,7 @@ export void  Network_TCPSocket_listen(Network_TCPSocket that, System_Size backlo
 export Network_TCPSocket  Network_TCPSocket_accept(Network_TCPSocket that);
 export Network_TCPSocket  Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags);
 export Network_PollFlags  Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFlags request);
-export void  Network_TCPSocket_pollAny(Network_TCPSocket that[], System_Size count, Network_PollFlags inFlags, Network_PollFlags outFlags[]);
+export System_Size  Network_TCPSocket_pollAny(Network_TCPSocket that[], System_Size count, Network_PollFlags inFlags, Network_PollFlags outFlags[]);
 export System_String  Network_TCPSocket_receive(Network_TCPSocket that);
 export System_String  Network_TCPSocket_receive__flags(Network_TCPSocket that, Network_MessageFlags flags);
 export System_Size  stack_Network_TCPSocket_receive(Network_TCPSocket that, System_Char8 message[], System_Size length);

@@ -417,7 +417,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
 
         if (System_Runtime_HitCTRLC) break;
 
-        Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_IN, polls);
+        System_Size active = Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_IN, polls);
         for (System_Size i = 0; i < socketC; ++i) {
             if (polls[i] & Network_PollFlags_ERROR) {
                 System_Console_writeLine("HTTPService_serve: POLLIN: POLLERR", 0);
@@ -466,7 +466,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
 
         if (System_Runtime_HitCTRLC) break;
 
-        Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_OUT, polls);
+        active += Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_OUT, polls);
         for (System_Size i = 1; i < socketC; ++i) {
             if (polls[i] & Network_PollFlags_ERROR) {
                 System_Console_writeLine("HTTPService_serve: POLLOUT: POLLERR", 0);
@@ -504,7 +504,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
             }
         }
 
-        System_Thread_millisleep(300);
+        if (!active) System_Thread_millisleep(300);
     }
 
     for (System_Size i = 1; i < socketC; ++i) {
