@@ -127,6 +127,7 @@ System_String  Network_TCPSocket_receive__flags(Network_TCPSocket that, Network_
 
     System_Char8 body[System_UInt16_Max]; System_Stack_clear(body);
     System_Size length = stack_Network_TCPSocket_receive__flags(that, body, System_UInt16_Max, flags);
+    if (!length) return null;
     System_String reture = System_Memory_allocClass(typeof(System_String));
     reture->length = length;
     reture->value = System_Memory_allocArray(typeof(System_Char8), length + 1);
@@ -142,7 +143,7 @@ System_Size  stack_Network_TCPSocket_receive__flags(Network_TCPSocket that, Syst
 
     System_ErrorCode errno = 0;
     System_Size reture = 0;
-    while (1) {
+    while (true) {
         reture = System_Syscall_recv(that->socketId, message, length, flags);
         errno = System_Syscall_get_Error();
         if (errno) {
@@ -150,14 +151,11 @@ System_Size  stack_Network_TCPSocket_receive__flags(Network_TCPSocket that, Syst
                 System_Console_writeLine("Network_TCPSocket_receive Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
                 continue;
             }
+            System_Console_writeLine("Network_TCPSocket_receive Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+            return null;
         }
-        break;
+        return reture;
     }
-    if (errno) {
-        System_Console_writeLine("Network_TCPSocket_receive Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-        return null;
-    }
-    return reture;
 }
 
 void  Network_TCPSocket_send(Network_TCPSocket that, System_String message, Network_MessageFlags flags) {
