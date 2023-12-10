@@ -87,9 +87,6 @@ void  Network_TCPSocket_bind(Network_TCPSocket that, Network_IP4Address address,
         if (i < 4) socketAddress.address[i] = address.address[i];
         else socketAddress.address[i] = 0;
     }
-    /*System_Console_writeLine("Network_SocketAddress before: family {0:uint16}, port {1:uint16}, address {2:uint8:hex}.{3:uint8:hex}.{4:uint8:hex}.{5:uint8:hex}", 6,
-        socketAddress.family, socketAddress.port, socketAddress.address[0], socketAddress.address[1], socketAddress.address[2], socketAddress.address[3]);*/
-
     System_Syscall_bind(that->socketId, &socketAddress, sizeof(struct Network_SocketAddress));
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_bind Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
@@ -106,8 +103,7 @@ Network_TCPSocket  Network_TCPSocket_accept(Network_TCPSocket that) {
 }
 
 Network_TCPSocket  Network_TCPSocket_accept__flags(Network_TCPSocket that, System_IntPtr flags) {
-    /*struct Network_SocketAddress address; System_Stack_clear(address);
-    System_Size addressLength = sizeof(struct Network_SocketAddress);*/
+
     Network_Socket_SID reture = System_Syscall_accept(that->socketId, null, 0, flags);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
@@ -143,20 +139,13 @@ System_Size  stack_Network_TCPSocket_receive(Network_TCPSocket that, System_Char
 System_Size  stack_Network_TCPSocket_receive__flags(Network_TCPSocket that, System_Char8 message[], System_Size length, Network_MessageFlags flags) {
 
     System_ErrorCode errno = 0;
-    System_Size reture = 0;
-    while (true) {
-        reture = System_Syscall_recv(that->socketId, message, length, flags);
-        errno = System_Syscall_get_Error();
-        if (errno) {
-            if (errno == System_ErrorCode_EAGAIN) {
-                System_Console_writeLine("Network_TCPSocket_receive Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-                continue;
-            }
-            System_Console_writeLine("Network_TCPSocket_receive Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-            return null;
-        }
-        return reture;
+    System_Size reture = System_Syscall_recv(that->socketId, message, length, flags);
+    errno = System_Syscall_get_Error();
+    if (errno) {
+        System_Console_writeLine("Network_TCPSocket_receive Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+        return null;
     }
+    return reture;
 }
 
 void  Network_TCPSocket_send(Network_TCPSocket that, System_String message, Network_MessageFlags flags) {
