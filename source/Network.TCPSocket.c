@@ -114,6 +114,7 @@ Network_TCPSocket  Network_TCPSocket_accept__flags(Network_TCPSocket that, Syste
         System_Console_writeLine("Network_TCPSocket_accept Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
         return null;
     }
+    if (!reture) return null;
     Network_TCPSocket new = (Network_TCPSocket)System_Memory_allocClass(typeof(Network_TCPSocket));
     new->socketId = reture;
     return new;
@@ -176,7 +177,7 @@ Network_PollFlags  Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFl
         .inEvents = inFlags,
         .outEvents = 0,
     };
-    struct System_TimeSpan timeout = { .sec = 1, .usec = 0 }; /* TODO */
+    struct System_TimeSpan timeout = { .sec = 0, .usec = 0 }; /* TODO */
     System_Size reture = System_Syscall_ppoll(&socketD, 1, &timeout, null);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_poll Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
@@ -196,7 +197,7 @@ void  Network_TCPSocket_pollAny(Network_TCPSocket that[], System_Size count, Net
             socketsD[i].socketId = (System_Int32)that[i]->socketId;
             socketsD[i].inEvents = inFlags;
         }
-    struct System_TimeSpan timeout = { .sec = 1, .usec = 0 }; /* TODO */
+    struct System_TimeSpan timeout = { .sec = 0, .usec = 0 }; /* TODO */
     System_Size reture = System_Syscall_ppoll(socketsD, count, &timeout, null);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("Network_TCPSocket_poll Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));

@@ -158,6 +158,27 @@ void System_Thread_sleep(System_Size seconds) {
     if (errno) System_Console_writeLine("System_Thread_sleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
+void System_Thread_millisleep(System_Size milliseconds) {
+    struct System_TimeSpan time = { .sec = 0, .usec = milliseconds * 1000 * 1000, };
+    System_Syscall_nanosleep(&time, &time);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("System_Thread_millisleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+}
+
+void System_Thread_microsleep(System_Size microseconds) {
+    struct System_TimeSpan time = { .sec = 0, .usec = microseconds * 1000, };
+    System_Syscall_nanosleep(&time, &time);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("System_Thread_microsleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+}
+
+void System_Thread_nanosleep(System_Size nanoseconds) {
+    struct System_TimeSpan time = { .sec = 0, .usec = nanoseconds, };
+    System_Syscall_nanosleep(&time, &time);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) System_Console_writeLine("System_Thread_nanosleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+}
+
 enum {
     WNOHANG = 1, /* Don't block waiting.  */
     WUNTRACED = 2,

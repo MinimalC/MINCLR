@@ -345,7 +345,6 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
     STRING8 WARNING = "WARNING  ";
 #endif
 
-    Size i;
     Char8  scratch[72]; Stack_clear(scratch);
 
     // just don't write everything else

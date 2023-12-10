@@ -417,8 +417,6 @@ int System_Runtime_main(int argc, char  * argv[]) {
 
         if (System_Runtime_HitCTRLC) break;
 
-        System_Console_writeLine("HTTPService_serve: POLLIN", 0);
-
         Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_IN, polls);
         for (System_Size i = 0; i < socketC; ++i) {
             if (polls[i] & Network_PollFlags_ERROR) {
@@ -427,35 +425,24 @@ int System_Runtime_main(int argc, char  * argv[]) {
             }
             if (!(polls[i] & Network_PollFlags_IN)) continue;
             if (i == 0) {
-
-                System_Console_writeLine("HTTPService_serve: ACCEPT", 0);
-                Network_TCPSocket tcp1 = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
-                if (tcp1) {
-                    Network_TCPSocket_setSocketOption(tcp1, Network_SocketOption_LINGER, true);
-
-                    /*System_IntPtr tcp1_status_flags =  System_Syscall_fcntl(tcp1->socketId, System_File_ControlCommand_GetFileStatusFlags);
-                    System_Syscall_fcntl1(tcp1->socketId, System_File_ControlCommand_SetFileStatusFlags, tcp1_status_flags | Network_SocketType_NONBLOCK);
-                    errno = System_Syscall_get_Error();
-                    if (errno) System_Console_writeLine("System_Syscall_fcntl Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-
-                    System_IntPtr tcp1_descriptor_flags =  System_Syscall_fcntl(tcp1->socketId, System_File_ControlCommand_GetFileDescriptorFlags);
-                    System_Syscall_fcntl1(tcp1->socketId, System_File_ControlCommand_SetFileDescriptorFlags, tcp1_descriptor_flags | Network_SocketType_CLOSEONEXEC);
-                    errno = System_Syscall_get_Error();
-                    if (errno) System_Console_writeLine("System_Syscall_fcntl Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));*/
+                if (socketC == 64) {
+                    System_Console_writeLine("HTTPService_serve: NO MORE ACCEPTs", 0);
+                    continue;
                 }
-                System_Size s = 1;
-                for (; s < socketC < 64; ++s) {
-                    if (tcp1 && !sockets[s]) { sockets[s] = tcp1; ++socketC; tcp1 = null; continue; }
-                    if (!tcp1) break;
+                Network_TCPSocket incoming[8]; System_Stack_clear(incoming);
+                for (System_Size n = 0; n < 8; ++n) 
+                    incoming[n] = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
+                for (System_Size n = 0; n < 8; ++n) {
+                    if (incoming[n]) {
+                        Network_TCPSocket_setSocketOption(incoming[n], Network_SocketOption_LINGER, true);
+
+                        System_Console_writeLine("HTTPService_serve: ACCEPT: socket {0:uint}", 1, socketC);
+                        sockets[socketC++] = incoming[n];
+                    }
                 }
-                if (s == 64) s = 0;
-                if (tcp1) { 
-                    System_Console_writeLine("HTTPService_serve: ACCEPT: close socket {0:uint}", 1, s);
-                    Network_TCPSocket_close(tcp1); System_Memory_free(tcp1); 
-                }
-                if (s) System_Console_writeLine("HTTPService_serve: ACCEPT: socket {0:uint}", 1, s);
                 continue;
             }
+            if (!sockets[i]) continue;
 
             System_Console_writeLine("HTTPService_serve: socket {0:uint}: receiving message", 1, i);
             System_String message = Network_TCPSocket_receive__flags(sockets[i], 0);
@@ -477,7 +464,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
             }
         }
 
-        System_Console_writeLine("HTTPService_serve: POLLOUT", 0);
+        if (System_Runtime_HitCTRLC) break;
 
         Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_OUT, polls);
         for (System_Size i = 1; i < socketC; ++i) {
@@ -486,6 +473,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
                 continue;
             }
             if (!(polls[i] & Network_PollFlags_OUT)) continue;
+            if (!sockets[i]) continue;
             if (!responses[i]) continue;
 
             System_Console_writeLine("HTTPService_serve: socket {0:uint}: sending message", 1, i);
@@ -494,19 +482,17 @@ int System_Runtime_main(int argc, char  * argv[]) {
             if (responses[i]->buffer.length)
                 Network_TCPSocket_send(sockets[i], &responses[i]->buffer, Network_MessageFlags_NOSIGNAL);
 
-            polls[i] = 0;
             Network_TCPSocket_close(sockets[i]);
-            System_Memory_free(sockets[i]);
             System_Memory_free(responses[i]);
         }
 
-        for (System_Size i = 1; i < socketC; ++i)
-            if (sockets[i] && !sockets[i]->socketId) {
-                System_Console_writeLine("HTTPService_serve: socket {0:uint}: free", 1, i);
-                polls[i] = 0;
-                System_Memory_free(sockets[i]);
-                if (responses[i]) System_Memory_free(responses[i]);
-                for (System_Size n = i + 1; n < socketC; ++n) {
+        for (System_Size i = socketC; i; --i) {
+            if (sockets[i - 1] && !sockets[i - 1]->socketId) {
+                System_Console_writeLine("HTTPService_serve: socket {0:uint}: free", 1, i - 1);
+                polls[i - 1] = 0;
+                System_Memory_free(sockets[i - 1]);
+                if (responses[i - 1]) System_Memory_free(responses[i - 1]);
+                for (System_Size n = i; n < socketC; ++n) {
                     sockets[n - 1] = sockets[n];
                     polls[n - 1] = polls[n];
                     responses[n - 1] = responses[n];
@@ -515,11 +501,18 @@ int System_Runtime_main(int argc, char  * argv[]) {
                 polls[socketC] = 0;
                 responses[socketC] = null;
                 --socketC;
-                --i;
             }
+        }
 
-        System_Atomic_delay64();
-        System_Thread_yield();
+        System_Thread_millisleep(300);
+    }
+
+    for (System_Size i = 1; i < socketC; ++i) {
+        if (sockets[i]) {
+            System_Console_writeLine("HTTPService_serve: socket {0:uint}: finally free", 1, i);
+            System_Memory_free(sockets[i]);
+            if (responses[i]) System_Memory_free(responses[i]);
+        }
     }
 
     Network_TCPSocket_close(sockets[0]);

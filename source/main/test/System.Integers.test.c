@@ -5,7 +5,6 @@
 
 int System_Runtime_main(int argc, char * argv[]) {
 
-    Size i;
     Char8 scratch[100]; System_Stack_clear(scratch);
 
 
