@@ -390,7 +390,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
     Network_PollFlags polls[64]; Stack_clear(polls);
     Network_HTTPResponse responses[64]; Stack_clear(responses);
 
-    sockets[0] = new_Network_TCPSocket__flags(Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
+    sockets[0] = new_Network_TCPSocket__flags(/* Network_SocketType_NONBLOCK */ Network_SocketType_CLOSEONEXEC);
 
     Network_TCPSocket_setSocketOption(sockets[0], Network_SocketOption_REUSEADDR, true);
     Network_TCPSocket_setSocketOption(sockets[0], Network_SocketOption_REUSEPORT, true);
@@ -420,7 +420,14 @@ int System_Runtime_main(int argc, char  * argv[]) {
                     System_Console_writeLine("HTTPService_serve: NO MORE ACCEPTs", 0);
                     continue;
                 }
-                Network_TCPSocket incoming[8]; System_Stack_clear(incoming);
+                Network_TCPSocket incoming0 = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
+                if (incoming0) {
+                    Network_TCPSocket_setSocketOption(incoming0, Network_SocketOption_LINGER, 1UL << 32);
+
+                    System_Console_writeLine("HTTPService_serve: ACCEPT: socket {0:uint}", 1, socketC);
+                    sockets[socketC++] = incoming0;
+                }
+                /* Network_TCPSocket incoming[8]; System_Stack_clear(incoming);
                 for (System_Size n = 0; n < 8; ++n) 
                     incoming[n] = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
                 for (System_Size n = 0; n < 8; ++n) {
@@ -430,7 +437,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
                         System_Console_writeLine("HTTPService_serve: ACCEPT: socket {0:uint}", 1, socketC);
                         sockets[socketC++] = incoming[n];
                     }
-                }
+                }*/
                 continue;
             }
             if (!sockets[i]) continue;
@@ -499,7 +506,15 @@ int System_Runtime_main(int argc, char  * argv[]) {
             }
         }
 
-        if (!active) System_Thread_millisleep(500);
+        if (!active) { // System_Thread_millisleep(500);
+            Network_TCPSocket incoming0 = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
+            if (incoming0) {
+                Network_TCPSocket_setSocketOption(incoming0, Network_SocketOption_LINGER, 1UL << 32);
+
+                System_Console_writeLine("HTTPService_serve: ACCEPT: socket {0:uint}", 1, socketC);
+                sockets[socketC++] = incoming0;
+            }
+        }
     }
 
     for (System_Size i = 1; i < socketC; ++i) {
