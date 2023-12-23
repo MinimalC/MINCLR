@@ -27,6 +27,14 @@ String8 System_Signal_Number_toString(System_Signal_Number value) {
 
 struct System_Type System_SignalType = { .base = { .type = typeof(System_Type) }, .name = "Signal", };
 
+void System_Signal_add(System_Signal that, System_Signal_Number number) {
+    that->mask[0] |= ((System_Signal_Number)1 << (number - 1));
+}
+
+void System_Signal_remove(System_Signal that, System_Signal_Number number) {
+    that->mask[0] &= ~((System_Signal_Number)1 << (number - 1));
+}
+
 /*#define __sigmask(sig) (((unsigned long) 1) << ((unsigned)((sig) - 1) % (8 * sizeof (unsigned long))))
 #define __sigword(sig) ((unsigned)((sig) - 1) / (8 * sizeof (unsigned long)))*/
 
@@ -113,14 +121,6 @@ void System_Signal_unblock__number(System_Signal_Number number) {
 
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) System_Console_writeLine("System_Signal_unblock__number Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-}
-
-void System_Signal_add(System_Signal that, System_Signal_Number number) {
-    that->mask[0] |= ((System_Signal_Number)1 << (number - 1));
-}
-
-void System_Signal_remove(System_Signal that, System_Signal_Number number) {
-    that->mask[0] &= ~((System_Signal_Number)1 << (number - 1));
 }
 
 void System_Signal_get(System_Signal that) {

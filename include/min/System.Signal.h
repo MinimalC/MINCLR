@@ -127,8 +127,8 @@ enum {
     System_Signal_Flags_INTERRUPT = 0x20000000, /* Historical no-op.  */
     System_Signal_Flags_NODEFER = 0x40000000, /* Don't automatically block the signal when its handler is being executed.  */
     System_Signal_Flags_NOMASK = System_Signal_Flags_NODEFER,
-    System_Signal_Flags_RESETHAND = 0x80000000, /* Reset to SIG_DFL on entry to handler.  */
-    System_Signal_Flags_ONESHOT = System_Signal_Flags_RESETHAND,
+    System_Signal_Flags_RESETHANDLER = 0x80000000, /* Reset to SIG_DFL on entry to handler.  */
+    System_Signal_Flags_ONESHOT = System_Signal_Flags_RESETHANDLER,
 };
 export struct System_Type System_Signal_FlagsType;
 

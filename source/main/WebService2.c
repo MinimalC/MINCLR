@@ -379,10 +379,10 @@ int System_Runtime_main(int argc, char  * argv[]) {
     System_Signal_add(&signal, System_Signal_Number_SIGFPE);
     System_Signal_add(&signal, System_Signal_Number_SIGSEGV);
     System_Signal_unblock(&signal);
-    System_Signal_handle__flags(System_Signal_Number_SIGINT, System_Runtime_CTRLC, 0/*System_Signal_Flags_RESTART*/);
-    System_Signal_act__flags(System_Signal_Number_SIGILL, System_Runtime_sigfault, 0/*System_Signal_Flags_RESTART*/);
-    System_Signal_act__flags(System_Signal_Number_SIGFPE, System_Runtime_sigfault, 0/*System_Signal_Flags_RESTART*/);
-    System_Signal_act__flags(System_Signal_Number_SIGSEGV, System_Runtime_sigfault, 0/*System_Signal_Flags_RESTART*/);
+    System_Signal_handle(System_Signal_Number_SIGINT, System_Runtime_CTRLC);
+    System_Signal_act(System_Signal_Number_SIGILL, System_Runtime_sigfault);
+    System_Signal_act(System_Signal_Number_SIGFPE, System_Runtime_sigfault);
+    System_Signal_act(System_Signal_Number_SIGSEGV, System_Runtime_sigfault);
 
     System_Directory_change("www");
 
@@ -391,16 +391,6 @@ int System_Runtime_main(int argc, char  * argv[]) {
     Network_HTTPResponse responses[64]; Stack_clear(responses);
 
     sockets[0] = new_Network_TCPSocket__flags(Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
-
-    /*System_IntPtr socket0_status_flags =  System_Syscall_fcntl(sockets[0]->socketId, System_File_ControlCommand_GetFileStatusFlags);
-    System_Syscall_fcntl1(sockets[0]->socketId, System_File_ControlCommand_SetFileStatusFlags, socket0_status_flags | Network_SocketType_NONBLOCK);
-    System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Syscall_fcntl Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-
-    System_IntPtr socket0_descriptor_flags =  System_Syscall_fcntl(sockets[0]->socketId, System_File_ControlCommand_GetFileDescriptorFlags);
-    System_Syscall_fcntl1(sockets[0]->socketId, System_File_ControlCommand_SetFileDescriptorFlags, socket0_descriptor_flags | Network_SocketType_CLOSEONEXEC);
-    errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Syscall_fcntl Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno)); */
 
     Network_TCPSocket_setSocketOption(sockets[0], Network_SocketOption_REUSEADDR, true);
     Network_TCPSocket_setSocketOption(sockets[0], Network_SocketOption_REUSEPORT, true);
@@ -421,6 +411,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
         for (System_Size i = 0; i < socketC; ++i) {
             if (polls[i] & Network_PollFlags_ERROR) {
                 System_Console_writeLine("HTTPService_serve: POLLIN: POLLERR", 0);
+                Network_TCPSocket_close(sockets[i]);
                 continue;
             }
             if (!(polls[i] & Network_PollFlags_IN)) continue;
@@ -473,6 +464,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
         for (System_Size i = 1; i < socketC; ++i) {
             if (polls[i] & Network_PollFlags_ERROR) {
                 System_Console_writeLine("HTTPService_serve: POLLOUT: POLLERR", 0);
+                Network_TCPSocket_close(sockets[i]);
                 continue;
             }
             if (!(polls[i] & Network_PollFlags_OUT)) continue;
