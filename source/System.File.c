@@ -17,7 +17,7 @@
 /*# System_File #*/
 
 System_Bool System_File_exists(System_String8 name) {
-    struct System_FileInfo info; System_Stack_clear(info);
+    struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo));
     base_System_FileInfo_init(&info, name);
     return System_FileInfo_isRegular(&info);
 }

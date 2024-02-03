@@ -5,7 +5,7 @@
 #if !defined(have_System_Object)
 #define have_System_Object
 
-typedef System_fixed struct System_Object {
+typedef struct System_Object {
 
     System_Type  type;
 

@@ -31,10 +31,23 @@ String8 System_enum_getName(Type type, IntPtr value) {
 
 /*# System_Type #*/
 
-struct System_Type System_TypeType = { .base = { .type = typeof(System_Type) },
+System_UInt64 base_System_Type_getSipHash(System_Type that) {
+    struct Crypto_SipHash48 sipHash48; System_Stack_clear(sipHash48);
+    Crypto_SipHash48_init(&sipHash48);
+    Crypto_SipHash48_update(&sipHash48, that->name, System_String8_get_Length(that->name));
+    return Crypto_SipHash48_final(&sipHash48);
+}
+
+struct System_Type_FunctionInfo  System_TypeTypeFunctions[] = {
+    { .function = base_System_Object_getSipHash, .value = base_System_Type_getSipHash },
+};
+
+struct System_Type System_TypeType = { 
+    .base = { .type = typeof(System_Type) },
     .name = "Type",
 	.size = sizeof(struct System_Type),
-	.baseType = &System_ObjectType
+	.baseType = &System_ObjectType,
+	.functions  = { .length = sizeof_array(System_TypeTypeFunctions), .value = &System_TypeTypeFunctions, },
 };
 
 /* Literal Types */
@@ -119,13 +132,26 @@ System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other)
     System_Type they = that;
     System_Type_InterfaceInfo info;
     while (they) {
-        if (other == they) return true;
+        if (base_System_Type_getSipHash(other) == base_System_Type_getSipHash(they)) {
+            #if DEBUG == DEBUG_System_Type
+            System_Console_writeLine("System_Type_isAssignableFrom({0:string}, {1:string})", 2, that->name, other->name);
+            #endif
+            return true;
+        }
         for (System_Size f = 0; f < they->interfaces.length; ++f) {
             info = !they->interfaces.value ? null : array(they->interfaces.value) + f;
-            if (info && other == info->interfaceType) return true;
+            if (info && base_System_Type_getSipHash(other) == base_System_Type_getSipHash(info->interfaceType)) {
+                #if DEBUG == DEBUG_System_Type
+                System_Console_writeLine("System_Type_isAssignableFrom({0:string}, {1:string})", 2, that->name, other->name);
+                #endif
+                return true;
+            }
         }
         they = they->baseType;
     }
+    #if DEBUG == DEBUG_System_Type
+    System_Console_writeLine("System_Type_isAssignableFrom({0:string}, {1:string}) not", 2, that->name, other->name);
+    #endif
     return false;
 }
 

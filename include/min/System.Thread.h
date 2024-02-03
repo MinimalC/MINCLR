@@ -40,7 +40,7 @@ import void System_Thread_terminate(System_Thread that, System_IntPtr returnValu
 export System_Var System_Thread_createStorage(void);
 export System_Var System_Thread_getRegister(void);
 export void System_Thread_setRegister(System_Var fs);
-export System_Var __tls_get_addr(System_Var index);
+/* export System_Var __tls_get_addr(System_Var index); */
 export System_Bool System_Thread_join(System_Thread that);
 export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait);
 

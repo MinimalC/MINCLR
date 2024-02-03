@@ -82,7 +82,8 @@ struct System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {
     { .function = base_System_Object_getSipHash, .value = base_System_Object_getSipHash },
 };
 
-struct System_Type System_ObjectType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ObjectType = { 
+    .base = { .type = typeof(System_Type) },
 	.name = "Object",
 	.size = sizeof(struct System_Object),
 	.baseType = null, /* this is System_Object */

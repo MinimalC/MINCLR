@@ -42,11 +42,11 @@ int System_Runtime_main(int argc, char * argv[]) {
     file = File_open(FILENOTFOUND, System_File_Mode_readOnly);
     System_Exception exception = null;
     if (System_Exception_catch(&exception, typeof(System_IOException))) {
-        Console_writeLine__string("SUCCESS: catch(IOException)");
+        Console_writeLine("SUCCESS: catch {0:string}", 1, exception->base.type->name);
         System_Memory_free(exception);
     }
     else
-        Console_writeLine__string("ERROR: no catch(IOException)");
+        Console_writeLine("ERROR: no catch System_IOException", 0);
 
 	return true;	/* OK (1 == true) */
 }

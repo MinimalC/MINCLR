@@ -9,8 +9,8 @@ Bool main_try() {
     File file = File_open(HALLOtxt, System_File_Mode_readOnly);
 
     System_Exception exception = null;
-    if (System_Exception_catch(&exception, typeof(System_Exception))) {
-        Console_writeLine("SUCCESS: catch {0:string}, error: {1:string} ({2:uint})", 3, exception->base.type->name, enum_getName(typeof(System_ErrorCode), exception->error), exception->error);
+    if (System_Exception_catch(&exception, typeof(System_IOException))) {
+        Console_writeLine("SUCCESS: catch {0:string}", 1, exception->base.type->name);
     }
     Console_writeLine__string("This is finally.");
     /* Test02: Close the File */

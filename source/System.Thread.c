@@ -20,7 +20,12 @@
 #if !defined(code_System_Thread)
 #define code_System_Thread
 
-struct System_Type System_ThreadType = { .base = { .type = typeof(System_Type) }, .name = "Thread", .size = sizeof(struct System_Thread) };
+struct System_Type System_ThreadType = { 
+    .base = { .type = typeof(System_Type) }, 
+    .name = "Thread", 
+    .size = sizeof(struct System_Thread),
+    .baseType = typeof(System_Object),
+};
 
 export thread System_Thread System_Thread_Current = null;
 
@@ -76,7 +81,7 @@ enum {
     CLONE_IO = 0x80000000,
 };
 
-System_Bool System_Thread_sigiset = false;
+volatile System_Bool System_Thread_sigiset = false;
 
 System_Thread System_Thread_create(function_System_Thread_main function, ...) {
     System_arguments args;

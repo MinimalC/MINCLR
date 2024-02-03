@@ -23,8 +23,6 @@ typedef System_fixed struct System_String8Array {
     
     System_String8  (* value)[];
 
-    System_String8 buffer;
-
 }  * System_String8Array;
 
 export struct System_Type  System_String8ArrayType;

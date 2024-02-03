@@ -19,8 +19,23 @@ System_Exception System_Exception_current = null;
 void  System_Exception_throw(System_Exception that) {
     Debug_assert(that);
 
-    if (System_Exception_current) System_Memory_free(System_Exception_current);
+    if (System_Exception_current) 
+        System_Memory_free(System_Exception_current);
+
     System_Exception_current = that;
+
+#if DEBUG == DEBUG_System_Exception
+    Type type = that->base.type;
+
+    if (that->message && that->error)
+        Console_writeLine("throws {0:string}: error {2:string}({1:uint}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error), that->message);
+    else if (that->message)
+        Console_writeLine("throws {0:string}: {1:string}", 2, type->name, that->message);
+    else if (that->error)
+        Console_writeLine("throws {0:string}: error {2:string}({1:uint})", 3, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error));
+    else
+        Console_writeLine("throws {0:string}", 1, type->name);
+#endif
 }
 
 void  System_Exception_terminate(System_Exception that) {
@@ -30,46 +45,45 @@ void  System_Exception_terminate(System_Exception that) {
     System_Console_write__string("TERMINIERT: ");
 #endif
 
-    System_Exception_throw(that);
-
-#if DEBUG
+#if DEBUG && DEBUG != DEBUG_System_Exception
     Type type = that->base.type;
-    if (!type) type = typeof(System_Exception);
 
     if (that->message && that->error)
-        Console_writeLine("throws {0:string}: error {1:uint} ({2:string}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error), that->message);
+        Console_writeLine("throws {0:string}: error {2:string}({1:uint}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error), that->message);
     else if (that->message)
         Console_writeLine("throws {0:string}: {1:string}", 2, type->name, that->message);
     else if (that->error)
-        Console_writeLine("throws {0:string}: error {1:uint} ({2:string})", 3, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error));
+        Console_writeLine("throws {0:string}: error {2:string}({1:uint})", 3, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error));
     else
         Console_writeLine("throws {0:string}", 1, type->name);
 #endif
-
     System_Syscall_terminate(false);
 }
 
 Bool  System_Exception_catch(System_Exception * that, System_Type type) {
+    return System_Exception_catch__any(that, type, false);
+}
+
+Bool  System_Exception_catch__any(System_Exception * that, System_Type type, System_Bool any) {
     Debug_assert(that);
     Debug_assert(type);
     
     if (!System_Exception_current) return false;
 
-    if (!System_Type_isAssignableFrom(System_Exception_current->base.type, type)) return false;
-        
-    *that = System_Exception_current;
-    System_Exception_current = null;
-#if DEBUG == DEBUG_System_Exception
-    System_Exception exception = *that;
-    Type exceptionType = exception->base.type;
-    if (!exceptionType) exceptionType = typeof(System_Exception);
+    Type exceptionType = System_Exception_current->base.type;
 
+    if (!any && !System_Type_isAssignableFrom(exceptionType, type)) return false;
+
+    System_Exception exception = *that = System_Exception_current;
+    System_Exception_current = null;
+
+#if DEBUG == DEBUG_System_Exception
     if (exception->message && exception->error)
-        Console_writeLine("catches {0:string}: error {1:uint} ({2:string}): {3:string}", 4, exceptionType->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error), exception->message);
+        Console_writeLine("catches {0:string}: error {2:string}({1:uint}): {3:string}", 4, exceptionType->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error), exception->message);
     else if (exception->message)
         Console_writeLine("catches {0:string}: {1:string}", 2, exceptionType->name, exception->message);
     else if (exception->error)
-        Console_writeLine("catches {0:string}: error {1:uint} ({2:string})", 3, exceptionType->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error));
+        Console_writeLine("catches {0:string}: error {2:string}({1:uint})", 3, exceptionType->name, exception->error, enum_getName(typeof(System_ErrorCode), exception->error));
     else
         Console_writeLine("catches {0:string}", 1, exceptionType->name);
 #endif
@@ -91,8 +105,8 @@ void  base_System_Exception_free(System_Exception that) {
 }
 
 struct System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {
-    [0] = { .function = base_System_Exception_init, .value = base_System_Exception_init },
-    [1] = { .function = base_System_Object_free, .value = base_System_Exception_free },
+    { .function = base_System_Exception_init, .value = base_System_Exception_init },
+    { .function = base_System_Object_free, .value = base_System_Exception_free },
 };
 
 struct System_Type System_ExceptionType = {
@@ -100,9 +114,7 @@ struct System_Type System_ExceptionType = {
     .name = "Exception",
     .size = sizeof(struct System_Exception),
     .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_ExceptionTypeFunctions), .value = &System_ExceptionTypeFunctions
-    },
+    .functions = { .length = sizeof_array(System_ExceptionTypeFunctions), .value = &System_ExceptionTypeFunctions },
 };
 
 struct System_Type System_IOExceptionType = {

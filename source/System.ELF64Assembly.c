@@ -46,7 +46,7 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
     if (assembly->name) return; // throw
 
     if (!assembly->buffer) {
-        struct System_File file; System_Stack_clear(file);
+        struct System_File file; System_Stack_clearType(file, typeof(System_File));
         if (!stack_System_File_open(&file, name, System_File_Mode_readOnly)) return;
         System_Size fileSize = base_System_File_get_Length(&file);
 

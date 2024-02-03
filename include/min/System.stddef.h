@@ -8,7 +8,7 @@
 #if !defined(have_System_stddef)
 #define have_System_stddef
 
-/* This is the truth, made by God, like the DNA of a Great Stinging Nettle. */
+/* This is the truth made by God, like the DNA of a Great Stinging Nettle */
 
 enum { null } ;
 
@@ -49,13 +49,14 @@ typedef _Bool  System_Bool;
 #define import  extern
 #define align(x)  __attribute__((aligned(x)))
 #define artificial  __attribute__((artificial))
-#define asm  __asm__ __volatile__
+#define asm  __asm__
 #define deprecated(msg)  __attribute__((deprecated(msg)))
 #define used  __attribute__((used))
 #define noreturn  __attribute__((noreturn))
 #define nothrow  __attribute__((nothrow))
 #define weak  __attribute__((weak))
 #define thread  _Thread_local
+#define volatile  __volatile__
 #define atomic  _Atomic
 #endif
 
@@ -125,7 +126,7 @@ typedef _Bool  System_Bool;
 #define out  *
 
 #define array(instance)  (* (instance))
-#define array_item(instance, item)  *(array(instance) + item)
+#define array_item(instance, item)  ( *(array(instance) + item) )
 
 #if defined(__builtin_offsetof)
 #define offsetof(TYPE,MEMBER)  __builtin_offsetof(TYPE,MEMBER)
@@ -222,6 +223,13 @@ typedef char  System_Char8,  * System_String8,  System_STRING8[];
 export System_Char8  System_String8_Empty[1];
 
 #define System_Stack_clear(VAR) for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof(VAR); ++ff(VAR,Z)) ((System_Char8 *)&VAR)[ff(VAR,Z)] = 0
+#define System_Stack_clearType(VAR,TYPE) for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof(VAR); ++ff(VAR,Z)) ((System_Char8 *)&VAR)[ff(VAR,Z)] = 0; ((System_Object)&VAR)->type = TYPE
+#define System_Stack_clearArray(VAR,TYPE):
+    for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof(VAR); ++ff(VAR,Z)) 
+        ((System_Char8 *)&VAR)[ff(VAR,Z)] = 0; 
+    for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof_array(VAR); ++ff(VAR,Z)) 
+        ((System_Object)&VAR[ff(VAR,Z)])->type = TYPE
+#end
 
 #if defined(using_System)
 #define Char8  System_Char8
@@ -229,5 +237,6 @@ export System_Char8  System_String8_Empty[1];
 #define STRING8  System_STRING8
 #define String8_Empty  System_String8_Empty
 #define Stack_clear  System_Stack_clear
+#define Stack_clearType  System_Stack_clearType
 #endif
 #endif

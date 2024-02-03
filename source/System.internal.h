@@ -4,6 +4,7 @@
 #define System_internal
 #define using_System
 
+#define DEBUG_System_Type  2
 #define DEBUG_System_Object  4
 #define DEBUG_System_String8_format  8
 #define DEBUG_System_Memory 16

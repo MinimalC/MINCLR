@@ -6,13 +6,12 @@ struct System_Atomic rwlock = { };
 
 System_Bool Dummy0(System_Size argc, System_Var argv[]) {
 
-    System_Console_writeLine("System_Thread_TID: {0:uint32}", 1, System_Syscall_gettid());
-    System_Var fs = System_Thread_getRegister();
-    System_Console_writeLine("REG_FS: {0:uint:hex}", 1, fs);
+    System_Console_writeLine("System_Thread_TID: {0:uint32} System_Thread_getRegister: {1:uint:hex}", 2, System_Syscall_gettid(), System_Thread_getRegister());
     if (!System_Thread_Current)
         System_Console_write__string("System_Thread_Current: 0x0\n");
     else
-        System_Console_writeLine("System_Thread_Current: 0x{0:uint:hex}, base.type 0x{1:uint:hex}, threadId {2:int32}, returnValue {3:uint32}", 4, System_Thread_Current, System_Thread_Current->base.type, System_Thread_Current->threadId, System_Thread_Current->returnValue);
+        System_Console_writeLine("System_Thread_Current: 0x{0:uint:hex}, base.type 0x{1:uint:hex}, threadId {2:int32}, returnValue {3:uint32}", 4, 
+            System_Thread_Current, System_Thread_Current->base.type, System_Thread_Current->threadId, System_Thread_Current->returnValue);
 
     System_Thread_sleep(4);
     System_Console_writeLine("Child{0:uint}.", 1, argv[0]);
@@ -83,9 +82,7 @@ int System_Runtime_main(int argc, char * argv[]) {
     System_Signal_act(System_Signal_Number_SIGFPE, System_Runtime_sigfault);
     System_Signal_act(System_Signal_Number_SIGSEGV, System_Runtime_sigfault);
 
-    System_Console_writeLine("System_Thread_PID: {0:uint32}", 1, System_Thread_PID);
-    System_Var fs = System_Thread_getRegister();
-    System_Console_writeLine("REG_FS: {0:uint:hex}", 1, fs);
+    System_Console_writeLine("System_Thread_PID: {0:uint32}, System_Thread_getRegister: {1:uint:hex}", 2, System_Thread_PID, System_Thread_getRegister());
 
     System_Size dummyC = 0;
     System_Thread dummys[64]; System_Stack_clear(dummys);
@@ -115,7 +112,7 @@ int System_Runtime_main(int argc, char * argv[]) {
             if (!retures[i]) {
                 retures[i] = System_Thread_join__dontwait(dummys[i], true);
                 if (!retures[i]) System_Console_writeLine("Wait on Child{0:uint}", 1, i);
-                else System_Console_writeLine("Child{0:uint} returning {1:uint:hex}.", 2, i, dummys[i]->returnValue);
+                else System_Console_writeLine("Child{0:uint} returning {1:uint}.", 2, i, dummys[i]->returnValue);
             }
 
         System_Size r = 0;

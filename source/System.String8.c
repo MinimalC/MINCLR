@@ -218,16 +218,15 @@ System_String8Array System_String8_split(System_String8 that, System_Char8 separ
     System_String8Array split = System_Memory_allocClass(typeof(System_String8Array));
     base_System_String8Array_init(split, 64);
 
-    System_String8 other = split->buffer = System_String8_copy(that);
-    System_Size length = System_String8_get_Length(other);
-    for (Size i = 0, start = 0; i < length; ++i)
-        if (*(other + i) == separator) {
-            *(other + i) = '\0';
-            base_System_String8Array_add(split, other + start);
+    System_Size length = System_String8_get_Length(that);
+    for (Size i = 0, start = 0; i < length; ++i) {
+        if (i == length - 1)
+            base_System_String8Array_add(split, System_String8_copyOfSubstring(that, start, 1 + i - start));
+        else if (*(that + i) == separator) {
+            base_System_String8Array_add(split, System_String8_copyOfSubstring(that, start, i - start));
             start = i + 1;
-        } else if (i == length - 1)
-            base_System_String8Array_add(split, other + start);
-
+        }
+    }
     return split;
 }
 

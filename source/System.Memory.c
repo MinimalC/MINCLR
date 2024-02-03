@@ -195,8 +195,7 @@ System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pag
 #if DEBUG == DEBUG_System_Memory
         Size index1 = 0;
 #endif
-        Var position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
-        Object position_object = null;
+        Var var, position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
         while (position < ((System_Var)mem64h + mem64h->length)) {
             System_Memory_Header header = (System_Memory_Header)position;
 
@@ -228,7 +227,15 @@ System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pag
 #if DEBUG == DEBUG_System_Memory
 System_Console_writeLine("System_Memory_Header({0:uint}): using typeof({1:string}), length {2:uint}", 3, index1, header->elementType->name, header->length);
 #endif
-                return (position + sizeof(struct System_Memory_Header));
+                var = (position + sizeof(struct System_Memory_Header));
+                if (System_Type_isAssignableFrom(type, typeof(System_Object))) {
+#if DEBUG == DEBUG_System_Memory
+                    System_Console_writeLine("System_Type_isAssignableFrom({0:string}, System_Object)", 1, type->name);
+#endif
+                    for (System_Size vi = 0; vi < length; ++vi)
+                        ((System_Object)(var + vi * type->size))->type = type;
+                }
+                return var;
             }
             /* expect null, if there is not enough space, move next */
             Debug_assert(!header->length);
@@ -241,7 +248,15 @@ System_Console_writeLine("System_Memory_Header({0:uint}): using typeof({1:string
             header->type = typeof(System_Memory_Header);
 System_Console_writeLine("System_Memory_Header({0:uint}): new typeof({1:string}), length {2:uint}", 4, index1, header->elementType->name, header->length);
 #endif
-            return (position + sizeof(struct System_Memory_Header));
+            var = (position + sizeof(struct System_Memory_Header));
+            if (System_Type_isAssignableFrom(type, typeof(System_Object))) {
+#if DEBUG == DEBUG_System_Memory
+                System_Console_writeLine("System_Type_isAssignableFrom({0:string}, System_Object)", 1, type->name);
+#endif
+                for (System_Size vi = 0; vi < length; ++vi)
+                    ((System_Object)(var + vi * type->size))->type = type;
+            }
+            return var;
         }
     }
 
@@ -404,7 +419,7 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
 
 	if (header->refCount < System_Memory_ReferenceState_Used) {
         #if DEBUG
-        System_Console_writeLine("System_Memory_freeClass: typeof({0:string}): header->refCount < System_Memory_ReferenceState_Used", 1, header->elementType);
+        System_Console_writeLine("System_Memory_freeClass: typeof({0:string}): header->refCount < System_Memory_ReferenceState_Used", 1, header->elementType->name);
         #endif
         goto return_free;
     }

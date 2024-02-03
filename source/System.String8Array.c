@@ -28,10 +28,9 @@ void base_System_String8Array_init(System_String8Array that, System_Size capacit
 }
 
 void  base_System_String8Array_free(System_String8Array that) {
-    /*for (System_Size i = 0; i < that->length; ++i)
-        System_Memory_free(array_item(that->value, i));*/
+    for (System_Size i = 0; i < that->length; ++i)
+        System_Memory_free(array_item(that->value, i));
     System_Memory_free(that->value);
-    System_Memory_free(that->buffer);
 }
 
 System_Size  base_System_String8Array_get_Length(System_String8Array that) {
@@ -43,9 +42,9 @@ System_String8  base_System_String8Array_get_index(System_String8Array that, Sys
 }
 
 void  base_System_String8Array_set_index(System_String8Array that, System_Size index, System_String8 value) {
-    /* System_String8 old = array(that->value)[index];
-    if (old) System_Memory_free(old); */
-    array(that->value)[index] = value; // System_Memory_addReference(value);
+    System_String8 old = array(that->value)[index];
+    array(that->value)[index] = value;
+    if (old) System_Memory_free(old);
 }
 
 void  base_System_String8Array_add(System_String8Array that, System_String8 item) {

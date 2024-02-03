@@ -36,6 +36,7 @@ export void  base_System_Exception_free(System_Exception that);
 export void  System_Exception_throw(System_Exception that);
 export void  System_Exception_terminate(System_Exception that) noreturn;
 export System_Bool  System_Exception_catch(System_Exception * that, System_Type type);
+export System_Bool  System_Exception_catch__any(System_Exception * that, System_Type type, System_Bool any);
 
 export System_Exception  new_System_Exception(System_String8 message);
 export System_Exception  new_System_IOException(System_String8 message);
@@ -61,7 +62,7 @@ export System_Exception  new_System_InvalidException(System_String8 message);
 #define function_Exception_init  function_System_Exception_init
 #define function_Exception_free  function_System_Exception_free
 #define base_Exception_init  base_System_Exception_init
-/* #define base_Exception_free  base_System_Exception_free */
+#define base_Exception_free  base_System_Exception_free
 #define Exception_init  System_Exception_init
 #define Exception_free  System_Exception_free
 #endif

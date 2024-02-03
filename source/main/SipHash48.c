@@ -14,7 +14,7 @@ int SipHash48_main(int argc, char * argv[]) {
 
     for (Size i = 1; i < argc; ++i) {
         Stack_clear(sipHash48); SipHash48_init(&sipHash48);
-        Stack_clear(file);
+        Stack_clearType(file, typeof(System_File));
         UInt64 hash_value = 0;
         if (String8_equals(argv[i], "--file")) {
             if (i + 1 == argc) { 
@@ -23,6 +23,7 @@ int SipHash48_main(int argc, char * argv[]) {
             } 
             if (!System_File_exists(argv[++i])) {
                 System_Console_writeLine("File {0:string} not found.", 1, argv[i]); 
+                continue;
             }
             if (!stack_System_File_open(&file, argv[i], System_File_Mode_readOnly)) {
                 System_Console_writeLine("Can't read file {0:string}.", 1, argv[i]); 
