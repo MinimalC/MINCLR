@@ -33,6 +33,7 @@
 #include "System.Atomic.h"
 
 #include "Crypto.SipHash48.h"
+#include "Crypto.CubeHash512.h"
 
 #include "System.DateTime.h"
 

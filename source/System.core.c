@@ -22,6 +22,7 @@
 #include "System.Object.c"
 
 #include "Crypto.SipHash48.c"
+#include "Crypto.CubeHash512.c"
 
 #include "System.Exception.c"
 #include "System.Syscall.c"

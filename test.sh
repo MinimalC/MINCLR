@@ -13,6 +13,8 @@ REPORT=../.System.test...report
 $INTERP ./ELFAssembly.read SipHash48 > ../.ELFAssembly.read...report 2>&1
 echo -n > $REPORT
 $INTERP ./SipHash48 System.Type System_Type >> $REPORT 2>&1 ; echo >> $REPORT
+$INTERP ./CubeHash256 System.Type System_Type >> $REPORT 2>&1 ; echo >> $REPORT
+$INTERP ./CubeHash512 System.Type System_Type >> $REPORT 2>&1 ; echo >> $REPORT
 $INTERP ./System.Exception.test >> $REPORT 2>&1 ; echo >> $REPORT
 $INTERP ./System.File.test >> $REPORT 2>&1 ; echo >> $REPORT
 $INTERP ./System.FileInfo.test >> $REPORT 2>&1 ; echo >> $REPORT
