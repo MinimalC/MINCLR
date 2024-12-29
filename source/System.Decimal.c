@@ -8,7 +8,7 @@
 #if !defined(code_System_Decimal)
 #define code_System_Decimal
 
-/*# System_Decimal #*/
+/** class System_Decimal  **/
 
 struct System_Type System_DecimalType = { .base = { .type = typeof(System_Type) },
     .name = "Decimal",

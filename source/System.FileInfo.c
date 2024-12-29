@@ -9,7 +9,7 @@
 #include <min/System.Syscall.h>
 #endif
 
-/*# System_FileInfo #*/
+/** class System_FileInfo  **/
 
 System_FileInfo  new_System_FileInfo(System_String8 fileName) {
     System_FileInfo that = (System_FileInfo)System_Memory_allocClass(typeof(System_FileInfo));

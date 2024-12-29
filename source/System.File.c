@@ -14,14 +14,25 @@
 #if !defined(code_System_File)
 #define code_System_File
 
-/*# System_File #*/
+/** class System_File */
 
+/** function System_File_exists
+    True or false, if a named File exists.
+    argument System_String8 name: Name of the File.
+    returns System_Bool
+*/
 System_Bool System_File_exists(System_String8 name) {
     struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo));
     base_System_FileInfo_init(&info, name);
     return System_FileInfo_isRegular(&info);
 }
 
+/** function System_File_open
+    Opens a File by name, with the specified flags.
+    argument System_String8 filename: Name of the File.
+    argument File_Mode flags: Flags how to open the File.
+    returns System_File, or null
+*/
 File  System_File_open(String8 filename, File_Mode flags) {
 
     File that = new_File();
@@ -32,6 +43,13 @@ File  System_File_open(String8 filename, File_Mode flags) {
     return null;
 }
 
+/** function stack_System_File_open
+    Opens a File by name, with the specified flags on stack.
+    this argument System_File file.
+    argument System_String8 filename: Name of the File.
+    argument File_Mode flags: Flags how to open the File.
+    returns System_Bool, if the file was opened.
+*/
 System_Bool  stack_System_File_open(System_File that, System_String8 filename, System_File_Mode flags) {
 
     if (that->filePtr) return false; /* TODO */
@@ -57,6 +75,10 @@ System_Bool  stack_System_File_open(System_File that, System_String8 filename, S
     return true;
 }
 
+/** function System_File_new
+    Creates a new File object.
+    returns System_File
+*/
 System_File  new_System_File() {
     System_File that = (System_File)System_Memory_allocClass(typeof(System_File));
     base_System_File_init(that);
@@ -65,6 +87,10 @@ System_File  new_System_File() {
 
 void  base_System_File_init(File that) { }
 
+/** function base_System_File_close
+    This method closes the File.
+    argument System_File file
+*/
 void  base_System_File_close(File that) {
     if (!that->filePtr) return;
 /*  ISO_fclose((ISO_File)that->filePtr); */
@@ -120,7 +146,7 @@ void  base_System_File_sync(File that) {
     System_Syscall_fsync(that->filePtr);
 }
 
-struct System_Type_FunctionInfo  System_FileTypeFunctions[] = { 
+struct System_Type_FunctionInfo  System_FileTypeFunctions[] = {
     [0] = { .function = base_System_Object_init, .value = base_System_File_init },
     [1] = { .function = base_System_Object_free, .value = base_System_File_free },
     [2] = { .name = "base_System_File_write__string_size", .function = base_System_IStream_write__string_size, .value = base_System_File_write__string_size },
@@ -142,7 +168,7 @@ struct System_Type System_FileType = {
 	.name = "File",
     .size = sizeof(struct System_File),
 	.baseType = &System_ObjectType,
-    .functions = { 
+    .functions = {
         .length = sizeof_array(System_FileTypeFunctions), .value = &System_FileTypeFunctions
     },
     .interfaces = {

@@ -23,7 +23,7 @@ String8 System_Signal_Number_toString(System_Signal_Number value) {
     return "Unknown";
 }
 
-/*# System_Signal #*/
+/** class System_Signal  **/
 
 struct System_Type System_SignalType = { .base = { .type = typeof(System_Type) }, .name = "Signal", };
 

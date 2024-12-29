@@ -8,7 +8,7 @@
 #if !defined(code_System_Path)
 #define code_System_Path
 
-/*# System_Path #*/
+/** class System_Path  **/
 
 struct System_Type System_PathType = { .base = { .type = typeof(System_Type) }, .name = "Path" };
 

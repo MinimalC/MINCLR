@@ -9,7 +9,7 @@
 #include <min/System.Syscall.h>
 #endif
 
-/*# System_DateTime #*/
+/** class System_DateTime  **/
 
 struct System_Type System_TimeType = { .base = { .type = typeof(System_Type) }, .name = "Time", .size = sizeof(System_Time) };
 

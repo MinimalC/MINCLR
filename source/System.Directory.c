@@ -9,7 +9,7 @@
 #include <min/System.Syscall.h>
 #endif
 
-/*# System_Directory #*/
+/** class System_Directory  **/
 
 struct System_Type System_DirectoryType = { .base = { .type = typeof(System_Type) }, .name = "Directory", };
 

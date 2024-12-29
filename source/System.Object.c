@@ -14,7 +14,7 @@
 #if !defined(code_System_Object)
 #define code_System_Object
 
-/*# System_Object #*/
+/** class System_Object  **/
 
 Type  System_Object_get_Type(Object that) {
     Debug_assert(that);

@@ -14,7 +14,7 @@
 #if !defined(code_Generic_T0)
 #define code_Generic_T0
 
-/*# Generic_T0 #*/
+/** class Generic_T0  **/
 
 struct System_Type Generic_T0Type  = { .base = { .type = typeof(System_Type) }, .name = "Generic.T0", .size = sizeof(Generic_T0) };
 

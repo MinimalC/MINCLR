@@ -9,7 +9,7 @@
 #if !defined(code_auto_System_Dictionary)
 #define code_auto_System_Dictionary
 
-/*# System_Dictionary #*/
+/** class System_Dictionary  **/
 
 System_Dictionary  new_System_Dictionary() {
     System_Dictionary that = (System_Dictionary)System_Memory_allocClass(typeof(System_Dictionary));

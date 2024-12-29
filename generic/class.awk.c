@@ -16,7 +16,7 @@
 #if !defined(code_Generic_T0)
 #define code_Generic_T0
 
-/*# Generic_T0 #*/
+/** class Generic_T0  **/
 
 Generic_T0  new_Generic_T0() {
     Generic_T0 that = (Generic_T0)System_Memory_allocClass(typeof(Generic_T0));

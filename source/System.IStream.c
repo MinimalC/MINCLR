@@ -11,7 +11,7 @@
 #if !defined(code_System_IStream)
 #define code_System_IStream
 
-/*# System_IStream #*/
+/** class System_IStream  **/
 
 void  base_System_IStream_write__string_size(IStream that, String8 value, Size count) { }
 

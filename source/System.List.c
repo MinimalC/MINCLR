@@ -8,7 +8,7 @@
 #if !defined(code_System_List)
 #define code_System_List
 
-/*# System_List #*/
+/** class System_List  **/
 
 System_List  new_System_List() {
     System_List that = (System_List)System_Memory_allocClass(typeof(System_List));

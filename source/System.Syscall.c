@@ -11,7 +11,7 @@
 #if !defined(code_System_Syscall_Command)
 #define code_System_Syscall_Command
 
-/*# System_Syscall_Command #*/
+/** class System_Syscall_Command  **/
 
 struct System_Type_FieldInfo  System_Syscall_CommandTypeFields[] = {
 #if defined(have_Linux)
@@ -46,7 +46,7 @@ struct System_Type System_Syscall_CommandType = { .base = { .type = typeof(Syste
 #if !defined(code_System_ErrorCode)
 #define code_System_ErrorCode
 
-/*# System_ErrorCode #*/
+/** class System_ErrorCode  **/
 
 struct System_Type_FieldInfo  System_ErrorCodeTypeFields[] = {
 #include <min/System.ErrorCode.generic.asm.h>
@@ -64,7 +64,7 @@ struct System_Type System_ErrorCodeType = { .base = { .type = typeof(System_Type
 #if !defined(code_System_Syscall)
 #define code_System_Syscall
 
-/*# System_Syscall #*/
+/** class System_Syscall  **/
 
 struct System_Type System_SyscallType = { .base = { .type = typeof(System_Type) }, .name = "Syscall", };
 

@@ -14,7 +14,7 @@
 #if !defined(code_System_VarArray)
 #define code_System_VarArray
 
-/*# System_VarArray #*/
+/** class System_VarArray  **/
 
 System_VarArray  new_System_VarArray(System_Size capacity) {
     System_VarArray that = (System_VarArray)System_Memory_allocClass(typeof(System_VarArray));
@@ -88,7 +88,7 @@ struct System_Type System_VarArrayType = { .base = { .type = typeof(System_Type)
 #if !defined(code_System_VarArrayEnumerator)
 #define code_System_VarArrayEnumerator
 
-/*# System_VarArrayEnumerator #*/
+/** class System_VarArrayEnumerator  **/
 
 System_VarArrayEnumerator  new_System_VarArrayEnumerator(System_VarArray array) {
     System_VarArrayEnumerator that = (System_VarArrayEnumerator)System_Memory_allocClass(typeof(System_VarArrayEnumerator));

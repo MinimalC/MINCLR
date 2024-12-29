@@ -12,7 +12,7 @@
 #if !defined(code_System_UInt8Array)
 #define code_System_UInt8Array
 
-/*# System_UInt8Array #*/
+/** class System_UInt8Array  **/
 
 System_UInt8Array  new_System_UInt8Array(System_Size length) {
     System_UInt8Array that = (System_UInt8Array)System_Memory_allocClass(typeof(System_UInt8Array));
@@ -93,7 +93,7 @@ struct System_Type System_UInt8ArrayType = { .base = { .type = typeof(System_Typ
 #if !defined(code_System_UInt16Array)
 #define code_System_UInt16Array
 
-/*# System_UInt16Array #*/
+/** class System_UInt16Array  **/
 
 System_UInt16Array  new_System_UInt16Array(System_Size length) {
     System_UInt16Array that = (System_UInt16Array)System_Memory_allocClass(typeof(System_UInt16Array));
@@ -174,7 +174,7 @@ struct System_Type System_UInt16ArrayType = { .base = { .type = typeof(System_Ty
 #if !defined(code_System_UInt32Array)
 #define code_System_UInt32Array
 
-/*# System_UInt32Array #*/
+/** class System_UInt32Array  **/
 
 System_UInt32Array  new_System_UInt32Array(System_Size length) {
     System_UInt32Array that = (System_UInt32Array)System_Memory_allocClass(typeof(System_UInt32Array));
@@ -255,7 +255,7 @@ struct System_Type System_UInt32ArrayType = { .base = { .type = typeof(System_Ty
 #if !defined(code_System_UInt64Array)
 #define code_System_UInt64Array
 
-/*# System_UInt64Array #*/
+/** class System_UInt64Array  **/
 
 System_UInt64Array  new_System_UInt64Array(System_Size length) {
     System_UInt64Array that = (System_UInt64Array)System_Memory_allocClass(typeof(System_UInt64Array));
@@ -336,7 +336,7 @@ struct System_Type System_UInt64ArrayType = { .base = { .type = typeof(System_Ty
 #if !defined(code_System_Int8Array)
 #define code_System_Int8Array
 
-/*# System_Int8Array #*/
+/** class System_Int8Array  **/
 
 System_Int8Array  new_System_Int8Array(System_Size length) {
     System_Int8Array that = (System_Int8Array)System_Memory_allocClass(typeof(System_Int8Array));
@@ -417,7 +417,7 @@ struct System_Type System_Int8ArrayType = { .base = { .type = typeof(System_Type
 #if !defined(code_System_Int16Array)
 #define code_System_Int16Array
 
-/*# System_Int16Array #*/
+/** class System_Int16Array  **/
 
 System_Int16Array  new_System_Int16Array(System_Size length) {
     System_Int16Array that = (System_Int16Array)System_Memory_allocClass(typeof(System_Int16Array));
@@ -498,7 +498,7 @@ struct System_Type System_Int16ArrayType = { .base = { .type = typeof(System_Typ
 #if !defined(code_System_Int32Array)
 #define code_System_Int32Array
 
-/*# System_Int32Array #*/
+/** class System_Int32Array  **/
 
 System_Int32Array  new_System_Int32Array(System_Size length) {
     System_Int32Array that = (System_Int32Array)System_Memory_allocClass(typeof(System_Int32Array));
@@ -579,7 +579,7 @@ struct System_Type System_Int32ArrayType = { .base = { .type = typeof(System_Typ
 #if !defined(code_System_Int64Array)
 #define code_System_Int64Array
 
-/*# System_Int64Array #*/
+/** class System_Int64Array  **/
 
 System_Int64Array  new_System_Int64Array(System_Size length) {
     System_Int64Array that = (System_Int64Array)System_Memory_allocClass(typeof(System_Int64Array));
@@ -660,7 +660,7 @@ struct System_Type System_Int64ArrayType = { .base = { .type = typeof(System_Typ
 #if !defined(code_System_UInt8ArrayEnumerator)
 #define code_System_UInt8ArrayEnumerator
 
-/*# System_UInt8ArrayEnumerator #*/
+/** class System_UInt8ArrayEnumerator  **/
 
 System_UInt8ArrayEnumerator  new_System_UInt8ArrayEnumerator(System_UInt8Array array) {
     System_UInt8ArrayEnumerator that = (System_UInt8ArrayEnumerator)System_Memory_allocClass(typeof(System_UInt8ArrayEnumerator));
@@ -735,7 +735,7 @@ struct System_Type System_UInt8ArrayEnumeratorType = { .base = { .type = typeof(
 #if !defined(code_System_UInt16ArrayEnumerator)
 #define code_System_UInt16ArrayEnumerator
 
-/*# System_UInt16ArrayEnumerator #*/
+/** class System_UInt16ArrayEnumerator  **/
 
 System_UInt16ArrayEnumerator  new_System_UInt16ArrayEnumerator(System_UInt16Array array) {
     System_UInt16ArrayEnumerator that = (System_UInt16ArrayEnumerator)System_Memory_allocClass(typeof(System_UInt16ArrayEnumerator));
@@ -810,7 +810,7 @@ struct System_Type System_UInt16ArrayEnumeratorType = { .base = { .type = typeof
 #if !defined(code_System_UInt32ArrayEnumerator)
 #define code_System_UInt32ArrayEnumerator
 
-/*# System_UInt32ArrayEnumerator #*/
+/** class System_UInt32ArrayEnumerator  **/
 
 System_UInt32ArrayEnumerator  new_System_UInt32ArrayEnumerator(System_UInt32Array array) {
     System_UInt32ArrayEnumerator that = (System_UInt32ArrayEnumerator)System_Memory_allocClass(typeof(System_UInt32ArrayEnumerator));
@@ -885,7 +885,7 @@ struct System_Type System_UInt32ArrayEnumeratorType = { .base = { .type = typeof
 #if !defined(code_System_UInt64ArrayEnumerator)
 #define code_System_UInt64ArrayEnumerator
 
-/*# System_UInt64ArrayEnumerator #*/
+/** class System_UInt64ArrayEnumerator  **/
 
 System_UInt64ArrayEnumerator  new_System_UInt64ArrayEnumerator(System_UInt64Array array) {
     System_UInt64ArrayEnumerator that = (System_UInt64ArrayEnumerator)System_Memory_allocClass(typeof(System_UInt64ArrayEnumerator));
@@ -960,7 +960,7 @@ struct System_Type System_UInt64ArrayEnumeratorType = { .base = { .type = typeof
 #if !defined(code_System_Int8ArrayEnumerator)
 #define code_System_Int8ArrayEnumerator
 
-/*# System_Int8ArrayEnumerator #*/
+/** class System_Int8ArrayEnumerator  **/
 
 System_Int8ArrayEnumerator  new_System_Int8ArrayEnumerator(System_Int8Array array) {
     System_Int8ArrayEnumerator that = (System_Int8ArrayEnumerator)System_Memory_allocClass(typeof(System_Int8ArrayEnumerator));
@@ -1035,7 +1035,7 @@ struct System_Type System_Int8ArrayEnumeratorType = { .base = { .type = typeof(S
 #if !defined(code_System_Int16ArrayEnumerator)
 #define code_System_Int16ArrayEnumerator
 
-/*# System_Int16ArrayEnumerator #*/
+/** class System_Int16ArrayEnumerator  **/
 
 System_Int16ArrayEnumerator  new_System_Int16ArrayEnumerator(System_Int16Array array) {
     System_Int16ArrayEnumerator that = (System_Int16ArrayEnumerator)System_Memory_allocClass(typeof(System_Int16ArrayEnumerator));
@@ -1110,7 +1110,7 @@ struct System_Type System_Int16ArrayEnumeratorType = { .base = { .type = typeof(
 #if !defined(code_System_Int32ArrayEnumerator)
 #define code_System_Int32ArrayEnumerator
 
-/*# System_Int32ArrayEnumerator #*/
+/** class System_Int32ArrayEnumerator  **/
 
 System_Int32ArrayEnumerator  new_System_Int32ArrayEnumerator(System_Int32Array array) {
     System_Int32ArrayEnumerator that = (System_Int32ArrayEnumerator)System_Memory_allocClass(typeof(System_Int32ArrayEnumerator));
@@ -1185,7 +1185,7 @@ struct System_Type System_Int32ArrayEnumeratorType = { .base = { .type = typeof(
 #if !defined(code_System_Int64ArrayEnumerator)
 #define code_System_Int64ArrayEnumerator
 
-/*# System_Int64ArrayEnumerator #*/
+/** class System_Int64ArrayEnumerator  **/
 
 System_Int64ArrayEnumerator  new_System_Int64ArrayEnumerator(System_Int64Array array) {
     System_Int64ArrayEnumerator that = (System_Int64ArrayEnumerator)System_Memory_allocClass(typeof(System_Int64ArrayEnumerator));

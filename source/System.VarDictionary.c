@@ -14,7 +14,7 @@
 #if !defined(code_System_VarDictionary)
 #define code_System_VarDictionary
 
-/*# System_VarDictionary #*/
+/** class System_VarDictionary  **/
 
 void base_System_VarDictionary_init(System_VarDictionary that, System_Size capacity) {
     that->key = System_Memory_allocArray(typeof(System_Var), capacity);
@@ -121,7 +121,7 @@ struct System_Type System_VarDictionaryType = { .base = { .type = typeof(System_
 #if !defined(code_System_VarDictionaryEnumerator)
 #define code_System_VarDictionaryEnumerator
 
-/*# System_VarDictionaryEnumerator #*/
+/** class System_VarDictionaryEnumerator  **/
 
 System_VarDictionaryEnumerator  new_System_VarDictionaryEnumerator(System_VarDictionary array) {
     System_VarDictionaryEnumerator that = (System_VarDictionaryEnumerator)System_Memory_allocClass(typeof(System_VarDictionaryEnumerator));

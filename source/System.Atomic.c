@@ -6,7 +6,7 @@
 #include <min/System.Atomic.h>
 #endif
 
-/*# System_Atomic #*/
+/** class System_Atomic  **/
 
 struct System_Type System_AtomicType = { .base = { .type = typeof(System_Type) }, .name = "Atomic", .size = sizeof(struct System_Atomic) };
 

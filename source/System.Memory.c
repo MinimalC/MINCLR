@@ -30,7 +30,7 @@ System_String8 System_Directory_current;
 #if !defined(code_System_Memory)
 #define code_System_Memory
 
-/*# System_Memory #*/
+/** class System_Memory  **/
 
 struct System_Type System_MemoryType = { .base = { .type = typeof(System_Type) }, .name = "Memory" };
 

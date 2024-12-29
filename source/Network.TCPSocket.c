@@ -26,7 +26,7 @@
 #if !defined(code_Network_TCPSocket)
 #define code_Network_TCPSocket
 
-/*# Network.TCPSocket #*/
+/** class Network.TCPSocket  **/
 
 struct System_Type Network_TCPSocketType = { .base = { .type = typeof(System_Type) },
     .name = "TCPSocket",
