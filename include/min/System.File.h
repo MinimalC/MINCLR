@@ -11,58 +11,55 @@
 #if !defined(have_System_File)
 #define have_System_File
 
-
 typedef System_IntPtr  System_File_Mode;
-
-#define System_File_Mode_readOnly                 00
-#define System_File_Mode_writeOnly                01
-#define System_File_Mode_readWrite                02
-#define System_File_Mode_create                 0100
-#define System_File_Mode_exclusive              0200
-#define System_File_Mode_noControllingTerminal  0400
-#define System_File_Mode_truncate              01000
-#define System_File_Mode_append                02000
-#define System_File_Mode_nonBlock              04000
-#define System_File_Mode_dsync                010000
-#define System_File_Mode_async                020000
-#define System_File_Mode_direct               040000
-#define System_File_Mode_LargeFile           0100000
-#define System_File_Mode_Directory           0200000
-#define System_File_Mode_nonFollow           0400000
-#define System_File_Mode_noAccessTime       01000000
-#define System_File_Mode_closeOnExecute     02000000
-#define System_File_Mode_sync              (04000000 | System_File_Mode_dsync)
-#define System_File_Mode_Path              010000000
-#define System_File_Mode_temporary        (020000000 | System_File_Mode_Directory)
-
+enum {
+    System_File_Mode_readOnly                 = 00,
+    System_File_Mode_writeOnly                = 01,
+    System_File_Mode_readWrite                = 02,
+    System_File_Mode_create                 = 0100,
+    System_File_Mode_exclusive              = 0200,
+    System_File_Mode_noControllingTerminal  = 0400,
+    System_File_Mode_truncate              = 01000,
+    System_File_Mode_append                = 02000,
+    System_File_Mode_nonBlock              = 04000,
+    System_File_Mode_dsync                = 010000,
+    System_File_Mode_async                = 020000,
+    System_File_Mode_direct               = 040000,
+    System_File_Mode_LargeFile           = 0100000,
+    System_File_Mode_Directory           = 0200000,
+    System_File_Mode_nonFollow           = 0400000,
+    System_File_Mode_noAccessTime       = 01000000,
+    System_File_Mode_closeOnExecute     = 02000000,
+    System_File_Mode_sync              = (04000000 | System_File_Mode_dsync),
+    System_File_Mode_Path              = 010000000,
+    System_File_Mode_temporary        = (020000000 | System_File_Mode_Directory),
+};
 
 typedef System_IntPtr  System_File_Permission;
-
-#define System_File_Permission_UserRead             0400
-#define System_File_Permission_UserWrite            0200
-#define System_File_Permission_UserReadWrite        (System_File_Permission_UserRead | System_File_Permission_UserWrite)
-#define System_File_Permission_UserExecute          0100
-#define System_File_Permission_UserEverything       (System_File_Permission_UserRead | System_File_Permission_UserWrite | System_File_Permission_UserExecute)
-#define System_File_Permission_GroupRead            (System_File_Permission_UserRead >> 3)
-#define System_File_Permission_GroupWrite           (System_File_Permission_UserWrite >> 3)
-#define System_File_Permission_GroupReadWrite       (System_File_Permission_GroupRead | System_File_Permission_GroupWrite)
-#define System_File_Permission_GroupExecute         (System_File_Permission_UserExecute >> 3)
-#define System_File_Permission_GroupEverything      (System_File_Permission_GroupRead | System_File_Permission_GroupWrite | System_File_Permission_GroupExecute)
-#define System_File_Permission_EverybodyRead        (System_File_Permission_GroupRead >> 3)
-#define System_File_Permission_EverybodyWrite       (System_File_Permission_GroupWrite >> 3)
-#define System_File_Permission_EverybodyReadWrite   (System_File_Permission_EverybodyRead | System_File_Permission_EverybodyWrite)
-#define System_File_Permission_EverybodyExecute     (System_File_Permission_GroupExecute >> 3)
-#define System_File_Permission_EverybodyEverything  (System_File_Permission_EverybodyRead | System_File_Permission_EverybodyWrite | System_File_Permission_EverybodyExecute)
-
+enum {
+    System_File_Permission_UserRead             = 0400,
+    System_File_Permission_UserWrite            = 0200,
+    System_File_Permission_UserReadWrite        = (System_File_Permission_UserRead | System_File_Permission_UserWrite),
+    System_File_Permission_UserExecute          = 0100,
+    System_File_Permission_UserEverything       = (System_File_Permission_UserRead | System_File_Permission_UserWrite | System_File_Permission_UserExecute),
+    System_File_Permission_GroupRead            = (System_File_Permission_UserRead >> 3),
+    System_File_Permission_GroupWrite           = (System_File_Permission_UserWrite >> 3),
+    System_File_Permission_GroupReadWrite       = (System_File_Permission_GroupRead | System_File_Permission_GroupWrite),
+    System_File_Permission_GroupExecute         = (System_File_Permission_UserExecute >> 3),
+    System_File_Permission_GroupEverything      = (System_File_Permission_GroupRead | System_File_Permission_GroupWrite | System_File_Permission_GroupExecute),
+    System_File_Permission_EverybodyRead        = (System_File_Permission_GroupRead >> 3),
+    System_File_Permission_EverybodyWrite       = (System_File_Permission_GroupWrite >> 3),
+    System_File_Permission_EverybodyReadWrite   = (System_File_Permission_EverybodyRead | System_File_Permission_EverybodyWrite),
+    System_File_Permission_EverybodyExecute     = (System_File_Permission_GroupExecute >> 3),
+    System_File_Permission_EverybodyEverything  = (System_File_Permission_EverybodyRead | System_File_Permission_EverybodyWrite | System_File_Permission_EverybodyExecute),
+};
 
 typedef System_fixed struct System_File {
 	struct System_Object  base;
 
-    System_Var filePtr;
+    System_IntPtr fileId;
 
     System_Size position;
-
-    struct System_FileInfo info;
 
 }  * System_File;
 
@@ -86,6 +83,12 @@ export System_File  new_System_File();
 export void  base_System_File_init(System_File that);
 export void  base_System_File_free(System_File that);
 export void  base_System_File_write__string_size(System_File that, System_String8 value, System_Size count);
+export void  base_System_File_write__string(System_File that, System_String8 string);
+export void  base_System_File_write__char(System_File that, System_Char8 character);
+export void  base_System_File_writeLineEmpty(System_File that);
+export void  base_System_File_write(System_File that, System_String8 format, ...);
+export void  base_System_File_writeLine__string(System_File that, System_String8 string);
+export void  base_System_File_writeLine(System_File that, System_String8 format, ...);
 export void  base_System_File_writeEnd__arguments(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 export void  base_System_File_sync(System_File that);
 export System_Size  base_System_File_seek(System_File that, System_SSize offset, System_origin origin);

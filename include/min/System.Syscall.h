@@ -44,27 +44,28 @@ export void  System_Syscall_terminate(System_Size code)  noreturn;
 export void  System_Syscall_gettimeofday(System_TimeSpan value, System_TimeZone zone);
 export System_Time  System_Syscall_time(void);
 
-typedef System_Var  System_Syscall_StandardFile;
+typedef System_IntPtr  System_Syscall_StandardFile;
+enum {
+    System_Syscall_StandardFile_STDIN,
+    System_Syscall_StandardFile_STDOUT,
+    System_Syscall_StandardFile_STDERR,
+    System_Syscall_StandardFile_CurrentWorkingDirectory = -100,
+};
 
-#define System_Syscall_StandardFile_STDIN   ((System_Var)0)
-#define System_Syscall_StandardFile_STDOUT  ((System_Var)1)
-#define System_Syscall_StandardFile_STDERR  ((System_Var)2)
-#define System_Syscall_StandardFile_CurrentWorkingDirectory  ((System_Var)-100)
-
-export System_Var  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
-export System_Var  System_Syscall_openat(System_Var directoryPtr, System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
-export System_Size  System_Syscall_read(System_Var filePtr, const System_Var buffer, System_Size count);
-export System_Size  System_Syscall_write(System_Var filePtr, const System_Var buffer, System_Size count);
-export System_Size  System_Syscall_lseek(System_Var filePtr, System_Size offset, System_IntPtr whence);
-export void  System_Syscall_fsync(System_Var filePtr);
-export void  System_Syscall_close(System_Var filePtr);
-export void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, System_Var stat, System_IntPtr flags);
+export System_IntPtr  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
+export System_IntPtr  System_Syscall_openat(System_IntPtr directoryId, System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
+export System_Size  System_Syscall_read(System_IntPtr fileId, const System_Var buffer, System_Size count);
+export System_Size  System_Syscall_write(System_IntPtr fileId, const System_Var buffer, System_Size count);
+export System_Size  System_Syscall_lseek(System_IntPtr fileId, System_Size offset, System_IntPtr whence);
+export void  System_Syscall_fsync(System_IntPtr fileId);
+export void  System_Syscall_close(System_IntPtr fileId);
+export void  System_Syscall_fstatat(System_IntPtr directoryId, const System_String8 pathName, System_Var stat, System_IntPtr flags);
 export void  System_Syscall_getcwd(System_String8 buffer, System_Size length);
 export void  System_Syscall_chdir(System_String8 path);
 
 export System_Var  System_Syscall_mmap(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags);
-export System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
-export System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_Var file, System_IntPtr offset);
+export System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_IntPtr file, System_IntPtr offset);
+export System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_IntPtr file, System_IntPtr offset);
 export void  System_Syscall_mmap__debug(void);
 export void  System_Syscall_munmap(System_Var address, System_Size length);
 export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
@@ -104,9 +105,11 @@ enum {
 };
 
 export System_IntPtr  System_Syscall_fcntl(System_IntPtr fileId, System_IntPtr command);
-export System_IntPtr  System_Syscall_fcntl1(System_IntPtr fileId, System_IntPtr command, System_IntPtr arg1);
+export System_IntPtr  System_Syscall_fcntl1(System_IntPtr fileId, System_IntPtr command, System_Var arg1);
+export System_IntPtr  System_Syscall_fcntl2(System_IntPtr fileId, System_IntPtr command, System_IntPtr arg1, System_Var arg2);
 export System_IntPtr  System_Syscall_ioctl(System_IntPtr fileId, System_IntPtr request);
-export System_IntPtr  System_Syscall_ioctl1(System_IntPtr fileId, System_IntPtr request, System_IntPtr arg1);
+export System_IntPtr  System_Syscall_ioctl1(System_IntPtr fileId, System_IntPtr request, System_Var arg1);
+export System_IntPtr  System_Syscall_ioctl2(System_IntPtr fileId, System_IntPtr request, System_IntPtr arg1, System_Var arg2);
 
 typedef System_Int32  Network_Socket_SID;
 export Network_Socket_SID  System_Syscall_socket(System_IntPtr addressFamily, System_IntPtr socketType, System_IntPtr protocol);

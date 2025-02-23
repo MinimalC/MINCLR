@@ -102,36 +102,36 @@ System_SSize  System_Syscall_time(void) {
 #endif
 }
 
-System_Var  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode) {
-    return (System_Var)System_Syscall_call03(System_Syscall_Command_open, (System_IntPtr)fileName, flags, mode);
+System_IntPtr  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode) {
+    return System_Syscall_call03(System_Syscall_Command_open, (System_IntPtr)fileName, flags, mode);
 }
 
-System_Var  System_Syscall_openat(System_Var directoryPtr, System_String8 fileName, System_IntPtr flags, System_IntPtr mode) {
-    return (System_Var)System_Syscall_call04(System_Syscall_Command_openat, (System_IntPtr)directoryPtr, (System_IntPtr)fileName, flags, mode);
+System_IntPtr  System_Syscall_openat(System_IntPtr directoryId, System_String8 fileName, System_IntPtr flags, System_IntPtr mode) {
+    return System_Syscall_call04(System_Syscall_Command_openat, directoryId, (System_IntPtr)fileName, flags, mode);
 }
 
-System_Size  System_Syscall_read(System_Var filePtr, const System_Var buf, System_Size count) {
-    return System_Syscall_call03(System_Syscall_Command_read, (System_IntPtr)filePtr, (System_IntPtr)buf, count);
+System_Size  System_Syscall_read(System_IntPtr fileId, const System_Var buf, System_Size count) {
+    return System_Syscall_call03(System_Syscall_Command_read, fileId, (System_IntPtr)buf, count);
 }
 
-System_Size  System_Syscall_write(System_Var filePtr, const System_Var buf, System_Size count) {
-    return System_Syscall_call03(System_Syscall_Command_write, (System_IntPtr)filePtr, (System_IntPtr)buf, count);
+System_Size  System_Syscall_write(System_IntPtr fileId, const System_Var buf, System_Size count) {
+    return System_Syscall_call03(System_Syscall_Command_write, fileId, (System_IntPtr)buf, count);
 }
 
-System_Size  System_Syscall_lseek(System_Var filePtr, System_Size offset, System_IntPtr whence) {
-    return System_Syscall_call03(System_Syscall_Command_lseek, (System_IntPtr)filePtr, offset, whence);
+System_Size  System_Syscall_lseek(System_IntPtr fileId, System_Size offset, System_IntPtr whence) {
+    return System_Syscall_call03(System_Syscall_Command_lseek, fileId, offset, whence);
 }
 
-void  System_Syscall_fsync(System_Var filePtr) {
-    (void)System_Syscall_call01(System_Syscall_Command_fsync, (System_IntPtr)filePtr);
+void  System_Syscall_fsync(System_IntPtr fileId) {
+    (void)System_Syscall_call01(System_Syscall_Command_fsync, fileId);
 }
 
-void  System_Syscall_close(System_Var filePtr) {
-    (void)System_Syscall_call01(System_Syscall_Command_close, (System_IntPtr)filePtr);
+void  System_Syscall_close(System_IntPtr fileId) {
+    (void)System_Syscall_call01(System_Syscall_Command_close, fileId);
 }
 
-void  System_Syscall_fstatat(System_Var directoryPtr, const System_String8 pathName, System_Var stat, System_IntPtr flags) {
-    (void)System_Syscall_call04(System_Syscall_Command_fstatat, (System_IntPtr)directoryPtr, (System_IntPtr)pathName, (System_IntPtr)stat, flags);
+void  System_Syscall_fstatat(System_IntPtr directoryId, const System_String8 pathName, System_Var stat, System_IntPtr flags) {
+    (void)System_Syscall_call04(System_Syscall_Command_fstatat, directoryId, (System_IntPtr)pathName, (System_IntPtr)stat, flags);
 }
 
 void System_Syscall_getcwd(System_String8 buffer, System_Size length) {
@@ -151,16 +151,16 @@ System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_I
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, -1, 0);
 }
 
-System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr page, System_IntPtr map, System_Var file, System_IntPtr offset) {
+System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr page, System_IntPtr map, System_IntPtr file, System_IntPtr offset) {
     System_Atomic_increment(&System_Syscall_mmapCount);
     System_Atomic_fence();
-    return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, (System_IntPtr)file, offset);
+    return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, file, offset);
 }
 
-System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr page, System_IntPtr map, System_Var file, System_IntPtr offset) {
+System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr page, System_IntPtr map, System_IntPtr file, System_IntPtr offset) {
     System_Atomic_increment(&System_Syscall_mmapCount);
     System_Atomic_fence();
-    return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, initialAddress, length, page, map, (System_IntPtr)file, offset);
+    return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, initialAddress, length, page, map, file, offset);
 }
 
 void  System_Syscall_munmap(System_Var address, System_Size length) {
@@ -256,15 +256,21 @@ void  System_Syscall_arch_prctl(System_IntPtr option, System_IntPtr arg1) {
 System_IntPtr  System_Syscall_fcntl(System_IntPtr fileId, System_IntPtr command) {
     return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_fcntl, fileId, command, 0);
 }
-System_IntPtr  System_Syscall_fcntl1(System_IntPtr fileId, System_IntPtr command, System_IntPtr arg1) {
-    return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_fcntl, fileId, command, arg1);
+System_IntPtr  System_Syscall_fcntl1(System_IntPtr fileId, System_IntPtr command, System_Var arg1) {
+    return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_fcntl, fileId, command, (System_IntPtr)arg1);
+}
+System_IntPtr  System_Syscall_fcntl2(System_IntPtr fileId, System_IntPtr command, System_IntPtr arg1, System_Var arg2) {
+    return (System_IntPtr)System_Syscall_call04(System_Syscall_Command_fcntl, fileId, command, arg1, (System_IntPtr)arg2);
 }
 
 System_IntPtr  System_Syscall_ioctl(System_IntPtr fileId, System_IntPtr request) {
     return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_ioctl, fileId, request, 0);
 }
-System_IntPtr  System_Syscall_ioctl1(System_IntPtr fileId, System_IntPtr request, System_IntPtr arg1) {
-    return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_ioctl, fileId, request, arg1);
+System_IntPtr  System_Syscall_ioctl1(System_IntPtr fileId, System_IntPtr request, System_Var arg1) {
+    return (System_IntPtr)System_Syscall_call03(System_Syscall_Command_ioctl, fileId, request, (System_IntPtr)arg1);
+}
+System_IntPtr  System_Syscall_ioctl2(System_IntPtr fileId, System_IntPtr request, System_IntPtr arg1, System_Var arg2) {
+    return (System_IntPtr)System_Syscall_call04(System_Syscall_Command_ioctl, fileId, request, arg1, (System_IntPtr)arg2);
 }
 
 

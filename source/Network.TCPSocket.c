@@ -59,7 +59,7 @@ void  Network_TCPSocket_init__flags(Network_TCPSocket that, System_IntPtr flags)
 
 void  Network_TCPSocket_close(Network_TCPSocket that) {
     if (!that->socketId) return;
-    System_Syscall_close((System_Var)(System_IntPtr)that->socketId);
+    System_Syscall_close((System_IntPtr)that->socketId);
     that->socketId = null;
 }
 

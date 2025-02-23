@@ -40,6 +40,7 @@
 #include "System.File.c"
 #include "System.Directory.c"
 #include "System.Console.c"
+#include "System.Terminal.c"
 
 #include "System.Path.c"
 

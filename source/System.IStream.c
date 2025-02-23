@@ -26,8 +26,8 @@ System_Size  base_System_IStream_get_Position(IStream that) { return 0; }
 void  base_System_IStream_set_Position(IStream that, Size value) { }
 
 struct System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
-    [0] = { .name = "base_System_IStream_write__string_size", .function = base_System_IStream_write__string_size, .value = null },
-    [1] = { .name = "base_System_IStream_writeEnd__arguments", .function = base_System_IStream_writeEnd__arguments, .value = null },
+    [0] = { .function = base_System_IStream_write__string_size, .value = null },
+    [1] = { .function = base_System_IStream_writeEnd__arguments, .value = null },
     [2] = { .function = base_System_IStream_sync, .value = null },
     [3] = { .function = base_System_IStream_read, .value = null },
     [4] = { .function = base_System_IStream_seek, .value = null },

@@ -26,6 +26,7 @@
 #include "System.File.h"
 #include "System.Directory.h"
 #include "System.Console.h"
+#include "System.Terminal.h"
 #include "System.Exception.h"
 #include "System.Environment.h"
 #include "System.Signal.h"

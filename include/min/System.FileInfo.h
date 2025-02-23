@@ -11,13 +11,15 @@
 
 typedef System_UInt32  System_FileInfo_Type;
 
-#define System_FileInfo_Type_Regular            0100000
-#define System_FileInfo_Type_Directory          0040000
-#define System_FileInfo_Type_CharacterDevice    0020000
-#define System_FileInfo_Type_BlockDevice        0060000
-#define System_FileInfo_Type_Pipe               0010000
-#define System_FileInfo_Type_Link               0120000
-#define System_FileInfo_Type_Socket             0140000
+enum {
+    System_FileInfo_Type_Regular          = 0100000,
+    System_FileInfo_Type_Directory        = 0040000,
+    System_FileInfo_Type_CharacterDevice  = 0020000,
+    System_FileInfo_Type_BlockDevice      = 0060000,
+    System_FileInfo_Type_Pipe             = 0010000,
+    System_FileInfo_Type_Link             = 0120000,
+    System_FileInfo_Type_Socket           = 0140000,
+};
 
 #if defined(using_System)
 #define FileInfo_Type  System_FileInfo_Type

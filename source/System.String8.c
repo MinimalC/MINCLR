@@ -42,7 +42,7 @@ System_Bool  System_Char8_isHexNumber(System_Char8 that) {
     return (that >= 0x30 && that <= 0x39) || (that >= 0x41 && that <= 0x46) || (that >= 0x61 && that <= 0x66);
 }
 System_Bool  System_Char8_isWhiteSpace(System_Char8 that) {
-    return that == 0x20 || that == 0x0c || that == 0x0a || that == 0x0d || that == 0x09 || that == 0x0b;
+    return that == 0x20 || that == 0x09;
 }
 System_Bool  System_Char8_isControl(System_Char8 that) {
     return (that >= 0x00 && that <= 0x1F) || that == 0x7F;
@@ -51,7 +51,7 @@ System_Bool  System_Char8_isPunctuation(System_Char8 that) {
     return (that >= 0x21 && that <= 0x2F) || (that >= 0x3A && that <= 0x40) || (that >= 0x5B && that <= 0x60) || (that >= 0x7B && that <= 0x7E);
 }
 System_Bool  System_Char8_isPrintable(System_Char8 that) {
-    return System_Char8_isAlphaNumeric(that) || System_Char8_isPunctuation(that);
+    return System_Char8_isWhiteSpace(that) || System_Char8_isAlphaNumeric(that) || System_Char8_isPunctuation(that);
 }
 #endif
 #if !defined(code_System_String8)

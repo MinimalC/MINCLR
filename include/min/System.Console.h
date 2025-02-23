@@ -28,6 +28,8 @@ export void  System_Console_writeLineEmpty(void);
 export void  System_Console_writeLine__string(System_String8 string);
 export void  System_Console_writeLine(System_String8 format, ...);
 export void  System_Console_write__char(System_Char8 character);
+export void  System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 fileName, const System_Size line);
+export void  System_Debug_writeLine__message(const System_String8 format, ...);
 export void  System_Debug_writeHex(System_Size length, System_Var value);
 
 #if defined(using_System)
@@ -40,6 +42,8 @@ export void  System_Debug_writeHex(System_Size length, System_Var value);
 #define Console_writeLine__string  System_Console_writeLine__string
 #define Console_writeLine  System_Console_writeLine
 #define Console_write__char  System_Console_write__char
+#define Debug_assert__String8  System_Debug_assert__String8
+#define Debug_writeLine__message  System_Debug_writeLine__message
 #define Debug_writeHex  System_Debug_writeHex
 #endif
 #endif

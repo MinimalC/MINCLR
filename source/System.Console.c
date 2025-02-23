@@ -26,19 +26,19 @@ struct System_Type System_ConsoleType = { .base = { .type = typeof(System_Type) 
 
 struct System_File  System_Console_StdIn = {
     .base = { .type = typeof(System_File) },
-    .filePtr = (System_Var)System_Syscall_StandardFile_STDIN,
+    .fileId = System_Syscall_StandardFile_STDIN,
 };
 struct System_File  System_Console_StdOut = {
     .base = { .type = typeof(System_File) },
-    .filePtr = (System_Var)System_Syscall_StandardFile_STDOUT,
+    .fileId = System_Syscall_StandardFile_STDOUT,
 };
 struct System_File  System_Console_StdErr = {
     .base = { .type = typeof(System_File) },
-    .filePtr = (System_Var)System_Syscall_StandardFile_STDERR,
+    .fileId = System_Syscall_StandardFile_STDERR,
 };
 
 void  System_Console_sync() {
-    System_Syscall_fsync((System_Var)System_Syscall_StandardFile_STDOUT);
+    System_Syscall_fsync(System_Syscall_StandardFile_STDOUT);
 }
 
 /* __attribute__((constructor)) void System_init */

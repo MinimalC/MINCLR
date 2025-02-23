@@ -127,9 +127,9 @@ typedef struct System_Memory_Header {
 
     UInt length;
 
-    Type elementType;
-
     UInt refCount;
+
+    Type elementType;
 
 } * System_Memory_Header;
 
@@ -152,7 +152,7 @@ export thread System_Var  System_Memory_ThreadVars[] = { 0, 0, 0, 0 };
 
 System_Var  System_Memory_alloc__internal_min_i_max(System_Type type, System_Size length, System_Size min, System_Size index, System_Size max) {
 
-    Size real_size = sizeof(struct System_Memory_Header) + type->size * length;
+    System_Size real_size = sizeof(struct System_Memory_Header) + type->size * length;
 
     System_Var map;
     System_VarArray mem64k;
@@ -171,7 +171,7 @@ System_Console_writeLine("System_Memory_ProcessVars({0:uint}): new length {1:uin
 #endif
     }
     System_Memory_Page mem64h = null;
-    for (Size i = 0; i < mem64k->length; ++i) {
+    for (System_Size i = 0; i < mem64k->length; ++i) {
         mem64h = (System_Memory_Page)array(mem64k->value)[i];
         if (!mem64h) {
             map = System_Syscall_mmap(max, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
@@ -179,8 +179,8 @@ System_Console_writeLine("System_Memory_ProcessVars({0:uint}): new length {1:uin
 
             mem64h = (System_Memory_Page)map;
 #if DEBUG == DEBUG_System_Memory
-            Size payload;
-            Size pageSize = System_UInt64_divRem(max - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(struct System_Object), &payload);
+            System_Size payload;
+            System_Size pageSize = System_UInt64_divRem(max - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(struct System_Object), &payload);
 #endif
             mem64h->length = max;
             array(mem64k->value)[i] = mem64h;
@@ -193,9 +193,9 @@ System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pag
         /* NOW lookup for freedom */
 
 #if DEBUG == DEBUG_System_Memory
-        Size index1 = 0;
+        System_Size index1 = 0;
 #endif
-        Var var, position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
+        System_Var var, position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
         while (position < ((System_Var)mem64h + mem64h->length)) {
             System_Memory_Header header = (System_Memory_Header)position;
 
@@ -265,7 +265,7 @@ System_Console_writeLine("System_Memory_Header({0:uint}): new typeof({1:string})
 
 System_Var  System_Memory_alloc__internal(System_Type type, System_Size length) {
 
-    Size real_size = sizeof(struct System_Memory_Header) + type->size * length;
+    System_Size real_size = sizeof(struct System_Memory_Header) + type->size * length;
 
     if (real_size <= 4194304 - sizeof(struct System_Memory_Page))
         return System_Memory_alloc__internal_min_i_max(type, length, 1024, 0, 4194304);
@@ -277,21 +277,21 @@ System_Var  System_Memory_alloc__internal(System_Type type, System_Size length) 
     return null; /* TODO */
 }
 
-Size System_Memory_debug__min_i_max(System_Size min, System_Size index, System_Size max) {
-    Size unfree = 0;
+System_Size System_Memory_debug__min_i_max(System_Size min, System_Size index, System_Size max) {
+    System_Size unfree = 0;
 
     System_VarArray mem64k;
     mem64k = System_Memory_ProcessVars[index];
     if (!mem64k) return 0;
 
     System_Memory_Page mem64h = null;
-    for (Size i = 0; i < mem64k->length; ++i) {
+    for (System_Size i = 0; i < mem64k->length; ++i) {
         mem64h = (System_Memory_Page)array(mem64k->value)[i];
         if (!mem64h) continue;
 
         /* NOW lookup for unfreed */
 
-        Size index1 = 0;
+        System_Size index1 = 0;
         Var position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
         while (position < ((System_Var)mem64h + mem64h->length)) {
             System_Memory_Header header = (System_Memory_Header)position;
@@ -330,7 +330,7 @@ Size System_Memory_debug__min_i_max(System_Size min, System_Size index, System_S
 }
 
 void System_Memory_debug(void) {
-    Size unfree = 0;
+    System_Size unfree = 0;
     unfree += System_Memory_debug__min_i_max(1024, 0, 4194304);
     unfree += System_Memory_debug__min_i_max(512, 1, 8388608);
     unfree += System_Memory_debug__min_i_max(64, 2, 0xFFFFFFFFU);
@@ -362,19 +362,19 @@ System_Var  System_Memory_allocArray(System_Type type, System_Size count) {
 	return System_Memory_alloc__internal(type, count);
 }
 
-Bool System_Memory_isAllocated(Var that) {
+System_Bool System_Memory_isAllocated(System_Var that) {
     Debug_assert(that);
 
-    static Size indexL = sizeof_array(System_Memory_ProcessVars);
+    static System_Size indexL = sizeof_array(System_Memory_ProcessVars);
 
     System_Var * vars;
     vars = System_Memory_ProcessVars;
 
-    for (Size index = 0; index < indexL; ++index) {
+    for (System_Size index = 0; index < indexL; ++index) {
         System_VarArray mem64k = vars[index];
         if (!mem64k) continue;
 
-        for (Size i = 0; i < mem64k->length; ++i) {
+        for (System_Size i = 0; i < mem64k->length; ++i) {
             System_Memory_Page mem64h = (System_Memory_Page)array(mem64k->value)[i];
             if (!mem64h) continue;
 
@@ -401,7 +401,7 @@ void System_Memory_reallocArray(System_Var ref that, System_Size count) {
 void  System_Memory_freeClass(System_Var ref thatPtr) {
 	Debug_assert(thatPtr);
     if (!thatPtr) return;
-    Var that = *thatPtr;
+    System_Var that = *thatPtr;
 	Debug_assert(that);
     if (!that) return;
 
@@ -432,7 +432,7 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
 
     /* if MultiThreading, this should be done by System_GC */
 
-    Size length = header->length;
+    System_Size length = header->length;
     System_Memory_clear(header, length);
     header->length = length;
     #if DEBUG == DEBUG_System_Memory
