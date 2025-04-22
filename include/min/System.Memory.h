@@ -16,11 +16,19 @@ enum {
 typedef unsigned System_Memory_MapFlags;
 enum {
     System_Memory_MapFlags_Shared = 1,
-    System_Memory_MapFlags_Private = 2,
-    System_Memory_MapFlags_Fixed = 0x10,
-    System_Memory_MapFlags_Anonymous = 0x20,
-    System_Memory_MapFlags_GrowsDown = 0x100,
-    System_Memory_MapFlags_Stack = 0x20000,
+    System_Memory_MapFlags_Private,
+    System_Memory_MapFlags_Fixed         = 0x10,
+    System_Memory_MapFlags_Anonymous     = 0x20,
+    System_Memory_MapFlags_GrowsDown    = 0x100,
+    System_Memory_MapFlags_Locked      = 0x2000,
+    System_Memory_MapFlags_Stack      = 0x20000,
+};
+
+typedef unsigned System_Memory_ReMapFlags;
+enum {
+    System_Memory_ReMapFlags_MayMove = 1,
+    System_Memory_ReMapFlags_Fixed,
+    System_Memory_ReMapFlags_DontUnmap = 4,
 };
 
 typedef unsigned System_Memory_ReferenceState;

@@ -213,7 +213,7 @@ typedef signed long long int  System_Int64;
 #define ULong  System_ULong
 
 #define SByte  System_SByte
-#define SShort  System_Short
+#define Short  System_Short
 #define Int  System_Int
 #define Long  System_Long
 #endif
@@ -230,6 +230,26 @@ export System_Char8  System_String8_Empty[1];
     for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof_array(VAR); ++ff(VAR,Z)) 
         ((System_Object)&VAR[ff(VAR,Z)])->type = TYPE
 #end
+
+typedef System_Char8 System_TypeCode;
+enum {
+    System_TypeCode_Null,
+    System_TypeCode_Boolean,
+    System_TypeCode_String,
+    System_TypeCode_Object,
+    System_TypeCode_Int8,
+    System_TypeCode_SInt8,
+    System_TypeCode_Int16,
+    System_TypeCode_SInt16,
+    System_TypeCode_Int32,
+    System_TypeCode_SInt32,
+    System_TypeCode_Int64,
+    System_TypeCode_SInt64,
+    System_TypeCode_DateTime,
+    System_TypeCode_Decimal,
+    System_TypeCode_Float32,
+    System_TypeCode_Float64,
+};
 
 #if defined(using_System)
 #define Char8  System_Char8

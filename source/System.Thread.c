@@ -231,7 +231,7 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
 #else /* if !defined(use_System_Thread_SIGCHILD) */
 
     System_Atomic_fence();
-    while (!System_Atomic_expect__int32((atomic System_Int32 *)&that->threadId, 0, 0)) {
+    while (!System_Int32_atomic_expect((atomic System_Int32 *)&that->threadId, 0, 0)) {
         if (dontwait) return false;
         System_Thread_yield();
         System_Atomic_fence();

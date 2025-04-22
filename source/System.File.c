@@ -60,18 +60,17 @@ System_Bool  stack_System_File_open(System_File that, System_String8 filename, S
         System_File_Permission_UserReadWrite | System_File_Permission_GroupReadWrite | System_File_Permission_EverybodyRead);
 
     System_ErrorCode error = System_Syscall_get_Error();
-    if (error || !id) { /* TODO */
+    if (error) { /* TODO */
         System_Exception exception = new_System_IOException("FileNotFound");
         exception->error = error;
         Exception_throw(exception);
         return false;
     }
 
-    that->fileId = id;
-
 /*    System_FileInfo info = new_System_FileInfo(filename);
     that->info = (System_FileInfo)System_Memory_addReference((System_Object)info); */
 
+    that->fileId = id;
     return true;
 }
 
@@ -121,10 +120,12 @@ void  base_System_File_write__string(File that, String8 string) {
 
 void  base_System_File_write__char(File that, Char8 character) {
     base_System_File_write__string_size(that, &character, 1);
+    ++that->position;
 }
 
 void  base_System_File_writeLineEmpty(File that) {
     base_System_File_write__string_size(that, "\n", 1);
+    ++that->position;
 }
 
 void  base_System_File_write(File that, String8 format, ...) {

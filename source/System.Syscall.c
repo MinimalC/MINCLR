@@ -146,25 +146,25 @@ void System_Syscall_chdir(System_String8 path) {
 atomic System_Size System_Syscall_mmapCount = 0;
 
 System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_IntPtr map) {
-    System_Atomic_increment(&System_Syscall_mmapCount);
+    System_Size_atomic_increment(&System_Syscall_mmapCount);
     System_Atomic_fence();
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, -1, 0);
 }
 
 System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr page, System_IntPtr map, System_IntPtr file, System_IntPtr offset) {
-    System_Atomic_increment(&System_Syscall_mmapCount);
+    System_Size_atomic_increment(&System_Syscall_mmapCount);
     System_Atomic_fence();
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, file, offset);
 }
 
 System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr page, System_IntPtr map, System_IntPtr file, System_IntPtr offset) {
-    System_Atomic_increment(&System_Syscall_mmapCount);
+    System_Size_atomic_increment(&System_Syscall_mmapCount);
     System_Atomic_fence();
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, initialAddress, length, page, map, file, offset);
 }
 
 void  System_Syscall_munmap(System_Var address, System_Size length) {
-    System_Atomic_decrement(&System_Syscall_mmapCount);
+    System_Size_atomic_decrement(&System_Syscall_mmapCount);
     System_Atomic_fence();
     (void)System_Syscall_call02(System_Syscall_Command_munmap, (System_IntPtr)address, length);
 }
@@ -176,6 +176,10 @@ void System_Syscall_mmap__debug(void) {
 
 void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags) {
     (void)System_Syscall_call03(System_Syscall_Command_mprotect, (System_IntPtr)address, length, flags);
+}
+
+System_Var  System_Syscall_mremap(System_Var old_address, System_Size old_length, System_Size new_length, System_IntPtr flags) {
+    (void)System_Syscall_call04(System_Syscall_Command_mremap, (System_IntPtr)old_address, (System_IntPtr)old_length, (System_IntPtr)new_length, flags);
 }
 
 

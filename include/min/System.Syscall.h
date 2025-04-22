@@ -69,6 +69,7 @@ export System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, Syste
 export void  System_Syscall_mmap__debug(void);
 export void  System_Syscall_munmap(System_Var address, System_Size length);
 export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
+export System_Var  System_Syscall_mremap(System_Var old_address, System_Size old_length, System_Size new_length, System_IntPtr flags);
 
 export void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain);
 

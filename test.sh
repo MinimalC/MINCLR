@@ -24,5 +24,5 @@ echo  "System.Path:" >> $REPORT ; $INTERP ./System.Path.test >> $REPORT 2>&1 ; e
 echo  "System.Signal:" >> $REPORT ; $INTERP ./System.Signal.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.Syscall:" >> $REPORT ; $INTERP ./System.Syscall.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.Thread:" >> $REPORT ; $INTERP ./System.Thread.test >> $REPORT 2>&1 ; echo >> $REPORT
-echo  "System.string8:" >> $REPORT ; $INTERP ./System.string8.test >> $REPORT 2>&1 ; echo >> $REPORT
+echo  "System.String8:" >> $REPORT ; $INTERP ./System.String8.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.Integers:" >> $REPORT ; $INTERP ./System.Integers.test >> $REPORT 2>&1 ; echo >> $REPORT
