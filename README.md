@@ -2,7 +2,7 @@
 
 This is currently a DEBUG version. You need t use make.awk, GCC and AMD64 Linux. I didn't try this on other compilers or on Windows.
 
-MINCLR is all about `typedef struct System_Object * System_Object;`, which doesn't work in C++, CPP, you'd get a compiler exception.
+MINCLR is all about C `typedef struct System_Object * System_Object;`, which doesn't work in C++, CPP, you'd get a compiler exception.
 
 I do want you to use `run.sh`, which is using [make.awk](//github.com/MinimalC/make.awk):
 
