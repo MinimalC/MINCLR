@@ -4,7 +4,7 @@ This is currently a DEBUG version. You need t use make.awk, GCC and AMD64 Linux.
 
 MINCLR is all about `typedef struct System_Object * System_Object;`.
 
-I do want you to use [make.awk](/github.com/HansMinC/make.awk):
+I do want you to use [make.awk](//github.com/HansMinC/make.awk):
 
 ```
 # System
