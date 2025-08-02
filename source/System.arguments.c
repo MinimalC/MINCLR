@@ -18,7 +18,7 @@ System_Size stack_System_arguments_get(arguments args, System_Var argv[System_ar
 }
 
 export System_Size stack_System_arguments_get__limit(System_arguments args, System_Var argv[], System_Size limit) {
-    Debug_assert(argv);
+    Console_assert(argv);
     /* this is expecting a Size as first argument or null */
     unsigned argc = !args ? 0 : argument(args,unsigned);
     if (argc && argc > limit) { argc = 0;

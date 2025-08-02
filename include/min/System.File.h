@@ -59,8 +59,6 @@ typedef System_fixed struct System_File {
 
     System_IntPtr fileId;
 
-    System_Size position;
-
 }  * System_File;
 
 export struct System_Type  System_FileType;
@@ -69,46 +67,25 @@ export System_Bool  System_File_exists(System_String8 name);
 export System_File  System_File_open(System_String8 name, System_File_Mode flags);
 export System_Bool  stack_System_File_open(System_File that, System_String8 name, System_File_Mode flags);
 
-typedef void  delegate(System_File_init)(System_File that);
-typedef void  delegate(System_File_write__string_size)(System_File that, System_String8 value, System_Size count);
-typedef void  delegate(System_File_writeEnd__arguments)(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
-typedef void  delegate(System_File_sync)(System_File that);
-typedef System_Size  delegate(System_File_read)(System_File that, System_String8 value, System_Size count);
-typedef System_Size  delegate(System_File_seek)(System_File that, System_SSize offset, System_origin origin);
-typedef System_IntPtr  delegate(System_File_get_Position)(System_File that);
-typedef void  delegate(System_File_set_Position)(System_File that, System_Size value);
-typedef void  delegate(System_File_close)(System_File that);
-
 export System_File  new_System_File();
-export void  base_System_File_init(System_File that);
-export void  base_System_File_free(System_File that);
-export void  base_System_File_write__string_size(System_File that, System_String8 value, System_Size count);
-export void  base_System_File_write__string(System_File that, System_String8 string);
-export void  base_System_File_write__char(System_File that, System_Char8 character);
-export void  base_System_File_writeLineEmpty(System_File that);
-export void  base_System_File_write(System_File that, System_String8 format, ...);
-export void  base_System_File_writeLine__string(System_File that, System_String8 string);
-export void  base_System_File_writeLine(System_File that, System_String8 format, ...);
-export void  base_System_File_writeEnd__arguments(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
-export void  base_System_File_sync(System_File that);
-export System_Size  base_System_File_seek(System_File that, System_SSize offset, System_origin origin);
-export System_Size  base_System_File_read(System_File that, System_String8 value, System_Size count);
-export System_Size  base_System_File_get_Position(System_File that);
-export void  base_System_File_set_Position(System_File that, System_Size value);
-export System_Size  base_System_File_get_Length(System_File that);
-export void  base_System_File_close(System_File that);
-
-#define System_File_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
-#define System_File_init(o)  ((function_System_File_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
-#define System_File_write__string_size(o,...)  ((function_System_File_write__string_size)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write__string_size))(o, __VA_ARGS__)
-#define System_File_writeEnd__arguments(o,...)  ((function_System_File_writeEnd__arguments)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_writeEnd__arguments))(o, __VA_ARGS__)
-#define System_File_sync(o)  ((function_System_File_sync)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_sync))(o)
-#define System_File_read(o,...)  ((function_System_File_read)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_read))(o, __VA_ARGS__)
-#define System_File_seek(o,...)  ((function_System_File_seek)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_seek))(o, __VA_ARGS__)
-#define System_File_get_Position(o)  ((function_System_File_get_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_get_Position))(o)
-#define System_File_set_Position(o,...)  ((function_System_File_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
-#define System_File_close(o)  ((function_System_File_close)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_File_close))(o)
-
+export void  System_File_init(System_File that);
+export void  System_File_free(System_File that);
+export void  System_File_write__string_size(System_File that, System_String8 value, System_Size count);
+export void  System_File_write__string(System_File that, System_String8 string);
+export void  System_File_write__char(System_File that, System_Char8 character);
+export void  System_File_writeLineEmpty(System_File that);
+export void  System_File_write(System_File that, System_String8 format, ...);
+export void  System_File_writeLine__string(System_File that, System_String8 string);
+export void  System_File_writeLine(System_File that, System_String8 format, ...);
+export void  System_File_writeEnd__arguments(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
+export void  System_File_set_Length(System_File that, System_Size value);
+export void  System_File_sync(System_File that);
+export System_Size  System_File_seek(System_File that, System_SSize offset, System_origin origin);
+export System_Size  System_File_read(System_File that, System_String8 value, System_Size count);
+export System_Size  System_File_get_Position(System_File that);
+export void  System_File_set_Position(System_File that, System_Size value);
+export System_Size  System_File_get_Length(System_File that);
+export void  System_File_close(System_File that);
 
 #if defined(using_System)
 #define File_Mode  System_File_Mode
@@ -138,14 +115,14 @@ export void  base_System_File_close(System_File that);
 #define File_sync  System_File_sync
 #define File_close  System_File_close
 
-#define base_File_free  base_System_File_free
-#define base_File_init  base_System_File_init
-#define base_File_read  base_System_File_read
-#define base_File_write__string_size  base_System_File_write__string_size
-#define base_File_seek  base_System_File_seek
-#define base_File_get_Position  base_System_File_get_Position
-#define base_File_set_Position  base_System_File_set_Position
-#define base_File_sync  base_System_File_sync
-#define base_File_close  base_System_File_close
+#define base_File_free  System_File_free
+#define base_File_init  System_File_init
+#define base_File_read  System_File_read
+#define base_File_write__string_size  System_File_write__string_size
+#define base_File_seek  System_File_seek
+#define base_File_get_Position  System_File_get_Position
+#define base_File_set_Position  System_File_set_Position
+#define base_File_sync  System_File_sync
+#define base_File_close  System_File_close
 #endif
 #endif

@@ -52,24 +52,60 @@ enum {
     System_Syscall_StandardFile_CurrentWorkingDirectory = -100,
 };
 
+typedef struct System_Syscall_status {
+    System_UInt64 containerId;
+    System_UInt64 iNodeId;
+    System_UInt64 hardlinks;
+    System_UInt32 mode;
+    System_UInt32 userId;
+    System_UInt32 groupId;
+    System_UInt32 __padding1;
+
+    System_UInt64 deviceId;
+    System_Int64 size;
+    System_Int64 bulkSize;
+    System_Int64 blocks;
+    struct System_TimeSpan accessTime;
+    struct System_TimeSpan modifyTime;
+    struct System_TimeSpan changeTime;
+
+    System_IntPtr __reserved[3];
+} * System_Syscall_status;
+
 export System_IntPtr  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
 export System_IntPtr  System_Syscall_openat(System_IntPtr directoryId, System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
 export System_Size  System_Syscall_read(System_IntPtr fileId, const System_Var buffer, System_Size count);
 export System_Size  System_Syscall_write(System_IntPtr fileId, const System_Var buffer, System_Size count);
 export System_Size  System_Syscall_lseek(System_IntPtr fileId, System_Size offset, System_IntPtr whence);
+export void  System_Syscall_ftruncate(System_IntPtr fileId, System_Size length);
 export void  System_Syscall_fsync(System_IntPtr fileId);
 export void  System_Syscall_close(System_IntPtr fileId);
 export void  System_Syscall_fstatat(System_IntPtr directoryId, const System_String8 pathName, System_Var stat, System_IntPtr flags);
 export void  System_Syscall_getcwd(System_String8 buffer, System_Size length);
 export void  System_Syscall_chdir(System_String8 path);
 
+typedef System_IntPtr  System_Syscall_MSync;
+enum {
+    System_Syscall_MSync_Async = 1,
+    System_Syscall_MSync_Invalidate = 2,
+    System_Syscall_MSync_Sync = 4,
+};
+
+typedef System_IntPtr  System_Syscall_MRemap;
+enum {
+    System_Syscall_MRemap_MayMove = 1,
+    System_Syscall_MRemap_Fixed = 2,
+    System_Syscall_MRemap_DontUnmap = 4,
+};
+
 export System_Var  System_Syscall_mmap(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags);
 export System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_IntPtr file, System_IntPtr offset);
-export System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_IntPtr file, System_IntPtr offset);
+export System_Var  System_Syscall_mmap__full(System_Var hint, System_Size length, System_IntPtr pageflags, System_IntPtr mapflags, System_IntPtr file, System_IntPtr offset);
 export void  System_Syscall_mmap__debug(void);
 export void  System_Syscall_munmap(System_Var address, System_Size length);
 export void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags);
 export System_Var  System_Syscall_mremap(System_Var old_address, System_Size old_length, System_Size new_length, System_IntPtr flags);
+export void  System_Syscall_msync__flags(System_Var address, System_Size length, System_IntPtr flags);
 
 export void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain);
 

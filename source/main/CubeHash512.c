@@ -27,18 +27,18 @@ int CubeHash512_main(int argc, char * argv[]) {
             }
             if (!stack_System_File_open(&file, argv[i], System_File_Mode_readOnly)) {
                 System_Console_writeLine("Can't read file {0:string}.", 1, argv[i]); 
-                base_System_File_close(&file);
+                System_File_close(&file);
                 continue;
             } 
-            System_Size fileSize = base_System_File_get_Length(&file);
+            System_Size fileSize = System_File_get_Length(&file);
             if (!fileSize) {
                 System_Console_writeLine("Empty: {0:string}", 1, argv[i]); 
-                base_System_File_close(&file);
+                System_File_close(&file);
                 continue;
             }
             String8 text = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
-            base_System_File_read(&file, text, fileSize);
-            base_System_File_close(&file);
+            System_File_read(&file, text, fileSize);
+            System_File_close(&file);
 
             CubeHash512_update(&cubeHash512, text, fileSize);
             CubeHash512_final(&cubeHash512);

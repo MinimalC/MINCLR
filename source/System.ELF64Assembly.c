@@ -48,11 +48,11 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
     if (!assembly->buffer) {
         struct System_File file; System_Stack_clearType(file, typeof(System_File));
         if (!stack_System_File_open(&file, name, System_File_Mode_readOnly)) return;
-        System_Size fileSize = base_System_File_get_Length(&file);
+        System_Size fileSize = System_File_get_Length(&file);
 
         assembly->buffer = System_Memory_allocArray(typeof(System_Char8), fileSize);
-        base_System_File_read(&file, assembly->buffer, fileSize);
-        base_System_File_close(&file);
+        System_File_read(&file, assembly->buffer, fileSize);
+        System_File_close(&file);
     }
 
     /* Read ELFAssembly_Header */
@@ -199,7 +199,7 @@ System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64A
 }
 
 System_ELF64Assembly_Symbol System_ELF64Assembly_getSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
-    Debug_assert(name);
+    Console_assert(name);
 
     for (System_Size l = 0; l < System_ELF64Assembly_loadedCount; ++l) {
         System_ELF64Assembly assembly = System_ELF64Assembly_loaded[l];
@@ -218,7 +218,7 @@ System_ELF64Assembly_Symbol System_ELF64Assembly_getSymbol(System_String8 name, 
 }
 
 System_ELF64Assembly_Symbol System_ELF64Assembly_getDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
-    Debug_assert(name);
+    Console_assert(name);
 
     for (System_Size l = 0; l < System_ELF64Assembly_loadedCount; ++l) {
         System_ELF64Assembly assembly = System_ELF64Assembly_loaded[l];

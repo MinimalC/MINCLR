@@ -174,9 +174,9 @@ Network_PollFlags  Network_TCPSocket_poll(Network_TCPSocket that, Network_PollFl
 }
 
 System_Size  Network_TCPSocket_pollAny(Network_TCPSocket that[], System_Size count, Network_PollFlags inFlags, Network_PollFlags outFlags[]) {
-    Debug_assert(that);
-    Debug_assert(outFlags);
-    if (count > 512) { Debug_assert(count <= 512); count = 512; }
+    Console_assert(that);
+    Console_assert(outFlags);
+    if (count > 512) { Console_assert(count <= 512); count = 512; }
     struct Network_PollDescriptor socketsD[512]; Stack_clear(socketsD);
     for (System_Size i = 0; i < count; ++i)
         if (!that[i] || !that[i]->socketId)

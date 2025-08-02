@@ -60,6 +60,7 @@ export System_Bool  System_String8_isNullOrEmpty(System_String8 that);
 export System_Bool  System_String8_startsWith(System_String8 that, System_String8 other);
 export System_Bool  System_String8_endsWith(System_String8 that, System_String8 other);
 export System_String8  System_String8_exchange(System_String8 ref that, System_String8 other);
+export System_UInt64  System_String8_getSipHash(System_String8 that);
 
 #define inline_System_String8_equals(chars0, chars1)  (0 == System_String8_compare(chars0, chars1))
 #define inline_System_String8_equalsSubstring(chars0, chars1, n)  (0 == System_String8_compareSubstring(chars0, chars1, n))

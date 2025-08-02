@@ -150,6 +150,7 @@ export System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type 
 #define Type_tryMethod  System_Type_tryMethod
 #define Type_isAssignableFrom  System_Type_isAssignableFrom
 #endif
+#endif
 
 #if !defined(have_System_enum)
 #define have_System_enum
@@ -161,20 +162,5 @@ export System_String8  System_enum_getName(System_Type type, System_IntPtr value
 #define enum_getName  System_enum_getName
 #define inline_enum_getName  inline_System_enum_getName
 #define inline_enum_toString  inline_System_enum_toString
-#endif
-#endif
-
-export void  System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 file, const System_Size line);
-export void  System_Debug_writeLine__message(const System_String8 message, ...);
-#if !DEBUG
-#define System_Debug_assert(expression) (void)(expression)
-#define System_Debug_writeLine(message,...) (void)(message, __VA_ARGS__)
-#else
-#define System_Debug_assert(expression)  (void)(!(expression) ? System_Debug_assert__String8((System_String8)#expression, (System_String8)__func__, (System_String8)__FILE__, (System_Size)__LINE__) : 0)
-#define System_Debug_writeLine(message,...)  (void)System_Debug_writeLine__message((System_String8)message, __VA_ARGS__)
-#endif
-#if defined(using_System)
-#define Debug_assert  System_Debug_assert
-#define Debug_writeLine  System_Debug_writeLine
 #endif
 #endif

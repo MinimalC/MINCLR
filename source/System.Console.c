@@ -55,8 +55,8 @@ void System_Console_exit(const Size code)  {
 }
 
 void  System_Console_write__string_size(String8 string, Size size) {
-    Debug_assert(string);
-    base_System_File_write__string_size(&System_Console_StdOut, string, size);
+    Console_assert(string);
+    System_File_write__string_size(&System_Console_StdOut, string, size);
 }
 
 void  System_Console_write__string(String8 string) {
@@ -68,17 +68,17 @@ void  System_Console_write__char(Char8 character) {
 }
 
 void  System_Console_write(String8 format, ...) {
-    Debug_assert(format);
+    Console_assert(format);
     arguments args;
     arguments_start(args, format);
     Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    base_System_File_writeEnd__arguments(&System_Console_StdOut, format, 0, argc, argv);
+    System_File_writeEnd__arguments(&System_Console_StdOut, format, 0, argc, argv);
 }
 
 void  System_Console_writeLineEmpty(void) {
-    base_System_File_write__string_size(&System_Console_StdOut, "\n", 1);
+    System_File_write__string_size(&System_Console_StdOut, "\n", 1);
 }
 
 void  System_Console_writeLine__string(String8 string) {
@@ -86,29 +86,97 @@ void  System_Console_writeLine__string(String8 string) {
 }
 
 void  System_Console_writeLine(String8 format, ...) {
-    Debug_assert(format);
+    Console_assert(format);
     arguments args;
     arguments_start(args, format);
     Var argv[System_arguments_Limit_VALUE];
     Size argc = stack_System_arguments_get(args, argv);
     arguments_end(args);
-    base_System_File_writeEnd__arguments(&System_Console_StdOut, format, '\n', argc, argv);
+    System_File_writeEnd__arguments(&System_Console_StdOut, format, '\n', argc, argv);
 }
 
+void System_Console_assert__string8(System_Bool expression, const System_String8 text, const System_String8 functionName, const System_String8 fileName, const System_Size line) {
+    if (expression) return;
+    Var argv[4];
+    argv[0] = (Var)text;
+    argv[1] = (Var)functionName;
+    argv[2] = (Var)fileName;
+    argv[3] = (Var)line;
+    System_File_writeEnd__arguments(&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", '\n', 4, argv);
+}
 
-#define hexdump_Columns  32
-#define hexdump_Space_VALUE  142 /* = 12 + (hexdump_Columns * 3) + hexdump_Columns + 2 */
+void System_Console_debug(const System_String8 format, ...) {
+    arguments args;
+    arguments_start(args, format);
+    Var argv[System_arguments_Limit_VALUE];
+    Size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    System_File_writeEnd__arguments(&System_Console_StdErr, format, '\0', argc, argv);
+}
 
-void System_Debug_writeHex(Size length, void  * value) {
+void System_Console_debug__string(System_String8 string) {
+    System_File_write__string(&System_Console_StdErr, string);
+}
+
+void System_Console_debug__string_size(System_String8 string, System_Size size) {
+    System_File_write__string_size(&System_Console_StdErr, string, size);
+}
+
+void System_Console_debugLine(const System_String8 format, ...) {
+    arguments args;
+    arguments_start(args, format);
+    Var argv[System_arguments_Limit_VALUE];
+    Size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    System_File_writeEnd__arguments(&System_Console_StdErr, format, '\n', argc, argv);
+}
+
+void  System_Console_debugLine__string(System_String8 string) {
+    System_Console_debugLine(string, 0);
+}
+
+void System_Console_debugLineEmpty(void) {
+    System_File_write__string_size(&System_Console_StdErr, "\n", 1);
+}
+
+void System_Console_error(const System_String8 format, ...) {
+    arguments args;
+    arguments_start(args, format);
+    Var argv[System_arguments_Limit_VALUE];
+    Size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    System_File_writeEnd__arguments(&System_Console_StdErr, format, '\0', argc, argv);
+}
+
+void System_Console_errorLine(const System_String8 format, ...) {
+    arguments args;
+    arguments_start(args, format);
+    Var argv[System_arguments_Limit_VALUE];
+    Size argc = stack_System_arguments_get(args, argv);
+    arguments_end(args);
+    System_File_writeEnd__arguments(&System_Console_StdErr, format, '\n', argc, argv);
+}
+
+void System_Console_errorLineEmpty(void) {
+    System_File_write__string_size(&System_Console_StdErr, "\n", 1);
+}
+
+void System_Console_writeHex(Size length, void  * value) {
     if (length == 0 || !value) return;
+
+    #define hexdump_Columns  32
 
     UInt8  * memory = (UInt8  *)value;
     Size i, j, l, pos, length_div_columns_rem = length % hexdump_Columns, i_div_columns_rem;
 
-
     Char8 scratch[System_UInt64_String8Capacity_base16 + 1]; System_Stack_clear(scratch);
 
+    #define hexdump_Space_VALUE  142 /* = 12 + (hexdump_Columns * 3) + hexdump_Columns + 2 */
+
     Char8 buffer[hexdump_Space_VALUE]; System_Stack_clear(buffer);
+
+    #undef hexdump_Space_VALUE
+
     buffer[0] = '0';
     buffer[1] = 'x';
 
@@ -165,27 +233,7 @@ void System_Debug_writeHex(Size length, void  * value) {
             Console_write__string(buffer);
         }
     }
-}
-
-#undef hexdump_Columns
-#undef hexdump_Space_VALUE
-
-void System_Debug_assert__String8(const System_String8 expression, const System_String8 functionName, const System_String8 fileName, const System_Size line) {
-    Var argv[4];
-    argv[0] = (Var)expression;
-    argv[1] = (Var)functionName;
-    argv[2] = (Var)fileName;
-    argv[3] = (Var)line;
-    base_System_File_writeEnd__arguments(&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", '\n', 4, argv);
-}
-
-void System_Debug_writeLine__message(const System_String8 format, ...) {
-    arguments args;
-    arguments_start(args, format);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
-    base_System_File_writeEnd__arguments(&System_Console_StdErr, format, '\n', argc, argv);
+    #undef hexdump_Columns
 }
 
 #endif

@@ -51,3 +51,5 @@
 #include "Network.TCPSocket.c"
 
 #include "System.DateTime.c"
+
+#include "System.ECQLite.c"

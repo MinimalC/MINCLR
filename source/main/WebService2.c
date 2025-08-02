@@ -99,8 +99,8 @@ struct System_Type Network_HTTPRequestType = {
 };
 
 Network_HTTPRequest HTTPRequest_parse(System_String message) {
-    Debug_assert(message);
-    Debug_assert(message->length);
+    Console_assert(message);
+    Console_assert(message->length);
 
     struct Network_HTTPRequest httpRequest; Stack_clear(httpRequest);
     System_String8 keys[64]; Stack_clear(keys);
@@ -315,13 +315,13 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
 
     response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
 
-    System_Size fileSize = base_System_File_get_Length(&file);
+    System_Size fileSize = System_File_get_Length(&file);
     if (fileSize) {
         response->buffer.length = fileSize;
         response->buffer.value = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
-        base_System_File_read(&file, response->buffer.value, fileSize);
+        System_File_read(&file, response->buffer.value, fileSize);
     }
-    base_System_File_close(&file);
+    System_File_close(&file);
 
     base_System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(fileSize));
     base_System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[mime].name);

@@ -15,6 +15,7 @@ echo -n > $REPORT
 echo  "SipHash48:" >> $REPORT ; $INTERP ./SipHash48 System.Type System_Type >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "CubeHash256:" >> $REPORT ; $INTERP ./CubeHash256 System.Type System_Type >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "CubeHash512:" >> $REPORT ; $INTERP ./CubeHash512 System.Type System_Type >> $REPORT 2>&1 ; echo >> $REPORT
+echo  "ECQLite:" >> $REPORT ; $INTERP ./ECQLite.test Database.ecql >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.Exception:" >> $REPORT ; $INTERP ./System.Exception.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.File:" >> $REPORT ; $INTERP ./System.File.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.FileInfo:" >> $REPORT ; $INTERP ./System.FileInfo.test >> $REPORT 2>&1 ; echo >> $REPORT

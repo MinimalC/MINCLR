@@ -40,48 +40,25 @@ typedef System_fixed struct System_FileInfo {
 
     System_ErrorCode error;
 
-    /* struct System_Syscall_stat */
-    
-    System_UInt64 containerId;
-    System_UInt64 iNodeId;
-    System_UInt64 hardlinks;
-    System_UInt32 mode;
-    System_UInt32 userId;
-    System_UInt32 groupId;
-    System_UInt32 __padding1;
-
-    System_UInt64 deviceId;
-    System_Int64 size;
-    System_Int64 bulkSize;
-    System_Int64 blocks;
-    struct System_TimeSpan accessTime;
-    struct System_TimeSpan modifyTime;
-    struct System_TimeSpan changeTime;
-
-    System_IntPtr __reserved[3];
+    struct System_Syscall_status status;
 
 }  * System_FileInfo;
 
 export struct System_Type  System_FileInfoType;
 
-typedef void delegate(System_FileInfo_init)(System_FileInfo that, System_String8 fileName);
-
 export System_FileInfo  new_System_FileInfo();
-export void  base_System_FileInfo_init(System_FileInfo that, System_String8 fileName);
+export void  System_FileInfo_init(System_FileInfo that, System_String8 fileName);
 
 export System_Bool System_FileInfo_isRegular(System_FileInfo that);
 export System_Bool System_FileInfo_isDirectory(System_FileInfo that);
 export System_Bool System_FileInfo_isLink(System_FileInfo that);
-
-#define System_FileInfo_init(o,...)  ((function_System_FileInfo_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o, __VA_ARGS__)
-#define System_FileInfo_free(o)  ((function_System_Object_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
 
 #if defined(using_System)
 #define FileInfo  System_FileInfo
 #define FileInfoType  System_FileInfoType
 #define new_FileInfo  new_System_FileInfo
 #define function_FileInfo_init  function_System_FileInfo_init
-#define base_FileInfo_init  base_System_FileInfo_init
+#define base_FileInfo_init  System_FileInfo_init
 #define FileInfo_init  System_FileInfo_init
 #define FileInfo_free  System_FileInfo_free
 #endif

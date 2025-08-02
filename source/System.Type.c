@@ -14,7 +14,7 @@
 /** class System_enum  **/
 
 String8 System_enum_getName(Type type, IntPtr value) {
-    Debug_assert(type);
+    Console_assert(type);
 
     System_Type_FieldInfo info;
     for (Size i = 0; i < type->fields.length; ++i) {
@@ -106,8 +106,8 @@ System_Var System_Type_getMethod(System_Type  that, System_Var fun) {
 }
 
 System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
-    Debug_assert(that);
-    Debug_assert(fun);
+    Console_assert(that);
+    Console_assert(fun);
 
     System_Type they = that;
     System_Type_FunctionInfo info;
@@ -126,8 +126,8 @@ System_Var System_Type_tryMethod(System_Type  that, System_Var fun) {
 }
 
 System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other) {
-    Debug_assert(that);
-    Debug_assert(other);
+    Console_assert(that);
+    Console_assert(other);
 
     System_Type they = that;
     System_Type_InterfaceInfo info;

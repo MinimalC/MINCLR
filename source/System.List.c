@@ -30,12 +30,12 @@ System_Size  base_System_List_get_Length(System_List that) {
 }
 
 System_Object  base_System_List_get_index(System_List that, Size index) {
-	Debug_assert(that);
+	Console_assert(that);
 	return Array_get_index(that->items, index);
 }
 
 void  base_System_List_set_index(System_List that, Size index, System_Object value) {
-	Debug_assert(that);
+	Console_assert(that);
     if (value && base_System_List_contains(that, value)) throw(new_Exception("InvalidOperationException: System_List: System_Object already added"))
     Array_set_index(that->items, index, value);
 }
@@ -54,7 +54,7 @@ System_Bool  base_System_List_contains(System_List that, System_Object object) {
 }
 
 void  base_System_List_add(System_List that, System_Object object) {
-    Debug_assert(object);
+    Console_assert(object);
 
     if (base_System_List_contains(that, object)) throw(new_Exception("InvalidOperationException: System.List: System_Object already added."))
 

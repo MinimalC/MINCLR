@@ -17,6 +17,9 @@
 #if !defined(have_System_Int64)
 #include <min/System.Integers.auto.h>
 #endif
+#if !defined(have_Crypto_SipHash48)
+#include <min/Crypto.SipHash48.h>
+#endif
 #if !defined(code_System_Char8)
 #define code_System_Char8
 /** class System_Char8  **/
@@ -64,11 +67,18 @@ struct System_Type System_String8Type = { .base = { .type = typeof(System_Type) 
 System_STRING8  System_String8_Empty = "";
 
 String8  System_String8_exchange(String8 ref that, String8 other) {
-    Debug_assert(that);
+    Console_assert(that);
     String8 old = *that;
     *that = other;
     if (old) Memory_free(old);
     return other;
+}
+
+UInt64 System_String8_getSipHash(String8 that) {
+    struct Crypto_SipHash48 sipHash48; Stack_clear(sipHash48);
+    Crypto_SipHash48_init(&sipHash48);
+    Crypto_SipHash48_update(&sipHash48, that, String8_get_Length(that));
+    return Crypto_SipHash48_final(&sipHash48);
 }
 
 SSize  System_String8_indexOf__size(String8 that, Char8 character, Size length) {
@@ -229,7 +239,7 @@ System_String8Array System_String8_split(System_String8 that, System_Char8 separ
 }
 
 System_String8  System_Char8_join(System_Char8 that, System_String8Array array) {
-    Debug_assert(array);
+    Console_assert(array);
     if (!array->length) return String8_Empty;
     Size i = 0, length = 0, position = 0;
     Size arrayL = array->length - 1;
@@ -336,7 +346,7 @@ Size  stack_System_String8_formatEnd__arguments(String8 format, Char8 suffix, Ch
 }
 
 Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suffix, Size limit, Char8 message[], Size argc, Var argv[]) {
-    Debug_assert(!argc || argv);
+    Console_assert(!argc || argv);
 
 #if DEBUG
     STRING8 WARNING = "WARNING  ";
@@ -490,9 +500,14 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                     message_length += sizeof("character") - 1;
                 }
                 else if (String8_compareSubstring(begin1, "string", sizeof("string") - 1) >= 3) {
-
-                    String8_copyToAt((String8)argv[argi], message, message_length);
-                    message_length += String8_get_Length(argv[argi]);
+                    if (!argv[argi]) {
+                        String8_copyToAt("{null}", message, message_length);
+                        message_length += sizeof("{null}") - 1;
+                    }
+                    else {
+                        String8_copyToAt((String8)argv[argi], message, message_length);
+                        message_length += String8_get_Length(argv[argi]);
+                    }
                 }
                 else if (String8_compareSubstring(begin1, "decimal", sizeof("decimal") - 1) >= 3) {
                     /* DEBUG */

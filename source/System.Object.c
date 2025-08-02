@@ -17,20 +17,20 @@
 /** class System_Object  **/
 
 Type  System_Object_get_Type(Object that) {
-    Debug_assert(that);
-    Debug_assert(that->type);
+    Console_assert(that);
+    Console_assert(that->type);
     return that->type;
 }
 
 System_Bool  System_Object_isInstanceof(System_Object that, System_Type type) {
-    Debug_assert(that);
-    Debug_assert(type);
+    Console_assert(that);
+    Console_assert(type);
     return System_Type_isAssignableFrom(System_Object_get_Type(that), type);
 }
 
 System_Object  System_Object_asInstanceof(System_Object that, System_Type type) {
-    Debug_assert(that);
-    Debug_assert(type);
+    Console_assert(that);
+    Console_assert(type);
     return System_Object_isInstanceof(that, type) ? that : null;
 }
 

@@ -17,7 +17,7 @@
 System_Exception System_Exception_current = null;
 
 void  System_Exception_throw(System_Exception that) {
-    Debug_assert(that);
+    Console_assert(that);
 
     if (System_Exception_current) 
         System_Memory_free(System_Exception_current);
@@ -39,7 +39,7 @@ void  System_Exception_throw(System_Exception that) {
 }
 
 void  System_Exception_terminate(System_Exception that) {
-    Debug_assert(that);
+    Console_assert(that);
 
 #if DEBUG
     System_Console_write__string("TERMINIERT: ");
@@ -65,8 +65,8 @@ Bool  System_Exception_catch(System_Exception * that, System_Type type) {
 }
 
 Bool  System_Exception_catch__any(System_Exception * that, System_Type type, System_Bool any) {
-    Debug_assert(that);
-    Debug_assert(type);
+    Console_assert(that);
+    Console_assert(type);
     
     if (!System_Exception_current) return false;
 

@@ -25,7 +25,7 @@ void  base_System_Array_init(System_Array that, System_Size capacity) {
 }
 
 void  base_System_Array_free(System_Array that) {
-	Debug_assert(that);
+	Console_assert(that);
 
 #if DEBUG == DEBUG_System_Object
 	System_Type type = ((System_Object)that)->type;
@@ -75,12 +75,12 @@ System_Size  base_System_Array_get_Length(System_Array that) {
 }
 
 System_Object  base_System_Array_get_index(System_Array that, Size index) {
-	Debug_assert(that);
+	Console_assert(that);
 	return array(that->value)[index];
 }
 
 void  base_System_Array_set_index(System_Array that, Size index, System_Object value) {
-	Debug_assert(that);
+	Console_assert(that);
     System_Object item = array(that->value)[index];
     if (item) Memory_free(item);
 	array(that->value)[index] = !value ? null : Memory_addReference(value);

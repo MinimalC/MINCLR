@@ -48,4 +48,6 @@
 
 #include "Network.TCPSocket.h"
 
+#include "System.ECQLite.h"
+
 #endif

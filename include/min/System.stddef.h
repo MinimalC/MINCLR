@@ -233,22 +233,22 @@ export System_Char8  System_String8_Empty[1];
 
 typedef System_Char8 System_TypeCode;
 enum {
-    System_TypeCode_Null,
-    System_TypeCode_Boolean,
-    System_TypeCode_String,
-    System_TypeCode_Object,
-    System_TypeCode_Int8,
-    System_TypeCode_SInt8,
-    System_TypeCode_Int16,
-    System_TypeCode_SInt16,
-    System_TypeCode_Int32,
-    System_TypeCode_SInt32,
-    System_TypeCode_Int64,
-    System_TypeCode_SInt64,
-    System_TypeCode_DateTime,
-    System_TypeCode_Decimal,
-    System_TypeCode_Float32,
-    System_TypeCode_Float64,
+    System_TypeCode_Null = 'n',
+    System_TypeCode_Boolean = '|',
+    System_TypeCode_String = '.',
+    System_TypeCode_Object = 'O',
+    System_TypeCode_DateTime = 'T',
+    System_TypeCode_Decimal = 'D',
+    System_TypeCode_Byte = 'b',
+    System_TypeCode_SByte = 'B',
+    System_TypeCode_UInt16 = 's',
+    System_TypeCode_Int16 = 'S',
+    System_TypeCode_UInt32 = 'i',
+    System_TypeCode_Int32 = 'I',
+    System_TypeCode_UInt64 = 'l',
+    System_TypeCode_Int64 = 'L',
+    System_TypeCode_Float32 = 'f',
+    System_TypeCode_Float64 = 'F',
 };
 
 #if defined(using_System)

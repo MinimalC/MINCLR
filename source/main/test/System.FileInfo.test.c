@@ -10,14 +10,14 @@ int System_Runtime_main(int argc, char * argv[]) {
     FileInfo fileInfo = new_FileInfo(HALLOtxt);
 
     Console_write("FileInfo.name: {0:string}", 1, fileInfo->name);
-    if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Regular)) Console_write__string(", File");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Directory)) Console_write__string(", Directory");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Link)) Console_write__string(", Link");
+    if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Regular)) Console_write__string(", File");
+    else if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Directory)) Console_write__string(", Directory");
+    else if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Link)) Console_write__string(", Link");
     else Console_write__string(" Unknown?");
 
-    Console_writeLine(" ({0:uint32:octal}), UserID: {1:uint32}, GroupID: {2:uint32}", 3, fileInfo->mode, fileInfo->userId, fileInfo->groupId);
-    Console_write("ContainerId: {0:uint:hex}, INodeId: {1:uint}, Hardlinks: {2:uint}", 3, fileInfo->containerId, fileInfo->iNodeId, fileInfo->hardlinks);
-    Console_writeLine(", deviceId: {0:uint:hex}, size: {1:uint}, BulkSize: {2:uint}, Blocks: {3:uint} ", 4, fileInfo->deviceId, fileInfo->size, fileInfo->bulkSize, fileInfo->blocks);
+    Console_writeLine(" ({0:uint32:octal}), UserID: {1:uint32}, GroupID: {2:uint32}", 3, fileInfo->status.mode, fileInfo->status.userId, fileInfo->status.groupId);
+    Console_write("ContainerId: {0:uint:hex}, INodeId: {1:uint}, Hardlinks: {2:uint}", 3, fileInfo->status.containerId, fileInfo->status.iNodeId, fileInfo->status.hardlinks);
+    Console_writeLine(", deviceId: {0:uint:hex}, size: {1:uint}, BulkSize: {2:uint}, Blocks: {3:uint} ", 4, fileInfo->status.deviceId, fileInfo->status.size, fileInfo->status.bulkSize, fileInfo->status.blocks);
 
 	/* Test02: Free the FileInfo */
     Memory_free(fileInfo);
@@ -26,14 +26,14 @@ int System_Runtime_main(int argc, char * argv[]) {
     fileInfo = new_FileInfo(".");
 
     Console_write("FileInfo.name: {0:string}", 1, fileInfo->name);
-    if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Regular)) Console_write__string(", File");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Directory)) Console_write__string(", Directory");
-    else if (enum_hasFlag(fileInfo->mode, FileInfo_Type_Link)) Console_write__string(", Link");
+    if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Regular)) Console_write__string(", File");
+    else if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Directory)) Console_write__string(", Directory");
+    else if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Link)) Console_write__string(", Link");
     else Console_write__string(" Unknown?");
 
-    Console_writeLine(" ({0:uint32:octal}), UserID: {1:uint32}, GroupID: {2:uint32}", 3, fileInfo->mode, fileInfo->userId, fileInfo->groupId);
-    Console_write("ContainerId: {0:uint:hex}, INodeId: {1:uint}, Hardlinks: {2:uint}", 3, fileInfo->containerId, fileInfo->iNodeId, fileInfo->hardlinks);
-    Console_writeLine(", deviceId: {0:uint:hex}, size: {1:uint}, BulkSize: {2:uint}, Blocks: {3:uint} ", 4, fileInfo->deviceId, fileInfo->size, fileInfo->bulkSize, fileInfo->blocks);
+    Console_writeLine(" ({0:uint32:octal}), UserID: {1:uint32}, GroupID: {2:uint32}", 3, fileInfo->status.mode, fileInfo->status.userId, fileInfo->status.groupId);
+    Console_write("ContainerId: {0:uint:hex}, INodeId: {1:uint}, Hardlinks: {2:uint}", 3, fileInfo->status.containerId, fileInfo->status.iNodeId, fileInfo->status.hardlinks);
+    Console_writeLine(", deviceId: {0:uint:hex}, size: {1:uint}, BulkSize: {2:uint}, Blocks: {3:uint} ", 4, fileInfo->status.deviceId, fileInfo->status.size, fileInfo->status.bulkSize, fileInfo->status.blocks);
 
 	/* Test02: Free the FileInfo */
     Memory_free(fileInfo);

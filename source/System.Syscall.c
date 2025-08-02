@@ -122,6 +122,10 @@ System_Size  System_Syscall_lseek(System_IntPtr fileId, System_Size offset, Syst
     return System_Syscall_call03(System_Syscall_Command_lseek, fileId, offset, whence);
 }
 
+void  System_Syscall_ftruncate(System_IntPtr fileId, System_Size length) {
+    (void)System_Syscall_call02(System_Syscall_Command_ftruncate, fileId, length);
+}
+
 void  System_Syscall_fsync(System_IntPtr fileId) {
     (void)System_Syscall_call01(System_Syscall_Command_fsync, fileId);
 }
@@ -157,10 +161,10 @@ System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr page, Sy
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, file, offset);
 }
 
-System_Var  System_Syscall_mmap__full(System_IntPtr initialAddress, System_Size length, System_IntPtr page, System_IntPtr map, System_IntPtr file, System_IntPtr offset) {
+System_Var  System_Syscall_mmap__full(System_Var hint, System_Size length, System_IntPtr page, System_IntPtr map, System_IntPtr file, System_IntPtr offset) {
     System_Size_atomic_increment(&System_Syscall_mmapCount);
     System_Atomic_fence();
-    return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, initialAddress, length, page, map, file, offset);
+    return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, (System_IntPtr)hint, length, page, map, file, offset);
 }
 
 void  System_Syscall_munmap(System_Var address, System_Size length) {
@@ -179,7 +183,11 @@ void  System_Syscall_mprotect(System_Var address, System_Size length, System_Int
 }
 
 System_Var  System_Syscall_mremap(System_Var old_address, System_Size old_length, System_Size new_length, System_IntPtr flags) {
-    (void)System_Syscall_call04(System_Syscall_Command_mremap, (System_IntPtr)old_address, (System_IntPtr)old_length, (System_IntPtr)new_length, flags);
+    return (System_Var)System_Syscall_call04(System_Syscall_Command_mremap, (System_IntPtr)old_address, (System_IntPtr)old_length, (System_IntPtr)new_length, flags);
+}
+
+void  System_Syscall_msync__flags(System_Var address, System_Size length, System_IntPtr flags) {
+    (void)System_Syscall_call03(System_Syscall_Command_msync, (System_IntPtr)address, length, flags);
 }
 
 

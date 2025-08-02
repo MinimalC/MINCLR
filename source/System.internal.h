@@ -13,6 +13,7 @@
 #define DEBUG_System_Syscall_mmap 128
 #define DEBUG_System_ELFAssembly 256
 #define DEBUG_System_Thread 512
+#define DEBUG_System_ECQLite 1024
 
 #if defined(NDEBUG)
 #undef NDEBUG

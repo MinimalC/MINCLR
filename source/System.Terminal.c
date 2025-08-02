@@ -73,66 +73,66 @@ System_ErrorCode System_Terminal_setInput(System_File that, System_String8 strin
 }
 
 void System_Terminal_reset(System_File that) {
-    base_System_File_write__string(that, "\ec");
+    System_File_write__string(that, "\ec");
 }
 
 void System_Terminal_saveCursor(System_File that) {
-    base_System_File_write__string(that, "\e7");
+    System_File_write__string(that, "\e7");
 }
 
 void System_Terminal_restoreCursor(System_File that) {
-    base_System_File_write__string(that, "\e8");
+    System_File_write__string(that, "\e8");
 }
 
 void System_Terminal_insertBlankChars(System_File that, System_Size n) {
-    base_System_File_write(that, "\e[{0:uint}@", 1, n);
+    System_File_write(that, "\e[{0:uint}@", 1, n);
 }
 
 void System_Terminal_insertBlankRows(System_File that, System_Size n) {
-    base_System_File_write(that, "\e[{0:uint}L", 1, n);
+    System_File_write(that, "\e[{0:uint}L", 1, n);
 }
 
 void System_Terminal_moveUp(System_File that, System_Size n) {
-    base_System_File_write(that, "\e[{0:uint}A", 1, n);
+    System_File_write(that, "\e[{0:uint}A", 1, n);
 }
 
 void System_Terminal_moveDown(System_File that, System_Size n) {
-    base_System_File_write(that, "\e[{0:uint}B", 1, n);
+    System_File_write(that, "\e[{0:uint}B", 1, n);
 }
 
 void System_Terminal_moveRight(System_File that, System_Size n) {
-    base_System_File_write(that, "\e[{0:uint}C", 1, n);
+    System_File_write(that, "\e[{0:uint}C", 1, n);
 }
 
 void System_Terminal_moveLeft(System_File that, System_Size n) {
-    base_System_File_write(that, "\e[{0:uint}D", 1, n);
+    System_File_write(that, "\e[{0:uint}D", 1, n);
 }
 
 void System_Terminal_move(System_File that, System_Size row, System_Size column) {
-    base_System_File_write(that, "\e[{0:uint};{1:uint}H", 2, row, column);
+    System_File_write(that, "\e[{0:uint};{1:uint}H", 2, row, column);
 }
 
 void System_Terminal_deleteRows(System_File that, System_Size n) {
-    base_System_File_write(that, "\e[{0:uint}M", 1, n);
+    System_File_write(that, "\e[{0:uint}M", 1, n);
 }
 
 void System_Terminal_deleteColumns(System_File that, System_Size n) {
-    base_System_File_write(that, "\e[{0:uint}P", 1, n);
+    System_File_write(that, "\e[{0:uint}P", 1, n);
 }
 
 void System_Terminal_eraseColumns(System_File that, System_Size n) {
-    base_System_File_write(that, "\e[{0:uint}X", 1, n);
+    System_File_write(that, "\e[{0:uint}X", 1, n);
 }
 
 void System_Terminal_version(System_File that) {
-    base_System_File_write__string(that, "\e[c");
+    System_File_write__string(that, "\e[c");
 }
 
 void System_Terminal_status(System_File that) {
-    base_System_File_write__string(that, "\e[5n");
+    System_File_write__string(that, "\e[5n");
 }
 
 void System_Terminal_getCursorPosition(System_File that) {
-    base_System_File_write__string(that, "\e[6n");
+    System_File_write__string(that, "\e[6n");
 }
 

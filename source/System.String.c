@@ -17,7 +17,7 @@
 /** class System_String */
 
 void  System_String_free(System_String that) {
-    Debug_assert(that);
+    Console_assert(that);
 	if (that->value) System_Memory_free(that->value);
 }
 

@@ -31,7 +31,7 @@ int Shell1_main(int argc, char * argv[]) {
     Char8 text[4096]; Stack_clear(text);
 
     while (true) {
-        length = base_System_File_read(&System_Console_StdIn, input, 4096);
+        length = System_File_read(&System_Console_StdIn, input, 4096);
 
         for (n = 0; n < length; ++n) {
 
@@ -99,7 +99,7 @@ int Shell1_main(int argc, char * argv[]) {
                 }
             }
 
-            System_Debug_writeHex(length - n, input + n);
+            System_Console_writeHex(length - n, input + n);
             break;
         }
 
