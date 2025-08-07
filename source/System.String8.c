@@ -169,12 +169,75 @@ String8  System_String8_copyOfSubstring(String8 that, Size offset, Size count) {
     return dest;
 }
 
-String8  System_String8_concat(String8 that, String8 other) {
+String8  System_String8_concat(String8 that, ...) {
+    Arguments args;
+    Arguments_start(args, that);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
+    return System_String8_concat__arguments(that, argc, (System_String8 *)argv);
+}
+
+String8  System_String8_concat1(String8 that, String8 other) {
     Size length0 = System_String8_get_Length(that);
     Size length1 = System_String8_get_Length(other);
     String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), length0 + length1 + 1);
     String8_copyTo(that, dest);
     String8_copyToAt(other, dest, length0);
+    return dest;
+}
+
+String8  System_String8_concat2(String8 that, String8 other0, String8 other1) {
+    Size length0 = System_String8_get_Length(that);
+    Size length1 = System_String8_get_Length(other0);
+    Size length2 = System_String8_get_Length(other1);
+    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), length0 + length1 + length2 + 1);
+    String8_copyTo(that, dest);
+    String8_copyToAt(other0, dest, length0);
+    String8_copyToAt(other1, dest, length0 + length1);
+    return dest;
+}
+
+String8  System_String8_concat3(String8 that, String8 other0, String8 other1, String8 other2) {
+    Size length0 = System_String8_get_Length(that);
+    Size length1 = System_String8_get_Length(other0);
+    Size length2 = System_String8_get_Length(other1);
+    Size length3 = System_String8_get_Length(other2);
+    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), length0 + length1 + length2 + length3 + 1);
+    String8_copyTo(that, dest);
+    String8_copyToAt(other0, dest, length0);
+    String8_copyToAt(other1, dest, length0 + length1);
+    String8_copyToAt(other2, dest, length0 + length1 + length2);
+    return dest;
+}
+
+String8  System_String8_concat4(String8 that, String8 other0, String8 other1, String8 other2, String8 other3) {
+    Size length0 = System_String8_get_Length(that);
+    Size length1 = System_String8_get_Length(other0);
+    Size length2 = System_String8_get_Length(other1);
+    Size length3 = System_String8_get_Length(other2);
+    Size length4 = System_String8_get_Length(other3);
+    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), length0 + length1 + length2 + length3 + length4 + 1);
+    String8_copyTo(that, dest);
+    String8_copyToAt(other0, dest, length0);
+    String8_copyToAt(other1, dest, length0 + length1);
+    String8_copyToAt(other2, dest, length0 + length1 + length2);
+    String8_copyToAt(other2, dest, length0 + length1 + length2 + length3);
+    return dest;
+}
+
+String8  System_String8_concat__arguments(String8 that, Size argc, String8 argv[]) {
+    Size sizes[System_Arguments_Limit + 2]; Stack_clear(sizes);
+    Size length = sizes[0] = System_String8_get_Length(that);
+    for (Size c = 0; c < argc; ++c)
+        length += sizes[c + 1] = System_String8_get_Length(argv[c]);
+    String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(that, dest);
+    Size position = sizes[0];
+    for (Size c = 0; c < argc; ++c) {
+        System_String8_copyTo(argv[c], dest + position);
+        position += sizes[c + 1];
+    }
     return dest;
 }
 
@@ -266,11 +329,11 @@ System_String8  System_Char8_join(System_Char8 that, System_String8Array array) 
 }
 
 String8  System_String8_format(String8 format, ...) {
-    arguments args;
-    arguments_start(args, format);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, format);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     return System_String8_format__arguments(format, argc, argv);
 }
 
@@ -279,11 +342,11 @@ String8  System_String8_format__arguments(String8 format, Size argc, Var argv[])
 }
 
 String8  System_String8_formatLine(String8 format, ...) {
-    arguments args;
-    arguments_start(args, format);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, format);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     return System_String8_formatLine__arguments(format, argc, argv);
 }
 
@@ -292,11 +355,11 @@ String8  System_String8_formatLine__arguments(String8 format, Size argc, Var arg
 }
 
 String8  System_String8_formatEnd(String8 format, Char8 suffix, ...) {
-    arguments args;
-    arguments_start(args, suffix);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, suffix);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     return System_String8_formatEnd__arguments(format, suffix, argc, argv);
 }
 
@@ -307,11 +370,11 @@ String8  System_String8_formatEnd__arguments(String8 format, Char8 suffix, Size 
 }
 
 Size  stack_System_String8_format(String8 format, Char8 message[System_String8_formatLimit_VALUE], ...) {
-    arguments args;
-    arguments_start(args, message);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, message);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     return stack_System_String8_formatEnd__arguments(format, 0, message, argc, argv);
 }
 
@@ -320,11 +383,11 @@ Size  stack_System_String8_format__arguments(String8 format, Char8 message[Syste
 }
 
 Size  stack_System_String8_formatLine(String8 format, Char8 message[System_String8_formatLimit_VALUE], ...) {
-    arguments args;
-    arguments_start(args, message);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, message);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     return stack_System_String8_formatEnd__arguments(format, '\n', message, argc, argv);
 }
 
@@ -333,11 +396,11 @@ Size  stack_System_String8_formatLine__arguments(String8 format, Char8 message[S
 }
 
 Size  stack_System_String8_formatEnd(String8 format, Char8 suffix, Char8 message[System_String8_formatLimit_VALUE], ...) {
-    arguments args;
-    arguments_start(args, message);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, message);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     return stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);
 }
 
@@ -357,7 +420,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
     // just don't write everything else
 
     Size format_length = String8_get_Length(format);
-    if (format_length > (limit - 5)) { 
+    if (format_length > limit - 5) { 
         format_length = limit - 5;
 #if DEBUG
         WARNING[7] = '1';
@@ -505,8 +568,21 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                         message_length += sizeof("{null}") - 1;
                     }
                     else {
-                        String8_copyToAt((String8)argv[argi], message, message_length);
-                        message_length += String8_get_Length(argv[argi]);
+                        System_Size string_length = String8_get_Length((String8)argv[argi]);
+                        if (string_length > limit - 5) { 
+                            string_length = limit - 5;
+#if DEBUG
+                            WARNING[7] = '5';
+                            System_Console_write__string(WARNING);
+#endif
+                            string_length = limit - message_length - 5;
+                            String8_copySubstringToAt((String8)argv[argi], string_length, message, message_length);
+                            message_length += string_length;
+                        }
+                        else {
+                            String8_copyToAt((String8)argv[argi], message, message_length);
+                            message_length += string_length;
+                        }
                     }
                 }
                 else if (String8_compareSubstring(begin1, "decimal", sizeof("decimal") - 1) >= 3) {
@@ -530,7 +606,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                     if (!argsize) argsize = System_Size_Bits;
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
 #if DEBUG == DEBUG_System_String8_format
-                        WARNING[7] = '5';
+                        WARNING[7] = '6';
                         System_Console_write__string(WARNING);
 #endif
                         argsize = System_Size_Bits;
@@ -630,7 +706,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                     if (!argsize) argsize = System_Size_Bits;
                     else if (argsize != 8 && argsize != 16 && argsize != 32 && argsize != 64) {
 #if DEBUG == DEBUG_System_String8_format
-                        WARNING[7] = '6';
+                        WARNING[7] = '7';
                         System_Console_write__string(WARNING);
 #endif
                         argsize = System_Size_Bits;
@@ -726,7 +802,7 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
                 }
                 else {
 #if DEBUG == DEBUG_System_String8_format
-                    WARNING[7] = '7';
+                    WARNING[7] = '8';
                     System_Console_write__string(WARNING);
 #endif
                 }

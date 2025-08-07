@@ -42,6 +42,9 @@ export System_DateTime System_DateTime_now();
 export System_String8 System_DateTime_toString(System_DateTime that);
 
 #if defined(using_System)
-
+#define DateTime  System_DateTime
+#define DateTimeType  System_DateTimeType
+#define DateTime_now  System_DateTime_now
+#define DateTime_toString  System_DateTime_toString
 #endif
 #endif

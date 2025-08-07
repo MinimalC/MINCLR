@@ -97,25 +97,13 @@ void System_Runtime_start(System_Var  * stack) {
     }
     #endif
 
-    String8 keys[256]; System_Stack_clear(keys);
-    String8 values[256]; System_Stack_clear(values);
-    struct System_String8Dictionary dictionary = {
-        .base = { .type = typeof(System_String8Dictionary), },
-        .key = &keys, .value = &values, .capacity = 256, .length = 0,
-    };
-    if (interp) {
-        System_Environment_Arguments = &dictionary;
-        for (System_Size i = 0; i < envc; ++i) {
-            String8 key = envv[i];
-            SSize sign = System_String8_indexOf(key, '=');
-            if (sign > -1) *(key + sign) = '\0';
-            String8 value = key + sign + 1;
-            base_System_String8Dictionary_add(&dictionary, key, value);
-            #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
-            System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}: {2:string}", 3, i, key, value);
-            #endif
-        }
-    }
+    System_Environment_Arguments_Count = envc;
+    System_Environment_Arguments = envv;
+    #if DEBUG == DEBUG_System_Console_Environment_Arguments || DEBUG == DEBUG_System_ELFAssembly
+    if (interp)
+    for (System_Size i = 0; i < envc; ++i)
+        System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}", 2, i, envv[i]);
+    #endif
     
     System_Environment_AuxValues_Count = auxc;
     System_Environment_AuxValues = auxv;
@@ -145,15 +133,15 @@ void System_Runtime_start(System_Var  * stack) {
         System_String8 fileName = original_fileName;
         System_Size * symbol1_value = null;
         System_ELF64Assembly assembly1 = null;
-        System_ELF64Assembly_Symbol symbol1 = System_ELF64Assembly_getSymbol(fileName, &assembly1);
+        System_ELF64Assembly_Symbol symbol1 = System_ELF64Assembly_getGlobalSymbol(fileName, &assembly1);
         if (symbol1) {
             symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
             entry = (function_System_Runtime_main)(symbol1_value);
             entryName = (System_String8)System_Memory_addReference((System_Var)fileName);
         }
         if (!symbol1) {
-            fileName = System_String8_concat(original_fileName, "_main");
-            symbol1 = System_ELF64Assembly_getSymbol(fileName, &assembly1);
+            fileName = System_String8_concat1(original_fileName, "_main");
+            symbol1 = System_ELF64Assembly_getGlobalSymbol(fileName, &assembly1);
             if (symbol1) {
                 symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
                 entry = (function_System_Runtime_main)(symbol1_value);
@@ -161,8 +149,8 @@ void System_Runtime_start(System_Var  * stack) {
             }
         }
         if (!symbol1) {
-            fileName = System_String8_exchange(&fileName, System_String8_concat("main_", original_fileName));
-            symbol1 = System_ELF64Assembly_getSymbol(fileName, &assembly1);
+            fileName = System_String8_exchange(&fileName, System_String8_concat1("main_", original_fileName));
+            symbol1 = System_ELF64Assembly_getGlobalSymbol(fileName, &assembly1);
             if (symbol1) {
                 symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
                 entry = (function_System_Runtime_main)(symbol1_value);

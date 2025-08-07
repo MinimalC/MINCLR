@@ -36,8 +36,6 @@ enum {
 typedef System_fixed struct System_FileInfo {
     struct System_Object base;
 
-    System_String8 name;
-
     System_ErrorCode error;
 
     struct System_Syscall_status status;
@@ -48,6 +46,7 @@ export struct System_Type  System_FileInfoType;
 
 export System_FileInfo  new_System_FileInfo();
 export void  System_FileInfo_init(System_FileInfo that, System_String8 fileName);
+export void  System_FileInfo_init__fileId(System_FileInfo that, System_IntPtr fileId);
 
 export System_Bool System_FileInfo_isRegular(System_FileInfo that);
 export System_Bool System_FileInfo_isDirectory(System_FileInfo that);
@@ -60,6 +59,8 @@ export System_Bool System_FileInfo_isLink(System_FileInfo that);
 #define function_FileInfo_init  function_System_FileInfo_init
 #define base_FileInfo_init  System_FileInfo_init
 #define FileInfo_init  System_FileInfo_init
-#define FileInfo_free  System_FileInfo_free
+#define FileInfo_isRegular  System_FileInfo_isRegular
+#define FileInfo_isDirectory  System_FileInfo_isDirectory
+#define FileInfo_isLink  System_FileInfo_isLink
 #endif
 #endif

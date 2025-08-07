@@ -335,32 +335,62 @@ int System_Runtime_main(int argc, char  * argv[]) {
 #else
     System_ELF64Assembly_read__print(assembly, name, false);
 #endif
-    System_ELF64Assembly_link(assembly);
+    System_ELF64Assembly_link__globally(assembly, true);
 
     System_ELF64Assembly assembly1;
     System_ELF64Assembly_Symbol symbol1;
     System_Size * symbol1_value;
 
-    symbol1 = System_ELF64Assembly_getSymbol("System_ELF64Assembly_loadedCount", &assembly1);
+    symbol1 = System_ELF64Assembly_getGlobalSymbol("System_Console_Arguments_Count", &assembly1);
+    if (symbol1) {
+        symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+        *symbol1_value = System_Console_Arguments_Count;
+    }
+    symbol1 = System_ELF64Assembly_getGlobalSymbol("System_Console_Arguments", &assembly1);
+    if (symbol1) {
+        symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+        for (System_Size i = 0; i < System_Console_Arguments_Count; ++i, ++symbol1_value)
+            *symbol1_value = (System_Size)System_Console_Arguments;
+    }
+
+    symbol1 = System_ELF64Assembly_getGlobalSymbol("System_Environment_Arguments_Count", &assembly1);
+    if (symbol1) {
+        symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+        *symbol1_value = System_Environment_Arguments_Count;
+    }
+    symbol1 = System_ELF64Assembly_getGlobalSymbol("System_Environment_Arguments", &assembly1);
+    if (symbol1) {
+        symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+        for (System_Size i = 0; i < System_Environment_Arguments_Count; ++i, ++symbol1_value)
+            *symbol1_value = (System_Size)System_Environment_Arguments;
+    }
+
+    symbol1 = System_ELF64Assembly_getGlobalSymbol("System_ELF64Assembly_loadedCount", &assembly1);
     if (symbol1) {
         symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
         *symbol1_value = System_ELF64Assembly_loadedCount;
     }
-
-    symbol1 = System_ELF64Assembly_getSymbol("System_ELF64Assembly_loaded", &assembly1);
+    symbol1 = System_ELF64Assembly_getGlobalSymbol("System_ELF64Assembly_loaded", &assembly1);
     if (symbol1) {
         symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
         for (System_Size i = 0; i < System_ELF64Assembly_loadedCount; ++i, ++symbol1_value)
             *symbol1_value = (System_Size)System_ELF64Assembly_loaded[i];
     }
 
-    /*extern System_Var  System_Memory_ProcessVars[];
-    symbol1 = System_ELF64Assembly_getSymbol("System_Memory_ProcessVars", &assembly1);
+    // extern System_SSize System_Syscall_mmapCount;
+    symbol1 = System_ELF64Assembly_getGlobalSymbol("System_Syscall_mmapCount", &assembly1);
     if (symbol1) {
         symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
-        for (System_Size i = 0; i < 4; ++i, ++symbol1_value)    TODO: sizeof_array(System_Memory_ProcessVars)
+        *symbol1_value = 0; // System_Syscall_mmapCount;
+    }
+
+    /* extern System_Var  System_Memory_ProcessVars[];
+    symbol1 = System_ELF64Assembly_getGlobalSymbol("System_Memory_ProcessVars", &assembly1);
+    if (symbol1) {
+        symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+        for (System_Size i = 0; i < 4; ++i, ++symbol1_value)   // TODO: sizeof_array(System_Memory_ProcessVars)
             *symbol1_value = (System_Size)System_Memory_ProcessVars[i];
-    }*/
+    } */
 
     System_Var entry = assembly->link + assembly->header->entryPoint;
     // System_Var entry = (System_Var)System_Environment_AuxValues[System_Environment_AuxType_ENTRY];

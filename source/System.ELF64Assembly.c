@@ -29,17 +29,29 @@
 #define ROUND(X,ALIGN)  (((X) + (ALIGN - 1)) & ~(ALIGN - 1))
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
 
+System_ELF64Assembly  new_System_ELF64Assembly() {
+    return (System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly));
+}
+
+void System_ELF64Assembly_free(System_ELF64Assembly that) {
+    if (that->link) {
+        System_Syscall_munmap(that->link, that->loadSize);
+        that->link = null;
+    }
+    if (that->name) Memory_free(that->name);
+    if (that->buffer) Memory_free(that->buffer);
+}
+
+struct System_Type_FunctionInfo  System_ELF64AssemblyTypeFunctions[] = {
+    { .function = base_System_Object_free, .value = System_ELF64Assembly_free },
+};
+
 struct System_Type System_ELF64AssemblyType = { .base = { .type = typeof(System_Type), }, 
     .name = "ELF64Assembly", 
     .size = sizeof(struct System_ELF64Assembly), 
     .baseType = typeof(System_Object),
+    .functions = { .length = sizeof_array(System_ELF64AssemblyTypeFunctions), .value = &System_ELF64AssemblyTypeFunctions },
 };
-
-System_ELF64Assembly  new_System_ELF64Assembly() {
-    System_ELF64Assembly that = (System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly));
-    //base_System_ELF64Assembly_init(that);
-    return that;
-}
 
 void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print) {
 
@@ -198,7 +210,7 @@ System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64A
     return null;
 }
 
-System_ELF64Assembly_Symbol System_ELF64Assembly_getSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
+System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
     Console_assert(name);
 
     for (System_Size l = 0; l < System_ELF64Assembly_loadedCount; ++l) {
@@ -217,7 +229,7 @@ System_ELF64Assembly_Symbol System_ELF64Assembly_getSymbol(System_String8 name, 
     return null;
 }
 
-System_ELF64Assembly_Symbol System_ELF64Assembly_getDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
+System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
     Console_assert(name);
 
     for (System_Size l = 0; l < System_ELF64Assembly_loadedCount; ++l) {
@@ -236,7 +248,35 @@ System_ELF64Assembly_Symbol System_ELF64Assembly_getDynamicSymbol(System_String8
     return null;
 }
 
+System_ELF64Assembly_Symbol System_ELF64Assembly_getSymbol(System_ELF64Assembly assembly, System_String8 name) {
+    Console_assert(name);
+
+    for (System_Size i = 0; i < assembly->symbolsCount; ++i) {
+        System_ELF64Assembly_Symbol symbol = assembly->symbols + i;
+        if (!symbol->sectionIndex) continue;
+        if (System_String8_equals(assembly->symbolStrings + symbol->name, name))
+            return symbol;
+    }
+    return null;
+}
+
+System_ELF64Assembly_Symbol System_ELF64Assembly_getDynamicSymbol(System_ELF64Assembly assembly, System_String8 name) {
+    Console_assert(name);
+
+    for (System_Size i = 0; i < assembly->dynamicSymbolsCount; ++i) {
+        System_ELF64Assembly_Symbol symbol = assembly->dynamicSymbols + i;
+        if (!symbol->sectionIndex) continue;
+        if (System_String8_equals(assembly->dynamicStrings + symbol->name, name))
+            return symbol;
+    }
+    return null;
+}
+
 void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
+    System_ELF64Assembly_link__globally(assembly, false);
+}
+
+void System_ELF64Assembly_link__globally(System_ELF64Assembly assembly, System_Bool globally) {
 
     if (!assembly->name) return; // throw
 
@@ -257,41 +297,41 @@ void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
 #else
             System_ELF64Assembly_read__print(required, assembly->needed[i], false);
 #endif
-            System_ELF64Assembly_link(required);
+            System_ELF64Assembly_link__globally(required, globally);
         }
     }
 
-    System_Size load_size = 0;
     for (System_Size i = 0; i < 32 && i < assembly->header->programHeaderCount; ++i) {
         System_ELF64Assembly_ProgramHeader program = (System_ELF64Assembly_ProgramHeader)((System_Var)assembly->programs + (i * assembly->header->programHeaderSize));
         if (program->type == System_ELFAssembly_ProgramType_Loadable) {
-            if (load_size < program->virtualAddress + program->memorySize) {
-                load_size = program->virtualAddress + program->memorySize; 
+            if (assembly->loadSize < program->virtualAddress + program->memorySize) {
+                assembly->loadSize = program->virtualAddress + program->memorySize; 
 #if DEBUG == DEBUG_System_ELFAssembly
-                System_Console_writeLine("Loadable virtualAddress: {1:uint:hex} + memorySize: {2:uint:hex} = load_size: {0:uint:hex}", 3, load_size, program->virtualAddress, program->memorySize);
+                System_Console_writeLine("Loadable ProgramHeader virtualAddress: {1:uint:hex} + memorySize: {2:uint:hex} = loadSize: {0:uint:hex}", 3, assembly->loadSize, program->virtualAddress, program->memorySize);
 #endif
             }
         }
     }
-    /* for (System_Size i = 0; i < assembly->header->sectionHeaderCount; ++i) {
+    for (System_Size i = 0; i < assembly->header->sectionHeaderCount; ++i) {
         System_ELF64Assembly_SectionHeader section = (System_ELF64Assembly_SectionHeader)((System_Var)assembly->sections + (i * assembly->header->sectionHeaderSize));
 
-        if (System_String8_equals(assembly->sectionsStrings + section->name, ".bss")) {
-            if (load_size < section->virtualAddress + section->size) {
-                load_size = section->virtualAddress + section->size; 
+        // if (section->flags & System_ELFAssembly_SectionFlags_Alloc) {
+        if (section->type == System_ELFAssembly_SectionType_NOBITS) {
+            if (assembly->loadSize < section->virtualAddress + section->size) {
+                assembly->loadSize = section->virtualAddress + section->size; 
 #if DEBUG == DEBUG_System_ELFAssembly
-                System_Console_writeLine(".bss virtualAddress: {1:uint:hex} + memorySize: {2:uint:hex} = load_size: {0:uint:hex}", 3, load_size, section->virtualAddress, section->size);
+                System_Console_writeLine("Loadable SectionHeader virtualAddress: {1:uint:hex} + memorySize: {2:uint:hex} = loadSize: {0:uint:hex}", 3, assembly->loadSize, section->virtualAddress, section->size);
 #endif
             }
             continue;
         }
-    } */
-    load_size = ROUND(load_size, 4096);
+    }
+    assembly->loadSize = ROUND(assembly->loadSize, 4096);
 
-    assembly->link = System_Syscall_mmap(load_size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
+    assembly->link = System_Syscall_mmap(assembly->loadSize, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
     if (!assembly->link) return; // TODO: throw
 #if DEBUG == DEBUG_System_ELFAssembly
-    System_Console_writeLine("final load_size: {0:uint:hex} linked at: {1:uint:hex}", 2, load_size, assembly->link);
+    System_Console_writeLine("System_ELF64Assembly_link loadSize: {0:uint:hex} linked at: {1:uint:hex}", 2, assembly->loadSize, assembly->link);
 #endif
 
     for (System_Size i = 0; i < assembly->header->programHeaderCount; ++i) {
@@ -321,7 +361,21 @@ void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
             assembly->threadStorageOffset = !System_ELF64Assembly_loadedCount || !lastLoaded ? 0 : lastLoaded->threadStorageOffset + lastLoaded->threadStorageSize;
         }
     }
+    /*for (System_Size i = 0; i < assembly->header->sectionHeaderCount; ++i) {
+        System_ELF64Assembly_SectionHeader section = (System_ELF64Assembly_SectionHeader)((System_Var)assembly->sections + (i * assembly->header->sectionHeaderSize));
 
+        if (section->flags & System_ELFAssembly_SectionFlags_Alloc) {
+            if (section->type != System_ELFAssembly_SectionType_NOBITS)
+                System_Memory_copyTo((System_Var)assembly->header + section->offset, section->size, assembly->link + section->virtualAddress);
+
+            System_Memory_PageFlags protection = System_Memory_PageFlags_Read;
+            if (section->flags & System_ELFAssembly_SectionFlags_Writable)
+                protection |= System_Memory_PageFlags_Write;
+            if (section->flags & System_ELFAssembly_SectionFlags_Executable)
+                protection |= System_Memory_PageFlags_Execute;
+            // System_Syscall_mprotect(assembly->link + section->virtualAddress, section->size, protection);
+        }
+    }*/
     for (System_Size i = 0; i < assembly->dynamicsCount; ++i) {
         System_ELF64Assembly_DynamicEntry dynamic = assembly->dynamics + i;
 
@@ -390,17 +444,16 @@ void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
         System_ELF64Assembly_relocate(assembly, assembly->PLT_relocation + i);
 
     if (assembly->PLT) {
-        if (!System_ELF64Assembly_loadedCount) {
-            
-            assembly->PLT[1] = (System_Size)assembly;
-            assembly->PLT[2] = (System_Size)System_ELF64Assembly_jump;
-        }
+        assembly->PLT[0] += (System_Size)assembly->link;
+        assembly->PLT[1] = (System_Size)assembly;
+        assembly->PLT[2] = (System_Size)System_ELF64Assembly_jump;
+
 #if DEBUG == DEBUG_System_ELFAssembly
         System_Console_writeLine("ELF GLOBAL_OFFSET_TABLE: {0:uint:hex}, [0] {1:uint:hex}, [1] {2:uint:hex}, [2] {3:uint:hex}", 4, assembly->PLT, assembly->PLT[0], assembly->PLT[1], assembly->PLT[2]);
 #endif
     }
     
-    System_ELF64Assembly_loaded[System_ELF64Assembly_loadedCount++] = assembly;
+    if (globally) System_ELF64Assembly_loaded[System_ELF64Assembly_loadedCount++] = assembly;
 }
 
 void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64Assembly_Relocation relocation) {
@@ -419,7 +472,7 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
             *address = (System_Size)assembly->link + relocation->addend; 
         break;
     case System_ELFAssembly_AMD64_64: 
-        symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
+        symbol1 = System_ELF64Assembly_getGlobalDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->value) 
             *address = (System_Size)assembly1->link + symbol1->value + relocation->addend;
         else if (symbol->value)
@@ -430,7 +483,7 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
         break;
     case System_ELFAssembly_AMD64_JUMP_SLOT:
     case System_ELFAssembly_AMD64_GLOB_DAT: 
-        symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
+        symbol1 = System_ELF64Assembly_getGlobalDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->value) 
             *address = (System_Size)assembly1->link + symbol1->value + relocation->addend;
         else if (symbol->value)
@@ -439,14 +492,14 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
             *address += (System_Size)assembly->link;
         break;
     case System_ELFAssembly_AMD64_COPY: 
-        symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
+        symbol1 = System_ELF64Assembly_getGlobalDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->value && symbol1->size) 
             System_Memory_copyTo(assembly1->link + symbol1->value + relocation->addend, symbol1->size, address);
         else if (symbol->value && symbol->size)
             System_Memory_copyTo(assembly->link + symbol->value + relocation->addend, symbol->size, address);
         break;
     case System_ELFAssembly_AMD64_TPOFF64:
-        symbol1 = System_ELF64Assembly_getDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
+        symbol1 = System_ELF64Assembly_getGlobalDynamicSymbol(assembly->dynamicStrings + symbol->name, &assembly1);
         if (symbol1 && symbol1->size)
             *address = assembly1->threadStorageOffset + symbol1->value + relocation->addend;
         else if (symbol->size)
@@ -479,9 +532,9 @@ void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64As
 #endif
 }
 
-static System_Var System_ELF64Assembly_nothing(void) { return null; }
+static System_Var System_ELF64Assembly_nothing(System_Var a, System_Var b, System_Var c, System_Var d, System_Var e, System_Var f) { return null; }
 
-System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_UInt64 relocationOffset) {
+System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_Size relocationOffset) {
     if (!assembly->PLT_relocation || !relocationOffset) {
         goto error;
     }
@@ -498,7 +551,7 @@ System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_UI
         goto error;
     }
     System_ELF64Assembly assembly1 = null;
-    System_ELF64Assembly_Symbol symbol1 = System_ELF64Assembly_getDynamicSymbol(name, &assembly1);
+    System_ELF64Assembly_Symbol symbol1 = System_ELF64Assembly_getGlobalDynamicSymbol(name, &assembly1);
     if (!symbol1 || !assembly->link || !relocation->offset) {
         goto error;
     }
@@ -526,9 +579,11 @@ System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_UI
     }
     return *address;
 error:
+#if DEBUG
+    System_Console_writeLine("ELFAssembly_resolve error: {0:string}, {1:uint:hex} old => new ?", 2, name, *address);
+#endif
     return System_ELF64Assembly_nothing;
 }
-
 
 System_Var System_ELF64Assembly_createThread(void) {
 

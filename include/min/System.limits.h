@@ -11,6 +11,9 @@
 #define System_Size_Max  __SIZE_MAX__
 #define System_Size_Bits  __SIZE_WIDTH__
 #define System_Size_Bytes  __SIZEOF_POINTER__
+#define System_SSize_Max  __PTRDIFF_MAX__
+#define System_SSize_Bits  __PTRDIFF_WIDTH__
+#define System_SSize_Bytes  __SIZEOF_PTRDIFF_T__
 
 #define System_Int8_Min  -0x80
 #define System_Int16_Min  -0x8000

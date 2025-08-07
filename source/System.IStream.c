@@ -19,7 +19,7 @@ void  base_System_IStream_sync(IStream that) {  }
 
 System_Size  base_System_IStream_read(IStream that, String8 value, Size count) { return 0; }
 
-System_Size  base_System_IStream_seek(IStream that, SSize offset, origin origin) { }
+System_Size  base_System_IStream_seek(IStream that, SSize offset, Origin origin) { }
 
 System_Size  base_System_IStream_get_Position(IStream that) { return 0; }
 
@@ -44,11 +44,11 @@ struct System_Type System_IStreamType = { .base = { .type = typeof(System_Type) 
 };
 
 void  System_IStream_write(IStream stream, String8 format, ...) {
-    arguments args;
-    arguments_start(args, format);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, format);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     base_System_IStream_writeEnd__arguments(stream, format, 0, argc, argv);
 }
 
@@ -57,11 +57,11 @@ void  System_IStream_write__arguments(IStream stream, String8 format, Size argc,
 }
 
 void  System_IStream_writeLine(IStream stream, String8 format, ...) {
-    arguments args;
-    arguments_start(args, format);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, format);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     base_System_IStream_writeEnd__arguments(stream, format, '\n', argc, argv);
 }
 
@@ -70,11 +70,11 @@ void  System_IStream_writeLine__arguments(IStream stream, String8 format, Size a
 }
 
 void  System_IStream_writeEnd(IStream stream, String8 format, Char8 suffix, ...) {
-    arguments args;
-    arguments_start(args, suffix);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, suffix);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     base_System_IStream_writeEnd__arguments(stream, format, suffix, argc, argv);
 }
 

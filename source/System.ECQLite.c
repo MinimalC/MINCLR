@@ -111,7 +111,7 @@ System_ECQLite System_ECQLite_open(System_String8 filename) {
         System_File_write__char(file, '\0');
         System_File_write(file, ".{0:string}", 1, "Name Types Indices Columns");
         System_File_write__char(file, '\0');
-        System_File_seek(file, -1, origin_End);
+        System_File_seek(file, -1, Origin_End);
         System_File_write__char(file, '\n');
     }
     else if (!String8_equals(database.intro, "ECQLite")) {
@@ -131,11 +131,11 @@ System_ECQLite System_ECQLite_open(System_String8 filename) {
 }
 
 System_Bool  System_ECQLite_create(System_ECQLite that, System_String8 tableName, ...) {
-    arguments args;
-    arguments_start(args, tableName);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, tableName);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     return System_ECQLite_create__arguments(that, tableName, argc, argv);
 }
 
@@ -392,11 +392,11 @@ System_Console_debugLine__string("DANGER: Database link moved.");
 }
 
 System_Bool  System_ECQLite_select(System_ECQLite that, System_String8 tableName, System_ECQLite_Table reture, ...) {
-    arguments args;
-    arguments_start(args, reture);
-    Var argv[System_arguments_Limit_VALUE];
-    Size argc = stack_System_arguments_get(args, argv);
-    arguments_end(args);
+    Arguments args;
+    Arguments_start(args, reture);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
     return System_ECQLite_select__arguments(that, tableName, reture, argc, argv);
 }
 

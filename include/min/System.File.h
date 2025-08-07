@@ -58,6 +58,8 @@ typedef System_fixed struct System_File {
 	struct System_Object  base;
 
     System_IntPtr fileId;
+    
+    System_String8 name;
 
 }  * System_File;
 
@@ -78,13 +80,13 @@ export void  System_File_write(System_File that, System_String8 format, ...);
 export void  System_File_writeLine__string(System_File that, System_String8 string);
 export void  System_File_writeLine(System_File that, System_String8 format, ...);
 export void  System_File_writeEnd__arguments(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
-export void  System_File_set_Length(System_File that, System_Size value);
 export void  System_File_sync(System_File that);
-export System_Size  System_File_seek(System_File that, System_SSize offset, System_origin origin);
+export System_Size  System_File_seek(System_File that, System_SSize offset, System_Origin origin);
 export System_Size  System_File_read(System_File that, System_String8 value, System_Size count);
 export System_Size  System_File_get_Position(System_File that);
 export void  System_File_set_Position(System_File that, System_Size value);
 export System_Size  System_File_get_Length(System_File that);
+export void  System_File_set_Length(System_File that, System_Size value);
 export void  System_File_close(System_File that);
 
 #if defined(using_System)
@@ -102,27 +104,26 @@ export void  System_File_close(System_File that);
 
 #define File  System_File
 #define FileType  System_FileType
+#define File_exists  System_File_exists
+#define File_open  System_File_open
 #define new_File  new_System_File
-
 #define File_free  System_File_free
 #define File_init  System_File_init
-#define File_open  System_File_open
-#define File_read  System_File_read
 #define File_write__string_size  System_File_write__string_size
+#define File_write__string  System_File_write__string
+#define File_write__char  System_File_write__char
+#define File_writeLineEmpty  System_File_writeLineEmpty
+#define File_write  System_File_write
+#define File_writeLine__string  System_File_writeLine__string
+#define File_writeLine  System_File_writeLine
+#define File_writeEnd__arguments  System_File_writeEnd__arguments
+#define File_sync  System_File_sync
 #define File_seek  System_File_seek
+#define File_read  System_File_read
 #define File_get_Position  System_File_get_Position
 #define File_set_Position  System_File_set_Position
-#define File_sync  System_File_sync
+#define File_get_Length  System_File_set_Length
+#define File_set_Length  System_File_set_Length
 #define File_close  System_File_close
-
-#define base_File_free  System_File_free
-#define base_File_init  System_File_init
-#define base_File_read  System_File_read
-#define base_File_write__string_size  System_File_write__string_size
-#define base_File_seek  System_File_seek
-#define base_File_get_Position  System_File_get_Position
-#define base_File_set_Position  System_File_set_Position
-#define base_File_sync  System_File_sync
-#define base_File_close  System_File_close
 #endif
 #endif

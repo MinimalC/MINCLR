@@ -80,9 +80,11 @@ export System_Size  System_Syscall_lseek(System_IntPtr fileId, System_Size offse
 export void  System_Syscall_ftruncate(System_IntPtr fileId, System_Size length);
 export void  System_Syscall_fsync(System_IntPtr fileId);
 export void  System_Syscall_close(System_IntPtr fileId);
+export void  System_Syscall_fstat(System_IntPtr fileId, System_Var stat);
 export void  System_Syscall_fstatat(System_IntPtr directoryId, const System_String8 pathName, System_Var stat, System_IntPtr flags);
 export void  System_Syscall_getcwd(System_String8 buffer, System_Size length);
 export void  System_Syscall_chdir(System_String8 path);
+export System_IntPtr  System_Syscall_mkdir(System_String8 path, System_IntPtr mode);
 
 typedef System_IntPtr  System_Syscall_MSync;
 enum {
@@ -115,6 +117,9 @@ export System_Thread_TID  System_Syscall_clone__tls(System_IntPtr flags, System_
 export System_Thread_TID  System_Syscall_clone__full(System_IntPtr flags, System_Var stack, System_Var parent_threadId, System_Var tls, System_Var child_threadId);
 export System_Thread_TID  System_Syscall_wait(System_Thread_TID id, System_IntPtr * status, System_IntPtr flags);
 export System_Thread_TID  System_Syscall_waitid(System_IntPtr idType, System_Thread_TID id, System_Var siginfo, System_IntPtr options);
+export System_Thread_TID  System_Syscall_fork(void);
+export void  System_Syscall_execve(System_String8 filename, System_String8 * argv, System_String8 * envv);
+export void  System_Syscall_execveat(System_IntPtr dirId, System_String8 pathname, System_String8 * argv, System_String8 * envv, System_IntPtr flags);
 
 export void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_Var old);
 export void  System_Syscall_sigprocmask(System_IntPtr how, System_Var set, System_Var old, System_IntPtr setsize);

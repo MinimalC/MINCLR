@@ -20,11 +20,11 @@ export struct System_Type  Crypto_CubeHash512Type;
 export Crypto_CubeHash512  new_Crypto_CubeHash512();
 export void  Crypto_CubeHash512_init(Crypto_CubeHash512 that);
 export void  Crypto_CubeHash512_init__size(Crypto_CubeHash512 that, System_Size hashsize);
-export void Crypto_CubeHash512_updateBits(Crypto_CubeHash512 that, System_String8 input, Size length);
+export void  Crypto_CubeHash512_updateBits(Crypto_CubeHash512 that, System_String8 input, Size length);
 export void  Crypto_CubeHash512_update(Crypto_CubeHash512 that, System_String8 input, System_Size length);
 export void  Crypto_CubeHash512_final(Crypto_CubeHash512 that);
-export System_String8 Crypto_CubeHash512_toString(Crypto_CubeHash512 that);
-export void stack_Crypto_CubeHash512_toString(Crypto_CubeHash512 that, System_String8 string);
+export System_String8  Crypto_CubeHash512_toString(Crypto_CubeHash512 that);
+export System_Size  stack_Crypto_CubeHash512_toString(Crypto_CubeHash512 that, System_String8 string);
 
 #if defined(using_Crypto)
 #define CubeHash512  Crypto_CubeHash512

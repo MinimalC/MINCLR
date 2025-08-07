@@ -1,6 +1,6 @@
 /* Gemeinfrei. Public Domain. */
 
-#include "System.arguments.c"
+#include "System.Arguments.c"
 #include "System.String.c"
 #include "System.String8.c"
 
@@ -47,9 +47,11 @@
 #include "System.Signal.c"
 #include "System.Atomic.c"
 
-#include "System.ELF64Assembly.c"
-#include "Network.TCPSocket.c"
-
 #include "System.DateTime.c"
+
+#include "System.ELF64Assembly.c"
+
+#include "Network.TCPSocket.c"
+#include "Network.HTTPRequest.c"
 
 #include "System.ECQLite.c"

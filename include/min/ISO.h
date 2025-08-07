@@ -44,7 +44,7 @@ typedef struct class_ISO_File  * ISO_File;
 #define ISO_putc  putc
 
 import System_Int32  ISO_fprintf(ISO_File filePtr, const System_String8  format, ...);
-import System_Int32  ISO_vfprintf(ISO_File filePtr, const System_String8  format, System_arguments  args);
+import System_Int32  ISO_vfprintf(ISO_File filePtr, const System_String8  format, System_Arguments  args);
 import System_Int32  ISO_putc(System_Int32  character, ISO_File);
 
 

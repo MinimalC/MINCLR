@@ -25,7 +25,6 @@
 #endif
 #if !defined(have_System_Directory)
 #include <min/System.Directory.h>
-System_String8 System_Directory_current;
 #endif
 #if !defined(code_System_Memory)
 #define code_System_Memory
@@ -300,8 +299,6 @@ System_Size System_Memory_debug__min_i_max(System_Size min, System_Size index, S
                     if (item == System_Exception_current) goto continue_position;
                     if (item == System_Exception_current->message) goto continue_position;
                 }
-                if (System_Directory_current)
-                    if (item == System_Directory_current) goto continue_position;
 
                 ++unfree;
                 System_Console_write__string(header->elementType->name);
@@ -380,7 +377,6 @@ System_Bool System_Memory_isAllocated(System_Var that) {
     return false;
 }
 
-
 System_Var  System_Memory_addReference(System_Var that) {
     if (!Memory_isAllocated(that)) return that;
 
@@ -390,15 +386,24 @@ System_Var  System_Memory_addReference(System_Var that) {
 }
 
 void System_Memory_reallocArray(System_Var ref that, System_Size count) {
-    /* TODO */
-    System_Console_writeLine__string("System_Memory_reallocArray not implemented");
+    if (!Memory_isAllocated(that)) return;
+
+    System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
+    System_Size size = count * header->elementType->size;
+    if (size <= header->length) {
+        System_Memory_clear(*that + count * size, header->length - size);
+        return;
+    }
+    System_Var that_new = System_Memory_allocArray(header->elementType, count);
+    Memory_copyTo(*that, size, that_new);
+    Memory_free(*that);
+    *that = that_new;
 }
 
 void  System_Memory_freeClass(System_Var ref thatPtr) {
 	Console_assert(thatPtr);
     if (!thatPtr) return;
     System_Var that = *thatPtr;
-	Console_assert(that);
     if (!that) return;
 
     if (!Memory_isAllocated(that)) {

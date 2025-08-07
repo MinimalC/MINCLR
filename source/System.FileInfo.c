@@ -18,11 +18,11 @@ System_FileInfo  new_System_FileInfo(System_String8 fileName) {
 }
 
 void  System_FileInfo_init(System_FileInfo that, System_String8 fileName) {
-
-    that->name = (System_String8)System_Memory_addReference((System_Var)fileName);
-
-    System_Syscall_fstatat(System_Syscall_StandardFile_CurrentWorkingDirectory, fileName, &that->status.containerId, 0);
-
+    System_Syscall_fstatat(System_Syscall_StandardFile_CurrentWorkingDirectory, fileName, &that->status, 0);
+    that->error = System_Syscall_get_Error();
+}
+void  System_FileInfo_init__fileId(System_FileInfo that, System_IntPtr fileId) {
+    System_Syscall_fstat(fileId, &that->status);
     that->error = System_Syscall_get_Error();
 }
 
@@ -36,16 +36,8 @@ System_Bool System_FileInfo_isLink(System_FileInfo that) {
     return that->status.mode & FileInfo_Type_Link;
 }
 
-void System_FileInfo_free(System_FileInfo that) {
-    if (that->name) {
-        Memory_free(that->name);
-        that->name = null;
-    }
-}
-
 struct System_Type_FunctionInfo  System_FileInfoTypeFunctions[] = {
     [0] = { .function = base_System_Object_init, .value = System_FileInfo_init },
-    [1] = { .function = base_System_Object_free, .value = System_FileInfo_free },
 };
 
 struct System_Type System_FileInfoType = {

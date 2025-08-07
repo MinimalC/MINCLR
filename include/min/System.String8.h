@@ -51,7 +51,12 @@ export System_String8  System_String8_copy(System_String8 that);
 export System_String8  System_String8_copyOf(System_String8 that, System_Size offset);
 export System_String8  System_String8_copySubstring(System_String8 that, System_Size count);
 export System_String8  System_String8_copyOfSubstring(System_String8 that, System_Size offset, System_Size count);
-export System_String8  System_String8_concat(System_String8 that, System_String8 other);
+export System_String8  System_String8_concat(System_String8 that, ...);
+export System_String8  System_String8_concat1(System_String8 that, System_String8 other);
+export System_String8  System_String8_concat2(System_String8 that, System_String8 other0, System_String8 other1);
+export System_String8  System_String8_concat3(System_String8 that, System_String8 other0, System_String8 other1, System_String8 other2);
+export System_String8  System_String8_concat4(System_String8 that, System_String8 other0, System_String8 other1, System_String8 other2, System_String8 other3);
+export System_String8  System_String8_concat__arguments(System_String8 that, System_Size argc, System_String8 argv[]);
 export System_Size  System_String8_compare(System_String8 that, System_String8 other);
 export System_Bool  System_String8_equals(System_String8 that, System_String8 other);
 export System_Size  System_String8_compareSubstring(System_String8 that, System_String8 other, System_Size count);
@@ -92,14 +97,17 @@ export System_Size  stack_System_String8_formatEnd__limit_arguments(System_Strin
 #define String8_copySubstringTo  System_String8_copySubstringTo
 #define String8_copySubstringToAt  System_String8_copySubstringToAt
 #define String8_copy  System_String8_copy
+#define String8_concat1  System_String8_concat1
+#define String8_concat2  System_String8_concat2
 #define String8_compare  System_String8_compare
 #define String8_equals  System_String8_equals
 #define String8_equalsSubstring  System_String8_equalsSubstring
-#define String8_compareIgnoreCase  System_String8_compareIgnoreCase
 #define String8_compareSubstring  System_String8_compareSubstring
 #define String8_isNullOrEmpty  System_String8_isNullOrEmpty
 #define String8_startsWith  System_String8_startsWith
 #define String8_endsWith  System_String8_endsWith
+#define String8_exchange  System_String8_exchange
+#define String8_getSipHash  System_String8_getSipHash
 
 #define String8_formatLimit_VALUE  System_String8_formatLimit_VALUE
 #define String8_format  System_String8_format

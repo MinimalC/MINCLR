@@ -43,9 +43,9 @@ void System_Runtime_start(Var * stack) {
         System_Console_writeLine("System_Environment_Arguments({0:uint}): {1:string}", 2, i, envv[i]);
 #endif
 
-    for (Size i = 0; i < argc && i < System_Console_Arguments_Length; ++i)
+    for (Size i = 0; i < argc && i < System_Console_Arguments_Count; ++i)
         System_Console_Arguments[i] = argv[i];
-    for (Size i = 0; i < envc && i < System_Environment_Arguments_Length; ++i)
+    for (Size i = 0; i < envc && i < System_Environment_Arguments_Count; ++i)
         System_Environment_Arguments[i] = envv[i];
 
     int reture = false;

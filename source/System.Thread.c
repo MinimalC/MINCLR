@@ -84,11 +84,11 @@ enum {
 volatile System_Bool System_Thread_sigiset = false;
 
 System_Thread System_Thread_create(function_System_Thread_main function, ...) {
-    System_arguments args;
-    System_arguments_start(args, function);
-    System_Var argv[System_arguments_Limit_VALUE];
-    System_Size argc = stack_System_arguments_get(args, argv);
-    System_arguments_end(args);
+    System_Arguments args;
+    System_Arguments_start(args, function);
+    System_Var argv[System_Arguments_Limit];
+    System_Size argc = stack_System_Arguments_get(args, argv);
+    System_Arguments_end(args);
     return System_Thread_create__arguments(function, argc, argv);
 }
 

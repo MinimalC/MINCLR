@@ -33,13 +33,19 @@ int System_Runtime_main(int argc, char * argv[]) {
     else
         Console_writeLine__string("Test03: SUCCESS: String8_lastIndexOf");
 
-    String8 prefix_name = System_String8_concat(prefix, name);
+    String8 prefix_name = System_String8_concat1(prefix, name);
     if (!String8_equals(prefix_name, final_name))
-        Console_writeLine("Test04: ERROR: String8_concat: {0:string}", 1, prefix_name);
+        Console_writeLine("Test04: ERROR: String8_concat1: {0:string}", 1, prefix_name);
     else
-        Console_writeLine__string("Test04: SUCCESS: String8_concat");
+        Console_writeLine__string("Test04: SUCCESS: String8_concat1");
     Memory_free(prefix_name);
 
+    String8 concatN = System_String8_concat("main", 6, "_", "test01", "_", "System", "_", "String8");
+    if (!String8_equals(concatN, final_name))
+        Console_writeLine("Test05: ERROR: String8_concatN: {0:string}", 1, concatN);
+    else
+        Console_writeLine__string("Test05: SUCCESS: String8_concat__arguments");
+    Memory_free(concatN);
 
     return true;
 }

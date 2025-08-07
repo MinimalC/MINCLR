@@ -224,12 +224,11 @@ export System_Char8  System_String8_Empty[1];
 
 #define System_Stack_clear(VAR) for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof(VAR); ++ff(VAR,Z)) ((System_Char8 *)&VAR)[ff(VAR,Z)] = 0
 #define System_Stack_clearType(VAR,TYPE) for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof(VAR); ++ff(VAR,Z)) ((System_Char8 *)&VAR)[ff(VAR,Z)] = 0; ((System_Object)&VAR)->type = TYPE
-#define System_Stack_clearArray(VAR,TYPE):
-    for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof(VAR); ++ff(VAR,Z)) 
-        ((System_Char8 *)&VAR)[ff(VAR,Z)] = 0; 
-    for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof_array(VAR); ++ff(VAR,Z)) 
+#define System_Stack_clearArray(VAR,TYPE) \
+    for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof(VAR); ++ff(VAR,Z)) \
+        ((System_Char8 *)&VAR)[ff(VAR,Z)] = 0; \
+    for (System_Size ff(VAR,Z) = 0; ff(VAR,Z) < sizeof_array(VAR); ++ff(VAR,Z)) \
         ((System_Object)&VAR[ff(VAR,Z)])->type = TYPE
-#end
 
 typedef System_Char8 System_TypeCode;
 enum {

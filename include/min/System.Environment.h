@@ -10,7 +10,8 @@
 
 export struct System_Type  System_EnvironmentType;
 
-export System_String8Dictionary  System_Environment_Arguments;
+export System_Size System_Environment_Arguments_Count;
+export System_String8 * System_Environment_Arguments;
 
 typedef unsigned System_Environment_AuxType;
 enum {

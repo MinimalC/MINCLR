@@ -134,6 +134,10 @@ void  System_Syscall_close(System_IntPtr fileId) {
     (void)System_Syscall_call01(System_Syscall_Command_close, fileId);
 }
 
+void  System_Syscall_fstat(System_IntPtr fileId, System_Var stat) {
+    (void)System_Syscall_call03(System_Syscall_Command_fstat, fileId, (System_IntPtr)stat, 0);
+}
+
 void  System_Syscall_fstatat(System_IntPtr directoryId, const System_String8 pathName, System_Var stat, System_IntPtr flags) {
     (void)System_Syscall_call04(System_Syscall_Command_fstatat, directoryId, (System_IntPtr)pathName, (System_IntPtr)stat, flags);
 }
@@ -146,36 +150,35 @@ void System_Syscall_chdir(System_String8 path) {
     (void)System_Syscall_call01(System_Syscall_Command_chdir, (System_IntPtr)path);
 }
 
+System_IntPtr System_Syscall_mkdir(System_String8 path, System_IntPtr mode) {
+    return System_Syscall_call02(System_Syscall_Command_mkdir, (System_IntPtr)path, mode);
+}
 
-atomic System_Size System_Syscall_mmapCount = 0;
+
+__volatile__ System_SSize System_Syscall_mmapCount = 0;
 
 System_Var  System_Syscall_mmap(System_Size length, System_IntPtr page, System_IntPtr map) {
-    System_Size_atomic_increment(&System_Syscall_mmapCount);
-    System_Atomic_fence();
+    ++System_Syscall_mmapCount;
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, -1, 0);
 }
 
 System_Var  System_Syscall_mmap__file(System_Size length, System_IntPtr page, System_IntPtr map, System_IntPtr file, System_IntPtr offset) {
-    System_Size_atomic_increment(&System_Syscall_mmapCount);
-    System_Atomic_fence();
+    ++System_Syscall_mmapCount;
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, null, length, page, map, file, offset);
 }
 
 System_Var  System_Syscall_mmap__full(System_Var hint, System_Size length, System_IntPtr page, System_IntPtr map, System_IntPtr file, System_IntPtr offset) {
-    System_Size_atomic_increment(&System_Syscall_mmapCount);
-    System_Atomic_fence();
+    ++System_Syscall_mmapCount;
     return (System_Var)System_Syscall_call06(System_Syscall_Command_mmap, (System_IntPtr)hint, length, page, map, file, offset);
 }
 
 void  System_Syscall_munmap(System_Var address, System_Size length) {
-    System_Size_atomic_decrement(&System_Syscall_mmapCount);
-    System_Atomic_fence();
+    --System_Syscall_mmapCount;
     (void)System_Syscall_call02(System_Syscall_Command_munmap, (System_IntPtr)address, length);
 }
 
 void System_Syscall_mmap__debug(void) {
-    System_Atomic_fence();
-    if (System_Syscall_mmapCount) System_Console_writeLine("System_Syscall_mmap__debug: called {0:uint} times without munmap.", 1, System_Syscall_mmapCount);
+    if (System_Syscall_mmapCount) System_Console_writeLine("System_Syscall_mmap called {0:int} times without munmap.", 1, System_Syscall_mmapCount);
 }
 
 void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags) {
@@ -214,6 +217,18 @@ System_Thread_TID  System_Syscall_wait(System_Thread_TID id, System_IntPtr * sta
 
 System_Thread_TID  System_Syscall_waitid(System_IntPtr idType, System_Thread_TID id, System_Var siginfo, System_IntPtr options) {
     return System_Syscall_call04(System_Syscall_Command_waitid, idType, id, (System_IntPtr)siginfo, options);
+}
+
+System_Thread_TID  System_Syscall_fork(void) {
+    return System_Syscall_call00(System_Syscall_Command_fork);
+}
+
+void  System_Syscall_execve(System_String8 filename, System_String8 * argv, System_String8 * envv) {
+    (void)System_Syscall_call03(System_Syscall_Command_execve, (System_IntPtr)filename, (System_IntPtr)argv, (System_IntPtr)envv);
+}
+
+void  System_Syscall_execveat(System_IntPtr dirId, System_String8 pathname, System_String8 * argv, System_String8 * envv, System_IntPtr flags) {
+    (void)System_Syscall_call05(System_Syscall_Command_execveat, dirId, (System_IntPtr)pathname, (System_IntPtr)argv, (System_IntPtr)envv, flags);
 }
 
 

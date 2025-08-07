@@ -47,6 +47,7 @@
 #include "System.Dictionary.h"
 
 #include "Network.TCPSocket.h"
+#include "Network.HTTPRequest.h"
 
 #include "System.ECQLite.h"
 

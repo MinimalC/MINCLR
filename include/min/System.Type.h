@@ -5,8 +5,8 @@
 #if !defined(have_System_limits)
 #include "System.limits.h"
 #endif
-#if !defined(have_System_arguments)
-#include "System.arguments.h"
+#if !defined(have_System_Arguments)
+#include "System.Arguments.h"
 #endif
 #if defined(__cplusplus)
 #error "This doesn't work in C++, as this throws a compiler exception. Use AWK and C !"

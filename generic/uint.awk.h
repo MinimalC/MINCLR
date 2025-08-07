@@ -73,16 +73,15 @@ export Generic_T0  Generic_T0_divRem(Generic_T0 divident, Generic_T0 divisor, Ge
 #define inline_Generic_T0_toNetworkOrder(n)  ( ( ( n & 0xFF000000 ) >> 24  ) | ( ( n & 0x00FF0000 ) >> 8  ) | ( ( n & 0x0000FF00 ) << 8  ) | ( (n & 0x000000FF ) << 24 ) )
 
 ##else if Type == "UInt64"
-#define inline_Generic_T0_toNetworkOrder(n):
-	((((n) & 0xff00000000000000) >> 56)
-    |(((n) & 0x00ff000000000000) >> 40)
-    |(((n) & 0x0000ff0000000000) >> 24)
-    |(((n) & 0x000000ff00000000) >>  8)
-    |(((n) & 0x00000000ff000000) <<  8)
-    |(((n) & 0x0000000000ff0000) << 24)
-    |(((n) & 0x000000000000ff00) << 40)
+#define inline_Generic_T0_toNetworkOrder(n) \
+	((((n) & 0xff00000000000000) >> 56)\
+    |(((n) & 0x00ff000000000000) >> 40)\
+    |(((n) & 0x0000ff0000000000) >> 24)\
+    |(((n) & 0x000000ff00000000) >>  8)\
+    |(((n) & 0x00000000ff000000) <<  8)\
+    |(((n) & 0x0000000000ff0000) << 24)\
+    |(((n) & 0x000000000000ff00) << 40)\
     |(((n) & 0x00000000000000ff) << 56))
-#end
 
 ##else if Type == "UInt8"
 #define inline_Generic_T0_add(a, b)  ((a) == 0 ? (b) : ((b) == 0 ? (a) : ((b) > 0 ? (Generic_T0_Max - (b) > (a) ? (a) + (b) : 0) : ((Generic_T0_Min - (b) < (a)) ? (a) + (b) : 0))))

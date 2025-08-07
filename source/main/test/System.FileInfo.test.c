@@ -9,7 +9,7 @@ int System_Runtime_main(int argc, char * argv[]) {
 	/* Test00: Create a FileInfo */
     FileInfo fileInfo = new_FileInfo(HALLOtxt);
 
-    Console_write("FileInfo.name: {0:string}", 1, fileInfo->name);
+    Console_write("FileInfo.name: {0:string}", 1, HALLOtxt);
     if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Regular)) Console_write__string(", File");
     else if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Directory)) Console_write__string(", Directory");
     else if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Link)) Console_write__string(", Link");
@@ -25,7 +25,7 @@ int System_Runtime_main(int argc, char * argv[]) {
 	/* Test01: Create a FileInfo for a Directory */
     fileInfo = new_FileInfo(".");
 
-    Console_write("FileInfo.name: {0:string}", 1, fileInfo->name);
+    Console_write("FileInfo.name: {0:string}", 1, HALLOtxt);
     if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Regular)) Console_write__string(", File");
     else if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Directory)) Console_write__string(", Directory");
     else if (enum_hasFlag(fileInfo->status.mode, FileInfo_Type_Link)) Console_write__string(", Link");

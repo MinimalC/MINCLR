@@ -18,8 +18,11 @@ export System_Var System_Console_Arguments;
 export System_Size System_Console_Arguments_Count;
 
 export void  System_Console_exit(const System_Size code) noreturn;
-
 export void  System_Console_sync(void);
+
+export System_Size  System_Console_execute(System_String8 fileName, ...);
+export System_Size  System_Console_execute__arguments(System_String8 fileName, System_Size argc, System_String8 argv[]);
+
 export void  System_Console_write__char(System_Char8 character);
 export void  System_Console_write__string_size(System_String8 string, System_Size size);
 export void  System_Console_write__string(System_String8 string);

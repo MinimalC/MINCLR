@@ -5,20 +5,21 @@
 #if !defined(have_System_IStream)
 #define have_System_IStream
 
-typedef System_IntPtr  System_origin;
-#define System_origin_Begin  0
-#define System_origin_Current  1
-#define System_origin_End  2
+typedef System_IntPtr  System_Origin;
+enum {
+    System_Origin_Begin,
+    System_Origin_Current,
+    System_Origin_End,
+};
 
 #if defined(using_System)
-#define origin  System_origin
-#define origin_Begin  System_origin_Begin
-#define origin_Current  System_origin_Current
-#define origin_End  System_origin_End
+#define Origin  System_Origin
+#define Origin_Begin  System_Origin_Begin
+#define Origin_Current  System_Origin_Current
+#define Origin_End  System_Origin_End
 #endif
 
 /* interface System.IStream */
-
 
 typedef System_fixed struct System_IStream { } * System_IStream;
 
@@ -34,7 +35,7 @@ typedef void  delegate(System_IStream_write__string_size)(System_IStream that, S
 typedef void  delegate(System_IStream_writeEnd__arguments)(System_IStream stream, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 typedef void  delegate(System_IStream_sync)(System_IStream that);
 typedef System_Size  delegate(System_IStream_read)(System_IStream that, System_String8 value, System_Size count);
-typedef System_Size  delegate(System_IStream_seek)(System_IStream that, System_SSize offset, System_origin origin);
+typedef System_Size  delegate(System_IStream_seek)(System_IStream that, System_SSize offset, System_Origin origin);
 typedef System_IntPtr  delegate(System_IStream_get_Position)(System_IStream that);
 typedef void  delegate(System_IStream_set_Position)(System_IStream that, System_Size value);
 
@@ -42,7 +43,7 @@ export void  base_System_IStream_write__string_size(System_IStream that, System_
 export void  base_System_IStream_writeEnd__arguments(System_IStream stream, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 export void  base_System_IStream_sync(System_IStream that);
 export System_Size  base_System_IStream_read(System_IStream that, System_String8 value, System_Size count);
-export System_Size  base_System_IStream_seek(System_IStream that, System_SSize offset, System_origin origin);
+export System_Size  base_System_IStream_seek(System_IStream that, System_SSize offset, System_Origin origin);
 export System_IntPtr  base_System_IStream_get_Position(System_IStream that);
 export void  base_System_IStream_set_Position(System_IStream that, System_Size value);
 

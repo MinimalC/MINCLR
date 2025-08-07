@@ -209,16 +209,15 @@ import System_UInt64  System_UInt64_divRem(System_UInt64 divident, System_UInt64
 export System_UInt64  System_UInt64_divRem(System_UInt64 divident, System_UInt64 divisor, System_UInt64 ref remainder);
 #endif
 
-#define inline_System_UInt64_toNetworkOrder(n):
-	((((n) & 0xff00000000000000) >> 56)
-    |(((n) & 0x00ff000000000000) >> 40)
-    |(((n) & 0x0000ff0000000000) >> 24)
-    |(((n) & 0x000000ff00000000) >>  8)
-    |(((n) & 0x00000000ff000000) <<  8)
-    |(((n) & 0x0000000000ff0000) << 24)
-    |(((n) & 0x000000000000ff00) << 40)
+#define inline_System_UInt64_toNetworkOrder(n) \
+	((((n) & 0xff00000000000000) >> 56)\
+    |(((n) & 0x00ff000000000000) >> 40)\
+    |(((n) & 0x0000ff0000000000) >> 24)\
+    |(((n) & 0x000000ff00000000) >>  8)\
+    |(((n) & 0x00000000ff000000) <<  8)\
+    |(((n) & 0x0000000000ff0000) << 24)\
+    |(((n) & 0x000000000000ff00) << 40)\
     |(((n) & 0x00000000000000ff) << 56))
-#end
 
 #if defined(using_System)
 #define stack_UInt64_toString8base2  stack_System_UInt64_toString8base2

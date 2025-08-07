@@ -2,11 +2,6 @@
 #include <System.internal.h>
 #include <min/System.h>
 
-typedef struct Network_MimeType {
-    System_String8 extension;
-    System_String8 name;
-} * Network_MimeType;
-
 struct Network_MimeType  Network_MimeTypes[] = {
     { "txt", "text/plain" },
     { "md", "text/markdown" },
@@ -45,60 +40,7 @@ struct Network_MimeType  Network_MimeTypes[] = {
 
 const System_Size Network_MimeTypes_Capacity = sizeof_array(Network_MimeTypes);
 
-typedef System_IntPtr Network_HTTPMethod;
-enum {
-    Network_HTTPMethod_GET = 1,
-    Network_HTTPMethod_HEAD,
-    Network_HTTPMethod_POST,
-    Network_HTTPMethod_PUT,
-    Network_HTTPMethod_OPTIONS,
-    Network_HTTPMethod_DELETE,
-};
-
-typedef struct Network_URI {
-
-    System_String8 source;
-
-    System_String8 queryString;
-
-} * Network_URI;
-
-void Network_URI_free(Network_URI that) {
-    if (that->source) System_Memory_free(that->source);
-}
-
-typedef struct Network_HTTPRequest {
-    struct System_Object base;
-
-    Network_HTTPMethod method;
-
-    struct Network_URI uri;
-
-    System_String8 version;
-
-    System_String8Dictionary header;
-
-} * Network_HTTPRequest;
-
-void base_Network_HTTPRequest_free(Network_HTTPRequest that) {
-    Network_URI_free(&that->uri);
-    if (that->version) System_Memory_free(that->version);
-    if (that->header) System_Memory_free(that->header);
-}
-
-struct System_Type_FunctionInfo Network_HTTPRequestTypeFunctions[] = {
-    { .function = base_System_Object_free, .value = base_Network_HTTPRequest_free },
-};
-
-struct System_Type Network_HTTPRequestType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "HTTPRequest",
-    .size = sizeof(struct Network_HTTPRequest),
-    .baseType = &System_ObjectType,
-    .functions = { .length = sizeof_array(Network_HTTPRequestTypeFunctions), .value = &Network_HTTPRequestTypeFunctions, },
-};
-
-Network_HTTPRequest HTTPRequest_parse(System_String message) { 
+Network_HTTPRequest HTTPRequest_parse(System_String message) {
     Console_assert(message);
     Console_assert(message->length);
 
@@ -209,59 +151,6 @@ error:
     return null;
 }
 
-typedef struct Network_HTTPResponse {
-    struct System_Object base;
-
-    struct System_String source;
-
-    Network_HTTPStatus status;
-
-    System_String8Dictionary header;
-
-    /* System_Bool keepAlive; */
-
-    struct System_String buffer;
-
-} * Network_HTTPResponse;
-
-void base_Network_HTTPResponse_free(Network_HTTPResponse that) {
-    if (that->header) System_Memory_free(that->header);
-    System_Memory_freeStruct(&that->source, typeof(System_String));
-    System_Memory_freeStruct(&that->buffer, typeof(System_String));
-}
-
-struct System_Type_FunctionInfo Network_HTTPResponseTypeFunctions[] = {
-    { .function = base_System_Object_free, .value = base_Network_HTTPResponse_free },
-};
-    
-struct System_Type Network_HTTPResponseType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "HTTPResponse",
-    .size = sizeof(struct Network_HTTPResponse),
-    .baseType = &System_ObjectType,
-    .functions = { .length = sizeof_array(Network_HTTPResponseTypeFunctions), .value = &Network_HTTPResponseTypeFunctions, },
-};
-
-Network_HTTPResponse Network_HTTPResponse_create(Network_HTTPStatus status) {
-
-    Network_HTTPResponse response = System_Memory_allocClass(typeof(Network_HTTPResponse));
-
-    response->header = System_Memory_allocClass(typeof(System_String8Dictionary));
-    base_System_String8Dictionary_init(response->header, 64);
-
-    response->status = status;
-    return response;
-}
-
-String8 Network_HTTPStatus_toString(Network_HTTPStatus value) {
-    switch (value) {
-    case Network_HTTPStatus_OK: return "OK";
-    case Network_HTTPStatus_FileNotFound: return "FileNotFound";
-    case Network_HTTPStatus_Error: return "Error";
-    default: return "UNKNOWN";
-    }
-}
-
 IntPtr HTTPService_serve(Size argc, Var argv[]) {
     if (argc < 1) {
         System_Console_writeLine("HTTPService_serve: No TCPSocket", 0);
@@ -316,14 +205,14 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
     }
     if (System_Directory_exists(requestPath)) {
         System_Console_writeLine("HTTPService_serve: Folder {0:string}", 1, requestPath);
-        System_String8_exchange(&requestPath, System_String8_concat(requestPath, "index.html"));
+        System_String8_exchange(&requestPath, System_String8_concat1(requestPath, "index.html"));
     }
     if (!System_File_exists(requestPath)) {
         System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
         goto respond;
     }
-    System_String8 requestExt = System_Path_getFileExtension(requestPath);
+    System_String8 requestExt = System_Path_getFileNameExt(requestPath);
     System_Size mime = 0;
     for (; mime < Network_MimeTypes_Capacity; ++mime) {
         if (String8_equals(requestExt, Network_MimeTypes[mime].extension)) break;
@@ -373,7 +262,7 @@ respond:
     }
 
     System_Char8  text1[System_String8_formatLimit_VALUE]; Stack_clear(text1);
-    System_Size position = stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", text1 + position, 2, response->status, Network_HTTPStatus_toString(response->status));
+    System_Size position = stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", text1, 2, response->status, Network_HTTPStatus_toString(response->status));
     for (System_Size i = 0; i < base_System_String8Dictionary_get_Length(response->header); ++i) {
         System_String8 key = base_System_String8Dictionary_get_index(response->header, i);
         System_String8 value = base_System_String8Dictionary_get_value(response->header, key);

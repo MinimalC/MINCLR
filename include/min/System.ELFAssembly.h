@@ -607,7 +607,6 @@ typedef struct System_ELF32Assembly_SectionHeader {
 
 export struct System_Type  System_ELF32Assembly_SectionHeaderType;
 
-
 typedef struct System_ELF32Assembly_Symbol {
     System_UInt32  name;    /* Symbol name (string tbl index) */
     System_UInt32  value;    /* Symbol value */
@@ -629,6 +628,8 @@ export struct System_Type  System_ELF32Assembly_DynamicEntryType;
 #define System_ELF32Assembly_Relocation_SYMBOL(i) ( (i) >> 8 )
 #define System_ELF32Assembly_Relocation_TYPE(i)   ( (System_UInt8)((i) & 0xff) )
 #define System_ELF32Assembly_Relocation_INFO(s,t) ( ((s) << 8) + ((System_UInt8)((t) & 0xff)) )
+
+
 
 #endif
 #if !defined(have_System_ELF64Assembly)
@@ -675,7 +676,7 @@ typedef struct System_ELF64Assembly_ProgramHeader {
 export struct System_Type  System_ELF64Assembly_ProgramHeaderType;
 
 typedef struct System_ELF64Assembly_SectionHeader {
-  System_UInt32  name;        /* Section name (string tbl index) */
+  System_UInt32  name;        /* Section name (string table index) */
   System_UInt32  type;        /* Section type */
   System_UInt64  flags;        /* Section flags */
   System_UInt64  virtualAddress;        /* Section virtual address at execution */
@@ -743,8 +744,11 @@ typedef struct System_ELF64Assembly {
 
     System_Size neededCount;
     System_String8 needed[8];
+    /*System_Size requiredCount;
+    System_Var required[8];*/
 
     System_Var link;
+    System_Size loadSize;
 
     System_Size GOT_relocationCount;
     System_ELF64Assembly_Relocation GOT_relocation;
@@ -766,16 +770,19 @@ export System_ELF64Assembly System_ELF64Assembly_loaded[64];
 export System_Size System_ELF64Assembly_loadedCount;
 
 export System_ELF64Assembly  new_System_ELF64Assembly();
+export void System_ELF64Assembly_free(System_ELF64Assembly that);
 export void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 name);
 export void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print);
 export void System_ELF64Assembly_link(System_ELF64Assembly assembly);
+export void System_ELF64Assembly_link__globally(System_ELF64Assembly assembly, System_Bool globally);
 export void System_ELF64Assembly_relocate(System_ELF64Assembly assembly, System_ELF64Assembly_Relocation relocation);
-import System_Var System_ELF64Assembly_jump(System_ELF64Assembly assembly, System_UInt64 relocationOffset);
-export System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_UInt64 relocationOffset);
-export System_ELF64Assembly_Symbol System_ELF64Assembly_getSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
-export System_ELF64Assembly_Symbol System_ELF64Assembly_getDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
 export System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64Assembly assembly, System_String8 name);
-
+export System_ELF64Assembly_Symbol System_ELF64Assembly_getSymbol(System_ELF64Assembly assembly, System_String8 name);
+export System_ELF64Assembly_Symbol System_ELF64Assembly_getDynamicSymbol(System_ELF64Assembly assembly, System_String8 name);
+export System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
+export System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
+import System_Var System_ELF64Assembly_jump(System_ELF64Assembly assembly, System_Size relocationOffset);
+export System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_Size relocationOffset);
 export System_Var System_ELF64Assembly_createThread(void);
 
 export System_String8 System_ELFAssembly_AMD64_toString(System_UInt32 value);

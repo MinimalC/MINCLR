@@ -113,9 +113,11 @@ System_String8 Crypto_CubeHash512_toString(Crypto_CubeHash512 that) {
   return string;
 }
 
-void stack_Crypto_CubeHash512_toString(Crypto_CubeHash512 that, System_String8 string) {
-  for (Size i = 0, position = 0; i == 0 || i < that->hashsize / 16; ++i) 
+System_Size stack_Crypto_CubeHash512_toString(Crypto_CubeHash512 that, System_String8 string) {
+  Size position = 0;
+  for (Size i = 0; i == 0 || i < that->hashsize / 16; ++i) 
     position += stack_System_String8_format("{0:uint32:hex}", string + position, 1, that->x[i]);
+  return position;
 }
 
 struct System_Type_FunctionInfo  Crypto_CubeHash512TypeFunctions[] = {
