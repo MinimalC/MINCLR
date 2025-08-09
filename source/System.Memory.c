@@ -117,9 +117,7 @@ typedef struct System_Memory_Page {
 }  * System_Memory_Page;
 
 typedef struct System_Memory_Header {
-#if DEBUG == DEBUG_System_Memory
     System_Type type;
-#endif
 
     UInt length;
 
@@ -135,12 +133,12 @@ struct System_Type  System_Memory_PageType = {
     .name = "Memory.Page",
     .size = sizeof(struct System_Memory_Page),
 };
+#endif
 struct System_Type  System_Memory_HeaderType = {
     .base = { .type = typeof(System_Type) },
     .name = "Memory.Header",
     .size = sizeof(struct System_Memory_Header),
 };
-#endif
 
 export System_Var  System_Memory_ProcessVars[] = { 0, 0, 0, 0 };
 
@@ -197,9 +195,7 @@ System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pag
 
             /* expect first if this is unfree, move next */
             if (header->length && header->refCount) {
-#if DEBUG == DEBUG_System_Memory
                 Console_assert(header->type == typeof(System_Memory_Header));
-#endif
                 Console_assert(header->elementType);
                 position += header->length;
 #if DEBUG == DEBUG_System_Memory
@@ -216,7 +212,7 @@ System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pag
 #endif
                     continue;
                 }
-                /* create a new free header for empty space, change lengths */
+                /* create a new header */
                 header->elementType = type;
                 header->refCount = System_Memory_ReferenceState_Used;
 #if DEBUG == DEBUG_System_Memory
@@ -235,12 +231,14 @@ System_Console_writeLine("System_Memory_Header({0:uint}): using typeof({1:string
             /* expect null, if there is not enough space, move next */
             Console_assert(!header->length);
             if (((System_Var)mem64h + mem64h->length) - position < real_size) break;
+
+            /* create a new header */
             header->length = real_size;
             header->elementType = type;
             header->refCount = System_Memory_ReferenceState_Used;
-#if DEBUG == DEBUG_System_Memory
             Console_assert(!header->type);
             header->type = typeof(System_Memory_Header);
+#if DEBUG == DEBUG_System_Memory
 System_Console_writeLine("System_Memory_Header({0:uint}): new typeof({1:string}), length {2:uint}", 4, index1, header->elementType->name, header->length);
 #endif
             var = (position + sizeof(struct System_Memory_Header));
@@ -286,7 +284,6 @@ System_Size System_Memory_debug__min_i_max(System_Size min, System_Size index, S
 
         /* NOW lookup for unfreed */
 
-        System_Size index1 = 0;
         Var position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
         while (position < ((System_Var)mem64h + mem64h->length)) {
             System_Memory_Header header = (System_Memory_Header)position;
@@ -316,7 +313,6 @@ System_Size System_Memory_debug__min_i_max(System_Size min, System_Size index, S
 
         continue_position:
             position += header->length;
-            ++index1;
         }
     }
     return unfree;
@@ -327,7 +323,7 @@ void System_Memory_debug(void) {
     unfree += System_Memory_debug__min_i_max(1024, 0, 4194304);
     unfree += System_Memory_debug__min_i_max(512, 1, 8388608);
     unfree += System_Memory_debug__min_i_max(64, 2, 0xFFFFFFFFU);
-    if (unfree) System_Console_writeLine("System_Memory_debug: {0:uint} unfreed.", 1, unfree);
+    if (unfree) System_Console_debugLine("System_Memory_debug: {0:uint} unfreed.", 1, unfree);
 }
 
 System_Var  System_Memory_allocClass(System_Type type) {
@@ -381,23 +377,40 @@ System_Var  System_Memory_addReference(System_Var that) {
     if (!Memory_isAllocated(that)) return that;
 
     System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
-	++header->refCount;
+#if DEBUG == DEBUG_System_Memory
+    Console_assert(header->type == typeof(System_Memory_Header));
+#endif
+    if (header->type != typeof(System_Memory_Header)) return that;
+
+    ++header->refCount;
     return that;
 }
 
-void System_Memory_reallocArray(System_Var ref that, System_Size count) {
+void System_Memory_reallocArray(System_Var ref thatPtr, System_Size count) {
+    if (!thatPtr) return; // throw
+    System_Var that = *thatPtr;
+    Console_assert(that);
     if (!Memory_isAllocated(that)) return;
 
     System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
+#if DEBUG == DEBUG_System_Memory
+	Console_assert(header->type == typeof(System_Memory_Header));
+#endif
+    if (header->type != typeof(System_Memory_Header)) return;
+
+#if DEBUG == DEBUG_System_Memory
+    System_Console_writeLine("System_Memory_reallocArray: using System_Memory_Header typeof({0:string}), length {1:uint}", 2, header->elementType->name, header->length);
+#endif
+
     System_Size size = count * header->elementType->size;
     if (size <= header->length) {
-        System_Memory_clear(*that + count * size, header->length - size);
+        System_Memory_clear(that + size, header->length - size);
         return;
     }
     System_Var that_new = System_Memory_allocArray(header->elementType, count);
-    Memory_copyTo(*that, size, that_new);
-    Memory_free(*that);
-    *that = that_new;
+    Memory_copyTo(that, size, that_new);
+    Memory_free(that);
+    *thatPtr = that_new;
 }
 
 void  System_Memory_freeClass(System_Var ref thatPtr) {
@@ -414,9 +427,10 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
     }
 
     System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
-    #if DEBUG == DEBUG_System_Memory
+#if DEBUG == DEBUG_System_Memory
 	Console_assert(header->type == typeof(System_Memory_Header));
-    #endif
+#endif
+    if (header->type != typeof(System_Memory_Header)) return;
 
 	if (header->refCount < System_Memory_ReferenceState_Used) {
         #if DEBUG
@@ -436,9 +450,7 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
     System_Size length = header->length;
     System_Memory_clear(header, length);
     header->length = length;
-    #if DEBUG == DEBUG_System_Memory
     header->type = typeof(System_Memory_Header);
-    #endif
 
 return_free:
     *thatPtr = null;

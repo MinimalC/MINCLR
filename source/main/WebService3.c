@@ -151,6 +151,12 @@ error:
     return null;
 }
 
+Network_HTTPResponse  Server_ECSX_request(Network_HTTPRequest request, System_String8 requestPath, System_String8 text, System_Size fileSize, System_Size mime) {
+
+    return null;
+}
+
+
 Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     Network_HTTPResponse response = null;
 
@@ -173,18 +179,20 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
         goto respond;
     }
-    if (System_Directory_exists(requestPath)) {
+    System_FileInfo fileInfo = Memory_allocClass(typeof(FileInfo)); FileInfo_init(fileInfo, requestPath);
+    if (FileInfo_isDirectory(fileInfo)) {
         System_Console_writeLine("HTTPService_serve: Folder {0:string}", 1, requestPath);
         System_String8_exchange(&requestPath, System_String8_concat1(requestPath, "index.html"));
+        FileInfo_init(fileInfo, requestPath);
     }
-    if (!System_File_exists(requestPath)) {
+    if (!FileInfo_isRegular(fileInfo)) {
         System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
         goto respond;
     }
     System_String8 requestExt = System_Path_getFileNameExt(requestPath);
     System_Size mime = 0;
-    for (; mime < Network_MimeTypes_Capacity; ++mime) {
+    while (++mime < Network_MimeTypes_Capacity) {
         if (String8_equals(requestExt, Network_MimeTypes[mime].extension)) break;
     }
     if (mime == Network_MimeTypes_Capacity) {
@@ -193,49 +201,47 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
         goto respond;
     }
-    System_Console_writeLine("HTTPService_serve: File {0:string}", 1, requestPath);
-    struct System_File file; System_Stack_clear(file);
-    if (!stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) {
-        System_Console_writeLine("HTTPService_serve: File Error {0:string}", 1, requestPath);
-        response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
+    Size fileSize = fileInfo->status.size;
+    if (fileSize > 2 && fileSize < 0x400000) { // Just serve not 4MB
+        String8 buffer = Memory_allocArray(typeof(Char8), fileSize + 1);
+        File file = System_File_open(requestPath, System_File_Mode_readOnly);
+        System_File_read(file, buffer, fileSize);
+        System_File_close(file);
+        Memory_free(file);
+        if (response = Server_ECSX_request(request, requestPath, buffer, fileSize, mime)) goto respond;
+        System_Console_writeLine("HTTPService_serve: File {0:string}", 1, requestPath);
+        response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
+        response->body.length = fileSize;
+        response->body.value = buffer;
+        base_System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(fileSize));
+        base_System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[mime].name);
+        base_System_String8Dictionary_add(response->header, "Connection", "close");
         goto respond;
     }
 
-    response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
-
-    System_Size fileSize = System_File_get_Length(&file);
-    if (fileSize) {
-        response->body.length = fileSize;
-        response->body.value = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
-        System_File_read(&file, response->body.value, fileSize);
-    }
-    System_File_close(&file);
-
-    base_System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(fileSize));
-    base_System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[mime].name);
-    base_System_String8Dictionary_add(response->header, "Connection", "close");
-
+    System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
+    response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
+    
 respond:
     if (currentDirectory) System_Memory_free(currentDirectory);
     if (requestExt) System_Memory_free(requestExt);
     if (requestPath) System_Memory_free(requestPath);
-    //if (request) System_Memory_free(request);
+    if (fileInfo) System_Memory_free(fileInfo);
 
-    System_Char8  text1[System_String8_FormatLimit_VALUE]; Stack_clear(text1);
-    System_Size position = stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", text1, 2, response->status, Network_HTTPStatus_toString(response->status));
+    System_String8 scratch = System_Memory_allocArray(typeof(System_Char8), System_String8_FormatLimit_VALUE);
+    System_Size position = stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", scratch, 2, response->status, Network_HTTPStatus_toString(response->status));
     for (System_Size i = 0; i < base_System_String8Dictionary_get_Length(response->header); ++i) {
         System_String8 key = base_System_String8Dictionary_get_index(response->header, i);
         System_String8 value = base_System_String8Dictionary_get_value(response->header, key);
-        position += stack_System_String8_formatLine("{0:string}: {1:string}\r", text1 + position, 2, key, value);
+        position += stack_System_String8_formatLine("{0:string}: {1:string}\r", scratch + position, 2, key, value);
     }
-    position += stack_System_String8_formatLine("\r", text1 + position, 0);
+    position += stack_System_String8_formatLine("\r", scratch + position, 0);
 
     response->head.length = position;
-    response->head.value = System_Memory_allocArray(typeof(System_Char8), position + 1);
-    System_String8_copyTo(text1, response->head.value);
+    response->head.value = scratch;
 
     if (response->body.length && System_String8_startsWith(Network_MimeTypes[mime].name, "text/"))
-        System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->head.value, response->body.value);
+        System_Console_writeLine("HTTPResponse_toMessage: {0:string}\n{1:string}", 2, response->head.value, response->body.value);
     else
         System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->head.value);
 
@@ -254,7 +260,7 @@ void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info inf
     System_Syscall_terminate(false);
 }
 
-int System_Runtime_main(int argc, char  * argv[]) {
+int System_Runtime_main(int argc, String8 argv[]) {
 
     if (argc < 1) {
         System_Console_writeLine__string("Usage: WebService <command> <file>");

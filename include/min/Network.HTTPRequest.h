@@ -8,6 +8,9 @@
 #if !defined(have_System_String8Dictionary)
 #include "System.String8Dictionary.h"
 #endif
+#if !defined(have_System_MemoryStream)
+#include "System.MemoryStream.h"
+#endif
 #if !defined(have_Network_HTTPRequest)
 #define have_Network_HTTPRequest
 
@@ -60,7 +63,7 @@ export void base_Network_HTTPRequest_free(Network_HTTPRequest that);
 typedef struct Network_HTTPResponse {
     struct System_Object base;
 
-    struct System_String source;
+    struct System_String head;
 
     Network_HTTPStatus status;
 
@@ -68,7 +71,9 @@ typedef struct Network_HTTPResponse {
 
     /* System_Bool keepAlive; */
 
-    struct System_String buffer;
+    struct System_String body;
+
+    System_MemoryStream stream;
 
 } * Network_HTTPResponse;
 

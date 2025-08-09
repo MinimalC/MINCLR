@@ -2,10 +2,10 @@
 #include <min/System.h>
 #include <min/System.ECQLite.h>
 
-int main_ECQLite_test(int argc, char * argv[]) {
+int ECQLite_test(int argc, char * argv[]) {
 
-    if (argc < 2) { 
-        System_Console_writeLine__string("Usage: ECQLite_test Database.ecql");
+    if (argc < 2) {
+        System_Console_writeLine__string("Usage: ECQLite_test database.ecql");
         return false;
     }
 

@@ -339,16 +339,6 @@ void System_ELF64Assembly_link__globally(System_ELF64Assembly assembly, System_B
 
         if (program->type == System_ELFAssembly_ProgramType_Loadable) {
             System_Memory_copyTo((System_Var)assembly->header + program->offset, program->fileSize, assembly->link + program->virtualAddress);
-
-            System_Memory_PageFlags protection = System_Memory_PageFlags_None;
-            if (enum_hasFlag(program->flags, System_ELFAssembly_ProgramFlags_Readable))
-                protection |= System_Memory_PageFlags_Read;
-            if (enum_hasFlag(program->flags, System_ELFAssembly_ProgramFlags_Writable))
-                protection |= System_Memory_PageFlags_Write;
-            if (enum_hasFlag(program->flags, System_ELFAssembly_ProgramFlags_Executable))
-                protection |= System_Memory_PageFlags_Execute;
-
-            System_Syscall_mprotect(assembly->link + program->virtualAddress, program->memorySize, protection);
         }
         if (program->type == System_ELFAssembly_ProgramType_Dynamic) {
             assembly->dynamics = (System_ELF64Assembly_DynamicEntry)(assembly->link + program->virtualAddress);
@@ -361,21 +351,46 @@ void System_ELF64Assembly_link__globally(System_ELF64Assembly assembly, System_B
             assembly->threadStorageOffset = !System_ELF64Assembly_loadedCount || !lastLoaded ? 0 : lastLoaded->threadStorageOffset + lastLoaded->threadStorageSize;
         }
     }
-    /*for (System_Size i = 0; i < assembly->header->sectionHeaderCount; ++i) {
+    for (System_Size i = 0; i < assembly->header->sectionHeaderCount; ++i) {
         System_ELF64Assembly_SectionHeader section = (System_ELF64Assembly_SectionHeader)((System_Var)assembly->sections + (i * assembly->header->sectionHeaderSize));
 
         if (section->flags & System_ELFAssembly_SectionFlags_Alloc) {
-            if (section->type != System_ELFAssembly_SectionType_NOBITS)
-                System_Memory_copyTo((System_Var)assembly->header + section->offset, section->size, assembly->link + section->virtualAddress);
+            if (section->type == System_ELFAssembly_SectionType_NOBITS)
+                System_Memory_clear(assembly->link + section->virtualAddress, section->size);
+            /* else
+                System_Memory_copyTo((System_Var)assembly->header + section->offset, section->size, assembly->link + section->virtualAddress); */
+        }
+    }
 
+    for (System_Size i = 0; i < assembly->header->programHeaderCount; ++i) {
+        System_ELF64Assembly_ProgramHeader program = (System_ELF64Assembly_ProgramHeader)((System_Var)assembly->programs + (i * assembly->header->programHeaderSize));
+
+        if (program->type == System_ELFAssembly_ProgramType_Loadable) {
+            System_Memory_PageFlags protection = System_Memory_PageFlags_None;
+            if (enum_hasFlag(program->flags, System_ELFAssembly_ProgramFlags_Readable))
+                protection |= System_Memory_PageFlags_Read;
+            if (enum_hasFlag(program->flags, System_ELFAssembly_ProgramFlags_Writable))
+                protection |= System_Memory_PageFlags_Write;
+            if (enum_hasFlag(program->flags, System_ELFAssembly_ProgramFlags_Executable))
+                protection |= System_Memory_PageFlags_Execute;
+
+            System_Syscall_mprotect(assembly->link + program->virtualAddress, program->memorySize, protection);
+        }
+    }
+    /* for (System_Size i = 0; i < assembly->header->sectionHeaderCount; ++i) {
+        System_ELF64Assembly_SectionHeader section = (System_ELF64Assembly_SectionHeader)((System_Var)assembly->sections + (i * assembly->header->sectionHeaderSize));
+
+        if (section->flags & System_ELFAssembly_SectionFlags_Alloc) {
             System_Memory_PageFlags protection = System_Memory_PageFlags_Read;
             if (section->flags & System_ELFAssembly_SectionFlags_Writable)
                 protection |= System_Memory_PageFlags_Write;
             if (section->flags & System_ELFAssembly_SectionFlags_Executable)
                 protection |= System_Memory_PageFlags_Execute;
-            // System_Syscall_mprotect(assembly->link + section->virtualAddress, section->size, protection);
+
+            System_Syscall_mprotect(assembly->link + section->virtualAddress, section->size, protection);
         }
-    }*/
+    } */
+
     for (System_Size i = 0; i < assembly->dynamicsCount; ++i) {
         System_ELF64Assembly_DynamicEntry dynamic = assembly->dynamics + i;
 

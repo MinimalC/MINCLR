@@ -79,7 +79,7 @@ System_Size System_Console_execute__arguments(System_String8 fileName, Size argc
     }
     if (error) System_Exception_throw(new_System_IOException(String8_format("System_Syscall_wait error {0:string}", 1, enum_getName(typeof(System_ErrorCode), error))));
     System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
-    return !error;
+    return WEXITSTATUS(status);
 }
 
 System_Size System_Console_execute(System_String8 fileName, ...) {
@@ -88,58 +88,56 @@ System_Size System_Console_execute(System_String8 fileName, ...) {
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    System_Console_execute__arguments(fileName, argc, (System_String8 *)argv);
+    return System_Console_execute__arguments(fileName, argc, (System_String8 *)argv);
 }
 
-void  System_Console_write__string_size(String8 string, Size size) {
+System_Size  System_Console_write__string_size(String8 string, Size size) {
     Console_assert(string);
-    System_File_write__string_size(&System_Console_StdOut, string, size);
+    return System_File_write__string_size(&System_Console_StdOut, string, size);
 }
 
-void  System_Console_write__string(String8 string) {
-    System_Console_write__string_size(string, String8_get_Length(string));
+System_Size  System_Console_write__string(String8 string) {
+    return System_Console_write__string_size(string, String8_get_Length(string));
 }
 
-void  System_Console_write__char(Char8 character) {
+System_Size  System_Console_write__char(Char8 character) {
     System_Console_write__string_size(&character, 1);
+    return 1;
 }
 
-void  System_Console_write(String8 format, ...) {
+System_Size  System_Console_write(String8 format, ...) {
     Console_assert(format);
     Arguments args;
     Arguments_start(args, format);
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    System_File_writeEnd__arguments(&System_Console_StdOut, format, 0, argc, argv);
+    return System_File_writeEnd__arguments(&System_Console_StdOut, format, 0, argc, argv);
 }
 
-void  System_Console_writeLineEmpty(void) {
+System_Size  System_Console_writeLineEmpty(void) {
     System_File_write__string_size(&System_Console_StdOut, "\n", 1);
+    return 1;
 }
 
-void  System_Console_writeLine__string(String8 string) {
-    System_Console_writeLine(string, 0);
+System_Size  System_Console_writeLine__string(String8 string) {
+    return System_Console_writeLine(string, 0);
 }
 
-void  System_Console_writeLine(String8 format, ...) {
+System_Size  System_Console_writeLine(String8 format, ...) {
     Console_assert(format);
     Arguments args;
     Arguments_start(args, format);
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    System_File_writeEnd__arguments(&System_Console_StdOut, format, '\n', argc, argv);
+    return System_File_writeEnd__arguments(&System_Console_StdOut, format, '\n', argc, argv);
 }
 
 void System_Console_assert__string8(System_Bool expression, const System_String8 text, const System_String8 functionName, const System_String8 fileName, const System_Size line) {
     if (expression) return;
-    Var argv[4];
-    argv[0] = (Var)text;
-    argv[1] = (Var)functionName;
-    argv[2] = (Var)fileName;
-    argv[3] = (Var)line;
-    System_File_writeEnd__arguments(&System_Console_StdErr, "ASSERT: {0:string} in function {1:string} in {2:string}:{3:int}", '\n', 4, argv);
+    Var argv[4]; argv[0] = (Var)text; argv[1] = (Var)functionName; argv[2] = (Var)line; argv[3] = (Var)fileName;
+    System_File_writeEnd__arguments(&System_Console_StdErr, "System_Console_assert {0:string} in function {1:string} line {2:int} file {3:string}", '\n', 4, argv);
 }
 
 void System_Console_debug(const System_String8 format, ...) {

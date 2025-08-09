@@ -57,10 +57,8 @@ System_Bool  stack_System_File_open(System_File that, System_String8 filename, S
         System_File_Permission_UserReadWrite | System_File_Permission_GroupReadWrite | System_File_Permission_EverybodyRead);
 
     System_ErrorCode error = System_Syscall_get_Error();
-    if (error) { /* TODO */
-        System_Exception exception = new_System_IOException("File not found");
-        exception->error = error;
-        Exception_throw(exception);
+    if (error) {
+        System_Exception_throw(new_System_IOException__error(error, "File not found"));
         return false;
     }
 
@@ -75,11 +73,8 @@ System_Bool  stack_System_File_open(System_File that, System_String8 filename, S
 */
 System_File  new_System_File() {
     System_File that = (System_File)System_Memory_allocClass(typeof(System_File));
-    // System_File_init(that);
     return that;
 }
-
-// void  System_File_init(File that) { }
 
 /** function System_File_close
     This method closes the File.
@@ -103,51 +98,54 @@ Size  System_File_read(File that, String8 value, Size count) {
     return length;
 }
 
-void  System_File_write__string_size(File that, String8 value, Size count) {
+Size  System_File_write__string_size(File that, String8 value, Size count) {
 /*  ISO_fwrite(value, 1, count, (ISO_File)that->fileId); */
-    Size length = System_Syscall_write(that->fileId, value, count);
+    return System_Syscall_write(that->fileId, value, count);
 }
 
-void  System_File_write__string(File that, String8 string) {
-    System_File_write__string_size(that, string, String8_get_Length(string));
+Size  System_File_write__string(File that, String8 string) {
+    Size length = String8_get_Length(string);
+    return System_File_write__string_size(that, string, length);
 }
 
-void  System_File_write__char(File that, Char8 character) {
+Size  System_File_write__char(File that, Char8 character) {
     System_File_write__string_size(that, &character, 1);
+    return 1;
 }
 
-void  System_File_writeLineEmpty(File that) {
+Size  System_File_writeLineEmpty(File that) {
     System_File_write__string_size(that, "\n", 1);
+    return 1;
 }
 
-void  System_File_write(File that, String8 format, ...) {
+Size  System_File_write(File that, String8 format, ...) {
     Console_assert(format);
     Arguments args;
     Arguments_start(args, format);
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    System_File_writeEnd__arguments(that, format, 0, argc, argv);
+    return System_File_writeEnd__arguments(that, format, 0, argc, argv);
 }
 
-void  System_File_writeLine__string(File that, String8 string) {
-    System_File_writeLine(that, string, 0);
+Size  System_File_writeLine__string(File that, String8 string) {
+    return System_File_writeLine(that, string, 0);
 }
 
-void  System_File_writeLine(File that, String8 format, ...) {
+Size  System_File_writeLine(File that, String8 format, ...) {
     Console_assert(format);
     Arguments args;
     Arguments_start(args, format);
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    System_File_writeEnd__arguments(that, format, '\n', argc, argv);
+    return System_File_writeEnd__arguments(that, format, '\n', argc, argv);
 }
 
-void  System_File_writeEnd__arguments(File stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
-    Char8  message[System_String8_formatLimit_VALUE]; System_Stack_clear(message);
+Size  System_File_writeEnd__arguments(File stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
+    Char8  message[System_String8_FormatLimit_VALUE]; System_Stack_clear(message);
     Size message_length = stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);
-    System_File_write__string_size(stream, message, message_length);
+    return System_File_write__string_size(stream, message, message_length);
 }
 
 Size  System_File_seek(File that, SSize offset, Origin origin) {
@@ -183,7 +181,6 @@ void  System_File_sync(File that) {
 struct System_Type_FunctionInfo  System_FileTypeFunctions[] = {
     { .function = base_System_Object_free, .value = System_File_free },
     { .function = base_System_IStream_write__string_size, .value = System_File_write__string_size },
-    { .function = base_System_IStream_writeEnd__arguments, .value = System_File_write__string_size },
     { .function = base_System_IStream_sync, .value = System_File_sync },
     { .function = base_System_IStream_read, .value = System_File_read },
     { .function = base_System_IStream_seek, .value = System_File_seek },
@@ -199,7 +196,7 @@ struct System_Type System_FileType = {
     .base = { .type = typeof(System_Type) },
 	.name = "File",
     .size = sizeof(struct System_File),
-	.baseType = &System_ObjectType,
+	.baseType = typeof(System_Object),
     .functions = { .length = sizeof_array(System_FileTypeFunctions), .value = &System_FileTypeFunctions },
     .interfaces = { .length = sizeof_array(System_FileTypeInterfaces), .value = &System_FileTypeInterfaces },
 };

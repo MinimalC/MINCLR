@@ -130,6 +130,13 @@ System_Exception  new_System_IOException(System_String8 message) {
     return that;
 }
 
+System_Exception  new_System_IOException__error(System_ErrorCode error, System_String8 message) {
+    System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_IOException));
+    base_System_Exception_init(that, message);
+    that->error = error;
+    return that;
+}
+
 struct System_Type System_NotSupportedExceptionType = {
     .base = { .type = typeof(System_Type) },
     .name = "NotSupportedException",

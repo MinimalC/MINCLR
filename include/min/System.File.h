@@ -35,6 +35,24 @@ enum {
     System_File_Mode_temporary        = (020000000 | System_File_Mode_Directory),
 };
 
+#if defined(using_System)
+#define File_Mode  System_File_Mode
+#define File_Mode_readOnly  System_File_Mode_readOnly
+#define File_Mode_writeOnly  System_File_Mode_writeOnly
+#define File_Mode_readWrite  System_File_Mode_readWrite
+#define File_Mode_create  System_File_Mode_create
+#define File_Mode_exclusive  System_File_Mode_exclusive
+#define File_Mode_noControllingTerminal  System_File_Mode_noControllingTerminal
+#define File_Mode_truncate  System_File_Mode_truncate
+#define File_Mode_append  System_File_Mode_append
+#define File_Mode_nonBlock  System_File_Mode_nonBlock
+#define File_Mode_LargeFile  System_File_Mode_LargeFile
+#define File_Mode_Directory  System_File_Mode_Directory
+#define File_Mode_noAccessTime  System_File_Mode_noAccessTime
+#define File_Mode_closeOnExecute  System_File_Mode_closeOnExecute
+#define File_Mode_temporary  System_File_Mode_temporary
+#endif
+
 typedef System_IntPtr  System_File_Permission;
 enum {
     System_File_Permission_UserRead             = 0400,
@@ -72,14 +90,14 @@ export System_Bool  stack_System_File_open(System_File that, System_String8 name
 export System_File  new_System_File();
 export void  System_File_init(System_File that);
 export void  System_File_free(System_File that);
-export void  System_File_write__string_size(System_File that, System_String8 value, System_Size count);
-export void  System_File_write__string(System_File that, System_String8 string);
-export void  System_File_write__char(System_File that, System_Char8 character);
-export void  System_File_writeLineEmpty(System_File that);
-export void  System_File_write(System_File that, System_String8 format, ...);
-export void  System_File_writeLine__string(System_File that, System_String8 string);
-export void  System_File_writeLine(System_File that, System_String8 format, ...);
-export void  System_File_writeEnd__arguments(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
+export System_Size  System_File_write__string_size(System_File that, System_String8 value, System_Size count);
+export System_Size  System_File_write__string(System_File that, System_String8 string);
+export System_Size  System_File_write__char(System_File that, System_Char8 character);
+export System_Size  System_File_writeLineEmpty(System_File that);
+export System_Size  System_File_write(System_File that, System_String8 format, ...);
+export System_Size  System_File_writeLine__string(System_File that, System_String8 string);
+export System_Size  System_File_writeLine(System_File that, System_String8 format, ...);
+export System_Size  System_File_writeEnd__arguments(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 export void  System_File_sync(System_File that);
 export System_Size  System_File_seek(System_File that, System_SSize offset, System_Origin origin);
 export System_Size  System_File_read(System_File that, System_String8 value, System_Size count);
@@ -90,18 +108,6 @@ export void  System_File_set_Length(System_File that, System_Size value);
 export void  System_File_close(System_File that);
 
 #if defined(using_System)
-#define File_Mode  System_File_Mode
-#define File_Mode_readOnly  System_File_Mode_readOnly
-#define File_Mode_writeOnly  System_File_Mode_writeOnly
-#define File_Mode_readWrite  System_File_Mode_readWrite
-#define File_Mode_create  System_File_Mode_create
-#define File_Mode_append  System_File_Mode_append
-#define File_Mode_exclusive  System_File_Mode_exclusive
-#define File_Mode_direct  System_File_Mode_direct
-#define File_Mode_Directory  System_File_Mode_Directory
-#define File_Mode_closeOnExecute  System_File_Mode_closeOnExecute
-#define File_Mode_syncd  System_File_Mode_syncd
-
 #define File  System_File
 #define FileType  System_FileType
 #define File_exists  System_File_exists

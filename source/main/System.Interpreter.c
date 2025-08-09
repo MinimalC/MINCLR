@@ -398,8 +398,8 @@ int System_Runtime_main(int argc, char  * argv[]) {
     System_Console_writeLine("INTERP JUMPING to 0x{0:uint:hex}, with stack on 0x{1:uint:hex}", 2, entry, System_Runtime_stack);
 #endif
 
-    System_Var tls = System_Thread_createStorage();
-    if (tls) System_Thread_setRegister(tls);
+    /* System_Var tls = System_Thread_createStorage();
+    if (tls) System_Thread_setRegister(tls); */
 
     register System_Var entry0 __asm__("r11") = entry;
     // register System_Var exit0 __asm__("rdx") = ;

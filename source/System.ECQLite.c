@@ -338,11 +338,11 @@ next_table2:
     System_File_write__string_size(database_file, (System_String8)&new_size, sizeof(System_Size));
     if (new_size > old_size) {
         System_Var old_link = that->link;
-        System_Var new_link = System_Syscall_mmap__full(that->link, database->size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Shared, database_file->fileId, /* offset */ 0 );
+        System_Var new_link = System_Syscall_mmap__full(old_link, database->size, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Shared, database_file->fileId, /* offset */ 0 );
         if (!new_link) return false;
         that->link = new_link;
-        // System_Syscall_munmap(old_link, old_size);
         if (new_link != old_link){
+            System_Syscall_munmap(old_link, old_size);
 #if DEBUG == DEBUG_System_ECQLite
 System_Console_debugLine__string("DANGER: Database link moved.");
 #endif

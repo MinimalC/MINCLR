@@ -235,9 +235,9 @@ IntPtr HTTPService_serve(Size argc, Var argv[]) {
 
     System_Size fileSize = System_File_get_Length(&file);
     if (fileSize) {
-        response->buffer.length = fileSize;
-        response->buffer.value = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
-        System_File_read(&file, response->buffer.value, fileSize);
+        response->body.length = fileSize;
+        response->body.value = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
+        System_File_read(&file, response->body.value, fileSize);
     }
     System_File_close(&file);
 
@@ -261,7 +261,7 @@ respond:
         goto error;
     }
 
-    System_Char8  text1[System_String8_formatLimit_VALUE]; Stack_clear(text1);
+    System_Char8  text1[System_String8_FormatLimit_VALUE]; Stack_clear(text1);
     System_Size position = stack_System_String8_formatLine("HTTP/1.1 {0:uint} {1:string}\r", text1, 2, response->status, Network_HTTPStatus_toString(response->status));
     for (System_Size i = 0; i < base_System_String8Dictionary_get_Length(response->header); ++i) {
         System_String8 key = base_System_String8Dictionary_get_index(response->header, i);
@@ -270,17 +270,17 @@ respond:
     }
     position += stack_System_String8_formatLine("\r", text1 + position, 0);
 
-    response->source.length = position;
-    response->source.value = System_Memory_allocArray(typeof(System_Char8), position + 1);
-    System_String8_copyTo(text1, response->source.value);
+    response->head.length = position;
+    response->head.value = System_Memory_allocArray(typeof(System_Char8), position + 1);
+    System_String8_copyTo(text1, response->head.value);
 
-    if (response->buffer.length && System_String8_startsWith(Network_MimeTypes[mime].name, "text/"))
-        System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->source.value, response->buffer.value);
+    if (response->body.length && System_String8_startsWith(Network_MimeTypes[mime].name, "text/"))
+        System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->head.value, response->body.value);
     else
-        System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->source.value);
+        System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->head.value);
 
-    Network_TCPSocket_send(tcp, &response->source, Network_MessageFlags_NOSIGNAL);
-    Network_TCPSocket_send(tcp, &response->buffer, Network_MessageFlags_NOSIGNAL);
+    Network_TCPSocket_send(tcp, &response->head, Network_MessageFlags_NOSIGNAL);
+    Network_TCPSocket_send(tcp, &response->body, Network_MessageFlags_NOSIGNAL);
 
     if (response) System_Memory_free(response);
 

@@ -178,7 +178,7 @@ void  System_Syscall_munmap(System_Var address, System_Size length) {
 }
 
 void System_Syscall_mmap__debug(void) {
-    if (System_Syscall_mmapCount) System_Console_writeLine("System_Syscall_mmap called {0:int} times without munmap.", 1, System_Syscall_mmapCount);
+    if (System_Syscall_mmapCount) System_Console_debugLine("System_Syscall_mmap called {0:int} times without munmap.", 1, System_Syscall_mmapCount);
 }
 
 void  System_Syscall_mprotect(System_Var address, System_Size length, System_IntPtr flags) {

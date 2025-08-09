@@ -45,6 +45,7 @@
 #include "System.List.h"
 #include "System.ListEnumerator.h"
 #include "System.Dictionary.h"
+#include "System.MemoryStream.h"
 
 #include "Network.TCPSocket.h"
 #include "Network.HTTPRequest.h"

@@ -6,7 +6,7 @@ int ECQLite1_main(int argc, char * argv[]) {
 
     if (argc < 6) { 
         System_Console_writeLine__string("Usage:");
-        System_Console_writeLine__string("  ECQLite1 Database.ecql");
+        System_Console_writeLine__string("  ECQLite1 database.ecql");
         System_Console_writeLine__string("  ... CREATE Table SET Person .... 1000 \"Name Birthdate Email Telefon\"");
         System_Console_writeLine__string("  ... CREATE Person SET Hans 12.11.1984 hans@mail.de +491765432109");
         System_Console_writeLine__string("  ... SELECT Person WHERE Hans");

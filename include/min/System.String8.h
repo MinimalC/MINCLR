@@ -43,10 +43,10 @@ export System_SSize  System_String8_lastIndexOf__size(System_String8 that, Syste
 export System_SSize  System_String8_lastIndexOf(System_String8 that, System_Char8 character);
 export System_Size  System_String8_get_Length(System_String8 that);
 export System_Size  System_String8_get_Length__max(System_String8 that, System_Size limit);
-export void  System_String8_copyTo(System_String8 src, System_String8 dest);
-export void  System_String8_copyToAt(System_String8 src, System_String8 dest, System_Size at);
-export void  System_String8_copySubstringTo(System_String8 src, System_Size count, System_String8 dest);
-export void  System_String8_copySubstringToAt(System_String8 src, System_Size count, System_String8 dest, System_Size at);
+export System_Size  System_String8_copyTo(System_String8 src, System_String8 dest);
+export System_Size  System_String8_copyToAt(System_String8 src, System_String8 dest, System_Size at);
+export System_Size  System_String8_copySubstringTo(System_String8 src, System_Size count, System_String8 dest);
+export System_Size  System_String8_copySubstringToAt(System_String8 src, System_Size count, System_String8 dest, System_Size at);
 export System_String8  System_String8_copy(System_String8 that);
 export System_String8  System_String8_copyOf(System_String8 that, System_Size offset);
 export System_String8  System_String8_copySubstring(System_String8 that, System_Size count);
@@ -70,7 +70,7 @@ export System_UInt64  System_String8_getSipHash(System_String8 that);
 #define inline_System_String8_equals(chars0, chars1)  (0 == System_String8_compare(chars0, chars1))
 #define inline_System_String8_equalsSubstring(chars0, chars1, n)  (0 == System_String8_compareSubstring(chars0, chars1, n))
 
-#define System_String8_formatLimit_VALUE  System_UInt16_Max
+#define System_String8_FormatLimit_VALUE  System_UInt16_Max
 #define System_String8_MaxLength_VALUE  System_UInt32_Max
 
 export System_String8  System_String8_format(System_String8 format, ...);
@@ -80,12 +80,12 @@ export System_String8  System_String8_formatLine__arguments(System_String8 forma
 export System_String8  System_String8_formatEnd(System_String8 format, System_Char8 suffix, ...);
 export System_String8  System_String8_formatEnd__arguments(System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 
-export System_Size  stack_System_String8_format(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], ...);
-export System_Size  stack_System_String8_format__arguments(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], System_Size argc, System_Var argv[]);
-export System_Size  stack_System_String8_formatLine(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], ...);
-export System_Size  stack_System_String8_formatLine__arguments(System_String8 format, System_Char8 message[System_String8_formatLimit_VALUE], System_Size argc, System_Var argv[]);
-export System_Size  stack_System_String8_formatEnd(System_String8 format, System_Char8 suffix, System_Char8 message[System_String8_formatLimit_VALUE], ...);
-export System_Size  stack_System_String8_formatEnd__arguments(System_String8 format, System_Char8 suffix, System_Char8 message[System_String8_formatLimit_VALUE], System_Size argc, System_Var argv[]);
+export System_Size  stack_System_String8_format(System_String8 format, System_Char8 message[System_String8_FormatLimit_VALUE], ...);
+export System_Size  stack_System_String8_format__arguments(System_String8 format, System_Char8 message[System_String8_FormatLimit_VALUE], System_Size argc, System_Var argv[]);
+export System_Size  stack_System_String8_formatLine(System_String8 format, System_Char8 message[System_String8_FormatLimit_VALUE], ...);
+export System_Size  stack_System_String8_formatLine__arguments(System_String8 format, System_Char8 message[System_String8_FormatLimit_VALUE], System_Size argc, System_Var argv[]);
+export System_Size  stack_System_String8_formatEnd(System_String8 format, System_Char8 suffix, System_Char8 message[System_String8_FormatLimit_VALUE], ...);
+export System_Size  stack_System_String8_formatEnd__arguments(System_String8 format, System_Char8 suffix, System_Char8 message[System_String8_FormatLimit_VALUE], System_Size argc, System_Var argv[]);
 export System_Size  stack_System_String8_formatEnd__limit_arguments(System_String8 format, System_Char8 suffix, System_Size limit, System_Char8 message[], System_Size argc, System_Var argv[]);
 
 #if defined(using_System)
@@ -109,7 +109,7 @@ export System_Size  stack_System_String8_formatEnd__limit_arguments(System_Strin
 #define String8_exchange  System_String8_exchange
 #define String8_getSipHash  System_String8_getSipHash
 
-#define String8_formatLimit_VALUE  System_String8_formatLimit_VALUE
+#define String8_formatLimit_VALUE  System_String8_FormatLimit_VALUE
 #define String8_format  System_String8_format
 #define String8_formatLine  System_String8_formatLine
 #define String8_formatEnd  System_String8_formatEnd

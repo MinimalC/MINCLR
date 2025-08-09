@@ -23,14 +23,14 @@ export void  System_Console_sync(void);
 export System_Size  System_Console_execute(System_String8 fileName, ...);
 export System_Size  System_Console_execute__arguments(System_String8 fileName, System_Size argc, System_String8 argv[]);
 
-export void  System_Console_write__char(System_Char8 character);
-export void  System_Console_write__string_size(System_String8 string, System_Size size);
-export void  System_Console_write__string(System_String8 string);
-export void  System_Console_write(System_String8 format, ...);
-export void  System_Console_writeLineEmpty(void);
-/*export void  System_Console_writeLine__string_size(System_String8 string, System_Size size);*/
-export void  System_Console_writeLine__string(System_String8 string);
-export void  System_Console_writeLine(System_String8 format, ...);
+export System_Size  System_Console_write__char(System_Char8 character);
+export System_Size  System_Console_write__string_size(System_String8 string, System_Size size);
+export System_Size  System_Console_write__string(System_String8 string);
+export System_Size  System_Console_write(System_String8 format, ...);
+export System_Size  System_Console_writeLineEmpty(void);
+/*export System_Size  System_Console_writeLine__string_size(System_String8 string, System_Size size);*/
+export System_Size  System_Console_writeLine__string(System_String8 string);
+export System_Size  System_Console_writeLine(System_String8 format, ...);
 export void  System_Console_assert__string8(const System_Bool expression, const System_String8 text, const System_String8 functionName, const System_String8 fileName, const System_Size line);
 export void  System_Console_debug(const System_String8 format, ...);
 export void  System_Console_debug__string(System_String8 format);
@@ -53,12 +53,13 @@ export void  System_Console_writeHex(System_Size length, System_Var value);
 #define ConsoleType  System_ConsoleType
 #define Console_exit  System_Console_exit
 #define Console_sync  System_Console_sync
+#define Console_write__char  System_Console_write__char
+#define Console_write__string_size  System_Console_write__string_size
 #define Console_write__string  System_Console_write__string
 #define Console_write  System_Console_write
 #define Console_writeLineEmpty  System_Console_writeLineEmpty
 #define Console_writeLine__string  System_Console_writeLine__string
 #define Console_writeLine  System_Console_writeLine
-#define Console_write__char  System_Console_write__char
 #define Console_assert  System_Console_assert
 #define Console_assert__string8  System_Console_assert__string8
 #define Console_debug  System_Console_debug

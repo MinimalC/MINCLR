@@ -13,7 +13,7 @@
 
 /** class System_IStream  **/
 
-void  base_System_IStream_write__string_size(IStream that, String8 value, Size count) { }
+System_Size  base_System_IStream_write__string_size(IStream that, String8 value, Size count) { }
 
 void  base_System_IStream_sync(IStream that) {  }
 
@@ -26,13 +26,12 @@ System_Size  base_System_IStream_get_Position(IStream that) { return 0; }
 void  base_System_IStream_set_Position(IStream that, Size value) { }
 
 struct System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
-    [0] = { .function = base_System_IStream_write__string_size, .value = null },
-    [1] = { .function = base_System_IStream_writeEnd__arguments, .value = null },
-    [2] = { .function = base_System_IStream_sync, .value = null },
-    [3] = { .function = base_System_IStream_read, .value = null },
-    [4] = { .function = base_System_IStream_seek, .value = null },
-    [5] = { .function = base_System_IStream_get_Position, .value = null },
-    [6] = { .function = base_System_IStream_set_Position, .value = null },
+    { .function = base_System_IStream_write__string_size, .value = null },
+    { .function = base_System_IStream_sync, .value = null },
+    { .function = base_System_IStream_read, .value = null },
+    { .function = base_System_IStream_seek, .value = null },
+    { .function = base_System_IStream_get_Position, .value = null },
+    { .function = base_System_IStream_set_Position, .value = null },
 };
 
 struct System_Type System_IStreamType = { .base = { .type = typeof(System_Type) },
@@ -49,11 +48,11 @@ void  System_IStream_write(IStream stream, String8 format, ...) {
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    base_System_IStream_writeEnd__arguments(stream, format, 0, argc, argv);
+    System_IStream_writeEnd__arguments(stream, format, 0, argc, argv);
 }
 
 void  System_IStream_write__arguments(IStream stream, String8 format, Size argc, Var argv[]) {
-    base_System_IStream_writeEnd__arguments(stream, format, 0, argc, argv);
+    System_IStream_writeEnd__arguments(stream, format, 0, argc, argv);
 }
 
 void  System_IStream_writeLine(IStream stream, String8 format, ...) {
@@ -62,11 +61,11 @@ void  System_IStream_writeLine(IStream stream, String8 format, ...) {
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    base_System_IStream_writeEnd__arguments(stream, format, '\n', argc, argv);
+    System_IStream_writeEnd__arguments(stream, format, '\n', argc, argv);
 }
 
 void  System_IStream_writeLine__arguments(IStream stream, String8 format, Size argc, Var argv[]) {
-    base_System_IStream_writeEnd__arguments(stream, format, '\n', argc, argv);
+    System_IStream_writeEnd__arguments(stream, format, '\n', argc, argv);
 }
 
 void  System_IStream_writeEnd(IStream stream, String8 format, Char8 suffix, ...) {
@@ -75,12 +74,12 @@ void  System_IStream_writeEnd(IStream stream, String8 format, Char8 suffix, ...)
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    base_System_IStream_writeEnd__arguments(stream, format, suffix, argc, argv);
+    System_IStream_writeEnd__arguments(stream, format, suffix, argc, argv);
 }
 
-void  base_System_IStream_writeEnd__arguments(IStream stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
+void  System_IStream_writeEnd__arguments(IStream stream, String8 format, Char8 suffix, Size argc, Var argv[]) {
 
-    Char8  message[System_String8_formatLimit_VALUE]; System_Stack_clear(message);
+    Char8  message[System_String8_FormatLimit_VALUE]; System_Stack_clear(message);
 
     Size message_length = stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);
     System_IStream_write__string_size(stream, message, message_length);

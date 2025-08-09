@@ -121,24 +121,34 @@ System_Size  System_String8_get_Length__max(System_String8 that, System_Size lim
     return i;
 }
 
-void  System_String8_copyTo(String8 src, String8 dest) {
-    Size count = String8_get_Length(src);
-    while ( count && ( *dest++ = *src++ ) ) --count;
+Size  System_String8_copyTo(String8 src, String8 dest) {
+    Size count0 = String8_get_Length(src);
+    Size count1 = count0;
+    while ( count0 && ( *dest++ = *src++ ) ) --count0;
+    return count1 - count0;
 }
 
-void  System_String8_copyToAt(String8 src, String8 dest, Size at) {
-    Size count = String8_get_Length(src);
+Size  System_String8_copyToAt(String8 src, String8 dest, Size at) {
+    Size count0 = String8_get_Length(src);
+    Size count1 = count0;
     dest += at;
-    while ( count && ( *dest++ = *src++ ) ) --count;
+    while ( count0 && ( *dest++ = *src++ ) ) --count0;
+    return count1 - count0;
 }
 
-void  System_String8_copySubstringTo(String8 src, Size count, String8 dest) {
-    while ( count && ( *dest++ = *src++ ) ) --count;
+Size  System_String8_copySubstringTo(String8 src, Size count, String8 dest) {
+    Size count0 = count;
+    Size count1 = count;
+    while ( count0 && ( *dest++ = *src++ ) ) --count0;
+    return count1 - count0;
 }
 
-void  System_String8_copySubstringToAt(String8 src, Size count, String8 dest, Size at) {
+Size  System_String8_copySubstringToAt(String8 src, Size count, String8 dest, Size at) {
+    Size count0 = count;
+    Size count1 = count;
     dest += at;
-    while ( count && ( *dest++ = *src++ ) ) --count;
+    while ( count0 && ( *dest++ = *src++ ) ) --count0;
+    return count1 - count0;
 }
 
 String8  System_String8_copy(String8 that) {
@@ -364,12 +374,12 @@ String8  System_String8_formatEnd(String8 format, Char8 suffix, ...) {
 }
 
 String8  System_String8_formatEnd__arguments(String8 format, Char8 suffix, Size argc, Var argv[]) {
-    Char8 message[System_String8_formatLimit_VALUE]; Stack_clear(message);
-    Size length = stack_System_String8_formatEnd__limit_arguments(format, suffix, System_String8_formatLimit_VALUE, message, argc, argv);
+    Char8 message[System_String8_FormatLimit_VALUE]; Stack_clear(message);
+    Size length = stack_System_String8_formatEnd__limit_arguments(format, suffix, System_String8_FormatLimit_VALUE, message, argc, argv);
     return System_String8_copy(message);
 }
 
-Size  stack_System_String8_format(String8 format, Char8 message[System_String8_formatLimit_VALUE], ...) {
+Size  stack_System_String8_format(String8 format, Char8 message[System_String8_FormatLimit_VALUE], ...) {
     Arguments args;
     Arguments_start(args, message);
     Var argv[System_Arguments_Limit];
@@ -378,11 +388,11 @@ Size  stack_System_String8_format(String8 format, Char8 message[System_String8_f
     return stack_System_String8_formatEnd__arguments(format, 0, message, argc, argv);
 }
 
-Size  stack_System_String8_format__arguments(String8 format, Char8 message[System_String8_formatLimit_VALUE], Size argc, Var argv[]) {
+Size  stack_System_String8_format__arguments(String8 format, Char8 message[System_String8_FormatLimit_VALUE], Size argc, Var argv[]) {
     return stack_System_String8_formatEnd__arguments(format, 0, message, argc, argv);
 }
 
-Size  stack_System_String8_formatLine(String8 format, Char8 message[System_String8_formatLimit_VALUE], ...) {
+Size  stack_System_String8_formatLine(String8 format, Char8 message[System_String8_FormatLimit_VALUE], ...) {
     Arguments args;
     Arguments_start(args, message);
     Var argv[System_Arguments_Limit];
@@ -391,11 +401,11 @@ Size  stack_System_String8_formatLine(String8 format, Char8 message[System_Strin
     return stack_System_String8_formatEnd__arguments(format, '\n', message, argc, argv);
 }
 
-Size  stack_System_String8_formatLine__arguments(String8 format, Char8 message[System_String8_formatLimit_VALUE], Size argc, Var argv[]) {
+Size  stack_System_String8_formatLine__arguments(String8 format, Char8 message[System_String8_FormatLimit_VALUE], Size argc, Var argv[]) {
     return stack_System_String8_formatEnd__arguments(format, '\n', message, argc, argv);
 }
 
-Size  stack_System_String8_formatEnd(String8 format, Char8 suffix, Char8 message[System_String8_formatLimit_VALUE], ...) {
+Size  stack_System_String8_formatEnd(String8 format, Char8 suffix, Char8 message[System_String8_FormatLimit_VALUE], ...) {
     Arguments args;
     Arguments_start(args, message);
     Var argv[System_Arguments_Limit];
@@ -404,8 +414,8 @@ Size  stack_System_String8_formatEnd(String8 format, Char8 suffix, Char8 message
     return stack_System_String8_formatEnd__arguments(format, suffix, message, argc, argv);
 }
 
-Size  stack_System_String8_formatEnd__arguments(String8 format, Char8 suffix, Char8 message[System_String8_formatLimit_VALUE], Size argc, Var argv[]) {
-    return stack_System_String8_formatEnd__limit_arguments(format, suffix, System_String8_formatLimit_VALUE, message, argc, argv);
+Size  stack_System_String8_formatEnd__arguments(String8 format, Char8 suffix, Char8 message[System_String8_FormatLimit_VALUE], Size argc, Var argv[]) {
+    return stack_System_String8_formatEnd__limit_arguments(format, suffix, System_String8_FormatLimit_VALUE, message, argc, argv);
 }
 
 Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suffix, Size limit, Char8 message[], Size argc, Var argv[]) {
@@ -444,7 +454,6 @@ Size  stack_System_String8_formatEnd__limit_arguments(String8 format, Char8 suff
         String8 begin0 = 0, end0 = 0;
         for (; f < (format + format_length); ++f) {
             if (*f != '{') continue;
-            if (f > format && *(f - 1) == '\\') continue;
             begin0 = f;
             for (; f < (format + format_length); ++f) {
                 if (*f != '}') continue;

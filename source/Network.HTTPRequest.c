@@ -38,8 +38,9 @@ struct System_Type Network_HTTPRequestType = {
 
 void base_Network_HTTPResponse_free(Network_HTTPResponse that) {
     if (that->header) System_Memory_free(that->header);
-    System_Memory_freeStruct(&that->source, typeof(System_String));
-    System_Memory_freeStruct(&that->buffer, typeof(System_String));
+    System_Memory_freeStruct(&that->head, typeof(System_String));
+    System_Memory_freeStruct(&that->body, typeof(System_String));
+    if (that->stream) System_Memory_free(that->stream);
 }
 
 struct System_Type_FunctionInfo Network_HTTPResponseTypeFunctions[] = {

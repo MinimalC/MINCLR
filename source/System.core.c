@@ -55,3 +55,5 @@
 #include "Network.HTTPRequest.c"
 
 #include "System.ECQLite.c"
+
+#include "System.MemoryStream.c"
