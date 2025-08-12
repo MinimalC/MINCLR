@@ -37,9 +37,8 @@ SSize System_Memory_indexOf(Var ptr, Char8 needle, Size count) {
 
     SSize i = 0;
     String8 ptrBytes = (String8)ptr;
-    do {
+    while (++i < count)
         if (*ptrBytes++ == needle) return i;
-    } while (++i < count);
     return -1;
 }
 
@@ -69,13 +68,14 @@ void System_Memory_moveTo(Var src, Size count, Var dest) {
     Size n = count;
     String8 destBytes = (String8)dest;
     String8 srcBytes = (String8)src;
+    Char8 destByte = 0;
     if ( srcBytes < destBytes ) {
         destBytes += (n - 1);
         srcBytes += (n - 1);
-        while (n--) { *destBytes-- = *srcBytes; *srcBytes-- = 0; }
+        while (n--) { destByte = *destBytes; *destBytes-- = *srcBytes; *srcBytes-- = destByte; }
     }
     else
-        while (n--) { *destBytes++ = *srcBytes; *srcBytes++ = 0; }
+        while (n--) { destByte = *destBytes; *destBytes++ = *srcBytes; *srcBytes++ = destByte; }
 }
 
 void System_Memory_set(Var dest, Char8 src, Size length) {
@@ -105,6 +105,39 @@ Size System_Memory_compare(Var ptr0, Var ptr1, Size length) {
 
 Bool System_Memory_equals(Var ptr0, Var ptr1, Size length) {
     return (length == System_Memory_compare(ptr0, ptr1, length));
+}
+
+void System_Memory_sort(System_Var memory, System_Size itemsCount, System_Size itemSize, function(System_Memory_comparison) comparison) {
+    Size position = 0; SSize what = 0;
+    while (++position < itemsCount) {
+        for (Size position1 = position; position1; --position1) {
+            what = comparison(memory + (position1 - 1) * itemSize, memory + position1 * itemSize, itemSize);
+            if (what < 0) 
+                break;
+            if (what > 0)
+                System_Memory_moveTo(memory + (position1 - 1) * itemSize, itemSize, memory + position1 * itemSize);
+        }
+    }
+}
+
+System_SSize System_Memory_alphacompare(System_Var memory0, System_Var memory1, System_Size itemSize) {
+    System_Size length = System_Memory_compare(memory0, memory1, itemSize);
+    if (length == itemSize) return 0;
+    System_String8 memory0_string = (System_String8)memory0;
+    System_String8 memory1_string = (System_String8)memory1;
+    System_Char8 c0 = memory0_string[length];
+    System_Char8 c1 = memory1_string[length];
+    return c0 - c1;
+}
+
+System_SSize System_Memory_alphacomparedescending(System_Var memory0, System_Var memory1, System_Size itemSize) {
+    System_Size length = System_Memory_compare(memory0, memory1, itemSize);
+    if (length == itemSize) return 0;
+    System_String8 memory0_string = (System_String8)memory0;
+    System_String8 memory1_string = (System_String8)memory1;
+    System_Char8 c0 = memory0_string[length];
+    System_Char8 c1 = memory1_string[length];
+    return c1 - c0;
 }
 
 typedef struct System_Memory_Page {

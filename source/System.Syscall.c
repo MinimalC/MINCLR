@@ -154,6 +154,10 @@ System_IntPtr System_Syscall_mkdir(System_String8 path, System_IntPtr mode) {
     return System_Syscall_call02(System_Syscall_Command_mkdir, (System_IntPtr)path, mode);
 }
 
+System_Size System_Syscall_getdents64(System_IntPtr directoryId, System_String8 buffer, System_Size length) {
+    return System_Syscall_call03(System_Syscall_Command_getdents64, directoryId, (System_IntPtr)buffer, length);
+}
+
 
 __volatile__ System_SSize System_Syscall_mmapCount = 0;
 

@@ -19,6 +19,7 @@ echo  "ECQLite:" >> $REPORT ; $INTERP ./ECQLite.test database.ecql >> $REPORT 2>
 echo  "System.Exception:" >> $REPORT ; $INTERP ./System.Exception.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.File:" >> $REPORT ; $INTERP ./System.File.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.FileInfo:" >> $REPORT ; $INTERP ./System.FileInfo.test >> $REPORT 2>&1 ; echo >> $REPORT
+echo  "System.Directory:" >> $REPORT ; $INTERP ./System.Directory.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.Math:" >> $REPORT ; $INTERP ./System.Math.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.Memory:" >> $REPORT ; $INTERP ./System.Memory.test >> $REPORT 2>&1 ; echo >> $REPORT
 echo  "System.MemoryStream:" >> $REPORT ; $INTERP ./System.MemoryStream.test System.core...C >> $REPORT 2>&1 ; echo >> $REPORT

@@ -4,6 +4,13 @@
 Size  Test00_size = 8;
 UInt8  Test00_Check[] = "\x01\x01\x03\x01\x01\x01\x01\x01";
 
+Char8 MoveTo[]   = "HalloWelt ";
+Char8 MoveFrom[] = "HelloWorld";
+
+STRING8 runtime_memory0 = "FFFFEEEEDDDDCCCCBBBBAAAA9999888877776666555544443333222211110000";
+
+STRING8 runtime_memory1 = "0000111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFF";
+
 int System_Runtime_main(int argc, char * argv[]) {
 
     /* Test: Memory_allocClass */
@@ -50,6 +57,33 @@ int System_Runtime_main(int argc, char * argv[]) {
     else
         Console_writeLine__string("Test05: SUCCESS: System_Memory_free");
 
+
+    /* Test: Memory_moveTo */
+    Memory_moveTo(MoveFrom, sizeof(MoveFrom), MoveTo);
+    if (!String8_equals("HalloWelt ", MoveFrom) && !String8_equals("HelloWorld", MoveTo))
+        Console_writeLine__string("Test06: ERROR: System_Memory_moveTo");
+    else
+        Console_writeLine__string("Test06: SUCCESS: System_Memory_moveTo");
+
+    /* Test: Memory_moveTo */
+    Memory_moveTo(MoveTo, sizeof(MoveTo), MoveFrom);
+    if (!String8_equals("HalloWelt ", MoveTo) && !String8_equals("HelloWorld", MoveFrom))
+        Console_writeLine__string("Test07: ERROR: System_Memory_moveTo");
+    else
+        Console_writeLine__string("Test07: SUCCESS: System_Memory_moveTo");
+
+
+    System_Memory_sort(runtime_memory0, 16, 4, &System_Memory_alphacompare);
+    if (!String8_equals("0000111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFF", runtime_memory0))
+        Console_writeLine("Test08: ERROR: System_Memory_sort ascending {0:string}", 1, runtime_memory0);
+    else
+        Console_writeLine("Test08: SUCCESS: System_Memory_sort ascending {0:string}", 1, runtime_memory0);
+
+    System_Memory_sort(runtime_memory1, 16, 4, &System_Memory_alphacomparedescending);
+    if (!String8_equals("FFFFEEEEDDDDCCCCBBBBAAAA9999888877776666555544443333222211110000", runtime_memory1))
+        Console_writeLine("Test09: ERROR: System_Memory_sort descending {0:string}", 1, runtime_memory1);
+    else
+        Console_writeLine("Test09: SUCCESS: System_Memory_sort descending {0:string}", 1, runtime_memory1);
 
     return true;
 }

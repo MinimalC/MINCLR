@@ -42,8 +42,8 @@ enum {
 
 export struct System_Type  System_MemoryType;
 
-/* void *memset (void *s, int c, size_t n) */
-export void  System_Memory_set(System_Var dest, System_Char8 src, System_Size n);
+/* void * memchr ( const void * var, int value, size_t num ); */
+export System_SSize  System_Memory_indexOf(System_Var var, System_Char8 needle, System_Size count);
 
 /* void bzero(void *dest, size_t count) */
 export void  System_Memory_clear(System_Var dest, System_Size n);
@@ -54,13 +54,18 @@ export void  System_Memory_copyTo(System_Var src, System_Size n, System_Var dest
 /* void *memmove (void *dest, const void *src, size_t n) */
 export void  System_Memory_moveTo(System_Var src, System_Size n, System_Var dest);
 
+/* void *memset (void *s, int c, size_t n) */
+export void  System_Memory_set(System_Var dest, System_Char8 src, System_Size n);
+
 /* int memcmp ( const void * var1, const void * var2, size_t num ); */
 export System_Size  System_Memory_compare(System_Var var0, System_Var var1, System_Size length);
 
 export System_Bool  System_Memory_equals(System_Var var0, System_Var var1, System_Size length);
 
-/* void * memchr ( const void * var, int value, size_t num ); */
-export System_SSize  System_Memory_indexOf(System_Var var, System_Char8 needle, System_Size count);
+typedef System_SSize  delegate(System_Memory_comparison)(System_Var memory0, System_Var memory1, System_Size itemSize);
+export void  System_Memory_sort(System_Var memory, System_Size itemsCount, System_Size itemSize, function(System_Memory_comparison) comparison);
+export System_SSize  System_Memory_alphacompare(System_Var memory0, System_Var memory1, System_Size itemSize);
+export System_SSize  System_Memory_alphacomparedescending(System_Var memory0, System_Var memory1, System_Size itemSize);
 
 export System_Var  System_Memory_allocClass(System_Type type);
 export System_Var  System_Memory_allocArray(System_Type type, System_Size count);
@@ -78,13 +83,17 @@ export void  System_Memory_debug(void);
 #if defined(using_System)
 #define MemoryType  System_MemoryType
 
-#define Memory_set  System_Memory_set
+#define Memory_indexOf  System_Memory_indexOf
 #define Memory_clear  System_Memory_clear
 #define Memory_copyTo  System_Memory_copyTo
 #define Memory_moveTo  System_Memory_moveTo
+#define Memory_set  System_Memory_set
 #define Memory_compare  System_Memory_compare
 #define Memory_equals  System_Memory_equals
-#define Memory_indexOf  System_Memory_indexOf
+#define function_Memory_comparison  function_System_Memory_comparison
+#define Memory_sort  System_Memory_sort
+#define Memory_alphacompare  System_Memory_alphacompare
+#define Memory_alphacomparedescending  System_Memory_alphacomparedescending
 
 #define Memory_allocClass  System_Memory_allocClass
 #define Memory_allocArray  System_Memory_allocArray

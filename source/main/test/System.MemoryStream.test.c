@@ -18,6 +18,7 @@ int System_MemoryStream_test_main (int argc, String8 argv[]) {
     String8 fileName = argv[1];
     File file = System_File_open(fileName, System_File_Mode_readOnly);
     Size fileSize = System_File_get_Length(file);
+    System_Console_writeLine("File {0:string}, size {1:uint}", 2, fileName, fileSize);
 
     Char8 buffer[65536]; Stack_clear(buffer);
     Size bytes = 0;
