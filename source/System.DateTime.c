@@ -26,6 +26,19 @@ System_String8 System_DateTime_toString(System_DateTime that) {
 }
 
 System_DateTime System_DateTime_now(void) {
+    System_DateTime that = System_Memory_allocClass(typeof(System_DateTime));
+    stack_System_DateTime_now(that);
+    return that;
+}
+
+System_String8 System_DateTime_now_toString(void) {
+    struct System_DateTime that; Stack_clear(that);
+    stack_System_DateTime_now(&that);
+    return System_String8_format("{0:uint}.{1:uint}.{2:uint} {3:uint}:{4:uint}:{5:uint}", 6,
+        that.monthday, that.month, that.year, that.hour, that.minute, that.second);
+}
+
+void stack_System_DateTime_now(DateTime that) {
 
     System_SSize yday;
     System_Size  sec, min, hour, mday, mon, year, wday, days, leap;
@@ -121,7 +134,6 @@ System_DateTime System_DateTime_now(void) {
          */
     }
 
-    System_DateTime that = System_Memory_allocClass(typeof(System_DateTime));
     that->yearday = yday;
     that->second = sec;
     that->minute = min; 
@@ -132,5 +144,4 @@ System_DateTime System_DateTime_now(void) {
     that->weekday = wday;
     that->day = days;
     that->leap = leap;
-    return that;
 }

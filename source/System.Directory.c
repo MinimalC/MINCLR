@@ -76,11 +76,11 @@ System_Bool  stack_System_Directory_open(System_Directory that, System_String8 d
 }
 
 typedef struct Linux_DirectoryEntry64 {
-  System_UInt64  inode;
-  System_Int64  offset;
-  System_UInt16  recordLength;
-  System_UInt8  type;
-  System_Char8  name[0];
+    System_UInt64  inode;
+    System_Int64  offset;
+    System_UInt16  recordLength;
+    System_UInt8  type;
+    System_Char8  name[0];
 } * Linux_DirectoryEntry64;
 
 System_SSize System_DirectoryEntry_alphacompare(System_DirectoryEntry memory0, System_DirectoryEntry memory1, System_Size itemSize) {
@@ -88,6 +88,7 @@ System_SSize System_DirectoryEntry_alphacompare(System_DirectoryEntry memory0, S
     Size length1 = String8_get_Length(memory1->name);
     Size length_expected = length0 < length1 ? length0 : length1;
     System_Size length = System_String8_compareSubstring(memory0->name, memory1->name, length_expected);
+    if (length == length0 && length == length1) return 0;
     if (length == length0) return -1;
     if (length == length1) return 1;
     System_Char8 c0 = memory0->name[length];

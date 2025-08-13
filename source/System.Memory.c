@@ -108,16 +108,14 @@ Bool System_Memory_equals(Var ptr0, Var ptr1, Size length) {
 }
 
 void System_Memory_sort(System_Var memory, System_Size itemsCount, System_Size itemSize, function(System_Memory_comparison) comparison) {
-    Size position = 0; SSize what = 0;
-    while (++position < itemsCount) {
+    for (Size position = 1; position < itemsCount; ++position)
         for (Size position1 = position; position1; --position1) {
-            what = comparison(memory + (position1 - 1) * itemSize, memory + position1 * itemSize, itemSize);
-            if (what < 0) 
-                break;
-            if (what > 0)
-                System_Memory_moveTo(memory + (position1 - 1) * itemSize, itemSize, memory + position1 * itemSize);
+            Var position_var = memory + (position1 - 1) * itemSize;
+            Var position1_var = memory + position1 * itemSize;
+            SSize what = comparison(position_var, position1_var, itemSize);
+            if (what <= 0) break;
+            System_Memory_moveTo(position_var, itemSize, position1_var);
         }
-    }
 }
 
 System_SSize System_Memory_alphacompare(System_Var memory0, System_Var memory1, System_Size itemSize) {

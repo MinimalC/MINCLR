@@ -35,11 +35,9 @@ int System_Runtime_main(int argc, char * argv[]) {
     days = rest / 24;
     System_Console_writeLine("das sind etwa {0:uint} Tage, {1:uint} Stunden, {2:uint} Minuten, {3:uint} Sekunden", 4, days, hours, minutes, seconds);
 
-    System_DateTime date = System_DateTime_now();
-    System_String8 nowString = System_DateTime_toString(date);
+    System_String8 nowString = System_DateTime_now_toString();
     System_Console_writeLine("DateTime_now_toString: {0:string}", 1, nowString);
     System_Memory_free(nowString);
-    System_Memory_free(date);
 
     return true;
 }

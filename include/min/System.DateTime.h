@@ -37,14 +37,17 @@ typedef struct System_DateTime {
 
 export struct System_Type  System_DateTimeType;
 
-export System_DateTime System_DateTime_now();
-
 export System_String8 System_DateTime_toString(System_DateTime that);
+export System_String8 System_DateTime_now_toString();
+export System_DateTime System_DateTime_now();
+export void stack_System_DateTime_now(System_DateTime that);
 
 #if defined(using_System)
 #define DateTime  System_DateTime
 #define DateTimeType  System_DateTimeType
-#define DateTime_now  System_DateTime_now
 #define DateTime_toString  System_DateTime_toString
+#define DateTime_now_toString  System_DateTime_now_toString
+#define DateTime_now  System_DateTime_now
+#define stack_DateTime_now  stack_System_DateTime_now
 #endif
 #endif
