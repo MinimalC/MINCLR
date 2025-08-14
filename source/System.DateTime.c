@@ -9,7 +9,7 @@
 #include <min/System.Syscall.h>
 #endif
 
-/** class System_DateTime  **/
+/** struct System_DateTime  **/
 
 struct System_Type System_TimeType = { .base = { .type = typeof(System_Type) }, .name = "Time", .size = sizeof(System_Time) };
 
@@ -19,18 +19,27 @@ struct System_Type System_TimeZoneType = { .base = { .type = typeof(System_Type)
 
 struct System_Type System_DateTimeType = { .base = { .type = typeof(System_Type) }, .name = "DateTime", .size = sizeof(struct System_DateTime) };
 
+/** function System_DateTime_toString
+    Returns a formatted String8 of DateTime.
+**/
 System_String8 System_DateTime_toString(System_DateTime that) {
 
     return System_String8_format("{0:uint}.{1:uint}.{2:uint} {3:uint}:{4:uint}:{5:uint}", 6,
         that->monthday, that->month, that->year, that->hour, that->minute, that->second);
 }
 
+/** function System_DateTime_now
+    Returns a DateTime of DateTime_now.
+**/
 System_DateTime System_DateTime_now(void) {
     System_DateTime that = System_Memory_allocClass(typeof(System_DateTime));
     stack_System_DateTime_now(that);
     return that;
 }
 
+/** function System_DateTime_now_toString
+    Returns a formatted String8 of DateTime_now.
+**/
 System_String8 System_DateTime_now_toString(void) {
     struct System_DateTime that; Stack_clear(that);
     stack_System_DateTime_now(&that);
@@ -38,6 +47,9 @@ System_String8 System_DateTime_now_toString(void) {
         that.monthday, that.month, that.year, that.hour, that.minute, that.second);
 }
 
+/** function stack_System_DateTime_now
+    Returns DateTime_now, on stack.
+**/
 void stack_System_DateTime_now(DateTime that) {
 
     System_SSize yday;

@@ -14,7 +14,7 @@
 #if !defined(code_System_Object)
 #define code_System_Object
 
-/** class System_Object  **/
+/** struct System_Object  **/
 
 Type  System_Object_get_Type(Object that) {
     Console_assert(that);

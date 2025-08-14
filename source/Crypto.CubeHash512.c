@@ -8,7 +8,7 @@
 #if !defined(code_Crypto_CubeHash512)
 #define code_Crypto_CubeHash512
 
-/** class Crypto_CubeHash512  **/
+/** struct Crypto_CubeHash512  **/
 
 Crypto_CubeHash512  new_Crypto_CubeHash512() {
     Crypto_CubeHash512 that = (Crypto_CubeHash512)System_Memory_allocClass(typeof(Crypto_CubeHash512));

@@ -29,7 +29,7 @@
 #if !defined(code_System_Memory)
 #define code_System_Memory
 
-/** class System_Memory  **/
+/** struct System_Memory  **/
 
 struct System_Type System_MemoryType = { .base = { .type = typeof(System_Type) }, .name = "Memory" };
 

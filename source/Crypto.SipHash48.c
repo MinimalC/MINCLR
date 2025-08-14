@@ -8,7 +8,7 @@
 #if !defined(code_Crypto_SipHash48)
 #define code_Crypto_SipHash48
 
-/** class Crypto_SipHash48  **/
+/** struct Crypto_SipHash48  **/
 
 Crypto_SipHash48  new_Crypto_SipHash48() {
     Crypto_SipHash48 that = (Crypto_SipHash48)System_Memory_allocClass(typeof(Crypto_SipHash48));

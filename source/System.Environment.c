@@ -6,11 +6,18 @@
 #include <min/System.Environment.h>
 #endif
 
-System_Size System_Environment_Arguments_Count = 0;
+/** static System_Environment **/
+
+/** object System_String8 * System_Environment_Arguments 
+    Returns an array of String8, with System_Environment_Arguments_Count items
+**/
 System_String8 * System_Environment_Arguments = null;
+System_Size System_Environment_Arguments_Count = 0;
 
+/** object System_String8 * System_Environment_AuxValues
+    Returns an array of System_String8, with System_Environment_AuxValues_Count items
+**/
 System_Environment_AuxValue System_Environment_AuxValues = null;
-
 System_Size System_Environment_AuxValues_Count = 0;
 
 struct System_Type_FieldInfo  System_Environment_AuxTypeTypeFields[] = {
@@ -60,6 +67,15 @@ struct System_Type_FieldInfo  System_Environment_AuxTypeTypeFields[] = {
     { .name = "MINSIGSTKSZ", .value = System_Environment_AuxType_MINSIGSTKSZ },
 };
 
+struct System_Type System_Environment_AuxTypeType = { .base = { .type = typeof(System_Type) },
+    .name = "AuxType", .size = sizeof(System_Environment_AuxType),
+	.fields = { .value = &System_Environment_AuxTypeTypeFields, .length = sizeof_array(System_Environment_AuxTypeTypeFields), },
+};
+
+/** function System_String8 System_Environment_AuxType_toString
+    Argument System_Environment_AuxType value
+    Returns the name of value in System_String8
+**/
 System_String8 System_Environment_AuxType_toString(System_Environment_AuxType value) {
     switch (value) {
     case System_Environment_AuxType_NULL: return "NULL";
@@ -109,11 +125,3 @@ System_String8 System_Environment_AuxType_toString(System_Environment_AuxType va
     default: return "UNKNOWN";
     }
 }
-
-struct System_Type System_Environment_AuxTypeType = { .base = { .type = typeof(System_Type) },
-    .name = "AuxType",
-    .size = sizeof(System_Environment_AuxType),
-	.fields = { 
-        .value = &System_Environment_AuxTypeTypeFields, .length = sizeof_array(System_Environment_AuxTypeTypeFields),
-    },
-};

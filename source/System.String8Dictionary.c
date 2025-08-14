@@ -14,8 +14,6 @@
 #if !defined(code_System_String8Dictionary)
 #define code_System_String8Dictionary
 
-/** class System_String8Dictionary  **/
-
 System_String8Dictionary  new_System_String8Dictionary(System_Size capacity) {
     System_String8Dictionary that = (System_String8Dictionary)System_Memory_allocClass(typeof(System_String8Dictionary));
     base_System_String8Dictionary_init(that, capacity);
@@ -127,8 +125,6 @@ struct System_Type System_String8DictionaryType = { .base = { .type = typeof(Sys
 /* AUTOGEN */
 #if !defined(code_System_String8DictionaryEnumerator)
 #define code_System_String8DictionaryEnumerator
-
-/** class System_String8DictionaryEnumerator  **/
 
 System_String8DictionaryEnumerator  new_System_String8DictionaryEnumerator(System_String8Dictionary array) {
     System_String8DictionaryEnumerator that = (System_String8DictionaryEnumerator)System_Memory_allocClass(typeof(System_String8DictionaryEnumerator));

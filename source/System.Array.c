@@ -10,7 +10,7 @@
 #if !defined(code_System_Array)
 #define code_System_Array
 
-/** class System_Array  **/
+/** struct System_Array  **/
 
 System_Array  new_System_Array(System_Size capacity) {
     System_Array that = (System_Array)System_Memory_allocClass(typeof(System_Array));
@@ -127,7 +127,7 @@ struct System_Type System_ArrayType = {
 #if !defined(code_System_ArrayEnumerator)
 #define code_System_ArrayEnumerator
 
-/** class System_ArrayEnumerator  **/
+/** struct System_ArrayEnumerator  **/
 
 System_ArrayEnumerator  new_System_ArrayEnumerator(System_Array array) {
     System_ArrayEnumerator that = (System_ArrayEnumerator)System_Memory_allocClass(typeof(System_ArrayEnumerator));

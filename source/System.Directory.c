@@ -9,8 +9,7 @@
 #include <min/System.Syscall.h>
 #endif
 
-/** class System_Directory  **/
-
+/** struct System_Directory  **/
 
 System_Bool System_Directory_exists(System_String8 name) {
     struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo));

@@ -22,6 +22,8 @@
 #if !defined(code_System_Console)
 #define code_System_Console
 
+/** static System_Console **/
+
 struct System_Type System_ConsoleType = { .base = { .type = typeof(System_Type) }, .name = "Console", };
 
 struct System_File  System_Console_StdIn = {
@@ -59,6 +61,13 @@ void System_Console_exit(const Size code)  {
 #define WEXITSTATUS(status)  (((status) & 0xff00) >> 8)
 #define WTERMSIG(status)  ((status) & 0x7f)
 
+/** function System_Console_execute__arguments
+    Execute a program, with absolute path. You also need to specify the program name as the first argument.
+    Argument System_String8 fileName
+    Argument System_Size argc
+    Argument System_String argv[]
+    Returns the exit status of the program.
+**/
 System_Size System_Console_execute__arguments(System_String8 fileName, Size argc, System_String8 argv[]) {
 
     System_Signal_block__number(System_Signal_Number_SIGCHILD);
@@ -82,6 +91,12 @@ System_Size System_Console_execute__arguments(System_String8 fileName, Size argc
     return WEXITSTATUS(status);
 }
 
+/** function System_Console_execute
+    Execute a program, with absolute path.
+    Argument System_String8 fileName
+    Argument ...
+    Returns the exit status of the program.
+**/
 System_Size System_Console_execute(System_String8 fileName, ...) {
     Arguments args;
     Arguments_start(args, fileName);
@@ -91,20 +106,43 @@ System_Size System_Console_execute(System_String8 fileName, ...) {
     return System_Console_execute__arguments(fileName, argc, (System_String8 *)argv);
 }
 
+/** function System_Console_write__string_size 
+    Write a String8 to System_Console_StdOut, with length of size.
+    Argument System_String8 string
+    Argument System_Size size
+    Returns the length of the string.
+**/
 System_Size  System_Console_write__string_size(String8 string, Size size) {
     Console_assert(string);
     return System_File_write__string_size(&System_Console_StdOut, string, size);
 }
 
+/** function System_Console_write__string 
+    Write a String8 to System_Console_StdOut, using System_String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+**/
 System_Size  System_Console_write__string(String8 string) {
     return System_Console_write__string_size(string, String8_get_Length(string));
 }
 
+/** function System_Console_write__char 
+    Write a char to System_Console_StdOut.
+    Argument System_Char8 character
+    Returns 1.
+**/
 System_Size  System_Console_write__char(Char8 character) {
     System_Console_write__string_size(&character, 1);
     return 1;
 }
 
+/** function System_Console_write
+    Write a formatted string to System_Console_StdOut. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_write("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+**/
 System_Size  System_Console_write(String8 format, ...) {
     Console_assert(format);
     Arguments args;
@@ -115,15 +153,31 @@ System_Size  System_Console_write(String8 format, ...) {
     return System_File_writeEnd__arguments(&System_Console_StdOut, format, 0, argc, argv);
 }
 
+/** function System_Console_writeLineEmpty
+    Write an empty new line to System_Console_StdOut.
+    Returns 1.
+**/
 System_Size  System_Console_writeLineEmpty(void) {
     System_File_write__string_size(&System_Console_StdOut, "\n", 1);
     return 1;
 }
 
+/** function System_Console_writeLine__string
+    Write a string to System_Console_StdOut, this function is using String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+**/
 System_Size  System_Console_writeLine__string(String8 string) {
     return System_Console_writeLine(string, 0);
 }
 
+/** function System_Console_writeLine
+    Write a formatted string and a new line to System_Console_StdOut. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_writeLine("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+**/
 System_Size  System_Console_writeLine(String8 format, ...) {
     Console_assert(format);
     Arguments args;
@@ -134,66 +188,178 @@ System_Size  System_Console_writeLine(String8 format, ...) {
     return System_File_writeEnd__arguments(&System_Console_StdOut, format, '\n', argc, argv);
 }
 
-void System_Console_assert__string8(System_Bool expression, const System_String8 text, const System_String8 functionName, const System_String8 fileName, const System_Size line) {
-    if (expression) return;
+/** function System_Console_assert__string8
+    Assert an expression. If false, write expression text, functionName, fileName and line to System_Console_StdErr.
+    Argument System_Bool expression
+    Argument System_String8 text
+    Argument System_String8 functionName
+    Argument System_String8 fileName
+    Argument System_Size line
+    Returns true, if the expression is false.
+**/
+Bool System_Console_assert__string8(System_Bool expression, const System_String8 text, const System_String8 functionName, const System_String8 fileName, const System_Size line) {
+    if (expression) return false;
     Var argv[4]; argv[0] = (Var)text; argv[1] = (Var)functionName; argv[2] = (Var)line; argv[3] = (Var)fileName;
     System_File_writeEnd__arguments(&System_Console_StdErr, "System_Console_assert {0:string} in function {1:string} line {2:int} file {3:string}", '\n', 4, argv);
+    return true;
 }
 
-void System_Console_debug(const System_String8 format, ...) {
+/** function System_Console_debug
+    Write a formatted string to System_Console_StdErr. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_debug("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+**/
+Size System_Console_debug(const System_String8 format, ...) {
     Arguments args;
     Arguments_start(args, format);
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    System_File_writeEnd__arguments(&System_Console_StdErr, format, '\0', argc, argv);
+    return System_File_writeEnd__arguments(&System_Console_StdErr, format, '\0', argc, argv);
 }
 
-void System_Console_debug__string(System_String8 string) {
-    System_File_write__string(&System_Console_StdErr, string);
+/** function System_Console_debug__string_size 
+    Write a String8 to System_Console_StdErr, with length of size.
+    Argument System_String8 string
+    Argument System_Size size
+    Returns the length of the string.
+**/
+Size System_Console_debug__string_size(System_String8 string, System_Size size) {
+    return System_File_write__string_size(&System_Console_StdErr, string, size);
 }
 
-void System_Console_debug__string_size(System_String8 string, System_Size size) {
-    System_File_write__string_size(&System_Console_StdErr, string, size);
+/** function System_Console_debug__string 
+    Write a String8 to System_Console_StdErr, using System_String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+**/
+Size System_Console_debug__string(System_String8 string) {
+    return System_File_write__string(&System_Console_StdErr, string);
 }
 
-void System_Console_debugLine(const System_String8 format, ...) {
+/** function System_Console_debug__char 
+    Write a char to System_Console_StdErr.
+    Argument System_Char8 character
+    Returns 1.
+**/
+System_Size  System_Console_debug__char(Char8 character) {
+    System_Console_debug__string_size(&character, 1);
+    return 1;
+}
+
+/** function System_Console_debugLine
+    Write a formatted string and a new line to System_Console_StdErr. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_debugLine("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+**/
+Size System_Console_debugLine(const System_String8 format, ...) {
     Arguments args;
     Arguments_start(args, format);
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    System_File_writeEnd__arguments(&System_Console_StdErr, format, '\n', argc, argv);
+    return System_File_writeEnd__arguments(&System_Console_StdErr, format, '\n', argc, argv);
 }
 
-void  System_Console_debugLine__string(System_String8 string) {
-    System_Console_debugLine(string, 0);
+/** function System_Console_debugLine__string
+    Write a string to System_Console_StdErr, this function is using String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+**/
+Size  System_Console_debugLine__string(System_String8 string) {
+    return System_Console_debugLine(string, 0);
 }
 
-void System_Console_debugLineEmpty(void) {
+/** function System_Console_debugLineEmpty
+    Write an empty new line to System_Console_StdErr.
+    Returns 1.
+**/
+Size System_Console_debugLineEmpty(void) {
     System_File_write__string_size(&System_Console_StdErr, "\n", 1);
+    return 1;
 }
 
-void System_Console_error(const System_String8 format, ...) {
+/** function System_Console_error
+    Write a formatted string to System_Console_StdErr. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_error("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+**/
+Size System_Console_error(const System_String8 format, ...) {
     Arguments args;
     Arguments_start(args, format);
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    System_File_writeEnd__arguments(&System_Console_StdErr, format, '\0', argc, argv);
+    return System_File_writeEnd__arguments(&System_Console_StdErr, format, '\0', argc, argv);
 }
 
-void System_Console_errorLine(const System_String8 format, ...) {
+/** function System_Console_error__string_size 
+    Write a String8 to System_Console_StdErr, with length of size.
+    Argument System_String8 string
+    Argument System_Size size
+    Returns the length of the string.
+**/
+Size System_Console_error__string_size(System_String8 string, System_Size size) {
+    return System_File_write__string_size(&System_Console_StdErr, string, size);
+}
+
+/** function System_Console_error__string 
+    Write a String8 to System_Console_StdErr, using System_String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+**/
+Size System_Console_error__string(System_String8 string) {
+    return System_File_write__string(&System_Console_StdErr, string);
+}
+
+/** function System_Console_error__char 
+    Write a char to System_Console_StdErr.
+    Argument System_Char8 character
+    Returns 1.
+**/
+System_Size  System_Console_error__char(Char8 character) {
+    System_Console_error__string_size(&character, 1);
+    return 1;
+}
+
+/** function System_Console_errorLine
+    Write a formatted string and a new line to System_Console_StdErr. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_errorLine("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+**/
+Size System_Console_errorLine(const System_String8 format, ...) {
     Arguments args;
     Arguments_start(args, format);
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    System_File_writeEnd__arguments(&System_Console_StdErr, format, '\n', argc, argv);
+    return System_File_writeEnd__arguments(&System_Console_StdErr, format, '\n', argc, argv);
 }
 
-void System_Console_errorLineEmpty(void) {
+/** function System_Console_errorLine__string
+    Write a string to System_Console_StdErr, this function is using String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+**/
+Size  System_Console_errorLine__string(System_String8 string) {
+    return System_Console_errorLine(string, 0);
+}
+
+/** function System_Console_errorLineEmpty
+    Write an empty new line to System_Console_StdErr.
+    Returns 1.
+**/
+Size System_Console_errorLineEmpty(void) {
     System_File_write__string_size(&System_Console_StdErr, "\n", 1);
+    return 1;
 }
 
 void System_Console_writeHex(Size length, void  * value) {

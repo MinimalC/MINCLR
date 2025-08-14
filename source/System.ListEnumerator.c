@@ -8,7 +8,7 @@
 #if !defined(code_System_ListEnumerator)
 #define code_System_ListEnumerator
 
-/** class System_ListEnumerator  **/
+/** struct System_ListEnumerator  **/
 
 System_ListEnumerator  new_System_ListEnumerator(System_List array) {
     System_ListEnumerator that = (System_ListEnumerator)System_Memory_allocClass(typeof(System_ListEnumerator));

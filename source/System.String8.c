@@ -22,7 +22,8 @@
 #endif
 #if !defined(code_System_Char8)
 #define code_System_Char8
-/** class System_Char8  **/
+
+/** struct System_Char8  **/
 
 struct System_Type System_Char8Type = { .base = { .type = typeof(System_Type) }, .name = "Char8", .size = 1 };
 
@@ -60,7 +61,7 @@ System_Bool  System_Char8_isPrintable(System_Char8 that) {
 #if !defined(code_System_String8)
 #define code_System_String8
 
-/** class System_String8 */
+/** struct System_String8 **/
 
 struct System_Type System_String8Type = { .base = { .type = typeof(System_Type) }, .name = "String8", .size = sizeof(System_Var) };
 

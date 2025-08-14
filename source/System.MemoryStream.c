@@ -14,7 +14,7 @@
 #if !defined(code_System_MemoryStream)
 #define code_System_MemoryStream
 
-/** class System_MemoryStream */
+/** struct System_MemoryStream */
 
 System_MemoryStream  System_MemoryStream_open() {
     return new_System_MemoryStream();

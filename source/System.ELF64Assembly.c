@@ -29,6 +29,8 @@
 #define ROUND(X,ALIGN)  (((X) + (ALIGN - 1)) & ~(ALIGN - 1))
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
 
+/** struct System_ELF64Assembly **/
+
 System_ELF64Assembly  new_System_ELF64Assembly() {
     return (System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly));
 }

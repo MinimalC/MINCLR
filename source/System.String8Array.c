@@ -14,8 +14,6 @@
 #if !defined(code_System_String8Array)
 #define code_System_String8Array
 
-/** class System_String8Array  **/
-
 System_String8Array  new_System_String8Array(System_Size capacity) {
     System_String8Array that = (System_String8Array)System_Memory_allocClass(typeof(System_String8Array));
     base_System_String8Array_init(that, capacity);
@@ -103,8 +101,6 @@ struct System_Type System_String8ArrayType = { .base = { .type = typeof(System_T
 /* AUTOGEN */
 #if !defined(code_System_String8ArrayEnumerator)
 #define code_System_String8ArrayEnumerator
-
-/** class System_String8ArrayEnumerator  **/
 
 System_String8ArrayEnumerator  new_System_String8ArrayEnumerator(System_String8Array array) {
     System_String8ArrayEnumerator that = (System_String8ArrayEnumerator)System_Memory_allocClass(typeof(System_String8ArrayEnumerator));

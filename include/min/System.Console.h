@@ -31,16 +31,16 @@ export System_Size  System_Console_writeLineEmpty(void);
 /*export System_Size  System_Console_writeLine__string_size(System_String8 string, System_Size size);*/
 export System_Size  System_Console_writeLine__string(System_String8 string);
 export System_Size  System_Console_writeLine(System_String8 format, ...);
-export void  System_Console_assert__string8(const System_Bool expression, const System_String8 text, const System_String8 functionName, const System_String8 fileName, const System_Size line);
-export void  System_Console_debug(const System_String8 format, ...);
-export void  System_Console_debug__string(System_String8 format);
-export void  System_Console_debug__string_size(System_String8 format, System_Size size);
-export void  System_Console_debugLine(const System_String8 format, ...);
-export void  System_Console_debugLine__string(const System_String8 string);
-export void  System_Console_debugLineEmpty(void);
-export void  System_Console_error(const System_String8 format, ...);
-export void  System_Console_errorLine(const System_String8 format, ...);
-export void  System_Console_errorLineEmpty(void);
+export System_Bool  System_Console_assert__string8(const System_Bool expression, const System_String8 text, const System_String8 functionName, const System_String8 fileName, const System_Size line);
+export System_Size  System_Console_debug(const System_String8 format, ...);
+export System_Size  System_Console_debug__string(System_String8 format);
+export System_Size  System_Console_debug__string_size(System_String8 format, System_Size size);
+export System_Size  System_Console_debugLine(const System_String8 format, ...);
+export System_Size  System_Console_debugLine__string(const System_String8 string);
+export System_Size  System_Console_debugLineEmpty(void);
+export System_Size  System_Console_error(const System_String8 format, ...);
+export System_Size  System_Console_errorLine(const System_String8 format, ...);
+export System_Size  System_Console_errorLineEmpty(void);
 export void  System_Console_writeHex(System_Size length, System_Var value);
 
 #if !DEBUG

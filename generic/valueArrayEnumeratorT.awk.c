@@ -21,8 +21,6 @@
 #if !defined(code_Generic_T0ArrayEnumerator)
 #define code_Generic_T0ArrayEnumerator
 
-/** class Generic_T0ArrayEnumerator  **/
-
 Generic_T0ArrayEnumerator  new_Generic_T0ArrayEnumerator(Generic_T0Array array) {
     Generic_T0ArrayEnumerator that = (Generic_T0ArrayEnumerator)System_Memory_allocClass(typeof(Generic_T0ArrayEnumerator));
     base_Generic_T0ArrayEnumerator_init(that, array);

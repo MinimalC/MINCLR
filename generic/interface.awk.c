@@ -9,7 +9,7 @@
 #if !defined(code_Generic_T0)
 #define code_Generic_T0
 
-/** class interface Generic.T0  **/
+/** struct Generic.T0  **/
 
 struct System_Type_FunctionInfo  Generic_T0TypeFunctions[] = {
 /*    [0] = { .function = base_Generic_T0_method, .value = base_Generic_T0_method }, */

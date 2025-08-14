@@ -20,6 +20,8 @@
 #if !defined(code_System_Thread)
 #define code_System_Thread
 
+/** struct System_Thread */
+
 struct System_Type System_ThreadType = { 
     .base = { .type = typeof(System_Type) }, 
     .name = "Thread", 

@@ -14,8 +14,6 @@
 #if !defined(have_Network_HTTPRequest)
 #define have_Network_HTTPRequest
 
-/** class Network.HTTPRequest  **/
-
 typedef System_IntPtr Network_HTTPMethod;
 enum {
     Network_HTTPMethod_GET = 1,

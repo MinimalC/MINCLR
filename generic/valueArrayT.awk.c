@@ -20,8 +20,6 @@
 #if !defined(code_Generic_T0Array)
 #define code_Generic_T0Array
 
-/** class Generic_T0Array  **/
-
 Generic_T0Array  new_Generic_T0Array(System_Size length) {
     Generic_T0Array that = (Generic_T0Array)System_Memory_allocClass(typeof(Generic_T0Array));
     base_Generic_T0Array_init(that, length);

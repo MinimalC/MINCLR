@@ -9,7 +9,7 @@
 #include <min/System.Syscall.h>
 #endif
 
-/** class System_Terminal  **/
+/** struct System_Terminal **/
 
 struct System_Type System_TerminalType = {
     .base = { .type = typeof(System_Type) },

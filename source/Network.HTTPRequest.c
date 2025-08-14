@@ -14,6 +14,8 @@
 #if !defined(code_Network_HTTPRequest)
 #define code_Network_HTTPRequest
 
+/** struct Network_HTTPRequest  **/
+
 void Network_URI_free(Network_URI that) {
     if (that->source) System_Memory_free(that->source);
 }

@@ -13,8 +13,6 @@
 #if !defined(code_System_UInt8)
 #define code_System_UInt8
 
-/** class System_UInt8  **/
-
 struct System_Type System_UInt8Type  = { .base = { .type = typeof(System_Type) }, .name = "System.UInt8", .size = sizeof(System_UInt8) };
 
 System_Bool  System_UInt8_isPrintable(System_UInt8 that) {
@@ -221,8 +219,6 @@ System_UInt8  System_UInt8_toNetworkOrder(System_UInt8 that) {
 #endif
 #if !defined(code_System_UInt16)
 #define code_System_UInt16
-
-/** class System_UInt16  **/
 
 struct System_Type System_UInt16Type  = { .base = { .type = typeof(System_Type) }, .name = "System.UInt16", .size = sizeof(System_UInt16) };
 
@@ -432,8 +428,6 @@ System_UInt16  System_UInt16_toNetworkOrder(System_UInt16 that) {
 #endif
 #if !defined(code_System_UInt32)
 #define code_System_UInt32
-
-/** class System_UInt32  **/
 
 struct System_Type System_UInt32Type  = { .base = { .type = typeof(System_Type) }, .name = "System.UInt32", .size = sizeof(System_UInt32) };
 
@@ -648,8 +642,6 @@ System_UInt32  System_UInt32_toNetworkOrder(System_UInt32 that) {
 #endif
 #if !defined(code_System_UInt64)
 #define code_System_UInt64
-
-/** class System_UInt64  **/
 
 struct System_Type System_UInt64Type  = { .base = { .type = typeof(System_Type) }, .name = "System.UInt64", .size = sizeof(System_UInt64) };
 
@@ -871,8 +863,6 @@ System_UInt64  System_UInt64_toNetworkOrder(System_UInt64 that) {
 #if !defined(code_System_Int8)
 #define code_System_Int8
 
-/** class System_Int8  **/
-
 
 struct System_Type System_Int8Type  = { .base = { .type = typeof(System_Type) }, .name = "System.Int8", .size = sizeof(System_Int8) };
 
@@ -1068,8 +1058,6 @@ System_String8  System_Int8_toString8base10(System_Int8 that) {
 #endif
 #if !defined(code_System_Int16)
 #define code_System_Int16
-
-/** class System_Int16  **/
 
 
 struct System_Type System_Int16Type  = { .base = { .type = typeof(System_Type) }, .name = "System.Int16", .size = sizeof(System_Int16) };
@@ -1267,8 +1255,6 @@ System_String8  System_Int16_toString8base10(System_Int16 that) {
 #if !defined(code_System_Int32)
 #define code_System_Int32
 
-/** class System_Int32  **/
-
 
 struct System_Type System_Int32Type  = { .base = { .type = typeof(System_Type) }, .name = "System.Int32", .size = sizeof(System_Int32) };
 
@@ -1464,8 +1450,6 @@ System_String8  System_Int32_toString8base10(System_Int32 that) {
 #endif
 #if !defined(code_System_Int64)
 #define code_System_Int64
-
-/** class System_Int64  **/
 
 
 struct System_Type System_Int64Type  = { .base = { .type = typeof(System_Type) }, .name = "System.Int64", .size = sizeof(System_Int64) };

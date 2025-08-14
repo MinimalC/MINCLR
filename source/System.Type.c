@@ -11,7 +11,7 @@
 #if !defined(code_System_enum)
 #define code_System_enum
 
-/** class System_enum  **/
+/** struct System_enum  **/
 
 String8 System_enum_getName(Type type, IntPtr value) {
     Console_assert(type);
@@ -29,7 +29,7 @@ String8 System_enum_getName(Type type, IntPtr value) {
 #if !defined(code_System_Type)
 #define code_System_Type
 
-/** class System_Type  **/
+/** struct System_Type  **/
 
 System_UInt64 base_System_Type_getSipHash(System_Type that) {
     struct Crypto_SipHash48 sipHash48; System_Stack_clear(sipHash48);

@@ -8,7 +8,7 @@
 #if !defined(code_System_IEnumerable)
 #define code_System_IEnumerable
 
-/** class System_IEnumerator  **/
+/** struct System_IEnumerator  **/
 
 struct System_Type System_IEnumeratorType = { .base = { .type = typeof(System_Type) },
 	.name = "IEnumerator",
@@ -18,7 +18,7 @@ System_Var  base_System_IEnumerator_get_current(System_IEnumerator that) { retur
 System_Bool  base_System_IEnumerator_moveNext(System_IEnumerator that) { return false; }
 
 
-/** class System_IEnumerable  **/
+/** struct System_IEnumerable  **/
 
 struct System_Type System_IEnumerableType = { .base = { .type = typeof(System_Type) },
 	.name = "IEnumerable",

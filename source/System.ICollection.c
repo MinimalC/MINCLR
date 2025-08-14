@@ -8,7 +8,7 @@
 #if !defined(code_System_ICollection)
 #define code_System_ICollection
 
-/** class System_ICollection  **/
+/** struct System_ICollection  **/
 
 struct System_Type System_ICollectionType = { .base = { .type = typeof(System_Type) },
 	.name = "ICollection",

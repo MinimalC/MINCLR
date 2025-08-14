@@ -14,7 +14,7 @@
 #if !defined(code_System_String)
 #define code_System_String
 
-/** class System_String */
+/** struct System_String **/
 
 void  System_String_free(System_String that) {
     Console_assert(that);

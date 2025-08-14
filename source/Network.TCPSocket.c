@@ -35,7 +35,7 @@ System_String8 Network_HTTPStatus_toString(Network_HTTPStatus value) {
     }
 }
 
-/** class Network.TCPSocket  **/
+/** struct Network_TCPSocket  **/
 
 struct System_Type Network_TCPSocketType = { .base = { .type = typeof(System_Type) },
     .name = "TCPSocket",

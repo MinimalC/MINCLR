@@ -14,8 +14,13 @@
 #if !defined(code_System_Exception)
 #define code_System_Exception
 
+/** struct System_Exception **/
+
 System_Exception System_Exception_current = null;
 
+/** function System_Exception_throw 
+    Throws a System_Exception.
+**/
 void  System_Exception_throw(System_Exception that) {
     Console_assert(that);
 
@@ -38,6 +43,9 @@ void  System_Exception_throw(System_Exception that) {
 #endif
 }
 
+/** function System_Exception_throw 
+    Throws a System_Exception, and terminates the process.
+**/
 void  System_Exception_terminate(System_Exception that) {
     Console_assert(that);
 
@@ -60,11 +68,24 @@ void  System_Exception_terminate(System_Exception that) {
     System_Syscall_terminate(false);
 }
 
-Bool  System_Exception_catch(System_Exception * that, System_Type type) {
+/** function System_Exception_catch 
+    Catches a System_Exception of type.
+    argument System_Exception * that
+    argument System_Type type
+    Returns true, if there is a System_Exception, false if not.
+**/
+Bool  System_Exception_catch(System_Exception ref that, System_Type type) {
     return System_Exception_catch__any(that, type, false);
 }
 
-Bool  System_Exception_catch__any(System_Exception * that, System_Type type, System_Bool any) {
+/** function System_Exception_catch__any
+    Catches any System_Exception.
+    argument System_Exception * that
+    argument System_Type type
+    argument System_Bool any
+    Returns true, if there is a System_Exception, false if not.
+**/
+Bool  System_Exception_catch__any(System_Exception ref that, System_Type type, System_Bool any) {
     Console_assert(that);
     Console_assert(type);
     
@@ -90,16 +111,30 @@ Bool  System_Exception_catch__any(System_Exception * that, System_Type type, Sys
     return true;    
 }
 
+/** function new_System_Exception
+    Creates a new System_Exception with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+**/
 System_Exception  new_System_Exception(System_String8 message) {
     System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_Exception));
     base_System_Exception_init(that, message);
     return that;
 }
 
+/** function base_System_Exception_init
+    Initializes new System_Exception with a message.
+    argument System_Exception that
+    argument System_String8 message
+**/
 void  base_System_Exception_init(System_Exception that, System_String8 message) {
     that->message = message;
 }
 
+/** function base_System_Exception_free
+    Free the message.
+    argument System_Exception that
+**/
 void  base_System_Exception_free(System_Exception that) {
     System_Memory_free(that->message);
 }
@@ -124,12 +159,23 @@ struct System_Type System_IOExceptionType = {
     .baseType = typeof(System_Exception),
 };
 
+/** function new_System_IOException
+    Creates a new System_IOException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+**/
 System_Exception  new_System_IOException(System_String8 message) {
     System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_IOException));
     base_System_Exception_init(that, message);
     return that;
 }
 
+/** function new_System_IOException__error
+    Creates a new System_IOException with the ErrorCode and a message.
+    argument System_ErrorCode error
+    argument System_String8 message
+    Returns the System_Exception.
+**/
 System_Exception  new_System_IOException__error(System_ErrorCode error, System_String8 message) {
     System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_IOException));
     base_System_Exception_init(that, message);
@@ -144,6 +190,11 @@ struct System_Type System_NotSupportedExceptionType = {
     .baseType = typeof(System_Exception),
 };
 
+/** function new_System_NotSupportedException
+    Creates a new System_NotSupportedException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+**/
 System_Exception  new_System_NotSupportedException(System_String8 message) {
     System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_NotSupportedException));
     base_System_Exception_init(that, message);
@@ -157,6 +208,11 @@ struct System_Type System_NotImplementedExceptionType = {
     .baseType = typeof(System_Exception),
 };
 
+/** function new_System_NotImplementedException
+    Creates a new System_NotImplementedException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+**/
 System_Exception  new_System_NotImplementedException(System_String8 message) {
     System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_NotImplementedException));
     base_System_Exception_init(that, message);
@@ -170,6 +226,11 @@ struct System_Type System_ArgumentExceptionType = {
     .baseType = typeof(System_Exception),
 };
 
+/** function new_System_ArgumentException
+    Creates a new System_ArgumentException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+**/
 System_Exception  new_System_ArgumentException(System_String8 message) {
     System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_ArgumentException));
     base_System_Exception_init(that, message);
@@ -183,6 +244,11 @@ struct System_Type System_InvalidExceptionType = {
     .baseType = typeof(System_Exception),
 };
 
+/** function new_System_InvalidException
+    Creates a new System_InvalidException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+**/
 System_Exception  new_System_InvalidException(System_String8 message) {
     System_Exception that = (System_Exception)System_Memory_allocClass(typeof(System_InvalidException));
     base_System_Exception_init(that, message);

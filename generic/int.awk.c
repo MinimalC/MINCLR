@@ -10,8 +10,6 @@
 #if !defined(code_Generic_T0)
 #define code_Generic_T0
 
-/** class Generic_T0  **/
-
 ##if Type == "Int64"
 ##set Generic_uT = "System_UInt64"
 ##else if Type == "Int32"

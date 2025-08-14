@@ -21,7 +21,7 @@
 #include <min/System.ECQLite.h>
 #endif
 
-/** class System_ECQLite  **/
+/** struct System_ECQLite  **/
 
 struct System_Type_FunctionInfo  System_ECQLiteTypeFunctions[] = {
     { .function = base_System_Object_init, .value = System_ECQLite_init },
