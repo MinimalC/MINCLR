@@ -97,8 +97,12 @@ export System_Size  stack_System_String8_formatEnd__limit_arguments(System_Strin
 #define String8_copySubstringTo  System_String8_copySubstringTo
 #define String8_copySubstringToAt  System_String8_copySubstringToAt
 #define String8_copy  System_String8_copy
+#define String8_concat  System_String8_concat
 #define String8_concat1  System_String8_concat1
 #define String8_concat2  System_String8_concat2
+#define String8_concat3  System_String8_concat3
+#define String8_concat4  System_String8_concat4
+#define String8_concat__arguments  System_String8_concat__arguments
 #define String8_compare  System_String8_compare
 #define String8_equals  System_String8_equals
 #define String8_equalsSubstring  System_String8_equalsSubstring

@@ -55,17 +55,24 @@ body {
     <div class="static"> static System_Console </div>
 </div>
 <div class="block">
+    <div class="function"> function System_Console_exit</div>
+    <div class="text">    Quit or Exit the program quietly, writing System_Exception to the Console, before terminating the process.</div>
+    <div class="argument">    Argument Size code</div>
+    <div class="returns">    No return</div>
+    <div class="text"></div>
+</div>
+<div class="block">
     <div class="function"> function System_Console_execute__arguments</div>
     <div class="text">    Execute a program, with absolute path. You also need to specify the program name as the first argument.</div>
     <div class="argument">    Argument System_String8 fileName</div>
     <div class="argument">    Argument System_Size argc</div>
-    <div class="argument">    Argument System_String argv[]</div>
+    <div class="argument">    Argument System_String8 argv[]</div>
     <div class="returns">    Returns the exit status of the program.</div>
     <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_execute</div>
-    <div class="text">    Execute a program, with absolute path.</div>
+    <div class="text">    Execute a program, with absolute path. You also need to specify the program name as the first argument.</div>
     <div class="argument">    Argument System_String8 fileName</div>
     <div class="argument">    Argument ...</div>
     <div class="returns">    Returns the exit status of the program.</div>
@@ -304,8 +311,8 @@ body {
     <div class="text"></div>
 </div>
 <div class="block">
-    <div class="function"> function System_Exception_throw </div>
-    <div class="text">    Throws a System_Exception, and terminates the process.</div>
+    <div class="function"> function System_Exception_terminate</div>
+    <div class="text">    Throws a System_Exception, before terminating the process.</div>
     <div class="text"></div>
 </div>
 <div class="block">

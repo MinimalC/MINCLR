@@ -47,6 +47,11 @@ void  System_Console_sync() {
 
 /* __attribute__((constructor)) void System_init */
 
+/** function System_Console_exit
+    Quit or Exit the program quietly, writing System_Exception to the Console, before terminating the process.
+    Argument Size code
+    No return
+**/
 void System_Console_exit(const Size code)  {
 #if DEBUG == DEBUG_System_Syscall_mmap
     System_Syscall_mmap__debug();
@@ -65,7 +70,7 @@ void System_Console_exit(const Size code)  {
     Execute a program, with absolute path. You also need to specify the program name as the first argument.
     Argument System_String8 fileName
     Argument System_Size argc
-    Argument System_String argv[]
+    Argument System_String8 argv[]
     Returns the exit status of the program.
 **/
 System_Size System_Console_execute__arguments(System_String8 fileName, Size argc, System_String8 argv[]) {
@@ -92,7 +97,7 @@ System_Size System_Console_execute__arguments(System_String8 fileName, Size argc
 }
 
 /** function System_Console_execute
-    Execute a program, with absolute path.
+    Execute a program, with absolute path. You also need to specify the program name as the first argument.
     Argument System_String8 fileName
     Argument ...
     Returns the exit status of the program.

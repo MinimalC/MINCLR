@@ -108,6 +108,7 @@ Bool System_Memory_equals(Var ptr0, Var ptr1, Size length) {
 }
 
 void System_Memory_sort(System_Var memory, System_Size itemsCount, System_Size itemSize, function(System_Memory_comparison) comparison) {
+    if (!memory) return; // throw new_NullReferenceException ?
     for (Size position = 1; position < itemsCount; ++position)
         for (Size position1 = position; position1; --position1) {
             Var position_var = memory + (position1 - 1) * itemSize;
@@ -223,6 +224,9 @@ System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pag
         System_Var var, position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
         while (position < ((System_Var)mem64h + mem64h->length)) {
             System_Memory_Header header = (System_Memory_Header)position;
+#if DEBUG == DEBUG_System_Memory
+            if (header->type) Console_assert(header->type == typeof(System_Memory_Header));
+#endif
 
             /* expect first if this is unfree, move next */
             if (header->length && header->refCount) {
@@ -236,7 +240,7 @@ System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pag
             }
             /* expect second if this is free, if there is not enough space, move next */
             if (header->length && !header->elementType) {
-                if (header->length != real_size && header->length < real_size + sizeof(struct System_Memory_Header)) {
+                if (header->length <= real_size) {
                     position += header->length;
 #if DEBUG == DEBUG_System_Memory
                     ++index1;
@@ -267,7 +271,6 @@ System_Console_writeLine("System_Memory_Header({0:uint}): using typeof({1:string
             header->length = real_size;
             header->elementType = type;
             header->refCount = System_Memory_ReferenceState_Used;
-            Console_assert(!header->type);
             header->type = typeof(System_Memory_Header);
 #if DEBUG == DEBUG_System_Memory
 System_Console_writeLine("System_Memory_Header({0:uint}): new typeof({1:string}), length {2:uint}", 4, index1, header->elementType->name, header->length);
@@ -318,6 +321,12 @@ System_Size System_Memory_debug__min_i_max(System_Size min, System_Size index, S
         Var position = ((System_Var)mem64h + sizeof(struct System_Memory_Page));
         while (position < ((System_Var)mem64h + mem64h->length)) {
             System_Memory_Header header = (System_Memory_Header)position;
+            if (!header->length || !header->type) break;
+#if DEBUG == DEBUG_System_Memory
+            Console_assert(header->type == typeof(System_Memory_Header));
+#endif
+            if (header->type != typeof(System_Memory_Header)) break;
+
             System_Var item = position + sizeof(struct System_Memory_Header);
 
             if (header->refCount && header->elementType) {
@@ -333,16 +342,14 @@ System_Size System_Memory_debug__min_i_max(System_Size min, System_Size index, S
                 if (header->length > sizeof(struct System_Memory_Header) + header->elementType->size * 1) 
                     System_Console_write__string("[]");
                 System_Console_write__string(", ");
-
-                goto continue_position;
             }
-            if (header->length && !header->elementType)
-                goto continue_position;
 
-            Console_assert(!header->length);
-            break;
+#if DEBUG == DEBUG_System_Memory
+            Console_assert(header->length);
+#endif
 
         continue_position:
+            if (!header->length) break;
             position += header->length;
         }
     }
@@ -429,17 +436,21 @@ void System_Memory_reallocArray(System_Var ref thatPtr, System_Size count) {
 #endif
     if (header->type != typeof(System_Memory_Header)) return;
 
+    System_Size new_length = count * header->elementType->size;
+    if (new_length <= header->length - sizeof(struct System_Memory_Header)) {
 #if DEBUG == DEBUG_System_Memory
-    System_Console_writeLine("System_Memory_reallocArray: using System_Memory_Header typeof({0:string}), length {1:uint}", 2, header->elementType->name, header->length);
+    System_Console_writeLine("System_Memory_reallocArray, clear: using System_Memory_Header typeof({0:string}), sizeof({1:uint}), old length {2:uint} => new length {3:uint}", 4, 
+        header->elementType->name, header->elementType->size, header->length, new_length);
 #endif
-
-    System_Size size = count * header->elementType->size;
-    if (size <= header->length) {
-        System_Memory_clear(that + size, header->length - size);
+        System_Memory_clear(that + new_length, header->length - sizeof(struct System_Memory_Header) - new_length);
         return;
     }
+#if DEBUG == DEBUG_System_Memory
+    System_Console_writeLine("System_Memory_reallocArray, reallocating: using System_Memory_Header typeof({0:string}), sizeof({1:uint}), old length {2:uint} => new length {3:uint}", 4, 
+        header->elementType->name, header->elementType->size, header->length, new_length);
+#endif
     System_Var that_new = System_Memory_allocArray(header->elementType, count);
-    Memory_copyTo(that, size, that_new);
+    Memory_moveTo(that, header->length - sizeof(struct System_Memory_Header), that_new);
     Memory_free(that);
     *thatPtr = that_new;
 }
@@ -448,6 +459,9 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
 	Console_assert(thatPtr);
     if (!thatPtr) return;
     System_Var that = *thatPtr;
+#if DEBUG == DEBUG_System_Memory
+	Console_assert(that);
+#endif
     if (!that) return;
 
     if (!Memory_isAllocated(that)) {
@@ -503,9 +517,8 @@ void  System_Memory_freeStruct(System_Var that, System_Type type) {
         free((System_Object)that);
     }
     #if DEBUG == DEBUG_System_Memory
-    else System_Console_writeLine("System_Memory_freeStruct: {0:string} typeof({1:string}): function_System_Object_free not found", 2, 
-        System_Type_isAssignableFrom(type, typeof(System_Object)) ? "class" : "struct",
-        type->name);
+    else if (System_Type_isAssignableFrom(type, typeof(System_Object))) 
+        System_Console_writeLine("System_Memory_freeStruct: class typeof({0:string}): function_System_Object_free not found", 1, type->name);
     #endif
 }
 

@@ -43,8 +43,8 @@ void  System_Exception_throw(System_Exception that) {
 #endif
 }
 
-/** function System_Exception_throw 
-    Throws a System_Exception, and terminates the process.
+/** function System_Exception_terminate
+    Throws a System_Exception, before terminating the process.
 **/
 void  System_Exception_terminate(System_Exception that) {
     Console_assert(that);

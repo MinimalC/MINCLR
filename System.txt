@@ -1,0 +1,368 @@
+ struct Crypto_CubeHash512  
+ struct Crypto_SipHash48  
+ struct Network_HTTPRequest  
+ struct Network_TCPSocket  
+ struct System_Array  
+ struct System_ArrayEnumerator  
+ struct System_Atomic  
+ static System_Console 
+ function System_Console_exit
+    Quit or Exit the program quietly, writing System_Exception to the Console, before terminating the process.
+    Argument Size code
+    No return
+
+ function System_Console_execute__arguments
+    Execute a program, with absolute path. You also need to specify the program name as the first argument.
+    Argument System_String8 fileName
+    Argument System_Size argc
+    Argument System_String8 argv[]
+    Returns the exit status of the program.
+
+ function System_Console_execute
+    Execute a program, with absolute path. You also need to specify the program name as the first argument.
+    Argument System_String8 fileName
+    Argument ...
+    Returns the exit status of the program.
+
+ function System_Console_write__string_size 
+    Write a String8 to System_Console_StdOut, with length of size.
+    Argument System_String8 string
+    Argument System_Size size
+    Returns the length of the string.
+
+ function System_Console_write__string 
+    Write a String8 to System_Console_StdOut, using System_String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+
+ function System_Console_write__char 
+    Write a char to System_Console_StdOut.
+    Argument System_Char8 character
+    Returns 1.
+
+ function System_Console_write
+    Write a formatted string to System_Console_StdOut. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_write("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+
+ function System_Console_writeLineEmpty
+    Write an empty new line to System_Console_StdOut.
+    Returns 1.
+
+ function System_Console_writeLine__string
+    Write a string to System_Console_StdOut, this function is using String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+
+ function System_Console_writeLine
+    Write a formatted string and a new line to System_Console_StdOut. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_writeLine("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+
+ function System_Console_assert__string8
+    Assert an expression. If false, write expression text, functionName, fileName and line to System_Console_StdErr.
+    Argument System_Bool expression
+    Argument System_String8 text
+    Argument System_String8 functionName
+    Argument System_String8 fileName
+    Argument System_Size line
+    Returns true, if the expression is false.
+
+ function System_Console_debug
+    Write a formatted string to System_Console_StdErr. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_debug("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+
+ function System_Console_debug__string_size 
+    Write a String8 to System_Console_StdErr, with length of size.
+    Argument System_String8 string
+    Argument System_Size size
+    Returns the length of the string.
+
+ function System_Console_debug__string 
+    Write a String8 to System_Console_StdErr, using System_String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+
+ function System_Console_debug__char 
+    Write a char to System_Console_StdErr.
+    Argument System_Char8 character
+    Returns 1.
+
+ function System_Console_debugLine
+    Write a formatted string and a new line to System_Console_StdErr. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_debugLine("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+
+ function System_Console_debugLine__string
+    Write a string to System_Console_StdErr, this function is using String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+
+ function System_Console_debugLineEmpty
+    Write an empty new line to System_Console_StdErr.
+    Returns 1.
+
+ function System_Console_error
+    Write a formatted string to System_Console_StdErr. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_error("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+
+ function System_Console_error__string_size 
+    Write a String8 to System_Console_StdErr, with length of size.
+    Argument System_String8 string
+    Argument System_Size size
+    Returns the length of the string.
+
+ function System_Console_error__string 
+    Write a String8 to System_Console_StdErr, using System_String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+
+ function System_Console_error__char 
+    Write a char to System_Console_StdErr.
+    Argument System_Char8 character
+    Returns 1.
+
+ function System_Console_errorLine
+    Write a formatted string and a new line to System_Console_StdErr. 
+    Argument System_String8 format
+    Argument ...
+    Returns the length of the string.
+    Example: Console_errorLine("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");
+
+ function System_Console_errorLine__string
+    Write a string to System_Console_StdErr, this function is using String8_get_Length.
+    Argument System_String8 string
+    Returns the length of the string.
+
+ function System_Console_errorLineEmpty
+    Write an empty new line to System_Console_StdErr.
+    Returns 1.
+
+ struct System_DateTime  
+ function System_DateTime_toString
+    Returns a formatted String8 of DateTime.
+
+ function System_DateTime_now
+    Returns a DateTime of DateTime_now.
+
+ function System_DateTime_now_toString
+    Returns a formatted String8 of DateTime_now.
+
+ function stack_System_DateTime_now
+    Returns DateTime_now, on stack.
+
+ struct System_Decimal  
+ struct System_Directory  
+ struct System_ECQLite  
+ struct System_ELF64Assembly 
+ static System_Environment 
+ object System_String8 * System_Environment_Arguments 
+    Returns an array of String8, with System_Environment_Arguments_Count items
+
+ object System_String8 * System_Environment_AuxValues
+    Returns an array of System_String8, with System_Environment_AuxValues_Count items
+
+ function System_String8 System_Environment_AuxType_toString
+    Argument System_Environment_AuxType value
+    Returns the name of value in System_String8
+
+ struct System_Exception 
+ function System_Exception_throw 
+    Throws a System_Exception.
+
+ function System_Exception_terminate
+    Throws a System_Exception, before terminating the process.
+
+ function System_Exception_catch 
+    Catches a System_Exception of type.
+    argument System_Exception * that
+    argument System_Type type
+    Returns true, if there is a System_Exception, false if not.
+
+ function System_Exception_catch__any
+    Catches any System_Exception.
+    argument System_Exception * that
+    argument System_Type type
+    argument System_Bool any
+    Returns true, if there is a System_Exception, false if not.
+
+ function new_System_Exception
+    Creates a new System_Exception with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+
+ function base_System_Exception_init
+    Initializes new System_Exception with a message.
+    argument System_Exception that
+    argument System_String8 message
+
+ function base_System_Exception_free
+    Free the message.
+    argument System_Exception that
+
+ function new_System_IOException
+    Creates a new System_IOException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+
+ function new_System_IOException__error
+    Creates a new System_IOException with the ErrorCode and a message.
+    argument System_ErrorCode error
+    argument System_String8 message
+    Returns the System_Exception.
+
+ function new_System_NotSupportedException
+    Creates a new System_NotSupportedException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+
+ function new_System_NotImplementedException
+    Creates a new System_NotImplementedException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+
+ function new_System_ArgumentException
+    Creates a new System_ArgumentException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+
+ function new_System_InvalidException
+    Creates a new System_InvalidException with a message.
+    argument System_String8 message
+    Returns the System_Exception.
+
+ struct System_File
+ function System_File_exists
+    argument System_String8 name of the File.
+    Returns true or false, if the File exists.
+ function System_File_open
+    Open a File by name, with the specified flags.
+    argument System_String8 fileName
+    argument File_Mode flags, on how to open the File.
+    Returns System_File
+ function stack_System_File_open
+    Open a File by name, with the specified flags on stack.
+    argument System_File file.
+    argument System_String8 filename: Name of the File.
+    argument File_Mode flags: Flags how to open the File.
+    Returns System_Bool, if the file was opened.
+ function System_File_new
+    Create a new File object.
+    Returns System_File.
+ function System_File_close
+    Close the File.
+    argument System_File that
+ function System_File_free
+    Close the File and free the System_String8 name.
+    argument System_File that
+ function System_File_read
+    Read into System_String8 value, with System_Size count bytes.
+    argument System_File that
+    argument System_String8 value
+    argument System_Size count
+    Returns the count of bytes actually read.
+ function System_File_write__string_size
+    Write a System_String8 value, with System_Size count bytes.
+    argument System_File that
+    argument System_String8 value
+    argument System_Size count
+    Returns the count of bytes actually wrote.
+ function System_File_write__string
+    Write a System_String8 value, this function is using System_String8_get_Length.
+    argument System_File that
+    argument System_String8 value
+    Returns the count of bytes actually wrote.
+ function System_File_write__char
+    Write a System_Char8 value.
+    argument System_File that
+    argument System_Char8 character
+    Returns 1.
+ function System_File_writeLineEmpty
+    Write an empty new line.
+    argument System_File that
+    Returns 1.
+ function System_File_write
+    Write a formatted string with arguments into the File.
+    argument System_File that
+    argument System_String8 format
+    argument ...
+    Returns the length of the formatted string.
+ function System_File_writeLine__string
+    Write a string and a new line into the File.
+    argument System_File that
+    argument System_String8 string
+    Returns the length of the string + 1.
+ function System_File_writeLine
+    Write a formatted string and a new line into the File.
+    argument System_File that
+    argument System_String8 format
+    argument ...
+    Returns the length of the formatted string.
+ function System_File_writeEnd__arguments
+    Write a formatted string with a suffix and arguments into the File.
+    argument System_File that
+    argument System_String8 format
+    argument System_Char8 suffix
+    argument System_Size argc
+    argument System_Var argv[]
+    Returns the length of the formatted string.
+ function System_File_seek
+    Set the read, write position of the file.
+    argument System_File that
+    argument System_SSize offset
+    argument System_Origin origin, System_Origin_Begin, System_Origin_Current, System_Origin_End
+    Returns the new position.
+ function System_File_get_position
+    Get the read, write position of the file.
+    argument System_File that
+    Returns the current position.
+ function System_File_set_position
+    Set the read, write position of the file.
+    argument System_File that
+    argument System_Size position
+ function System_File_get_Length
+    argument System_File that
+    Returns the length of the file.
+ function System_File_set_Length
+    Set the length of the file.
+    argument System_File that
+    argument System_Size value
+ function System_File_sync
+    Synchronize the file.
+    argument System_File that
+ struct System_FileInfo  
+ struct System_ICollection  
+ struct System_IEnumerator  
+ struct System_IEnumerable  
+ struct System_IStream  
+ struct System_Memory  
+ struct System_MemoryStream
+ struct System_Object  
+ struct System_Path  
+ struct System_Signal  
+ struct System_String 
+ struct System_Char8  
+ struct System_String8 
+ struct System_Syscall_Command  
+ struct System_ErrorCode  
+ struct System_Syscall  
+ struct System_Terminal 
+ struct System_Thread
+ struct System_enum  
+ struct System_Type  
+ struct System_VarArray  
+ struct System_VarArrayEnumerator  
+ struct System_VarDictionary  
+ struct System_VarDictionaryEnumerator  

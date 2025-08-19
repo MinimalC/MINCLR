@@ -85,5 +85,23 @@ int System_Runtime_main(int argc, char * argv[]) {
     else
         Console_writeLine("Test09: SUCCESS: System_Memory_sort descending {0:string}", 1, runtime_memory1);
 
+    String8 realloc_memory = Memory_allocArray(typeof(Char8), 17);
+    for (Size c = 0; c < 16; ++c) realloc_memory[c] = 'A';
+    Memory_reallocArray((System_Var ref)&realloc_memory, 33);
+    for (Size c = 16; c < 32; ++c) realloc_memory[c] = 'B';
+    Memory_reallocArray((System_Var ref)&realloc_memory, 49);
+    for (Size c = 32; c < 48; ++c) realloc_memory[c] = 'C';
+    Memory_reallocArray((System_Var ref)&realloc_memory, 65);
+    for (Size c = 48; c < 64; ++c) realloc_memory[c] = 'D';
+    Memory_reallocArray((System_Var ref)&realloc_memory, 81);
+    for (Size c = 64; c < 80; ++c) realloc_memory[c] = 'E';
+    Memory_reallocArray((System_Var ref)&realloc_memory, 97);
+    for (Size c = 80; c < 96; ++c) realloc_memory[c] = 'F';
+    if (!System_String8_equals("AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEEFFFFFFFFFFFFFFFF", realloc_memory))
+        Console_writeLine("Test10: ERROR: System_Memory_reallocArray {0:string}", 1, realloc_memory);
+    else
+        Console_writeLine("Test10: SUCCESS: System_Memory_reallocArray {0:string}", 1, realloc_memory);
+    Memory_free(realloc_memory);
+
     return true;
 }
