@@ -36,7 +36,9 @@ System_Bool  stack_System_MemoryStream_open(System_MemoryStream that) {
 String8  System_MemoryStream_final(MemoryStream that) { 
     
     String8 reture = that->buffer;
-    stack_System_MemoryStream_open(that);
+    that->buffer = null;
+    Memory_reallocArray((System_Var ref)&reture, that->size);
+    that->capacity = that->size = that->position = 0;
     return reture;
 }
 
@@ -70,8 +72,8 @@ Size  System_MemoryStream_read(MemoryStream that, String8 value, Size count) {
 }
 
 Size  System_MemoryStream_write__string_size(MemoryStream that, String8 value, Size count) {
-    if (that->position + count > that->capacity) {
-        Size count1 = ROUND(that->position + count, System_MemoryStream_Capacity) + System_MemoryStream_Capacity;  
+    if (that->position + count >= that->capacity) {
+        Size count1 = ROUND(that->position + count, System_MemoryStream_Capacity);  
         Memory_reallocArray((System_Var ref)&that->buffer, count1);
         that->capacity = count1;
     }
@@ -83,7 +85,7 @@ Size  System_MemoryStream_write__string_size(MemoryStream that, String8 value, S
 }
 
 void  System_MemoryStream_set_Length(MemoryStream that, Size length) {
-    Size length1 = ROUND(length, System_MemoryStream_Capacity) + System_MemoryStream_Capacity;
+    Size length1 = ROUND(length, System_MemoryStream_Capacity);
     if (that->capacity != length1) {
         Memory_reallocArray((System_Var ref)&that->buffer, length1);
         that->capacity = length1;
@@ -146,18 +148,15 @@ Size  System_MemoryStream_seek(MemoryStream that, SSize offset, Origin origin) {
     switch (origin) {
     case Origin_Begin:
         if (offset < 0 || offset > that->size) return false;
-        that->position = offset;
-        return true;
+        return that->position = offset;
     case Origin_Current:
         if (that->position + offset < 0 || that->position + offset > that->size) return false;
-        that->position = that->position + offset;
-        return true;
+        return that->position += offset;
     case Origin_End:
         if (that->size + offset < 0 || that->size + offset > that->size) return false;
-        that->position = that->size + offset;
-        return true;
+        return that->position = that->size + offset;
     default:
-        return false;
+        return false; // throw
     }
 }
 

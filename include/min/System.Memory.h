@@ -33,7 +33,7 @@ enum {
 
 typedef unsigned System_Memory_ReferenceState;
 enum {
-    System_Memory_ReferenceState_Freed,
+    System_Memory_ReferenceState_Free,
     System_Memory_ReferenceState_Disposed,
     System_Memory_ReferenceState_Disposing,
     /* reserved */

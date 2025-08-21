@@ -9,7 +9,7 @@
 #define have_System_MemoryStream
 
 enum {
-    System_MemoryStream_Capacity = 4096,
+    System_MemoryStream_Capacity = 65536,
 };
 
 typedef System_fixed struct System_MemoryStream {
