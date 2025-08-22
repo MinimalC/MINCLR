@@ -84,6 +84,7 @@ typedef System_fixed struct System_File {
 export struct System_Type  System_FileType;
 
 export System_Bool  System_File_exists(System_String8 name);
+export System_Bool  System_File_delete(System_String8 name);
 export System_File  System_File_open(System_String8 name, System_File_Mode flags);
 export System_Bool  stack_System_File_open(System_File that, System_String8 name, System_File_Mode flags);
 
@@ -111,6 +112,7 @@ export void  System_File_close(System_File that);
 #define File  System_File
 #define FileType  System_FileType
 #define File_exists  System_File_exists
+#define File_delete  System_File_delete
 #define File_open  System_File_open
 #define new_File  new_System_File
 #define File_free  System_File_free

@@ -16,17 +16,13 @@
 
 /** struct System_MemoryStream */
 
-System_MemoryStream  System_MemoryStream_open() {
-    return new_System_MemoryStream();
-}
-
 System_MemoryStream  new_System_MemoryStream() {
      System_MemoryStream that = (System_MemoryStream)System_Memory_allocClass(typeof(System_MemoryStream));
-     stack_System_MemoryStream_open(that);
+     stack_System_MemoryStream_create(that);
      return that;
 }
 
-System_Bool  stack_System_MemoryStream_open(System_MemoryStream that) {
+System_Bool  stack_System_MemoryStream_create(System_MemoryStream that) {
 
     that->capacity = System_MemoryStream_Capacity;
     that->buffer = Memory_allocArray(typeof(Char8), that->capacity);
@@ -34,9 +30,15 @@ System_Bool  stack_System_MemoryStream_open(System_MemoryStream that) {
 }
 
 String8  System_MemoryStream_final(MemoryStream that) { 
+    System_Size size = 0;
+    return System_MemoryStream_final__size(that, &size);
+}
+
+String8  System_MemoryStream_final__size(MemoryStream that, System_Size out size) { 
     
     String8 reture = that->buffer;
     that->buffer = null;
+    *size = that->size;
     Memory_reallocArray((System_Var ref)&reture, that->size);
     that->capacity = that->size = that->position = 0;
     return reture;

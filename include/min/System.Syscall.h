@@ -82,7 +82,10 @@ export void  System_Syscall_fsync(System_IntPtr fileId);
 export void  System_Syscall_close(System_IntPtr fileId);
 export void  System_Syscall_fstat(System_IntPtr fileId, System_Var stat);
 export void  System_Syscall_fstatat(System_IntPtr directoryId, const System_String8 pathName, System_Var stat, System_IntPtr flags);
+export void  System_Syscall_unlink(System_String8 fileName);
+export void  System_Syscall_rmdir(System_String8 directoryName);
 export void  System_Syscall_getcwd(System_String8 buffer, System_Size length);
+export void  System_Syscall_readlink(System_String8 linkName, System_String8 buffer, System_Size length);
 export void  System_Syscall_chdir(System_String8 path);
 export System_IntPtr  System_Syscall_mkdir(System_String8 path, System_IntPtr mode);
 export System_Size  System_Syscall_getdents64(System_IntPtr directoryId, System_String8 buffer, System_Size length);
@@ -176,15 +179,34 @@ export System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, Syst
 #define SyscallType  System_SyscallType
 #define Syscall_error  System_Syscall_error
 #define Syscall_terminate  System_Syscall_terminate
+#define Syscall_gettimeofday  System_Syscall_gettimeofday
+#define Syscall_time  System_Syscall_time
 #define Syscall_open  System_Syscall_open
 #define Syscall_openat  System_Syscall_openat
 #define Syscall_read  System_Syscall_read
 #define Syscall_write  System_Syscall_write
 #define Syscall_lseek  System_Syscall_lseek
+#define Syscall_ftruncate  System_Syscall_ftruncate
 #define Syscall_fsync  System_Syscall_fsync
 #define Syscall_close  System_Syscall_close
+#define Syscall_fstat  System_Syscall_fstat
+#define Syscall_fstatat  System_Syscall_fstatat
+#define Syscall_unlink  System_Syscall_unlink
+#define Syscall_rmdir  System_Syscall_rmdir
+#define Syscall_getcwd  System_Syscall_getcwd
+#define Syscall_readlink  System_Syscall_readlink
+#define Syscall_chdir  System_Syscall_chdir
+#define Syscall_mkdir  System_Syscall_mkdir
+#define Syscall_getdents64  System_Syscall_getdents64
 #define Syscall_mmap  System_Syscall_mmap
+#define Syscall_mmap__file  System_Syscall_mmap__file
+#define Syscall_mmap__full  System_Syscall_mmap__full
+#define Syscall_mmap__debug  System_Syscall_mmap__debug
 #define Syscall_munmap  System_Syscall_munmap
+#define Syscall_mprotect  System_Syscall_mprotect
+#define Syscall_mremap  System_Syscall_mremap
+#define Syscall_msync__flags  System_Syscall_msync__flags
+#define Syscall_nanosleep  System_Syscall_nanosleep
 
 #define Syscall_StandardFile  System_Syscall_StandardFile
 #define Syscall_StandardFile_STDIN  System_Syscall_StandardFile_STDIN

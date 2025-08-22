@@ -11,6 +11,26 @@
 
 /** struct System_FileInfo  **/
 
+System_Bool System_FileInfo_isLink(System_String8 linkName) {
+    struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo)); System_FileInfo_init(&info, linkName);
+    if (info.status.mode & FileInfo_Type_Link) return true;
+    return false;
+}
+
+System_String8 System_FileInfo_readLink(System_String8 linkName) {
+ 
+    System_Char8 buffer[4096]; System_Stack_clear(buffer);
+    System_Syscall_readlink(linkName, buffer, 4096);
+    buffer[4096] = '\0';
+    System_ErrorCode error = System_Syscall_get_Error();
+    if (error) return null; // throw
+
+    System_Size length = System_String8_get_Length(buffer);
+    System_String8 fileName = System_Memory_allocArray(typeof(System_Char8), length + 1);
+    System_String8_copyTo(buffer, fileName);
+    return fileName;
+}
+
 System_FileInfo  new_System_FileInfo(System_String8 fileName) {
     System_FileInfo that = (System_FileInfo)System_Memory_allocClass(typeof(System_FileInfo));
     System_FileInfo_init(that, fileName);
@@ -24,16 +44,6 @@ void  System_FileInfo_init(System_FileInfo that, System_String8 fileName) {
 void  System_FileInfo_init__fileId(System_FileInfo that, System_IntPtr fileId) {
     System_Syscall_fstat(fileId, &that->status);
     that->error = System_Syscall_get_Error();
-}
-
-System_Bool System_FileInfo_isRegular(System_FileInfo that) {
-    return that->status.mode & FileInfo_Type_Regular;
-}
-System_Bool System_FileInfo_isDirectory(System_FileInfo that) {
-    return that->status.mode & FileInfo_Type_Directory;
-}
-System_Bool System_FileInfo_isLink(System_FileInfo that) {
-    return that->status.mode & FileInfo_Type_Link;
 }
 
 struct System_Type_FunctionInfo  System_FileInfoTypeFunctions[] = {

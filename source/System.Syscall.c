@@ -142,8 +142,20 @@ void  System_Syscall_fstatat(System_IntPtr directoryId, const System_String8 pat
     (void)System_Syscall_call04(System_Syscall_Command_fstatat, directoryId, (System_IntPtr)pathName, (System_IntPtr)stat, flags);
 }
 
+void  System_Syscall_unlink(System_String8 fileName) {
+    (void)System_Syscall_call01(System_Syscall_Command_unlink, (System_IntPtr)fileName);
+}
+
+void  System_Syscall_rmdir(System_String8 directoryName) {
+    (void)System_Syscall_call01(System_Syscall_Command_rmdir, (System_IntPtr)directoryName);
+}
+
 void System_Syscall_getcwd(System_String8 buffer, System_Size length) {
     (void)System_Syscall_call02(System_Syscall_Command_getcwd, (System_IntPtr)buffer, length);
+}
+
+void System_Syscall_readlink(System_String8 linkName, System_String8 buffer, System_Size length) {
+    (void)System_Syscall_call03(System_Syscall_Command_readlink, (System_IntPtr)linkName, (System_IntPtr)buffer, length);
 }
 
 void System_Syscall_chdir(System_String8 path) {

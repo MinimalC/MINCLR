@@ -15,9 +15,8 @@
 /** struct System_Directory  **/
 
 System_Bool System_Directory_exists(System_String8 name) {
-    struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo));
-    System_FileInfo_init(&info, name);
-    return System_FileInfo_isDirectory(&info);
+    struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo)); System_FileInfo_init(&info, name);
+    return info.status.mode & FileInfo_Type_Directory;
 }
 
 System_Bool System_Directory_change(System_String8 path) {
@@ -29,6 +28,16 @@ System_Bool System_Directory_change(System_String8 path) {
 
 System_Bool System_Directory_create(System_String8 directoryName) {
     return !System_Syscall_mkdir(directoryName, 0777);
+}
+
+System_Bool System_Directory_remove(System_String8 name) {
+    System_Syscall_rmdir(name);
+    System_ErrorCode error = System_Syscall_get_Error();
+    if (error) {
+        System_Exception_throw(new_System_IOException__error(error, "Directory not removed"));
+        return false;
+    }
+    return true;
 }
 
 System_String8 System_Directory_get_current() {
@@ -50,16 +59,7 @@ System_Directory  new_System_Directory() {
     return that;
 }
 
-System_Directory  System_Directory_open(String8 dirName) {
-
-    Directory that = new_Directory();
-    if (stack_System_Directory_open(that, dirName)) return that;
-    Memory_free(that);
-    return null;
-}
-
-System_Bool  stack_System_Directory_open(System_Directory that, System_String8 dirName) {
-
+System_Bool  System_Directory_open(System_Directory that, System_String8 dirName) {
     if (that->dirId) return false;
 
     System_IntPtr id = System_Syscall_openat(System_Syscall_StandardFile_CurrentWorkingDirectory, dirName,
@@ -71,9 +71,7 @@ System_Bool  stack_System_Directory_open(System_Directory that, System_String8 d
         System_Exception_throw(new_System_IOException__error(error, "Directory not found"));
         return false;
     }
-
     that->dirId = id;
-    that->name = Memory_addReference(dirName);
     return true;
 }
 
@@ -98,20 +96,24 @@ System_SSize System_DirectoryEntry_alphacompare(System_DirectoryEntry memory0, S
     return c0 - c1;
 }
 
-System_DirectoryList  System_Directory_list(System_Directory that) {
-    return System_Directory_list__hidden(that, false);
+System_DirectoryList  System_Directory_list(System_String8 directoryName) {
+    return System_Directory_list__hidden(directoryName, false);
 }
 
-System_DirectoryList  System_Directory_list__hidden(System_Directory that, System_Bool hidden) {
+System_DirectoryList  System_Directory_list__hidden(System_String8 directoryName, System_Bool hidden) {
+    struct System_Directory directory; Stack_clear(directory);
+    if (!System_Directory_open(&directory, directoryName)) return null;
     Char8 buffer[65536]; Stack_clear(buffer);
-    // System_Syscall_lseek(that->dirId, 0, System_Origin_Begin);
-    Size size = System_Syscall_getdents64(that->dirId, buffer, 65536);
+    // System_Syscall_lseek(directory.dirId, 0, System_Origin_Begin);
+    Size size = System_Syscall_getdents64(directory.dirId, buffer, 65536);
+    if (!size) return null;
     Size linuxC = 0, systemC = 0;
     System_DirectoryList entries = Memory_allocClass(typeof(System_DirectoryList));
-    entries->name = String8_copy(that->name);
-    if (!size) return entries;
     struct MemoryStream stream; Stack_clear(stream);
-    stack_System_MemoryStream_open(&stream);
+    stack_System_MemoryStream_create(&stream);
+    MemoryStream_write__char(&stream, '\0');
+    entries->name = (System_Var)1;
+    MemoryStream_write__string(&stream, directoryName);
     MemoryStream_write__char(&stream, '\0');
     while (size) {
         for (Size position = 0; position < size; ) {
@@ -144,26 +146,28 @@ System_DirectoryList  System_Directory_list__hidden(System_Directory that, Syste
             MemoryStream_write__char(&stream, '\0');
             ++systemC;
         }
-        size = System_Syscall_getdents64(that->dirId, buffer, 65536);
+        size = System_Syscall_getdents64(directory.dirId, buffer, 65536);
     }
-    entries->scratch = MemoryStream_final(&stream);
+    System_Directory_close(&directory);
+    entries->scratch.value = MemoryStream_final__size(&stream, &entries->scratch.length);
+    entries->name = (System_Var)entries->name + (System_Size)entries->scratch.value;
     for (Size s = 0; s < systemC; ++s) {
         System_DirectoryEntry system_directory = &array_item(entries->value, s);
-        system_directory->name = (System_Var)system_directory->name + (System_Size)entries->scratch;
+        system_directory->name = (System_Var)system_directory->name + (System_Size)entries->scratch.value;
     }
     System_Memory_sort(entries->value, systemC, sizeof(struct System_DirectoryEntry), (function_System_Memory_comparison)&System_DirectoryEntry_alphacompare);
     return entries;
 }
 
-System_DirectoryList  System_Directory_list__recursive(System_Directory that, System_Bool recursive) {
-    return System_Directory_list__recursive_hidden(that, recursive, false);
+System_DirectoryList  System_Directory_list__recursive(System_String8 directoryName, System_Bool recursive) {
+    return System_Directory_list__recursive_hidden(directoryName, recursive, false);
 }
 
-System_DirectoryList  System_Directory_list__recursive_hidden(System_Directory that, System_Bool recursive, System_Bool hidden) {
+System_DirectoryList  System_Directory_list__recursive_hidden(System_String8 directoryName, System_Bool recursive, System_Bool hidden) {
 
     System_DirectoryList directories[2048]; Stack_clear(directories); Size directoriesC = 1;
-    System_Char8 directoryName[4096]; Stack_clear(directoryName); Size directoryNameL = 0;
-    directories[0] = System_Directory_list__hidden(that, hidden);
+    System_Char8 subdirectoryName[4096]; Stack_clear(subdirectoryName); Size subdirectoryNameL = 0;
+    directories[0] = System_Directory_list__hidden(directoryName, hidden);
 
     if (!recursive) return directories[0];
 
@@ -174,17 +178,13 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_Directory t
             if (entry->type == System_Directory_Type_Directory) {
                 if (String8_equals(entry->name, ".")) continue;
                 if (String8_equals(entry->name, "..")) continue;
-                directoryNameL = String8_copyTo(list->name, directoryName);
-                directoryName[directoryNameL++] = '/';
-                directoryNameL += String8_copyTo(entry->name, directoryName + directoryNameL);
-                directoryName[directoryNameL++] = '\0';
-                struct System_Directory directory; Stack_clear(directory);
-                if (stack_System_Directory_open(&directory, directoryName)) {
-                    if (directoriesC < 2048)
-                        directories[directoriesC++] = System_Directory_list__hidden(&directory, hidden);
-                    // todo: else throw?
-                }
-                System_Directory_free(&directory);
+                subdirectoryNameL = String8_copyTo(list->name, subdirectoryName);
+                subdirectoryName[subdirectoryNameL++] = '/';
+                subdirectoryNameL += String8_copyTo(entry->name, subdirectoryName + subdirectoryNameL);
+                subdirectoryName[subdirectoryNameL++] = '\0';
+                if (directoriesC < 2048)
+                    directories[directoriesC++] = System_Directory_list__hidden(subdirectoryName, hidden);
+                // else todo: throw?
             }   
         }
     }
@@ -195,17 +195,16 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_Directory t
         new_size += directories[position]->length - 2;
     }
     struct MemoryStream stream; Stack_clear(stream);
-    stack_System_MemoryStream_open(&stream);
+    stack_System_MemoryStream_create(&stream);
     MemoryStream_write__char(&stream, '\0');
     for (Size position1 = 0; position1 < directories[0]->length; ++position1) {
         DirectoryEntry entry = &array_item(directories[0]->value, position1);
         String8 entry_name = entry->name;
         entry->name = (System_Var)stream.position;
-        MemoryStream_write__string(&stream, directories[0]->name);
-        MemoryStream_write__char(&stream, '/');
         MemoryStream_write__string(&stream, entry_name);
         MemoryStream_write__char(&stream, '\0');
     }
+    Size directory0_name_length = String8_get_Length(directories[0]->name);
     if (new_size > directories[0]->length) {
         Size position2 = directories[0]->length;
         Memory_reallocArray((System_Var ref)&directories[0]->value, new_size);
@@ -221,7 +220,7 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_Directory t
                 DirectoryEntry other = &array_item(directories[0]->value, position2++);
                 Memory_moveTo((System_Var)entry, sizeof(struct System_DirectoryEntry), (System_Var)other);
                 other->name = (System_Var)stream.position;
-                MemoryStream_write__string(&stream, list->name);
+                MemoryStream_write__string(&stream, list->name + directory0_name_length + 1);
                 MemoryStream_write__char(&stream, '/');
                 MemoryStream_write__string(&stream, entry_name);
                 MemoryStream_write__char(&stream, '\0');
@@ -232,11 +231,11 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_Directory t
     for (Size position = 1; position < directoriesC; ++position) {
         Memory_free(directories[position]);
     }
-    Memory_free(directories[0]->scratch);
-    directories[0]->scratch = MemoryStream_final(&stream);
+    Memory_free(directories[0]->scratch.value);
+    directories[0]->scratch.value = MemoryStream_final(&stream);
     for (Size s = 0; s < directories[0]->length; ++s) {
         System_DirectoryEntry system_directory = &array_item(directories[0]->value, s);
-        system_directory->name = (System_Var)system_directory->name + (System_Size)directories[0]->scratch;
+        system_directory->name = (System_Var)system_directory->name + (System_Size)directories[0]->scratch.value;
     }
     System_Memory_sort(directories[0]->value, directories[0]->length, sizeof(struct System_DirectoryEntry), (function_System_Memory_comparison)&System_DirectoryEntry_alphacompare);
     return directories[0];
@@ -251,7 +250,6 @@ void System_Directory_close(System_Directory that) {
 
 void  System_Directory_free(System_Directory that) {
     System_Directory_close(that);
-    if (that->name) Memory_free(that->name);
 }
 
 struct System_Type_FunctionInfo  System_DirectoryTypeFunctions[] = {
@@ -264,30 +262,15 @@ struct System_Type System_DirectoryType = {
     .functions = { .length = sizeof_array(System_DirectoryTypeFunctions), .value = &System_DirectoryTypeFunctions },
 };
 
-/*void System_DirectoryEntry_free(System_DirectoryEntry that) {
-    // if (that->name) Memory_free(that->name);
-}
-
-struct System_Type_FunctionInfo  System_DirectoryEntryTypeFunctions[] = {
-    { .function = base_System_Object_free, .value = System_DirectoryEntry_free },
-};*/
-
 struct System_Type System_DirectoryEntryType = { 
     .base = { .type = typeof(System_Type) }, .name = "DirectoryEntry",
     .size = sizeof(struct System_DirectoryEntry),
-    // .functions = { .length = sizeof_array(System_DirectoryEntryTypeFunctions), .value = &System_DirectoryEntryTypeFunctions },
 };
 
 void System_DirectoryList_free(System_DirectoryList that) {
-    if (that->name) Memory_free(that->name);
-    if (that->value) {
-        /*for (Size i = 0; i < that->length; ++i) {
-            System_DirectoryEntry directory_entry = &array_item(that->value, i);
-            System_DirectoryEntry_free(directory_entry);
-        }*/
-        Memory_free(that->value);
-    }
-    if (that->scratch) Memory_free(that->scratch);
+    // if (that->name) Memory_free(that->name);
+    if (that->value) Memory_free(that->value);
+    if (that->scratch.value) Memory_free(that->scratch.value);
 }
 
 struct System_Type_FunctionInfo  System_DirectoryListTypeFunctions[] = {

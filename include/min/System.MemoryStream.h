@@ -27,8 +27,7 @@ typedef System_fixed struct System_MemoryStream {
 
 export struct System_Type  System_MemoryStreamType;
 
-export System_MemoryStream  System_MemoryStream_open();
-export System_Bool  stack_System_MemoryStream_open(System_MemoryStream that);
+export System_Bool  stack_System_MemoryStream_create(System_MemoryStream that);
 
 export System_MemoryStream  new_System_MemoryStream();
 export void  System_MemoryStream_init(System_MemoryStream that);
@@ -50,13 +49,14 @@ export System_Size  System_MemoryStream_get_Length(System_MemoryStream that);
 export void  System_MemoryStream_set_Length(System_MemoryStream that, System_Size value);
 export void  System_MemoryStream_close(System_MemoryStream that);
 export System_String8  System_MemoryStream_final(System_MemoryStream that);
+export System_String8  System_MemoryStream_final__size(System_MemoryStream that, System_Size out size); 
 export System_String8  System_MemoryStream_snapshot(System_MemoryStream that);
 
 #if defined(using_System)
 #define MemoryStream  System_MemoryStream
 #define MemoryStreamType  System_MemoryStreamType
 #define MemoryStream_exists  System_MemoryStream_exists
-#define MemoryStream_open  System_MemoryStream_open
+#define MemoryStream_create  System_MemoryStream_create
 #define new_MemoryStream  new_System_MemoryStream
 #define MemoryStream_free  System_MemoryStream_free
 #define MemoryStream_init  System_MemoryStream_init
@@ -77,6 +77,7 @@ export System_String8  System_MemoryStream_snapshot(System_MemoryStream that);
 #define MemoryStream_set_Length  System_MemoryStream_set_Length
 #define MemoryStream_close  System_MemoryStream_close
 #define MemoryStream_final  System_MemoryStream_final
+#define MemoryStream_final__size  System_MemoryStream_final__size
 #define MemoryStream_snapshot  System_MemoryStream_snapshot
 #endif
 #endif

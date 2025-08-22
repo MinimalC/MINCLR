@@ -48,19 +48,16 @@ export System_FileInfo  new_System_FileInfo();
 export void  System_FileInfo_init(System_FileInfo that, System_String8 fileName);
 export void  System_FileInfo_init__fileId(System_FileInfo that, System_IntPtr fileId);
 
-export System_Bool System_FileInfo_isRegular(System_FileInfo that);
-export System_Bool System_FileInfo_isDirectory(System_FileInfo that);
-export System_Bool System_FileInfo_isLink(System_FileInfo that);
+export System_Bool System_FileInfo_isLink(System_String8 linkName);
+export System_String8 System_FileInfo_readLink(System_String8 linkName);
 
 #if defined(using_System)
 #define FileInfo  System_FileInfo
 #define FileInfoType  System_FileInfoType
 #define new_FileInfo  new_System_FileInfo
-#define function_FileInfo_init  function_System_FileInfo_init
-#define base_FileInfo_init  System_FileInfo_init
 #define FileInfo_init  System_FileInfo_init
-#define FileInfo_isRegular  System_FileInfo_isRegular
-#define FileInfo_isDirectory  System_FileInfo_isDirectory
+#define FileInfo_init__fileId  System_FileInfo_init__fileId
 #define FileInfo_isLink  System_FileInfo_isLink
+#define FileInfo_readLink  System_FileInfo_readLink
 #endif
 #endif

@@ -22,7 +22,21 @@
 */
 System_Bool System_File_exists(System_String8 name) {
     struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo)); System_FileInfo_init(&info, name);
-    return System_FileInfo_isRegular(&info);
+    return info.status.mode & FileInfo_Type_Regular;
+}
+
+/** function System_File_delete
+    argument System_String8 name of the File.
+    Returns true or false, if the File was deleted.
+*/
+System_Bool System_File_delete(System_String8 name) {
+    System_Syscall_unlink(name);
+    System_ErrorCode error = System_Syscall_get_Error();
+    if (error) {
+        System_Exception_throw(new_System_IOException__error(error, "File not deleted"));
+        return false;
+    }
+    return true;
 }
 
 /** function System_File_open
