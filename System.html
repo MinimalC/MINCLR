@@ -62,18 +62,24 @@ body {
     <div class="text"></div>
 </div>
 <div class="block">
-    <div class="function"> function System_Console_execute__arguments</div>
-    <div class="text">    Execute a program, with absolute path. You also need to specify the program name as the first argument.</div>
+    <div class="function"> function System_Console_execute__stdout_stderr_stdin_arguments</div>
+    <div class="text">    Execute a program, with absolute path. Specify the program name as the first argument. Redirecting stdout, stderr and stdin.</div>
     <div class="argument">    Argument System_String8 fileName</div>
+    <div class="argument">    Argument System_File stdout</div>
+    <div class="argument">    Argument System_File stderr</div>
+    <div class="argument">    Argument System_File stdin</div>
     <div class="argument">    Argument System_Size argc</div>
     <div class="argument">    Argument System_String8 argv[]</div>
     <div class="returns">    Returns the exit status of the program.</div>
     <div class="text"></div>
 </div>
 <div class="block">
-    <div class="function"> function System_Console_execute</div>
-    <div class="text">    Execute a program, with absolute path. You also need to specify the program name as the first argument.</div>
+    <div class="function"> function System_Console_execute__stdout_stderr_stdin</div>
+    <div class="text">    Execute a program, with absolute path. You also need to specify the program name as the first argument. Redirecting stdout, stderr and stdin.</div>
     <div class="argument">    Argument System_String8 fileName</div>
+    <div class="argument">    Argument System_File stdout</div>
+    <div class="argument">    Argument System_File stderr</div>
+    <div class="argument">    Argument System_File stdin</div>
     <div class="argument">    Argument ...</div>
     <div class="returns">    Returns the exit status of the program.</div>
     <div class="text"></div>

@@ -110,6 +110,10 @@ System_IntPtr  System_Syscall_openat(System_IntPtr directoryId, System_String8 f
     return System_Syscall_call04(System_Syscall_Command_openat, directoryId, (System_IntPtr)fileName, flags, mode);
 }
 
+System_IntPtr  System_Syscall_dup2(System_IntPtr fileId, System_IntPtr newId) {
+    return System_Syscall_call02(System_Syscall_Command_dup2, fileId, newId);
+}
+
 System_Size  System_Syscall_read(System_IntPtr fileId, const System_Var buf, System_Size count) {
     return System_Syscall_call03(System_Syscall_Command_read, fileId, (System_IntPtr)buf, count);
 }

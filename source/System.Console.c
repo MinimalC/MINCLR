@@ -66,19 +66,37 @@ void System_Console_exit(const Size code)  {
 #define WEXITSTATUS(status)  (((status) & 0xff00) >> 8)
 #define WTERMSIG(status)  ((status) & 0x7f)
 
-/** function System_Console_execute__arguments
-    Execute a program, with absolute path. You also need to specify the program name as the first argument.
+System_Size System_Console_execute__arguments(System_String8 fileName, Size argc, System_String8 argv[]) {
+    return System_Console_execute__stdout_stderr_stdin_arguments(fileName, null, null, null, argc, argv);
+}
+
+System_Size System_Console_execute__stdout_arguments(System_String8 fileName, File stdout, Size argc, System_String8 argv[]) {
+    return System_Console_execute__stdout_stderr_stdin_arguments(fileName, stdout, null, null, argc, argv);
+}
+
+System_Size System_Console_execute__stdout_stderr_arguments(System_String8 fileName, File stdout, File stderr, Size argc, System_String8 argv[]) {
+    return System_Console_execute__stdout_stderr_stdin_arguments(fileName, stdout, stderr, null, argc, argv);
+}
+
+/** function System_Console_execute__stdout_stderr_stdin_arguments
+    Execute a program, with absolute path. Specify the program name as the first argument. Redirecting stdout, stderr and stdin.
     Argument System_String8 fileName
+    Argument System_File stdout
+    Argument System_File stderr
+    Argument System_File stdin
     Argument System_Size argc
     Argument System_String8 argv[]
     Returns the exit status of the program.
 **/
-System_Size System_Console_execute__arguments(System_String8 fileName, Size argc, System_String8 argv[]) {
+System_Size System_Console_execute__stdout_stderr_stdin_arguments(System_String8 fileName, File stdout, File stderr, File stdin, Size argc, System_String8 argv[]) {
 
     System_Signal_block__number(System_Signal_Number_SIGCHILD);
     System_Thread_TID pid = System_Syscall_fork();
     System_ErrorCode error = 0;
     if (!pid) { // i'm the child
+        if (stdout) System_Syscall_dup2(stdout->fileId, 1);
+        if (stderr) System_Syscall_dup2(stderr->fileId, 2);
+        if (stdin) System_Syscall_dup2(stdin->fileId, 0);
         System_String8 argv1[System_Arguments_Limit + 1]; Stack_clear(argv1);
         for (Size c = 0; c < argc && c < System_Arguments_Limit; ++c) argv1[c] = argv[c];
         System_Syscall_execve(fileName, argv1, System_Environment_Arguments);
@@ -86,29 +104,56 @@ System_Size System_Console_execute__arguments(System_String8 fileName, Size argc
         if (error) System_Exception_terminate(new_System_IOException(String8_format("System_Syscall_execve error {0:string}", 1, enum_getName(typeof(System_ErrorCode), error))));
     }
     System_Size status = 0;
-    while (true) {
-        System_Syscall_wait(pid, &status, 0);
-        error = System_Syscall_get_Error();
-        break;
-    }
+    System_Syscall_wait(pid, &status, 0);
+    error = System_Syscall_get_Error();
     if (error) System_Exception_throw(new_System_IOException(String8_format("System_Syscall_wait error {0:string}", 1, enum_getName(typeof(System_ErrorCode), error))));
     System_Signal_unblock__number(System_Signal_Number_SIGCHILD);
     return WEXITSTATUS(status);
 }
 
-/** function System_Console_execute
-    Execute a program, with absolute path. You also need to specify the program name as the first argument.
-    Argument System_String8 fileName
-    Argument ...
-    Returns the exit status of the program.
-**/
 System_Size System_Console_execute(System_String8 fileName, ...) {
     Arguments args;
     Arguments_start(args, fileName);
     Var argv[System_Arguments_Limit];
     Size argc = stack_System_Arguments_get(args, argv);
     Arguments_end(args);
-    return System_Console_execute__arguments(fileName, argc, (System_String8 *)argv);
+    return System_Console_execute__stdout_stderr_stdin_arguments(fileName, null, null, null, argc, (System_String8 *)argv);
+}
+
+System_Size System_Console_execute__stdout(System_String8 fileName, System_File stdout, ...) {
+    Arguments args;
+    Arguments_start(args, stdout);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
+    return System_Console_execute__stdout_stderr_stdin_arguments(fileName, stdout, null, null, argc, (System_String8 *)argv);
+}
+
+System_Size System_Console_execute__stdout_stderr(System_String8 fileName, System_File stdout, System_File stderr, ...) {
+    Arguments args;
+    Arguments_start(args, stderr);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
+    return System_Console_execute__stdout_stderr_stdin_arguments(fileName, stdout, stderr, null, argc, (System_String8 *)argv);
+}
+
+/** function System_Console_execute__stdout_stderr_stdin
+    Execute a program, with absolute path. You also need to specify the program name as the first argument. Redirecting stdout, stderr and stdin.
+    Argument System_String8 fileName
+    Argument System_File stdout
+    Argument System_File stderr
+    Argument System_File stdin
+    Argument ...
+    Returns the exit status of the program.
+**/
+System_Size System_Console_execute__stdout_stderr_stdin(System_String8 fileName, System_File stdout, System_File stderr, System_File stdin, ...) {
+    Arguments args;
+    Arguments_start(args, stdin);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
+    return System_Console_execute__stdout_stderr_stdin_arguments(fileName, stdout, stderr, stdin, argc, (System_String8 *)argv);
 }
 
 /** function System_Console_write__string_size 

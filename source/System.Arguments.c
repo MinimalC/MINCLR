@@ -20,7 +20,7 @@ System_Size stack_System_Arguments_get__limit(System_Arguments args, System_Var 
     Console_assert(argv);
     /* this is expecting a Size as first argument or null */
     Size argc = !args ? 0 : Argument(args,Size);
-    if (argc && argc > limit) { 
+    if (argc > limit) { 
         argc = 0;
 #if DEBUG
     System_Console_writeLine__string("WARNING: stack_System_Arguments limit");

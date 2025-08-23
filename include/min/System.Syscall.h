@@ -74,6 +74,7 @@ typedef struct System_Syscall_status {
 
 export System_IntPtr  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
 export System_IntPtr  System_Syscall_openat(System_IntPtr directoryId, System_String8 fileName, System_IntPtr flags, System_IntPtr mode);
+export System_IntPtr  System_Syscall_dup2(System_IntPtr fileId, System_IntPtr newId);
 export System_Size  System_Syscall_read(System_IntPtr fileId, const System_Var buffer, System_Size count);
 export System_Size  System_Syscall_write(System_IntPtr fileId, const System_Var buffer, System_Size count);
 export System_Size  System_Syscall_lseek(System_IntPtr fileId, System_Size offset, System_IntPtr whence);
@@ -183,6 +184,7 @@ export System_Size  System_Syscall_ppoll(System_Var pds, System_Size count, Syst
 #define Syscall_time  System_Syscall_time
 #define Syscall_open  System_Syscall_open
 #define Syscall_openat  System_Syscall_openat
+#define Syscall_dup  System_Syscall_dup
 #define Syscall_read  System_Syscall_read
 #define Syscall_write  System_Syscall_write
 #define Syscall_lseek  System_Syscall_lseek

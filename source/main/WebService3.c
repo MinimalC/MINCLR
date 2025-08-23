@@ -178,10 +178,14 @@ void System_ECSX_updateTempDirectory() {
     Memory_free(temp);
 }
 
-System_Char8 pretext[] =
+System_Char8 pretext_C[] =
     "#define using_System\n"
-    "#define using_Crypto\n"
     "#include <min/System.h>\n";
+
+System_Char8 pretext_HTML[] =
+    "<!DOCTYPE html>\n"
+    "<html><head>\n"
+    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
 
 Network_HTTPResponse  Server_ECSX_request(Network_HTTPRequest request, System_String8 requestPath, System_String8 text, System_Size fileSize, System_Size mime) {
 
@@ -197,19 +201,17 @@ Network_HTTPResponse  Server_ECSX_request(Network_HTTPRequest request, System_St
     struct FileInfo fileInfo1; Stack_clear(fileInfo1); FileInfo_init(&fileInfo1, fileName1);
     if (fileInfo1.status.mode & System_FileInfo_Type_Regular) {
         if (fileInfo0.status.modifyTime.sec <= fileInfo1.status.modifyTime.sec) {
-            System_Console_writeLine("ECSX File updated, {0:string}, ECSX qualified", 1, fileName1);
+            System_Console_writeLine("ECSX File not updated, using {0:string}", 1, fileName1);
             goto render;
         }
     }
-    System_Console_writeLine("ECSX File not updated, {0:string}", 1, fileName1);
 
     System_Size C = 0, ecsx_qualified = 0;
 
     System_MemoryStream stream = new_MemoryStream();
-    MemoryStream_write__string(stream, pretext);
+    MemoryStream_write__string_size(stream, pretext_C, sizeof(pretext_C) - 1);
     MemoryStream_write(stream, "void {0:string}(Network_HTTPRequest request, Network_HTTPResponse response) ", 1, ecsxName);
-    MemoryStream_write__char(stream, '{');
-    MemoryStream_write__char(stream, '\n');
+    MemoryStream_write__string(stream, "{\n");
     MemoryStream_write__string(stream, "MemoryStream_write__string(response->stream,\n\"");
 
     for (Size c = 0; c < fileSize; ++c) {
@@ -231,6 +233,10 @@ Network_HTTPResponse  Server_ECSX_request(Network_HTTPRequest request, System_St
             }
             if (text[c] == '\\') {
                 MemoryStream_write__string(stream, "\\\\");
+                continue;
+            }
+            if (text[c] == '"') {
+                MemoryStream_write__string(stream, "\\\"");
                 continue;
             }
         }
@@ -260,6 +266,11 @@ Network_HTTPResponse  Server_ECSX_request(Network_HTTPRequest request, System_St
 
     if (ecsx_qualified < 2) {
         System_Console_writeLine__string("ECSX unqualified");
+
+        Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
+        response->body.length = fileSize;
+        response->body.value = Memory_addReference(text);
+
         Memory_free(buffer);
         Memory_free(ecsxName);
         Memory_free(fileName1);
@@ -275,18 +286,41 @@ Network_HTTPResponse  Server_ECSX_request(Network_HTTPRequest request, System_St
     Memory_free(temp);
     Memory_free(buffer);
 
-    Size gcc = System_Console_execute("/usr/bin/gcc", 13, 
+    String8 fileName3 = String8_concat1(fileName, ".gcc.output");
+    File output = System_File_open(fileName3, File_Mode_readWrite | File_Mode_create | File_Mode_truncate);
+    System_File_write__string_size(output, pretext_HTML, sizeof(pretext_HTML) - 1);
+    System_File_write__string(output, "<title>GCC compiler error</title>\n");
+    System_File_write__string(output, "</head><body><h3>GCC compiler error</h3><pre>\n");
+
+    Size gcc = System_Console_execute__stdout_stderr("/usr/bin/gcc", null, output, 13, 
         "gcc", "-I../include", "-L.", "-l:System.so", "-nostdlib", "-nostartfiles", "-nodefaultlibs", "-ffreestanding", 
         "-shared", "-fPIC", "-o", fileName1, fileName2);
+
+    System_File_write__string(output, "</pre></body></html>\n");
     Memory_free(fileName2);
+    Memory_free(fileName3);
 
     if (gcc) {
-        System_Console_writeLine("ECSX unqualified");
+        System_Console_writeLine__string("ECSX unqualified");
+
+        File_set_Position(output, 0);
+        Size outputSize = File_get_Length(output);
+        System_String8 outputText = Memory_allocArray(typeof(Char8), outputSize + 1);
+        System_File_read(output, outputText, outputSize);
+
+        Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
+        response->body.length = outputSize;
+        response->body.value = outputText;
+
+        Memory_free(output);
         Memory_free(ecsxName);
         Memory_free(fileName1);
         Memory_free(fileName);
-        return null;
+        return response;
     }
+    Memory_free(output);
+
+    System_Console_writeLine("ECSX File updated, using {0:string}", 1, fileName1);
 
 render:
     System_ELF64Assembly assembly = Memory_allocClass(typeof(System_ELF64Assembly));
@@ -300,7 +334,7 @@ render:
         render = (function_Network_HTTPRequest_render)symbol1_value;
     }
     if (!render) {
-        Console_writeLine("ECSX: No ELFSymbol or function_Network_HTTPRequest_render {0:string}.", 1, ecsxName);
+        Console_writeLine("ECSX: No ELFSymbol function_Network_HTTPRequest_render {0:string}.", 1, ecsxName);
         Memory_free(assembly);
         Memory_free(ecsxName);
         Memory_free(fileName1);
@@ -310,14 +344,8 @@ render:
     Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
     response->stream = new_MemoryStream();
 
-    Console_writeLine__string("ECSX PreRender:");
     render(request, response);
-
-    String8 render_text = MemoryStream_final(response->stream);
-    response->body.length = String8_get_Length(render_text);
-    response->body.value = render_text;
-
-    Console_writeLine__string("ECSX qualified");
+    response->body.value = MemoryStream_final__size(response->stream, &response->body.length);
 
     Memory_free(assembly);
     Memory_free(ecsxName);
@@ -350,7 +378,7 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     }
     System_FileInfo fileInfo = Memory_allocClass(typeof(FileInfo)); FileInfo_init(fileInfo, requestPath);
     if (fileInfo->status.mode & FileInfo_Type_Directory) {
-        System_Console_writeLine("HTTPService_serve: Folder {0:string}", 1, requestPath);
+        System_Console_writeLine("HTTPService_serve: Directory {0:string}", 1, requestPath);
         System_String8_exchange(&requestPath, System_String8_concat1(requestPath, "index.html"));
         FileInfo_init(fileInfo, requestPath);
     }

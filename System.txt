@@ -11,16 +11,22 @@
     Argument Size code
     No return
 
- function System_Console_execute__arguments
-    Execute a program, with absolute path. You also need to specify the program name as the first argument.
+ function System_Console_execute__stdout_stderr_stdin_arguments
+    Execute a program, with absolute path. Specify the program name as the first argument. Redirecting stdout, stderr and stdin.
     Argument System_String8 fileName
+    Argument System_File stdout
+    Argument System_File stderr
+    Argument System_File stdin
     Argument System_Size argc
     Argument System_String8 argv[]
     Returns the exit status of the program.
 
- function System_Console_execute
-    Execute a program, with absolute path. You also need to specify the program name as the first argument.
+ function System_Console_execute__stdout_stderr_stdin
+    Execute a program, with absolute path. You also need to specify the program name as the first argument. Redirecting stdout, stderr and stdin.
     Argument System_String8 fileName
+    Argument System_File stdout
+    Argument System_File stderr
+    Argument System_File stdin
     Argument ...
     Returns the exit status of the program.
 
@@ -247,6 +253,9 @@
  function System_File_exists
     argument System_String8 name of the File.
     Returns true or false, if the File exists.
+ function System_File_delete
+    argument System_String8 name of the File.
+    Returns true or false, if the File was deleted.
  function System_File_open
     Open a File by name, with the specified flags.
     argument System_String8 fileName

@@ -130,7 +130,7 @@ export void  System_File_close(System_File that);
 #define File_read  System_File_read
 #define File_get_Position  System_File_get_Position
 #define File_set_Position  System_File_set_Position
-#define File_get_Length  System_File_set_Length
+#define File_get_Length  System_File_get_Length
 #define File_set_Length  System_File_set_Length
 #define File_close  System_File_close
 #endif

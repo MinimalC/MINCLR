@@ -47,6 +47,7 @@ int System_Runtime_main(int argc, char * argv[]) {
     }
     else
         Console_writeLine("ERROR: no catch System_IOException", 0);
+    Memory_free(file);
 
 	return true;	/* OK (1 == true) */
 }
