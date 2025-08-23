@@ -193,7 +193,7 @@ Network_HTTPResponse  Server_ECSX_request(Network_HTTPRequest request, System_St
     
     String8 fileName = String8_concat1(System_ECSX_TempDirectoryName, request->uri.source);
     String8 fileName1 = String8_concat1(fileName, ".o");
-    struct FileInfo fileInfo0; Stack_clear(fileInfo0); FileInfo_init(&fileInfo0, request->uri.source);
+    struct FileInfo fileInfo0; Stack_clear(fileInfo0); FileInfo_init(&fileInfo0, requestPath);
     struct FileInfo fileInfo1; Stack_clear(fileInfo1); FileInfo_init(&fileInfo1, fileName1);
     if (fileInfo1.status.mode & System_FileInfo_Type_Regular) {
         if (fileInfo0.status.modifyTime.sec <= fileInfo1.status.modifyTime.sec) {
