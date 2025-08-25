@@ -61,7 +61,7 @@ void  base_System_String8Array_remove(System_String8Array that, System_Size inde
 }
 
 void  base_System_String8Array_resize(System_String8Array that, System_Size capacity) {
-    System_Memory_reallocArray((System_Var)that->value, capacity);
+    System_Memory_reallocArray((System_Var ref)&that->value, capacity);
     that->capacity = capacity;
 }
 

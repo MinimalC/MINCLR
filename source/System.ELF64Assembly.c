@@ -36,12 +36,11 @@ System_ELF64Assembly  new_System_ELF64Assembly() {
 }
 
 void System_ELF64Assembly_free(System_ELF64Assembly that) {
+    if (that->buffer) Memory_free(that->buffer);
     if (that->link) {
         System_Syscall_munmap(that->link, that->loadSize);
         that->link = null;
     }
-    if (that->name) Memory_free(that->name);
-    if (that->buffer) Memory_free(that->buffer);
 }
 
 struct System_Type_FunctionInfo  System_ELF64AssemblyTypeFunctions[] = {
@@ -56,18 +55,18 @@ struct System_Type System_ELF64AssemblyType = { .base = { .type = typeof(System_
 };
 
 void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_String8 name, System_Bool print) {
+    Console_assert(assembly);
+    if (!assembly) return; // throw
+    Console_assert(!assembly->buffer);
+    if (assembly->buffer) return; // throw
 
-    if (assembly->name) return; // throw
+    struct System_File file; System_Stack_clearType(file, typeof(System_File));
+    if (!stack_System_File_open(&file, name, System_File_Mode_readOnly)) return;
+    System_Size fileSize = System_File_get_Length(&file);
 
-    if (!assembly->buffer) {
-        struct System_File file; System_Stack_clearType(file, typeof(System_File));
-        if (!stack_System_File_open(&file, name, System_File_Mode_readOnly)) return;
-        System_Size fileSize = System_File_get_Length(&file);
-
-        assembly->buffer = System_Memory_allocArray(typeof(System_Char8), fileSize);
-        System_File_read(&file, assembly->buffer, fileSize);
-        System_File_close(&file);
-    }
+    assembly->buffer = System_Memory_allocArray(typeof(System_Char8), fileSize);
+    System_File_read(&file, assembly->buffer, fileSize);
+    System_File_close(&file);
 
     /* Read ELFAssembly_Header */
     System_ELF64Assembly_Header header = assembly->header = (System_ELF64Assembly_Header)assembly->buffer;
@@ -144,7 +143,7 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
                 assembly->needed[assembly->neededCount++] = assembly->dynamicStrings + dynamic->value; 
                 break;
             case System_ELFAssembly_DynamicType_SONAME:
-                assembly->name = assembly->dynamicStrings + dynamic->value;
+                assembly->soname = assembly->dynamicStrings + dynamic->value;
                 break;
             }
         }
@@ -190,8 +189,6 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
                 symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
         }
     }
-
-    if (!assembly->name) assembly->name = name;
 }
 
 void System_ELF64Assembly_read(System_ELF64Assembly assembly, System_String8 name) {
@@ -279,14 +276,18 @@ void System_ELF64Assembly_link(System_ELF64Assembly assembly) {
 }
 
 void System_ELF64Assembly_link__globally(System_ELF64Assembly assembly, System_Bool globally) {
-
-    if (!assembly->name) return; // throw
+    Console_assert(assembly);
+    if (!assembly) return; // throw
+    Console_assert(assembly->buffer);
+    if (!assembly->buffer) return; // throw
+    Console_assert(!assembly->link);
+    if (assembly->link) return; // throw
 
     // Now read and link other libraries first
     for (System_Size i = 0; i < assembly->neededCount; ++i) {
         System_Bool need = true;
         for (System_Size l = 0; l < System_ELF64Assembly_loadedCount; ++l) {
-            if (System_String8_endsWith(System_ELF64Assembly_loaded[l]->name, assembly->needed[i])) {
+            if (System_String8_endsWith(System_ELF64Assembly_loaded[l]->soname, assembly->needed[i])) {
                 need = false;
                 break;
             }

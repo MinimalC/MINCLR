@@ -87,7 +87,7 @@ void  base_System_Array_set_index(System_Array that, Size index, System_Object v
 }
 
 void  base_System_Array_resize(System_Array that, System_Size capacity) {
-    System_Memory_reallocArray((System_Var)that, capacity);
+    System_Memory_reallocArray((System_Var ref)&that->value, capacity);
     that->capacity = capacity;
 }
 

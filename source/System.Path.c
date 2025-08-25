@@ -37,45 +37,63 @@ System_String8 System_Path_getFileNameNoExt(System_String8 path) {
 }
 
 System_String8 System_Path_combine(System_String8 that, System_String8 other) {
-    System_Size thatL = System_String8_get_Length(that);
-    System_Size otherL = System_String8_get_Length(other);
-    System_String8 path = System_Memory_allocArray(typeof(System_Char8), thatL + 1 + otherL + 1);
-    System_String8_copyTo(that, path);
-    *(path + thatL) = '/';
-    System_String8_copyToAt(other, path, thatL + 1);
-    System_String8Array split = System_String8_split(path, '/');
-    System_Memory_free(path);
-    System_String8 last = null, item = null;
-    System_Size itemL = 0;
-    for (Size i = 0; i < split->length; ++i) {
-        item = array(split->value)[i];
-        itemL = System_String8_get_Length(item);
-        if (i == 0) {
-            if (itemL == 0) continue;
-            if (itemL == 1 && *item == '.') continue;
-            if (String8_equals(item, "..")) continue;
-            continue;
-        }
-        if (itemL == 0 && i < split->length - 1) {
-            base_System_String8Array_remove(split, i--);
-            continue;
-        }
-        if (itemL == 1 && *item == '.') {
-            base_System_String8Array_remove(split, i--);
-            continue;
-        }
-        if (String8_equals(item, "..")) {
-            last = array(split->value)[i - 1];
-            if (!String8_equals(last, "..")) {
-                base_System_String8Array_remove(split, i--);
-                base_System_String8Array_remove(split, i--);
+    System_Size length0 = System_String8_get_Length(that);
+    System_Size length1 = System_String8_get_Length(other);
+    Char8 scratch[4096]; Stack_clear(scratch); Size position = 0; Size slash[16]; Stack_clear(slash); Size slashes = 0;
+    for (Size c0 = 0; c0 < length0; ++c0) {
+        if (that[c0] == '/') {
+            if (slashes) {
+                if (that[c0 + 1] == '.' && that[c0 + 2] == '.' && (that[c0 + 3] == '\0' || that[c0 + 3] == '/')) {
+                    if (!String8_equalsSubstring(scratch + slash[slashes - 1] + 1, "..", position - slash[slashes - 1] - 1)) {
+                        Memory_clear(scratch + slash[slashes - 1], position - slash[slashes - 1]);
+                        position = slash[--slashes];
+                        slash[slashes] = null;
+                        c0 += 2; continue;
+                    }
+                }
+                else if (that[c0 + 1] == '.' && (that[c0 + 2] == '\0' || that[c0 + 2] == '/')) {
+                    ++c0; continue;
+                }
             }
-            continue;
+            slash[slashes++] = position;
+        }
+        scratch[position++] = that[c0];
+    }
+    if (position > 0 && scratch[position - 1] != '/') {
+        slash[slashes++] = position;
+        scratch[position++] = '/';
+    }
+    Size c1 = 0;
+    while (other[c1] == '/') ++c1;
+    if (other[c1] == '.' && other[c1 + 1] == '.' && (other[c1 + 2] == '\0' || other[c1 + 2] == '/')) {
+        if (slashes > 1 && !String8_equalsSubstring(scratch + slash[slashes - 2] + 1, "..", slash[slashes - 1] - slash[slashes - 2] - 1)) {
+            Memory_clear(scratch + slash[slashes - 2], position - slash[slashes - 2]);
+            position = slash[slashes - 2];
+            slash[--slashes] = null;
+            c1 += 2;
         }
     }
-    String8 reture = System_Char8_join('/', split);
-    System_Memory_free(split);
-    return reture;
+    else if (other[c1] == '.' && (other[c1 + 1] == '\0' || other[c1 + 1] == '/')) ++c1;
+    for (; c1 < length1; ++c1) {
+        if (other[c1] == '/') {
+            if (slashes) {
+                if (other[c1 + 1] == '.' && other[c1 + 2] == '.' && (other[c1 + 3] == '\0' || other[c1 + 3] == '/')) {
+                    if (!String8_equalsSubstring(scratch + slash[slashes - 1] + 1, "..", position - slash[slashes - 1] - 1)) {
+                        Memory_clear(scratch + slash[slashes - 1], position - slash[slashes - 1]);
+                        position = slash[--slashes];
+                        slash[slashes] = null;
+                        c1 += 2; continue;
+                    }
+                }
+                else if (other[c1 + 1] == '.' && (other[c1 + 2] == '\0' || other[c1 + 2] == '/')) {
+                    ++c1; continue;
+                }
+                if (slash[slashes - 1] == position - 1) continue;
+            }
+            slash[slashes++] = position;
+        }
+        scratch[position++] = other[c1];
+    }
+    return String8_copy(scratch);
 }
-
 #endif

@@ -48,8 +48,7 @@ void  base_Generic_T0Array_set_index(Generic_T0Array that, System_Size index, Ge
 }
 
 void  base_Generic_T0Array_resize(Generic_T0Array that, System_Size length) {
-    System_Size element_size = sizeof(Generic_T0);
-    System_Memory_reallocArray((System_Var)that->value, length);
+    System_Memory_reallocArray((System_Var ref)&that->value, length);
     that->length = length;
 }
 
@@ -76,12 +75,8 @@ struct System_Type Generic_T0ArrayType = { .base = { .type = typeof(System_Type)
     .name = "Generic.T0Array",
     .size = sizeof(struct Generic_T0Array),
     .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions
-    },
-    .interfaces = {
-        .length = sizeof_array(Generic_T0ArrayTypeInterfaces), .value = &Generic_T0ArrayTypeInterfaces
-    },
+    .functions = { .length = sizeof_array(Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions },
+    .interfaces = { .length = sizeof_array(Generic_T0ArrayTypeInterfaces), .value = &Generic_T0ArrayTypeInterfaces },
 };
 
 #endif

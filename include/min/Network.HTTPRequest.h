@@ -48,9 +48,7 @@ typedef struct Network_HTTPRequest {
 
     struct Network_URI uri;
 
-    System_String8 version;
-
-    System_String8Dictionary header;
+    struct System_String8Dictionary header;
 
 } * Network_HTTPRequest;
 

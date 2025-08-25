@@ -720,8 +720,6 @@ export struct System_Type  System_ELF64Assembly_RelocationType;
 typedef struct System_ELF64Assembly {
     struct System_Object base;
 
-    System_String8 name;
-
     System_String8 buffer;
 
     System_ELF64Assembly_Header header;
@@ -746,6 +744,8 @@ typedef struct System_ELF64Assembly {
     System_String8 needed[8];
     /*System_Size requiredCount;
     System_Var required[8];*/
+
+    System_String8 soname;
 
     System_Var link;
     System_Size loadSize;

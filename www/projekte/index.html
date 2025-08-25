@@ -1,0 +1,10 @@
+<html><head>
+<title>Hello World</title>
+</head><body>
+    This is the Hello World example.<br />
+<%
+    String8 now_string = DateTime_now_toString();
+    MemoryStream_writeLine(response->stream, "Heute ist der {0:string}.", 1, now_string);
+    Memory_free(now_string);
+%><br />
+</body></html>

@@ -22,8 +22,7 @@ void Network_URI_free(Network_URI that) {
 
 void base_Network_HTTPRequest_free(Network_HTTPRequest that) {
     Network_URI_free(&that->uri);
-    if (that->version) System_Memory_free(that->version);
-    if (that->header) System_Memory_free(that->header);
+    System_String8Dictionary_free(&that->header);
 }
 
 struct System_Type_FunctionInfo Network_HTTPRequestTypeFunctions[] = {
@@ -40,8 +39,8 @@ struct System_Type Network_HTTPRequestType = {
 
 void base_Network_HTTPResponse_free(Network_HTTPResponse that) {
     if (that->header) System_Memory_free(that->header);
-    System_Memory_freeStruct(&that->head, typeof(System_String));
-    System_Memory_freeStruct(&that->body, typeof(System_String));
+    System_String_free(&that->head);
+    System_String_free(&that->body);
     if (that->stream) System_Memory_free(that->stream);
 }
 
@@ -60,10 +59,7 @@ struct System_Type Network_HTTPResponseType = {
 Network_HTTPResponse Network_HTTPResponse_create(Network_HTTPStatus status) {
 
     Network_HTTPResponse response = System_Memory_allocClass(typeof(Network_HTTPResponse));
-
     response->header = System_Memory_allocClass(typeof(System_String8Dictionary));
-    base_System_String8Dictionary_init(response->header, 64);
-
     response->status = status;
     return response;
 }

@@ -40,8 +40,7 @@ void  base_System_UInt8Array_set_index(System_UInt8Array that, System_Size index
 }
 
 void  base_System_UInt8Array_resize(System_UInt8Array that, System_Size length) {
-    System_Size element_size = sizeof(System_UInt8);
-    System_Memory_reallocArray((System_Var)that->value, length);
+    System_Memory_reallocArray((System_Var ref)&that->value, length);
     that->length = length;
 }
 
@@ -119,8 +118,7 @@ void  base_System_UInt16Array_set_index(System_UInt16Array that, System_Size ind
 }
 
 void  base_System_UInt16Array_resize(System_UInt16Array that, System_Size length) {
-    System_Size element_size = sizeof(System_UInt16);
-    System_Memory_reallocArray((System_Var)that->value, length);
+    System_Memory_reallocArray((System_Var ref)&that->value, length);
     that->length = length;
 }
 
@@ -198,8 +196,7 @@ void  base_System_UInt32Array_set_index(System_UInt32Array that, System_Size ind
 }
 
 void  base_System_UInt32Array_resize(System_UInt32Array that, System_Size length) {
-    System_Size element_size = sizeof(System_UInt32);
-    System_Memory_reallocArray((System_Var)that->value, length);
+    System_Memory_reallocArray((System_Var ref)&that->value, length);
     that->length = length;
 }
 
@@ -277,8 +274,7 @@ void  base_System_UInt64Array_set_index(System_UInt64Array that, System_Size ind
 }
 
 void  base_System_UInt64Array_resize(System_UInt64Array that, System_Size length) {
-    System_Size element_size = sizeof(System_UInt64);
-    System_Memory_reallocArray((System_Var)that->value, length);
+    System_Memory_reallocArray((System_Var ref)&that->value, length);
     that->length = length;
 }
 
@@ -356,8 +352,7 @@ void  base_System_Int8Array_set_index(System_Int8Array that, System_Size index, 
 }
 
 void  base_System_Int8Array_resize(System_Int8Array that, System_Size length) {
-    System_Size element_size = sizeof(System_Int8);
-    System_Memory_reallocArray((System_Var)that->value, length);
+    System_Memory_reallocArray((System_Var ref)&that->value, length);
     that->length = length;
 }
 
@@ -435,8 +430,7 @@ void  base_System_Int16Array_set_index(System_Int16Array that, System_Size index
 }
 
 void  base_System_Int16Array_resize(System_Int16Array that, System_Size length) {
-    System_Size element_size = sizeof(System_Int16);
-    System_Memory_reallocArray((System_Var)that->value, length);
+    System_Memory_reallocArray((System_Var ref)&that->value, length);
     that->length = length;
 }
 
@@ -514,8 +508,7 @@ void  base_System_Int32Array_set_index(System_Int32Array that, System_Size index
 }
 
 void  base_System_Int32Array_resize(System_Int32Array that, System_Size length) {
-    System_Size element_size = sizeof(System_Int32);
-    System_Memory_reallocArray((System_Var)that->value, length);
+    System_Memory_reallocArray((System_Var ref)&that->value, length);
     that->length = length;
 }
 
@@ -593,8 +586,7 @@ void  base_System_Int64Array_set_index(System_Int64Array that, System_Size index
 }
 
 void  base_System_Int64Array_resize(System_Int64Array that, System_Size length) {
-    System_Size element_size = sizeof(System_Int64);
-    System_Memory_reallocArray((System_Var)that->value, length);
+    System_Memory_reallocArray((System_Var ref)&that->value, length);
     that->length = length;
 }
 

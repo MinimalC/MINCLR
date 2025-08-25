@@ -9,8 +9,6 @@ typedef System_fixed struct System_Directory {
 	struct System_Object  base;
 
     System_IntPtr dirId;
-    
-    System_String8 name;
 
 }  * System_Directory;
 

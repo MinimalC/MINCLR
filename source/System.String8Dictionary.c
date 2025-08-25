@@ -14,110 +14,108 @@
 #if !defined(code_System_String8Dictionary)
 #define code_System_String8Dictionary
 
-System_String8Dictionary  new_System_String8Dictionary(System_Size capacity) {
+System_String8Dictionary  new_System_String8Dictionary() {
     System_String8Dictionary that = (System_String8Dictionary)System_Memory_allocClass(typeof(System_String8Dictionary));
-    base_System_String8Dictionary_init(that, capacity);
+    System_String8Dictionary_init(that);
     return that;
 }
 
-void base_System_String8Dictionary_init(System_String8Dictionary that, System_Size capacity) {
-    that->key = System_Memory_allocArray(typeof(System_String8), capacity);
-    that->value = System_Memory_allocArray(typeof(System_String8), capacity);
-    that->capacity = capacity;
-}
+void System_String8Dictionary_init(System_String8Dictionary that) { }
 
-void  base_System_String8Dictionary_free(System_String8Dictionary that) {
-    for (System_Size i = 0; i < that->length; ++i) {
-        System_Memory_free(array_item(that->key, i));
-        System_Memory_free(array_item(that->value, i));
+void  System_String8Dictionary_free(System_String8Dictionary that) {
+    if (that->key && that->value) {
+        for (System_Size i = 0; i < that->length; ++i) {
+            System_Memory_free(array_item(that->key, i));
+            System_Memory_free(array_item(that->value, i));
+        }
+        System_Memory_free(that->key);
+        System_Memory_free(that->value);
     }
-    System_Memory_free(that->key);
-    System_Memory_free(that->value);
 }
 
-System_Size base_System_String8Dictionary_add(System_String8Dictionary that, System_String8 key, System_String8 value) {
+System_Size System_String8Dictionary_add(System_String8Dictionary that, System_String8 key, System_String8 value) {
     /* TODO: if System_String8Dictionary_contains key, throw */
+    if (that->length + 1 > that->capacity) {
+        System_String8Dictionary_resize(that, that->capacity + System_String8Dictionary_Capacity);
+    }
     System_Size index = that->length++;
     array(that->key)[index] = key;
     array(that->value)[index] = value;
     return index;
 }
 
-void base_System_String8Dictionary_remove(System_String8Dictionary that, System_String8 key) {
+void System_String8Dictionary_remove(System_String8Dictionary that, System_String8 key) {
     /* TODO: say key is null, move all other, then say --length */
     System_Console_writeLine__string("System_String8Dictionary_remove not implemented");
 }
 
-System_Size  base_System_String8Dictionary_get_Length(System_String8Dictionary that) {
+System_Size  System_String8Dictionary_get_Length(System_String8Dictionary that) {
     return that->length;
 }
 
-System_String8  base_System_String8Dictionary_get_index(System_String8Dictionary that, System_Size index) {
+System_String8  System_String8Dictionary_get_index(System_String8Dictionary that, System_Size index) {
     return array(that->key)[index];
 }
 
-System_Size  base_System_String8Dictionary_get_key(System_String8Dictionary that, System_String8 key) {
+System_Size  System_String8Dictionary_get_key(System_String8Dictionary that, System_String8 key) {
     for (Size i = 0; i < that->length; ++i)
         if (String8_equals(array_item(that->key, i), key))
             return i;
     return -1;
 }
 
-System_String8  base_System_String8Dictionary_get_value(System_String8Dictionary that, System_String8 key) {
-    System_Size index = base_System_String8Dictionary_get_key(that, key);
+System_String8  System_String8Dictionary_get_value(System_String8Dictionary that, System_String8 key) {
+    System_Size index = System_String8Dictionary_get_key(that, key);
     if (index == -1) return null;
     return array(that->value)[index];
 }
 
-void  base_System_String8Dictionary_set_index(System_String8Dictionary that, System_Size index, System_String8 value) {
+void  System_String8Dictionary_set_index(System_String8Dictionary that, System_Size index, System_String8 value) {
     array(that->value)[index] = value;
 }
 
-void  base_System_String8Dictionary_set_key(System_String8Dictionary that, System_String8 old, System_String8 new) {
-    System_Size index = base_System_String8Dictionary_get_key(that, old);
+void  System_String8Dictionary_set_key(System_String8Dictionary that, System_String8 old, System_String8 new) {
+    System_Size index = System_String8Dictionary_get_key(that, old);
     array(that->key)[index] = new;
 }
 
-void  base_System_String8Dictionary_set_value(System_String8Dictionary that, System_String8 key, System_String8 value) {
-    System_Size index = base_System_String8Dictionary_get_key(that, key);
+void  System_String8Dictionary_set_value(System_String8Dictionary that, System_String8 key, System_String8 value) {
+    System_Size index = System_String8Dictionary_get_key(that, key);
     array(that->value)[index] = value;
 }
 
-void  base_System_String8Dictionary_resize(System_String8Dictionary that, System_Size capacity) {
-    System_Memory_reallocArray((System_Var)that->value, capacity);
-    System_Memory_reallocArray((System_Var)that->key, capacity);
+void  System_String8Dictionary_resize(System_String8Dictionary that, System_Size capacity) {
+    if (!that->value) that->value = System_Memory_allocArray(typeof(System_String8), capacity);
+    else System_Memory_reallocArray((System_Var ref)&that->value, capacity);
+    if (!that->key) that->key = System_Memory_allocArray(typeof(System_String8), capacity);
+    else System_Memory_reallocArray((System_Var ref)&that->key, capacity);
     that->capacity = capacity;
 }
 
-System_IEnumerator  base_System_String8Dictionary_getEnumerator(System_String8Dictionary that) {
+System_IEnumerator  System_String8Dictionary_getEnumerator(System_String8Dictionary that) {
     return (System_IEnumerator)new_System_String8DictionaryEnumerator(that);
 }
 
 struct System_Type_FunctionInfo  System_String8DictionaryTypeFunctions[] = {
-    [0] = { .function = base_System_String8Dictionary_init, .value = base_System_String8Dictionary_init },
-    [1] = { .function = base_System_Object_free, .value = base_System_String8Dictionary_free },
-    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_String8Dictionary_get_Length },
-    [3] = { .function = base_System_ICollection_get_index, .value = base_System_String8Dictionary_get_index },
-    [4] = { .function = base_System_ICollection_set_index, .value = base_System_String8Dictionary_set_index },
-    [5] = { .function = base_System_String8Dictionary_resize, .value = base_System_String8Dictionary_resize },
-    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_String8Dictionary_getEnumerator },
+    { .function = base_System_Object_init, .value = System_String8Dictionary_init },
+    { .function = base_System_Object_free, .value = System_String8Dictionary_free },
+    { .function = base_System_ICollection_get_Length, .value = System_String8Dictionary_get_Length },
+    { .function = base_System_ICollection_get_index, .value = System_String8Dictionary_get_index },
+    { .function = base_System_ICollection_set_index, .value = System_String8Dictionary_set_index },
+    { .function = base_System_IEnumerable_getEnumerator, .value = System_String8Dictionary_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_String8DictionaryTypeInterfaces[] = {
-    [0] = { .interfaceType = &System_ICollectionType },
-    [1] = { .interfaceType = &System_IEnumerableType },
+    { .interfaceType = &System_ICollectionType },
+    { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_String8DictionaryType = { .base = { .type = typeof(System_Type) },
     .name = "String8Dictionary",
     .size = sizeof(struct System_String8Dictionary),
     .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_String8DictionaryTypeFunctions), .value = &System_String8DictionaryTypeFunctions
-    },
-    .interfaces = {
-        .length = sizeof_array(System_String8DictionaryTypeInterfaces), .value = &System_String8DictionaryTypeInterfaces
-    },
+    .functions = { .length = sizeof_array(System_String8DictionaryTypeFunctions), .value = &System_String8DictionaryTypeFunctions },
+    .interfaces = { .length = sizeof_array(System_String8DictionaryTypeInterfaces), .value = &System_String8DictionaryTypeInterfaces },
 };
 
 #endif

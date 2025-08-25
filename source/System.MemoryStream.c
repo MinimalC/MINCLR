@@ -17,16 +17,7 @@
 /** struct System_MemoryStream */
 
 System_MemoryStream  new_System_MemoryStream() {
-     System_MemoryStream that = (System_MemoryStream)System_Memory_allocClass(typeof(System_MemoryStream));
-     stack_System_MemoryStream_create(that);
-     return that;
-}
-
-System_Bool  stack_System_MemoryStream_create(System_MemoryStream that) {
-
-    that->capacity = System_MemoryStream_Capacity;
-    that->buffer = Memory_allocArray(typeof(Char8), that->capacity);
-    return true;
+     return (System_MemoryStream)System_Memory_allocClass(typeof(System_MemoryStream));
 }
 
 String8  System_MemoryStream_final(MemoryStream that) { 
@@ -36,10 +27,10 @@ String8  System_MemoryStream_final(MemoryStream that) {
 
 String8  System_MemoryStream_final__size(MemoryStream that, System_Size out size) { 
     
-    String8 reture = that->buffer;
-    that->buffer = null;
     *size = that->size;
-    Memory_reallocArray((System_Var ref)&reture, that->size);
+    String8 reture = that->buffer;
+    if (reture) Memory_reallocArray((System_Var ref)&reture, that->size);
+    that->buffer = null;
     that->capacity = that->size = that->position = 0;
     return reture;
 }
@@ -76,7 +67,8 @@ Size  System_MemoryStream_read(MemoryStream that, String8 value, Size count) {
 Size  System_MemoryStream_write__string_size(MemoryStream that, String8 value, Size count) {
     if (that->position + count >= that->capacity) {
         Size count1 = ROUND(that->position + count, System_MemoryStream_Capacity);  
-        Memory_reallocArray((System_Var ref)&that->buffer, count1);
+        if (!that->buffer) that->buffer = Memory_allocArray(typeof(Char8), count1);
+        else Memory_reallocArray((System_Var ref)&that->buffer, count1);
         that->capacity = count1;
     }
     Memory_copyTo(value, count, that->buffer + that->position);
@@ -89,7 +81,8 @@ Size  System_MemoryStream_write__string_size(MemoryStream that, String8 value, S
 void  System_MemoryStream_set_Length(MemoryStream that, Size length) {
     Size length1 = ROUND(length, System_MemoryStream_Capacity);
     if (that->capacity != length1) {
-        Memory_reallocArray((System_Var ref)&that->buffer, length1);
+        if (!that->buffer) that->buffer = Memory_allocArray(typeof(Char8), length1);
+        else Memory_reallocArray((System_Var ref)&that->buffer, length1);
         that->capacity = length1;
     }
     else 

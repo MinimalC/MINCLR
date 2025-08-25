@@ -110,7 +110,6 @@ System_DirectoryList  System_Directory_list__hidden(System_String8 directoryName
     Size linuxC = 0, systemC = 0;
     System_DirectoryList entries = Memory_allocClass(typeof(System_DirectoryList));
     struct MemoryStream stream; Stack_clear(stream);
-    stack_System_MemoryStream_create(&stream);
     MemoryStream_write__char(&stream, '\0');
     entries->name = (System_Var)1;
     MemoryStream_write__string(&stream, directoryName);
@@ -195,7 +194,6 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_String8 dir
         new_size += directories[position]->length - 2;
     }
     struct MemoryStream stream; Stack_clear(stream);
-    stack_System_MemoryStream_create(&stream);
     MemoryStream_write__char(&stream, '\0');
     for (Size position1 = 0; position1 < directories[0]->length; ++position1) {
         DirectoryEntry entry = &array_item(directories[0]->value, position1);
@@ -268,7 +266,6 @@ struct System_Type System_DirectoryEntryType = {
 };
 
 void System_DirectoryList_free(System_DirectoryList that) {
-    // if (that->name) Memory_free(that->name);
     if (that->value) Memory_free(that->value);
     if (that->scratch.value) Memory_free(that->scratch.value);
 }

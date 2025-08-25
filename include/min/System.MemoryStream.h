@@ -27,10 +27,7 @@ typedef System_fixed struct System_MemoryStream {
 
 export struct System_Type  System_MemoryStreamType;
 
-export System_Bool  stack_System_MemoryStream_create(System_MemoryStream that);
-
 export System_MemoryStream  new_System_MemoryStream();
-export void  System_MemoryStream_init(System_MemoryStream that);
 export void  System_MemoryStream_free(System_MemoryStream that);
 export System_Size  System_MemoryStream_write__string_size(System_MemoryStream that, System_String8 value, System_Size count);
 export System_Size  System_MemoryStream_write__string(System_MemoryStream that, System_String8 string);
@@ -56,10 +53,8 @@ export System_String8  System_MemoryStream_snapshot(System_MemoryStream that);
 #define MemoryStream  System_MemoryStream
 #define MemoryStreamType  System_MemoryStreamType
 #define MemoryStream_exists  System_MemoryStream_exists
-#define MemoryStream_create  System_MemoryStream_create
 #define new_MemoryStream  new_System_MemoryStream
 #define MemoryStream_free  System_MemoryStream_free
-#define MemoryStream_init  System_MemoryStream_init
 #define MemoryStream_write__string_size  System_MemoryStream_write__string_size
 #define MemoryStream_write__string  System_MemoryStream_write__string
 #define MemoryStream_write__char  System_MemoryStream_write__char

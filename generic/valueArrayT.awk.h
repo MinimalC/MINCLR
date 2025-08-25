@@ -32,14 +32,6 @@ typedef System_fixed struct Generic_T0Array {
 
 export struct System_Type  Generic_T0ArrayType;
 
-typedef void delegate(Generic_T0Array_init)(Generic_T0Array that, System_Size length);
-typedef System_Size  delegate(Generic_T0Array_get_Length)(Generic_T0Array that);
-typedef Generic_T0  delegate(Generic_T0Array_get_index)(Generic_T0Array that, System_Size index);
-typedef void  delegate(Generic_T0Array_set_index)(Generic_T0Array that, System_Size index, Generic_T0 value);
-typedef void delegate(Generic_T0Array_copyTo)(Generic_T0Array that, Generic_T0Array other, System_Size offset);
-typedef void delegate(Generic_T0Array_resize)(Generic_T0Array that, System_Size length);
-typedef System_IEnumerator  delegate(Generic_T0Array_getEnumerator)(Generic_T0Array that);
-
 export Generic_T0Array  new_Generic_T0Array(System_Size length);
 export void  base_Generic_T0Array_init(Generic_T0Array that, System_Size length);
 export void  base_Generic_T0Array_free(Generic_T0Array that);

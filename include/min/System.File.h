@@ -76,8 +76,6 @@ typedef System_fixed struct System_File {
 	struct System_Object  base;
 
     System_IntPtr fileId;
-    
-    System_String8 name;
 
 }  * System_File;
 

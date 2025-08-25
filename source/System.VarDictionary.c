@@ -79,8 +79,8 @@ void  base_System_VarDictionary_set_value(System_VarDictionary that, System_Var 
 }
 
 void  base_System_VarDictionary_resize(System_VarDictionary that, System_Size capacity) {
-    System_Memory_reallocArray((System_Var)that->value, capacity);
-    System_Memory_reallocArray((System_Var)that->key, capacity);
+    System_Memory_reallocArray((System_Var ref)&that->value, capacity);
+    System_Memory_reallocArray((System_Var ref)&that->key, capacity);
     that->capacity = capacity;
 }
 

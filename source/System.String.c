@@ -18,7 +18,9 @@
 
 void  System_String_free(System_String that) {
     Console_assert(that);
+    if (!that) return;
 	if (that->value) System_Memory_free(that->value);
+    that->length = 0;
 }
 
 System_UInt64 System_String_getSipHash(System_String that) {
@@ -29,8 +31,8 @@ System_UInt64 System_String_getSipHash(System_String that) {
 }
 
 struct System_Type_FunctionInfo  System_StringTypeFunctions[] = {
-    [0] = { .function = base_System_Object_free, .value = System_String_free },
-    [1] = { .function = base_System_Object_getSipHash, .value = System_String_getSipHash },
+    { .function = base_System_Object_free, .value = System_String_free },
+    { .function = base_System_Object_getSipHash, .value = System_String_getSipHash },
 };
 
 struct System_Type System_StringType = { .base = { .type = typeof(System_Type) },

@@ -62,8 +62,6 @@ System_Bool  stack_System_File_open(System_File that, System_String8 filename, S
 
     if (that->fileId) return false;
 
-    that->name = Memory_addReference(filename);
-
 /*  System_Var id = ISO_fopen(filename, modes); */
     System_IntPtr id = System_Syscall_openat(System_Syscall_StandardFile_CurrentWorkingDirectory, filename,
         System_File_Mode_noControllingTerminal | flags,
@@ -104,7 +102,6 @@ void  System_File_close(File that) {
 */
 void  System_File_free(File that) {
     System_File_close(that);
-    if (that->name) Memory_free(that->name);
 }
 
 /** function System_File_read
