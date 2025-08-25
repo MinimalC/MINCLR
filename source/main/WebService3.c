@@ -50,7 +50,6 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
     System_String8 string = message->value;
     System_Size remainSize = message->length;
     while (true) {
-
         System_SSize linefeed = System_String8_indexOf__size(string, '\n', remainSize);
         remainSize -= linefeed + 1;
         if (linefeed == -1) {
@@ -70,7 +69,6 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             System_Console_writeLine("HTTPRequest_parse: null in there", 0);
             break;
         }
-
         if (!httpRequest->method) {
             System_String8 string1 = string;
 
@@ -130,8 +128,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
 
 nextHeader:
         string += linefeed + 1;
-    }
-    
+    }    
     return null;
 }
 
