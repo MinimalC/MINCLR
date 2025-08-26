@@ -56,10 +56,10 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             System_Console_writeLine("HTTPRequest_parse: No linefeed", 0);
             break;
         }
-        *(string + linefeed) = '\0';
+        string[linefeed] = '\0';
         if (linefeed > 0)
-            if (*(string + linefeed - 1) == '\r')
-                *(string + linefeed - 1) = '\0';
+            if (string[linefeed - 1] == '\r')
+                string[linefeed - 1] = '\0';
         if (linefeed < 2) {
             System_Console_writeLine("HTTPRequest_parse: End of Header", 0);
             return httpRequest;
@@ -79,27 +79,27 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             else if (String8_equalsSubstring(string, "OPTIONS", 7)) { httpRequest->method = Network_HTTPMethod_OPTIONS; string1 += 7; }
             else if (String8_equalsSubstring(string, "DELETE", 6)) { httpRequest->method = Network_HTTPMethod_DELETE; string1 += 6; }
             if (!httpRequest->method) {
-                System_Console_writeLine("HTTPRequest_parse: No Method", 0);
+                System_Console_writeLine("HTTPRequest_parse: Unknown Method {0:string}", 1, string);
                 break;
             }
-            *(string1++) = '\0';
+            string1++[0] = '\0';
 
             System_SSize space = System_String8_indexOf(string1, ' ');
             if (space == -1) {
-                System_Console_writeLine("HTTPRequest_parse: No Space after URI. {0:string}", 1, string);
+                System_Console_writeLine("HTTPRequest_parse: No Space after URI {0:string}", 1, string);
                 break;
             }
-            *(string1 + space) = '\0';
+            string1[space] = '\0';
             httpRequest->uri.source = System_String8_copy(string1);
             System_SSize questionMark = System_String8_indexOf(httpRequest->uri.source, '?');
             if (questionMark > -1) {
-                *(httpRequest->uri.source + questionMark) = '\0';
+                httpRequest->uri.source[questionMark] = '\0';
                 httpRequest->uri.queryString = httpRequest->uri.source + questionMark + 1;
             }
             string1 += space + 1;
 
             if (!String8_equalsSubstring(string1, "HTTP/", 5)) {
-                System_Console_writeLine("HTTPRequest_parse: No HTTP. {0:string} {1:string}", 2, string, httpRequest->uri.source);
+                System_Console_writeLine("HTTPRequest_parse: No HTTP {0:string} {1:string}", 2, string, httpRequest->uri.source);
                 break;
             }
             string1 += 5;
@@ -118,17 +118,17 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
 
         System_SSize dot = System_String8_indexOf(string, ':');
         if (dot == -1) {
-            System_Console_writeLine("HTTPRequest_parse: No Header Name", 0);
+            System_Console_writeLine("HTTPRequest_parse: No Header Name {0:string}", 1, string);
             break;
         }
-        *(string + dot) = '\0';
-        if (*(string + dot + 1) == ' ') { *(string + dot + 1) = '\0'; ++dot; }
-
+        string[dot] = '\0'; if (string[dot + 1] == ' ') string[++dot] = '\0';
+        
         System_String8Dictionary_add(&httpRequest->header, System_String8_copy(string), System_String8_copy(string + dot + 1));
 
 nextHeader:
         string += linefeed + 1;
     }    
+    Memory_free(httpRequest);
     return null;
 }
 
@@ -144,15 +144,38 @@ void ECSX_updateTempDirectory() {
 
     for (Size o = 0; o < temp->length; ++o) {
         DirectoryEntry old_entry = &array_item(temp->value, o);
-        Size n = 0; for (; n < current->length; ++n) {
-            DirectoryEntry new_entry = &array_item(current->value, n);
-            if (String8_compare(old_entry->name, new_entry->name) == String8_get_Length(new_entry->name)) break;
+        if (old_entry->type == System_Directory_Type_RegularFile) {
+            Size n = 0; for (; n < current->length; ++n) {
+                DirectoryEntry new_entry = &array_item(current->value, n);
+                if (new_entry->type == System_Directory_Type_RegularFile)
+                    if (String8_compare(old_entry->name, new_entry->name) == String8_get_Length(new_entry->name)) break;
+            }
+            if (n == current->length) { // deleted
+                String8 fileName = Path_combine(ECSX_TempDirectoryName, old_entry->name);
+                if (File_delete(fileName))
+                    Console_writeLine("ECSXService_serve: file deleted {0:string}", 1, fileName);
+                else
+                    Console_writeLine("ECSXService_serve: file not deleted {0:string}", 1, fileName);
+                Memory_free(fileName);
+            }
         }
-        if (n == current->length) { // deleted
-            String8 fileName = Path_combine(ECSX_TempDirectoryName, old_entry->name);
-            File_delete(fileName);
-        Console_writeLine("ECSXService_serve: temporary file deleted. {0:string}", 1, fileName);
-            Memory_free(fileName);
+    }
+    for (Size o = temp->length; o; --o) {
+        DirectoryEntry old_entry = &array_item(temp->value, o - 1);
+        if (old_entry->type == System_Directory_Type_Directory) {
+            Size n = current->length; for (; n; --n) {
+                DirectoryEntry new_entry = &array_item(current->value, n - 1);
+                if (new_entry->type == System_Directory_Type_Directory)
+                    if (String8_compare(old_entry->name, new_entry->name) == String8_get_Length(new_entry->name)) break;
+            }
+            if (!n) { // deleted
+                String8 directoryName = Path_combine(ECSX_TempDirectoryName, old_entry->name);
+                if (Directory_remove(directoryName))
+                    Console_writeLine("ECSXService_serve: directory deleted {0:string}", 1, directoryName);
+                else
+                    Console_writeLine("ECSXService_serve: directory not deleted {0:string}", 1, directoryName);
+                Memory_free(directoryName);
+            }
         }
     }
     Memory_free(current);
@@ -271,6 +294,13 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
 
     struct File output; Stack_clear(output);
     String8 fileName2 = String8_concat1(shortName, ".c");
+    String8 fileName2_directory = Path_getDirectoryName(fileName2);
+    if (!Directory_exists(fileName2_directory))
+        if (Directory_create__recursive(ECSX_TempDirectoryName, fileName2_directory))
+            Console_writeLine("ECSXService_serve: directory created {0:string}{1:string}", 2, ECSX_TempDirectoryName, fileName2_directory);
+        else 
+            Console_writeLine("ECSXService_serve: directory not created {0:string}{1:string}", 2, ECSX_TempDirectoryName, fileName2_directory);
+    Memory_free(fileName2_directory);
     String8_exchange(&fileName2, Path_combine(ECSX_TempDirectoryName, fileName2));
     if (stack_System_File_open(&output, fileName2, File_Mode_readWrite | File_Mode_create | File_Mode_truncate))
         File_write__string_size(&output, buffer, bufferSize);
@@ -314,7 +344,7 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
     File_delete(fileName3);
     Memory_free(fileName3);
 
-    System_Console_writeLine("ECSXService_serve: File updated, using {0:string}", 1, fileName1);
+    System_Console_writeLine("ECSXService_serve: File updated, now using {0:string}", 1, fileName1);
 
 ECSXService_serve_render:
 
@@ -437,7 +467,7 @@ respond:
     response->head.value = MemoryStream_final__size(&scratch, &response->head.length);
 
     if (response->body.length && System_String8_startsWith(Network_MimeTypes[mime].name, "text/"))
-        System_Console_writeLine("HTTPResponse_toMessage: {0:string}\n{1:string}", 2, response->head.value, response->body.value);
+        System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->head.value, response->body.value);
     else
         System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->head.value);
 

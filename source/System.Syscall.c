@@ -166,8 +166,8 @@ void System_Syscall_chdir(System_String8 path) {
     (void)System_Syscall_call01(System_Syscall_Command_chdir, (System_IntPtr)path);
 }
 
-System_IntPtr System_Syscall_mkdir(System_String8 path, System_IntPtr mode) {
-    return System_Syscall_call02(System_Syscall_Command_mkdir, (System_IntPtr)path, mode);
+void System_Syscall_mkdir(System_String8 path, System_IntPtr mode) {
+    (void)System_Syscall_call02(System_Syscall_Command_mkdir, (System_IntPtr)path, mode);
 }
 
 System_Size System_Syscall_getdents64(System_IntPtr directoryId, System_String8 buffer, System_Size length) {

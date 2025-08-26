@@ -56,7 +56,9 @@ export struct System_Type  System_DirectoryListType;
 export System_Bool System_Directory_exists(System_String8 name);
 export System_Bool System_Directory_change(System_String8 path);
 export System_Bool System_Directory_create(System_String8 directoryName);
+export System_Bool System_Directory_create__recursive(System_String8 rootDirectoryName, System_String8 recursive);
 export System_Bool System_Directory_remove(System_String8 name);
+export System_Bool System_Directory_remove__recursive(System_String8 rootDirectoryName, System_String8 recursive);
 export System_String8 System_Directory_get_current();
 
 export System_Directory  new_System_Directory();
@@ -81,7 +83,9 @@ export void System_DirectoryList_free(System_DirectoryList that);
 #define Directory_exists  System_Directory_exists
 #define Directory_change  System_Directory_change
 #define Directory_create  System_Directory_create
+#define Directory_create__recursive  System_Directory_create__recursive
 #define Directory_remove  System_Directory_remove
+#define Directory_remove__recursive  System_Directory_remove__recursive
 #define Directory_get_current  System_Directory_get_current
 #define new_Directory  new_System_Directory
 #define Directory_open  System_Directory_open

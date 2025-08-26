@@ -128,6 +128,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
 nextHeader:
         string += linefeed + 1;
     }
+    Memory_free(httpRequest);
     return null;
 }
 
@@ -151,8 +152,8 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     if (!String8_startsWith(requestPath, currentDirectory)) {
         System_Console_writeLine("HTTPService_serve: 500 Error {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
-        if (currentDirectory) System_Memory_free(currentDirectory);
-        if (requestPath) System_Memory_free(requestPath);
+        System_Memory_free(currentDirectory);
+        System_Memory_free(requestPath);
         goto respond;
     }
     if (System_Directory_exists(requestPath)) {
@@ -162,8 +163,8 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     if (!System_File_exists(requestPath)) {
         System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
-        if (currentDirectory) System_Memory_free(currentDirectory);
-        if (requestPath) System_Memory_free(requestPath);
+        System_Memory_free(currentDirectory);
+        System_Memory_free(requestPath);
         goto respond;
     }
     System_String8 requestExt = System_Path_getFileNameExt(requestPath);
@@ -175,9 +176,9 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         mime = 0;
         System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
-        if (currentDirectory) System_Memory_free(currentDirectory);
-        if (requestPath) System_Memory_free(requestPath);
-        if (requestExt) System_Memory_free(requestExt);
+        System_Memory_free(currentDirectory);
+        System_Memory_free(requestPath);
+        System_Memory_free(requestExt);
         goto respond;
     }
     System_Console_writeLine("HTTPService_serve: File {0:string}", 1, requestPath);
@@ -185,7 +186,7 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     if (stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) {
         response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
         System_Size fileSize = System_File_get_Length(&file);
-        if (fileSize) {
+        {
             response->body.length = fileSize;
             response->body.value = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
             System_File_read(&file, response->body.value, fileSize);
@@ -194,17 +195,17 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(fileSize));
         System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[mime].name);
         System_String8Dictionary_add(response->header, "Connection", "close");
-        if (currentDirectory) System_Memory_free(currentDirectory);
-        if (requestPath) System_Memory_free(requestPath);
-        if (requestExt) System_Memory_free(requestExt);
+        System_Memory_free(currentDirectory);
+        System_Memory_free(requestPath);
+        System_Memory_free(requestExt);
         goto respond;
     }
 
     System_Console_writeLine("HTTPService_serve: File Error {0:string}", 1, requestPath);
     response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
-    if (currentDirectory) System_Memory_free(currentDirectory);
-    if (requestPath) System_Memory_free(requestPath);
-    if (requestExt) System_Memory_free(requestExt);
+    System_Memory_free(currentDirectory);
+    System_Memory_free(requestPath);
+    System_Memory_free(requestExt);
 
 respond:
     struct MemoryStream scratch; Stack_clear(scratch);

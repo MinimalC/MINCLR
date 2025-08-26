@@ -88,7 +88,7 @@ export void  System_Syscall_rmdir(System_String8 directoryName);
 export void  System_Syscall_getcwd(System_String8 buffer, System_Size length);
 export void  System_Syscall_readlink(System_String8 linkName, System_String8 buffer, System_Size length);
 export void  System_Syscall_chdir(System_String8 path);
-export System_IntPtr  System_Syscall_mkdir(System_String8 path, System_IntPtr mode);
+export void  System_Syscall_mkdir(System_String8 path, System_IntPtr mode);
 export System_Size  System_Syscall_getdents64(System_IntPtr directoryId, System_String8 buffer, System_Size length);
 
 typedef System_IntPtr  System_Syscall_MSync;

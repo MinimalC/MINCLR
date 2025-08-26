@@ -2,6 +2,9 @@
 #if !defined(System_internal)
 #include <System.internal.h>
 #endif
+#if !defined(have_System_Path)
+#include <min/System.Path.h>
+#endif
 #if !defined(have_System_Directory)
 #include <min/System.Directory.h>
 #endif
@@ -27,17 +30,108 @@ System_Bool System_Directory_change(System_String8 path) {
 }
 
 System_Bool System_Directory_create(System_String8 directoryName) {
-    return !System_Syscall_mkdir(directoryName, 0777);
+    return System_Directory_create__recursive(directoryName, null);
 }
 
-System_Bool System_Directory_remove(System_String8 name) {
-    System_Syscall_rmdir(name);
-    System_ErrorCode error = System_Syscall_get_Error();
-    if (error) {
-        System_Exception_throw(new_System_IOException__error(error, "Directory not removed"));
-        return false;
+System_Bool System_Directory_create__recursive(System_String8 rootDirectoryName, System_String8 recursive) {
+    System_ErrorCode error = 0;
+    if (!recursive) {
+        System_Syscall_mkdir(rootDirectoryName, 0777);
+        error = System_Syscall_get_Error();
+        if (error) {
+            System_Exception_throw(new_System_IOException__error(error, "Directory not removed"));
+            return false;
+        }
+        return true;
     }
+    String8 directory0Name = String8_copy(recursive);
+    String8 directory[8]; Stack_clear(directory); Size directoryC = 0;
+    while (directoryC < 8) {
+        Size directory0NameL = String8_get_Length(directory0Name);
+        if (directory0Name[directory0NameL - 1] == '/') 
+            directory0Name[directory0NameL - 1] = '\0';
+        String8 directory1Name = Path_getDirectoryName(directory0Name);
+        String8 file1Name = Path_getFileName(directory0Name);
+
+        if (String8_isNullOrEmpty(file1Name)) {
+            Memory_free(file1Name);
+            Memory_free(directory1Name);
+            break;
+        }
+        directory[directoryC++] = file1Name;
+        if (String8_isNullOrEmpty(directory1Name)) {
+            Memory_free(directory1Name);
+            break;
+        }
+        Memory_free(directory0Name);
+        directory0Name = directory1Name;
+    }
+    Memory_free(directory0Name);
+
+    String8 final_directory = String8_copy(rootDirectoryName);
+    Size final_directoryL = String8_get_Length(final_directory);
+    if (final_directory[final_directoryL - 1] == '/') 
+        final_directory[final_directoryL - 1] = '\0';
+    Size dir = directoryC;
+    struct FileInfo info; Stack_clear(info);
+    for (; dir; --dir) {
+        String8_exchange(&final_directory, String8_concat2(final_directory, "/", directory[dir - 1]));
+        FileInfo_init(&info, final_directory);
+        if (!info.status.iNodeId) {
+            System_Syscall_mkdir(final_directory, 0777);
+            error = System_Syscall_get_Error();
+            if (error) {
+                System_Exception_throw(new_System_IOException__error(error, "Directory not created"));
+                // Console_writeLine("Exception: Directory_create: not created {0:string}", 1, final_directory);
+                break;
+            }
+            // Console_writeLine("Exception: Directory_create: created {0:string}", 1, final_directory);
+        }
+        // else Console_writeLine("Exception: Directory_create: exists already {0:string}", 1, final_directory);
+    }
+    Memory_free(final_directory);
+    for (Size d = 0; d < directoryC; ++d) Memory_free(directory[d]);
+    if (dir) return false;
     return true;
+}
+
+System_Bool System_Directory_remove(System_String8 rootDirectoryName) {
+    return System_Directory_remove__recursive(rootDirectoryName, null);
+}
+
+System_Bool System_Directory_remove__recursive(System_String8 rootDirectoryName, System_String8 recursive) {
+    System_ErrorCode error = 0;
+    if (!recursive) {
+        System_Syscall_rmdir(rootDirectoryName);
+        error = System_Syscall_get_Error();
+        if (error) {
+            System_Exception_throw(new_System_IOException__error(error, "Directory not removed"));
+            return false;
+        }
+        return true;
+    }
+    String8 directory0Name = String8_copy(recursive);
+    Size rootDirectoryNameL = String8_get_Length(rootDirectoryName);
+    Bool reture = true;
+    while (!String8_isNullOrEmpty(directory0Name)) {
+        Size directory0NameL = String8_get_Length(directory0Name);
+        if (!directory0NameL) break;
+        if (directory0Name[directory0NameL - 1] == '/') 
+            directory0Name[directory0NameL - 1] = '\0';
+        if (String8_equalsSubstring(directory0Name, rootDirectoryName, rootDirectoryNameL)) break;
+        System_Syscall_rmdir(directory0Name);
+        error = System_Syscall_get_Error();
+        if (error) {
+            System_Exception_throw(new_System_IOException__error(error, "Directory not removed"));
+            // Console_writeLine("Exception: Directory not removed {0:string}", 1, directory0Name);
+            reture = false;
+            break;
+        }
+        // Console_writeLine("Exception: Directory removed {0:string}", 1, directory0Name);
+        String8_exchange(&directory0Name, Path_getDirectoryName(directory0Name));
+    }
+    Memory_free(directory0Name);
+    return reture;
 }
 
 System_String8 System_Directory_get_current() {
