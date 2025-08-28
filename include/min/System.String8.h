@@ -37,10 +37,10 @@ export System_Bool  System_Char8_isPrintable(System_Char8 that);
 
 export struct System_Type  System_String8Type;
 
-export System_SSize  System_String8_indexOf__size(System_String8 that, System_Char8 character, System_Size length);
-export System_SSize  System_String8_indexOf(System_String8 that, System_Char8 character);
-export System_SSize  System_String8_lastIndexOf__size(System_String8 that, System_Char8 character, System_Size length);
-export System_SSize  System_String8_lastIndexOf(System_String8 that, System_Char8 character);
+export System_SSize  System_String8_indexOf(System_String8 that, System_String8 other);
+export System_SSize  System_String8_indexOf__char(System_String8 that, System_Char8 character);
+export System_SSize  System_String8_lastIndexOf(System_String8 that, System_String8 other);
+export System_SSize  System_String8_lastIndexOf__char(System_String8 that, System_Char8 character);
 export System_Size  System_String8_get_Length(System_String8 that);
 export System_Size  System_String8_get_Length__max(System_String8 that, System_Size limit);
 export System_Size  System_String8_copyTo(System_String8 src, System_String8 dest);
@@ -52,10 +52,10 @@ export System_String8  System_String8_copyOf(System_String8 that, System_Size of
 export System_String8  System_String8_copySubstring(System_String8 that, System_Size count);
 export System_String8  System_String8_copyOfSubstring(System_String8 that, System_Size offset, System_Size count);
 export System_String8  System_String8_concat(System_String8 that, ...);
-export System_String8  System_String8_concat1(System_String8 that, System_String8 other);
-export System_String8  System_String8_concat2(System_String8 that, System_String8 other0, System_String8 other1);
-export System_String8  System_String8_concat3(System_String8 that, System_String8 other0, System_String8 other1, System_String8 other2);
-export System_String8  System_String8_concat4(System_String8 that, System_String8 other0, System_String8 other1, System_String8 other2, System_String8 other3);
+export System_String8  System_String8_concat2(System_String8 that, System_String8 other);
+export System_String8  System_String8_concat3(System_String8 that, System_String8 other0, System_String8 other1);
+export System_String8  System_String8_concat4(System_String8 that, System_String8 other0, System_String8 other1, System_String8 other2);
+export System_String8  System_String8_concat5(System_String8 that, System_String8 other0, System_String8 other1, System_String8 other2, System_String8 other3);
 export System_String8  System_String8_concat__arguments(System_String8 that, System_Size argc, System_String8 argv[]);
 export System_Size  System_String8_compare(System_String8 that, System_String8 other);
 export System_Bool  System_String8_equals(System_String8 that, System_String8 other);
@@ -89,19 +89,24 @@ export System_Size  stack_System_String8_formatEnd__arguments(System_String8 for
 export System_Size  stack_System_String8_formatEnd__limit_arguments(System_String8 format, System_Char8 suffix, System_Size limit, System_Char8 message[], System_Size argc, System_Var argv[]);
 
 #if defined(using_System)
-#define String8_lastIndexOf  System_String8_lastIndexOf
 #define String8_indexOf  System_String8_indexOf
+#define String8_indexOf__char  System_String8_indexOf__char
+#define String8_lastIndexOf  System_String8_lastIndexOf
+#define String8_lastIndexOf__char  System_String8_lastIndexOf__char
 #define String8_get_Length  System_String8_get_Length
 #define String8_copyTo  System_String8_copyTo
 #define String8_copyToAt  System_String8_copyToAt
 #define String8_copySubstringTo  System_String8_copySubstringTo
 #define String8_copySubstringToAt  System_String8_copySubstringToAt
 #define String8_copy  System_String8_copy
+#define String8_copyOf  System_String8_copyOf
+#define String8_copySubstring  System_String8_copySubstring
+#define String8_copyOfSubstring  System_String8_copyOfSubstring
 #define String8_concat  System_String8_concat
-#define String8_concat1  System_String8_concat1
 #define String8_concat2  System_String8_concat2
 #define String8_concat3  System_String8_concat3
 #define String8_concat4  System_String8_concat4
+#define String8_concat5  System_String8_concat5
 #define String8_concat__arguments  System_String8_concat__arguments
 #define String8_compare  System_String8_compare
 #define String8_equals  System_String8_equals

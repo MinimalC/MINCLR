@@ -50,7 +50,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
     System_String8 string = message->value;
     System_Size remainSize = message->length;
     while (true) {
-        System_SSize linefeed = System_String8_indexOf__size(string, '\n', remainSize);
+        System_SSize linefeed = System_String8_indexOf__char(string, '\n');
         remainSize -= linefeed + 1;
         if (linefeed == -1) {
             System_Console_writeLine("HTTPRequest_parse: No linefeed", 0);
@@ -64,7 +64,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             System_Console_writeLine("HTTPRequest_parse: End of Header", 0);
             return httpRequest;
         }
-        System_SSize nullchar = System_String8_indexOf(string, '\0');
+        System_SSize nullchar = System_String8_indexOf__char(string, '\0');
         if (nullchar > -1) {
             System_Console_writeLine("HTTPRequest_parse: null in there", 0);
             break;
@@ -84,18 +84,18 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             }
             *(string1++) = '\0';
 
-            System_SSize space = System_String8_indexOf(string1, ' ');
+            System_SSize space = System_String8_indexOf__char(string1, ' ');
             if (space == -1) {
                 System_Console_writeLine("HTTPRequest_parse: No Space after URI. {0:string}", 1, string);
                 break;
             }
             *(string1 + space) = '\0';
-            httpRequest->uri.source = System_String8_copy(string1);
-            System_SSize questionMark = System_String8_indexOf(httpRequest->uri.source, '?');
+            System_SSize questionMark = System_String8_indexOf__char(httpRequest->uri.source, '?');
             if (questionMark > -1) {
                 *(httpRequest->uri.source + questionMark) = '\0';
-                httpRequest->uri.queryString = httpRequest->uri.source + questionMark + 1;
+                httpRequest->queryString = String8_copy(httpRequest->uri.source + questionMark + 1);
             }
+            httpRequest->uri.source = System_String8_copy(string1);
             string1 += space + 1;
 
             if (!String8_equalsSubstring(string1, "HTTP/", 5)) {
@@ -104,9 +104,9 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             }
             string1 += 5;
             String8 version = System_String8_copy(string1);
-            if (httpRequest->uri.queryString)
+            if (httpRequest->queryString)
                 System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string}?{2:string} HTTP/{3:string}", 4,
-                    string, httpRequest->uri.source, httpRequest->uri.queryString, version);
+                    string, httpRequest->uri.source, httpRequest->queryString, version);
             else
                 System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string} HTTP/{2:string}", 3,
                     string, httpRequest->uri.source, version);
@@ -115,7 +115,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             goto nextHeader;
         }
 
-        System_SSize dot = System_String8_indexOf(string, ':');
+        System_SSize dot = System_String8_indexOf__char(string, ':');
         if (dot == -1) {
             System_Console_writeLine("HTTPRequest_parse: No Header Name", 0);
             break;
@@ -143,8 +143,8 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     }
 
     System_Console_writeLine("HTTPService_serve: request->uri.source {0:string}", 1, request->uri.source);
-    if (request->uri.queryString)
-        System_Console_writeLine("HTTPService_serve: request->uri.queryString ?{0:string}", 1, request->uri.queryString);
+    if (request->queryString)
+        System_Console_writeLine("HTTPService_serve: request->queryString ?{0:string}", 1, request->queryString);
 
     // Get a worker for the URI
     System_String8 currentDirectory = System_Directory_get_current();

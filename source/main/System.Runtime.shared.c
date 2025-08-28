@@ -131,8 +131,8 @@ void System_Runtime_start(System_Var  * stack) {
             switch (*n) { /* TODO */
             case '.': *n = '_'; break;
             }
-        fileNames[1] = System_String8_concat1(fileNames[0], "_main");
-        fileNames[2] = System_String8_concat1("main_", fileNames[0]);
+        fileNames[1] = System_String8_concat2(fileNames[0], "_main");
+        fileNames[2] = System_String8_concat2("main_", fileNames[0]);
         System_Size * symbol1_value = null;
         System_ELF64Assembly assembly1 = null;
         System_ELF64Assembly_Symbol symbol1 = null;

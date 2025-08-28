@@ -184,14 +184,6 @@ typedef struct Network_SocketAddress {
 
 }  * Network_SocketAddress;
 
-typedef System_UInt16 Network_HTTPStatus;
-enum {
-    Network_HTTPStatus_OK = 200,
-    Network_HTTPStatus_FileNotFound = 404,
-    Network_HTTPStatus_Error = 500,
-};
-export System_String8 Network_HTTPStatus_toString(Network_HTTPStatus value);
-
 typedef System_Int32  Network_Socket_SID;
 
 typedef System_fixed /* final */ struct Network_TCPSocket {

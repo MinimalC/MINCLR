@@ -44,6 +44,22 @@ int ECQLite_test(int argc, char * argv[]) {
     }
     else Console_writeLine("{0:string} not found.", 1, "Produkt");
 
+    if (System_ECQLite_delete(database, "Produkt", 1, "Redmi6A"))
+         Console_writeLine("{0:string} deleted.", 1, "Produkt");
+    else
+         Console_writeLine("{0:string} not deleted.", 1, "Produkt");
+
+    if (System_ECQLite_select(database, "Produkt", table, 1, "Redmi6A")) {
+        Console_write("{0:string}:", 1, "Produkt");
+        for (Size i = 0; i < 64; ++i) {
+            if (!table->columns[i].string) continue;
+            if (i) Console_write__string(",");
+            Console_write(" {0:string} {1:string}", 2, table->columns[i].columnName, table->columns[i].string);
+        }
+        Console_writeLineEmpty();
+    }
+    else Console_writeLine("{0:string} not found.", 1, "Produkt");
+
     if (System_ECQLite_select(database, "Katalog", table, 1, "wer?")) {
         Console_write("{0:string}:", 1, "Katalog");
         for (Size i = 0; i < 64; ++i) {

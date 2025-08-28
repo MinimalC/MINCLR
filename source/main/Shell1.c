@@ -86,10 +86,10 @@ int Shell1_main(int argc, char * argv[]) {
                     System_Console_write__string_size(input + n, 3);
                     n += 2; continue;
                 }
-                SSize report = System_String8_indexOf(input + n, 'R');
+                SSize report = System_String8_indexOf__char(input + n, 'R');
                 if (report > -1) {
                     x = System_UInt64_parsebase10(input + n + 2);
-                    SSize semikolon = System_String8_indexOf(input + n, ';');
+                    SSize semikolon = System_String8_indexOf__char(input + n, ';');
                     if (semikolon > -1) {
                         y = System_UInt64_parsebase10(input + n + semikolon + 1);
                         System_Console_writeLine("Cursor Report: x {0:uint} y {1:uint}", 2, x, y);

@@ -75,7 +75,7 @@ System_Bool System_Directory_create__recursive(System_String8 rootDirectoryName,
     Size dir = directoryC;
     struct FileInfo info; Stack_clear(info);
     for (; dir; --dir) {
-        String8_exchange(&final_directory, String8_concat2(final_directory, "/", directory[dir - 1]));
+        String8_exchange(&final_directory, String8_concat3(final_directory, "/", directory[dir - 1]));
         FileInfo_init(&info, final_directory);
         if (!info.status.iNodeId) {
             System_Syscall_mkdir(final_directory, 0777);

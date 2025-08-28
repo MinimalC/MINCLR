@@ -12,6 +12,8 @@
 #if !defined(have_System_VarDictionary)
 #define have_System_VarDictionary
 
+enum { System_VarDictionary_Capacity = 64 };
+
 typedef System_fixed struct System_VarDictionary {
     struct System_Object base;
 
@@ -19,7 +21,7 @@ typedef System_fixed struct System_VarDictionary {
 
     System_Size capacity;
     
-    System_Var  (* key)[];
+    System_String8  (* key)[];
 
     System_Var  (* value)[];
 
@@ -27,63 +29,33 @@ typedef System_fixed struct System_VarDictionary {
 
 export struct System_Type  System_VarDictionaryType;
 
-typedef void delegate(System_VarDictionary_init)(System_VarDictionary that, System_Size capacity);
-typedef void delegate(System_VarDictionary_free)(System_VarDictionary that);
-typedef System_Size  delegate(System_VarDictionary_get_Length)(System_VarDictionary that);
-typedef System_Var  delegate(System_VarDictionary_get_index)(System_VarDictionary that, System_Size index);
-typedef void  delegate(System_VarDictionary_set_index)(System_VarDictionary that, System_Size index, System_Var value);
-typedef void delegate(System_VarDictionary_copyTo)(System_VarDictionary that, System_VarDictionary other, System_Size offset);
-typedef void delegate(System_VarDictionary_resize)(System_VarDictionary that, System_Size length);
-typedef System_IEnumerator  delegate(System_VarDictionary_getEnumerator)(System_VarDictionary that);
-
-export System_VarDictionary  new_System_VarDictionary(System_Size capacity);
-export void  base_System_VarDictionary_init(System_VarDictionary that, System_Size capacity);
-export void  base_System_VarDictionary_free(System_VarDictionary that);
-export System_Size base_System_VarDictionary_add(System_VarDictionary that, System_Var key, System_Var value);
-export System_Size  base_System_VarDictionary_get_Length(System_VarDictionary that);
-export System_Var  base_System_VarDictionary_get_index(System_VarDictionary that, System_Size index);
-export System_Size  base_System_VarDictionary_get_key(System_VarDictionary that, System_Var key);
-export System_Var  base_System_VarDictionary_get_value(System_VarDictionary that, System_Var key);
-export void  base_System_VarDictionary_set_index(System_VarDictionary that, System_Size index, System_Var value);
-export void  base_System_VarDictionary_set_key(System_VarDictionary that, System_Var old, System_Var new);
-export void  base_System_VarDictionary_set_value(System_VarDictionary that, System_Var key, System_Var value);
-export void  base_System_VarDictionary_copyTo(System_VarDictionary that, System_VarDictionary other, System_Size offset);
-export void  base_System_VarDictionary_resize(System_VarDictionary that, System_Size length);
-export System_IEnumerator  base_System_VarDictionary_getEnumerator(System_VarDictionary that);
-
-#define System_VarDictionary_init(o,...)  ((function_System_VarDictionary_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_VarDictionary_init))(o, __VA_ARGS__)
-#define System_VarDictionary_free(o)  ((function_System_VarDictionary_free)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_free))(o)
-#define System_VarDictionary_get_Length(o)  ((function_System_VarDictionary_get_Length)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_get_Length))(o)
-#define System_VarDictionary_get_index(o,...)  ((function_System_VarDictionary_get_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_get_index))(o, __VA_ARGS__)
-#define System_VarDictionary_set_index(o,...)  ((function_System_VarDictionary_set_index)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_set_index))(o, __VA_ARGS__)
-#define System_VarDictionary_copyTo(o,...)  ((function_System_VarDictionary_copyTo)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_ICollection_copyTo))(o,__VA_ARGS__)
-#define System_VarDictionary_resize(o,...)  ((function_System_VarDictionary_resize)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_VarDictionary_resize))(o,__VA_ARGS__)
-#define System_VarDictionary_getEnumerator(o)  ((function_System_VarDictionary_getEnumerator)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IEnumerable_getEnumerator))(o)
+export System_VarDictionary  new_System_VarDictionary();
+export void  System_VarDictionary_init(System_VarDictionary that);
+export void  System_VarDictionary_free(System_VarDictionary that);
+export System_Size System_VarDictionary_add(System_VarDictionary that, System_String8 key, System_Var value);
+export System_Size  System_VarDictionary_get_Length(System_VarDictionary that);
+export System_Var  System_VarDictionary_get_index(System_VarDictionary that, System_Size index);
+export System_Size  System_VarDictionary_get_key(System_VarDictionary that, System_Var key);
+export System_Var  System_VarDictionary_get_value(System_VarDictionary that, System_Var key);
+export void  System_VarDictionary_set_index(System_VarDictionary that, System_Size index, System_Var value);
+export void  System_VarDictionary_set_key(System_VarDictionary that, System_Var old, System_Var new);
+export void  System_VarDictionary_set_value(System_VarDictionary that, System_Var key, System_Var value);
+export void  System_VarDictionary_copyTo(System_VarDictionary that, System_VarDictionary other, System_Size offset);
+export void  System_VarDictionary_resize(System_VarDictionary that, System_Size length);
+export System_IEnumerator  System_VarDictionary_getEnumerator(System_VarDictionary that);
 
 #if defined(using_System)
 #define VarDictionary  System_VarDictionary
 #define VarDictionaryType  System_VarDictionaryType
-
+#define new_VarDictionary  new_System_VarDictionary
 #define VarDictionary_init  System_VarDictionary_init
 #define VarDictionary_free  System_VarDictionary_free
+#define VarDictionary_add  System_VarDictionary_add
 #define VarDictionary_get_Length  System_VarDictionary_get_Length
 #define VarDictionary_get_index  System_VarDictionary_get_index
 #define VarDictionary_set_index  System_VarDictionary_set_index
 #define VarDictionary_resize  System_VarDictionary_resize
-#define base_VarDictionary_init  base_System_VarDictionary_init
-#define base_VarDictionary_free  base_System_VarDictionary_free
-#define base_VarDictionary_get_Length  base_System_VarDictionary_get_Length
-#define base_VarDictionary_get_index  base_System_VarDictionary_get_index
-#define base_VarDictionary_set_index  base_System_VarDictionary_set_index
-#define base_VarDictionary_resize  base_System_VarDictionary_resize
-#define base_VarDictionary_getEnumerator  base_System_VarDictionary_getEnumerator
-#define function_VarDictionary_init  function_System_VarDictionary_init
-#define function_VarDictionary_free  function_System_VarDictionary_free
-#define function_VarDictionary_get_Length  function_System_VarDictionary_get_Length
-#define function_VarDictionary_get_index  function_System_VarDictionary_get_index
-#define function_VarDictionary_set_index  function_System_VarDictionary_set_index
-#define function_VarDictionary_resize  function_System_VarDictionary_resize
-#define function_VarDictionary_getEnumerator  function_System_VarDictionary_getEnumerator
+#define VarDictionary_getEnumerator  System_VarDictionary_getEnumerator
 #endif
 
 #endif

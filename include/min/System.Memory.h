@@ -43,7 +43,8 @@ enum {
 export struct System_Type  System_MemoryType;
 
 /* void * memchr ( const void * var, int value, size_t num ); */
-export System_SSize  System_Memory_indexOf(System_Var var, System_Char8 needle, System_Size count);
+export System_SSize  System_Memory_indexOf(System_Var var, System_Size count, System_Char8 needle);
+export System_SSize  System_Memory_indexOf__other(System_Var var, System_Size count, System_Var needle, System_Size needle_count);
 
 /* void bzero(void *dest, size_t count) */
 export void  System_Memory_clear(System_Var dest, System_Size n);
@@ -55,7 +56,7 @@ export void  System_Memory_copyTo(System_Var src, System_Size n, System_Var dest
 export void  System_Memory_moveTo(System_Var src, System_Size n, System_Var dest);
 
 /* void *memset (void *s, int c, size_t n) */
-export void  System_Memory_set(System_Var dest, System_Char8 src, System_Size n);
+export void  System_Memory_set(System_Var dest, System_Size n, System_Char8 src);
 
 /* int memcmp ( const void * var1, const void * var2, size_t num ); */
 export System_Size  System_Memory_compare(System_Var var0, System_Var var1, System_Size length);
@@ -84,6 +85,7 @@ export void  System_Memory_debug(void);
 #define MemoryType  System_MemoryType
 
 #define Memory_indexOf  System_Memory_indexOf
+#define Memory_indexOf__other  System_Memory_indexOf__other
 #define Memory_clear  System_Memory_clear
 #define Memory_copyTo  System_Memory_copyTo
 #define Memory_moveTo  System_Memory_moveTo

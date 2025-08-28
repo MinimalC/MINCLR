@@ -26,15 +26,6 @@
 #if !defined(code_Network_TCPSocket)
 #define code_Network_TCPSocket
 
-System_String8 Network_HTTPStatus_toString(Network_HTTPStatus value) {
-    switch (value) {
-    case Network_HTTPStatus_OK: return "OK";
-    case Network_HTTPStatus_FileNotFound: return "FileNotFound";
-    case Network_HTTPStatus_Error: return "Error";
-    default: return "Unknown";
-    }
-}
-
 /** struct Network_TCPSocket  **/
 
 struct System_Type Network_TCPSocketType = { .base = { .type = typeof(System_Type) },

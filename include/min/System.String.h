@@ -18,4 +18,10 @@ export struct System_Type  System_StringType;
 export void System_String_free(System_String that);
 export System_UInt64 System_String_getSipHash(System_String that);
 
+#if defined(using_System)
+#define String  System_String
+#define StringType  System_StringType
+#define String_free  System_String_free
+#define String_getSipHash  System_String_getSipHash
+#endif
 #endif

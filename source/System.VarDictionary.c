@@ -16,103 +16,107 @@
 
 /** struct System_VarDictionary  **/
 
-void base_System_VarDictionary_init(System_VarDictionary that, System_Size capacity) {
-    that->key = System_Memory_allocArray(typeof(System_Var), capacity);
-    that->value = System_Memory_allocArray(typeof(System_Var), capacity);
-    that->capacity = capacity;
+System_VarDictionary  new_System_VarDictionary() {
+    System_VarDictionary that = (System_VarDictionary)System_Memory_allocClass(typeof(System_VarDictionary));
+    System_VarDictionary_init(that);
+    return that;
 }
 
-void  base_System_VarDictionary_free(System_VarDictionary that) {
-    for (System_Size i = 0; i < that->length; ++i) {
-        System_Memory_free(array_item(that->key, i));
-        System_Memory_free(array_item(that->value, i));
+void System_VarDictionary_init(System_VarDictionary that) { }
+
+void System_VarDictionary_free(System_VarDictionary that) {
+    if (that->key && that->value) {
+        for (System_Size i = 0; i < that->length; ++i) {
+            System_Memory_free(array_item(that->key, i));
+            System_Memory_free(array_item(that->value, i));
+        }
+        System_Memory_free(that->key);
+        System_Memory_free(that->value);
     }
-    System_Memory_free(that->key);
-    System_Memory_free(that->value);
 }
 
-System_Size base_System_VarDictionary_add(System_VarDictionary that, System_Var key, System_Var value) {
+System_Size System_VarDictionary_add(System_VarDictionary that, System_String8 key, System_Var value) {
     /* TODO: if System_VarDictionary_contains key, throw */
+    if (that->length + 1 > that->capacity) {
+        System_VarDictionary_resize(that, that->capacity + System_VarDictionary_Capacity);
+    }
     System_Size index = that->length++;
     array(that->key)[index] = key;
     array(that->value)[index] = value;
     return index;
 }
 
-void base_System_VarDictionary_remove(System_VarDictionary that, System_Var key) {
+void  System_VarDictionary_resize(System_VarDictionary that, System_Size capacity) {
+    if (!that->key) that->key = System_Memory_allocArray(typeof(System_String8), capacity);
+    else System_Memory_reallocArray((System_Var ref)&that->key, capacity);
+    if (!that->value) that->value = System_Memory_allocArray(typeof(System_Var), capacity);
+    else System_Memory_reallocArray((System_Var ref)&that->value, capacity);
+    that->capacity = capacity;
+}
+
+void System_VarDictionary_remove(System_VarDictionary that, System_Var key) {
     /* TODO: say key is null, move all other, then say --length */
     System_Console_writeLine__string("System_VarDictionary_remove not implemented");
 }
 
-System_Size  base_System_VarDictionary_get_Length(System_VarDictionary that) {
+System_Size  System_VarDictionary_get_Length(System_VarDictionary that) {
     return that->length;
 }
 
-System_Var  base_System_VarDictionary_get_index(System_VarDictionary that, System_Size index) {
+System_Var  System_VarDictionary_get_index(System_VarDictionary that, System_Size index) {
     return array(that->key)[index];
 }
 
-System_Size  base_System_VarDictionary_get_key(System_VarDictionary that, System_Var key) {
+System_Size  System_VarDictionary_get_key(System_VarDictionary that, System_Var key) {
     for (Size i = 0; i < that->length; ++i)
-        if (array_item(that->key, i) == key)
+        if (String8_equals(array_item(that->key, i), key))
             return i;
     return 0;
 }
 
-System_Var  base_System_VarDictionary_get_value(System_VarDictionary that, System_Var key) {
-    System_Size index = base_System_VarDictionary_get_key(that, key);
+System_Var  System_VarDictionary_get_value(System_VarDictionary that, System_Var key) {
+    System_Size index = System_VarDictionary_get_key(that, key);
     return array(that->value)[index];
 }
 
-void  base_System_VarDictionary_set_index(System_VarDictionary that, System_Size index, System_Var value) {
+void  System_VarDictionary_set_index(System_VarDictionary that, System_Size index, System_Var value) {
     array(that->value)[index] = value;
 }
 
-void  base_System_VarDictionary_set_key(System_VarDictionary that, System_Var old, System_Var new) {
-    System_Size index = base_System_VarDictionary_get_key(that, old);
+void  System_VarDictionary_set_key(System_VarDictionary that, System_Var old, System_Var new) {
+    System_Size index = System_VarDictionary_get_key(that, old);
     array(that->key)[index] = new;
 }
 
-void  base_System_VarDictionary_set_value(System_VarDictionary that, System_Var key, System_Var value) {
-    System_Size index = base_System_VarDictionary_get_key(that, key);
+void  System_VarDictionary_set_value(System_VarDictionary that, System_Var key, System_Var value) {
+    System_Size index = System_VarDictionary_get_key(that, key);
     array(that->value)[index] = value;
 }
 
-void  base_System_VarDictionary_resize(System_VarDictionary that, System_Size capacity) {
-    System_Memory_reallocArray((System_Var ref)&that->value, capacity);
-    System_Memory_reallocArray((System_Var ref)&that->key, capacity);
-    that->capacity = capacity;
-}
-
-System_IEnumerator  base_System_VarDictionary_getEnumerator(System_VarDictionary that) {
+System_IEnumerator  System_VarDictionary_getEnumerator(System_VarDictionary that) {
     return (System_IEnumerator)new_System_VarDictionaryEnumerator(that);
 }
 
 struct System_Type_FunctionInfo  System_VarDictionaryTypeFunctions[] = {
-    [0] = { .function = base_System_VarDictionary_init, .value = base_System_VarDictionary_init },
-    [1] = { .function = base_System_Object_free, .value = base_System_VarDictionary_free },
-    [2] = { .function = base_System_ICollection_get_Length, .value = base_System_VarDictionary_get_Length },
-    [3] = { .function = base_System_ICollection_get_index, .value = base_System_VarDictionary_get_index },
-    [4] = { .function = base_System_ICollection_set_index, .value = base_System_VarDictionary_set_index },
-    [5] = { .function = base_System_VarDictionary_resize, .value = base_System_VarDictionary_resize },
-    [6] = { .function = base_System_IEnumerable_getEnumerator, .value = base_System_VarDictionary_getEnumerator },
+    { .function = base_System_Object_init, .value = System_VarDictionary_init },
+    { .function = base_System_Object_free, .value = System_VarDictionary_free },
+    { .function = base_System_ICollection_get_Length, .value = System_VarDictionary_get_Length },
+    { .function = base_System_ICollection_get_index, .value = System_VarDictionary_get_index },
+    { .function = base_System_ICollection_set_index, .value = System_VarDictionary_set_index },
+    { .function = base_System_IEnumerable_getEnumerator, .value = System_VarDictionary_getEnumerator },
 };
 
 struct System_Type_InterfaceInfo  System_VarDictionaryTypeInterfaces[] = {
-    [0] = { .interfaceType = &System_ICollectionType },
-    [1] = { .interfaceType = &System_IEnumerableType },
+    { .interfaceType = &System_ICollectionType },
+    { .interfaceType = &System_IEnumerableType },
 };
 
 struct System_Type System_VarDictionaryType = { .base = { .type = typeof(System_Type) },
     .name = "VarDictionary",
     .size = sizeof(struct System_VarDictionary),
     .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_VarDictionaryTypeFunctions), .value = &System_VarDictionaryTypeFunctions
-    },
-    .interfaces = {
-        .length = sizeof_array(System_VarDictionaryTypeInterfaces), .value = &System_VarDictionaryTypeInterfaces
-    },
+    .functions = { .length = sizeof_array(System_VarDictionaryTypeFunctions), .value = &System_VarDictionaryTypeFunctions },
+    .interfaces = { .length = sizeof_array(System_VarDictionaryTypeInterfaces), .value = &System_VarDictionaryTypeInterfaces },
 };
 
 #endif

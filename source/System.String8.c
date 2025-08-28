@@ -82,30 +82,48 @@ UInt64 System_String8_getSipHash(String8 that) {
     return Crypto_SipHash48_final(&sipHash48);
 }
 
-SSize  System_String8_indexOf__size(String8 that, Char8 character, Size length) {
+SSize  System_String8_indexOf__char(String8 that, Char8 character) {
+    Size length = String8_get_Length(that);
+    if (!length) return -1;
     SSize i = 0;
-    if (length == 0) return -1;
     do {
         if (that[i] == character) return i;
     } while ( ++i < length );
     return -1;
 }
 
-SSize  System_String8_indexOf(String8 that, Char8 character){
-    return System_String8_indexOf__size(that, character, String8_get_Length(that));
-}
-
-SSize  System_String8_lastIndexOf__size(String8 that, Char8 character, Size length) {
-    SSize i = length;
-    if (i == 0) return -1;
+SSize  System_String8_indexOf(String8 that, String8 other) {
+    Size length0 = String8_get_Length(that);
+    Size length1 = String8_get_Length(other);
+    if (!length0 || !length1) return -1;
+    if (length0 < length1) return -1;
+    SSize i = 0;
     do {
-        if (that[--i] == character) return i;
-    } while ( i );
+        if (String8_equalsSubstring(that + i, other, length1)) return i;
+    } while ( ++i < length0 );
     return -1;
 }
 
-SSize  System_String8_lastIndexOf(String8 that, Char8 character) {
-    return System_String8_lastIndexOf__size(that, character, String8_get_Length(that));
+SSize  System_String8_lastIndexOf__char(String8 that, Char8 character) {
+    Size length = String8_get_Length(that);
+    if (!length) return -1;
+    SSize i = length;
+    do {
+        if (that[i - 1] == character) return i - 1;
+    } while ( --i );
+    return -1;
+}
+
+SSize  System_String8_lastIndexOf(String8 that, String8 other) {
+    Size length0 = String8_get_Length(that);
+    Size length1 = String8_get_Length(other);
+    if (!length0 || !length1) return -1;
+    if (length0 < length1) return -1;
+    SSize i = length0 - length1;
+    do {
+        if (String8_equalsSubstring(that + i - 1, other, length1)) return i - 1;
+    } while ( --i );
+    return -1;
 }
 
 Size  System_String8_get_Length(String8 that) {
@@ -125,7 +143,7 @@ System_Size  System_String8_get_Length__max(System_String8 that, System_Size lim
 Size  System_String8_copyTo(String8 src, String8 dest) {
     Size count0 = String8_get_Length(src);
     Size count1 = count0;
-    while ( count0 && ( *dest++ = *src++ ) ) --count0;
+    while ( count0-- ) *dest++ = *src++;
     return count1 - count0;
 }
 
@@ -133,14 +151,14 @@ Size  System_String8_copyToAt(String8 src, String8 dest, Size at) {
     Size count0 = String8_get_Length(src);
     Size count1 = count0;
     dest += at;
-    while ( count0 && ( *dest++ = *src++ ) ) --count0;
+    while ( count0-- ) *dest++ = *src++;
     return count1 - count0;
 }
 
 Size  System_String8_copySubstringTo(String8 src, Size count, String8 dest) {
     Size count0 = count;
     Size count1 = count;
-    while ( count0 && ( *dest++ = *src++ ) ) --count0;
+    while ( count0-- ) *dest++ = *src++;
     return count1 - count0;
 }
 
@@ -148,7 +166,7 @@ Size  System_String8_copySubstringToAt(String8 src, Size count, String8 dest, Si
     Size count0 = count;
     Size count1 = count;
     dest += at;
-    while ( count0 && ( *dest++ = *src++ ) ) --count0;
+    while ( count0-- ) *dest++ = *src++;
     return count1 - count0;
 }
 
@@ -189,7 +207,7 @@ String8  System_String8_concat(String8 that, ...) {
     return System_String8_concat__arguments(that, argc, (System_String8 *)argv);
 }
 
-String8  System_String8_concat1(String8 that, String8 other) {
+String8  System_String8_concat2(String8 that, String8 other) {
     Size length0 = System_String8_get_Length(that);
     Size length1 = System_String8_get_Length(other);
     String8 dest = (String8)System_Memory_allocArray(typeof(System_Char8), length0 + length1 + 1);
@@ -198,7 +216,7 @@ String8  System_String8_concat1(String8 that, String8 other) {
     return dest;
 }
 
-String8  System_String8_concat2(String8 that, String8 other0, String8 other1) {
+String8  System_String8_concat3(String8 that, String8 other0, String8 other1) {
     Size length0 = System_String8_get_Length(that);
     Size length1 = System_String8_get_Length(other0);
     Size length2 = System_String8_get_Length(other1);
@@ -209,7 +227,7 @@ String8  System_String8_concat2(String8 that, String8 other0, String8 other1) {
     return dest;
 }
 
-String8  System_String8_concat3(String8 that, String8 other0, String8 other1, String8 other2) {
+String8  System_String8_concat4(String8 that, String8 other0, String8 other1, String8 other2) {
     Size length0 = System_String8_get_Length(that);
     Size length1 = System_String8_get_Length(other0);
     Size length2 = System_String8_get_Length(other1);
@@ -222,7 +240,7 @@ String8  System_String8_concat3(String8 that, String8 other0, String8 other1, St
     return dest;
 }
 
-String8  System_String8_concat4(String8 that, String8 other0, String8 other1, String8 other2, String8 other3) {
+String8  System_String8_concat5(String8 that, String8 other0, String8 other1, String8 other2, String8 other3) {
     Size length0 = System_String8_get_Length(that);
     Size length1 = System_String8_get_Length(other0);
     Size length2 = System_String8_get_Length(other1);
@@ -280,7 +298,10 @@ Bool  System_String8_equalsSubstring(String8 that, String8 other, Size length) {
 }
 
 Bool  System_String8_isNullOrEmpty(String8 that) {
-    return !that || *that == '\0';
+    if (!that) return true;
+    while (*that == ' ' || *that == '\t') ++that;
+    if (*that == '\0') return true;
+    return false;
 }
 
 Bool  System_String8_startsWith(String8 that, String8 other) {

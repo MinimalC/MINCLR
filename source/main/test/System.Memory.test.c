@@ -2,7 +2,7 @@
 #include <min/System.h>
 
 Size  Test00_size = 8;
-UInt8  Test00_Check[] = "\x01\x01\x03\x01\x01\x01\x01\x01";
+UInt8  Test00_Check[] = "\x01\x01\x02\x01\x01\x05\x01\x01";
 
 Char8 MoveTo[]   = "HalloWelt ";
 Char8 MoveFrom[] = "HelloWorld";
@@ -26,9 +26,9 @@ int System_Runtime_main(int argc, char * argv[]) {
         Console_writeLine__string("Test01: SUCCESS: System_Memory_isAllocated");
 
     /* Test: Memory_set */
-    Memory_set(bytes, 0x01, Test00_size);
-    // *(bytes + 2) = 0x03;
-    bytes[2] = 0x03;
+    Memory_set(bytes, Test00_size, 0x01);
+    bytes[2] = 0x02;
+    bytes[5] = 0x05;
 
     /* Test: Memory_compare and Memory_equals  */
     if (Test00_size != Memory_compare(bytes, Test00_Check, Test00_size))
@@ -43,11 +43,18 @@ int System_Runtime_main(int argc, char * argv[]) {
 
 
     /* Test: Memory_indexOf */
-    SSize indexOf2 = Memory_indexOf(bytes, 0x03, Test00_size);
-    if (indexOf2 != 3)
+    SSize indexOf2 = Memory_indexOf(bytes, Test00_size, 0x02);
+    if (indexOf2 != 2)
         Console_writeLine__string("Test04: ERROR: System_Memory_indexOf");
     else
         Console_writeLine__string("Test04: SUCCESS: System_Memory_indexOf");
+
+    /* Test: Memory_indexOf */
+    SSize indexOf5 = Memory_indexOf__other(bytes, Test00_size, "\x05\x01", 2);
+    if (indexOf5 != 5)
+        Console_writeLine__string("Test04: ERROR: System_Memory_indexOf__other");
+    else
+        Console_writeLine__string("Test04: SUCCESS: System_Memory_indexOf__other");
 
 
     /* Test: Memory_free */

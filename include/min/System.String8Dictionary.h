@@ -14,9 +14,7 @@
 #if !defined(have_System_String8Dictionary)
 #define have_System_String8Dictionary
 
-enum {
-    System_String8Dictionary_Capacity = 64
-};
+enum { System_String8Dictionary_Capacity = 64 };
 
 typedef System_fixed struct System_String8Dictionary {
     struct System_Object base;
@@ -51,10 +49,10 @@ export System_IEnumerator  System_String8Dictionary_getEnumerator(System_String8
 #if defined(using_System)
 #define String8Dictionary  System_String8Dictionary
 #define String8DictionaryType  System_String8DictionaryType
-
+#define new_String8Dictionary  new_System_String8Dictionary
 #define String8Dictionary_init  System_String8Dictionary_init
 #define String8Dictionary_free  System_String8Dictionary_free
-#define String8Dictionary_add  System_String8Dictionary_ad
+#define String8Dictionary_add  System_String8Dictionary_add
 #define String8Dictionary_get_Length  System_String8Dictionary_get_Length
 #define String8Dictionary_get_index  System_String8Dictionary_get_index
 #define String8Dictionary_set_index  System_String8Dictionary_set_index

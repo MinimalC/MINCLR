@@ -40,94 +40,276 @@ struct Network_MimeType  Network_MimeTypes[] = {
 
 const System_Size Network_MimeTypes_Capacity = sizeof_array(Network_MimeTypes);
 
+void HTTPRequest_parseQueryString(String8Dictionary that, System_String8 queryString) {
+    String8 scratch = String8_copy(queryString);
+    String8 key = null, value = null;
+    for (Size q0 = 0, q1 = 0, l = String8_get_Length(scratch); q1 < l; ++q1) {
+        if (scratch[q1] == '=') {
+            scratch[q1] = '\0';
+            key = String8_copy(scratch + q0);
+            q0 = q1 + 1;
+        }
+        if (scratch[q1] == '&') {
+            scratch[q1] = '\0';
+            value = String8_copy(scratch + q0);
+            q0 = q1 + 1;
+            if (!String8_isNullOrEmpty(key) && !String8_isNullOrEmpty(value))
+                String8Dictionary_add(that, key, value);
+            else if (!String8_isNullOrEmpty(key))
+                String8Dictionary_add(that, key, value);
+            else if (!String8_isNullOrEmpty(value))
+                String8Dictionary_add(that, value, key);
+            key = null;
+            value = null;
+        }
+        if (q1 == l - 1) {
+            if (!key) key = String8_copy(scratch + q0);
+            else if (!value) value = String8_copy(scratch + q0);
+            break;
+        }
+    }
+    if (!String8_isNullOrEmpty(key) && !String8_isNullOrEmpty(value))
+        String8Dictionary_add(that, key, value);
+    else if (!String8_isNullOrEmpty(key))
+        String8Dictionary_add(that, key, value);
+    else if (!String8_isNullOrEmpty(value))
+        String8Dictionary_add(that, value, key);
+    Memory_free(scratch);
+}
+
 Network_HTTPRequest HTTPRequest_parse(System_String message) {
     Console_assert(message);
     Console_assert(message->length);
 
-    Network_HTTPRequest httpRequest = System_Memory_allocClass(typeof(Network_HTTPRequest));
-    System_String8Dictionary_init(&httpRequest->header);
+    Network_HTTPRequest httpRequest = new_Network_HTTPRequest();
 
     System_String8 string = message->value;
     System_Size remainSize = message->length;
+    System_String8 contentType = null;
     while (true) {
-        System_SSize linefeed = System_String8_indexOf__size(string, '\n', remainSize);
-        remainSize -= linefeed + 1;
+        System_SSize linefeed = System_String8_indexOf__char(string, '\n');
         if (linefeed == -1) {
             System_Console_writeLine("HTTPRequest_parse: No linefeed", 0);
-            break;
+            goto HTTPRequest_parse_error;
         }
+        remainSize -= linefeed + 1;
         string[linefeed] = '\0';
         if (linefeed > 0)
             if (string[linefeed - 1] == '\r')
                 string[linefeed - 1] = '\0';
         if (linefeed < 2) {
+            string += linefeed + 1;
             System_Console_writeLine("HTTPRequest_parse: End of Header", 0);
-            return httpRequest;
-        }
-        System_SSize nullchar = System_String8_indexOf(string, '\0');
-        if (nullchar > -1) {
-            System_Console_writeLine("HTTPRequest_parse: null in there", 0);
             break;
         }
         if (!httpRequest->method) {
             System_String8 string1 = string;
 
-            if (String8_equalsSubstring(string, "GET", 3)) { httpRequest->method = Network_HTTPMethod_GET; string1 += 3; }
-            else if (String8_equalsSubstring(string, "HEAD", 4)) { httpRequest->method = Network_HTTPMethod_HEAD; string1 += 4; }
-            else if (String8_equalsSubstring(string, "POST", 4)) { httpRequest->method = Network_HTTPMethod_POST; string1 += 4; }
-            else if (String8_equalsSubstring(string, "PUT", 3)) { httpRequest->method = Network_HTTPMethod_PUT; string1 += 3; }
-            else if (String8_equalsSubstring(string, "OPTIONS", 7)) { httpRequest->method = Network_HTTPMethod_OPTIONS; string1 += 7; }
-            else if (String8_equalsSubstring(string, "DELETE", 6)) { httpRequest->method = Network_HTTPMethod_DELETE; string1 += 6; }
+            if (String8_equalsSubstring(string1, "GET", 3)) { httpRequest->method = Network_HTTPMethod_GET; string1 += 3; }
+            else if (String8_equalsSubstring(string1, "HEAD", 4)) { httpRequest->method = Network_HTTPMethod_HEAD; string1 += 4; }
+            else if (String8_equalsSubstring(string1, "POST", 4)) { httpRequest->method = Network_HTTPMethod_POST; string1 += 4; }
+            else if (String8_equalsSubstring(string1, "PUT", 3)) { httpRequest->method = Network_HTTPMethod_PUT; string1 += 3; }
+            else if (String8_equalsSubstring(string1, "OPTIONS", 7)) { httpRequest->method = Network_HTTPMethod_OPTIONS; string1 += 7; }
+            else if (String8_equalsSubstring(string1, "DELETE", 6)) { httpRequest->method = Network_HTTPMethod_DELETE; string1 += 6; }
             if (!httpRequest->method) {
-                System_Console_writeLine("HTTPRequest_parse: Unknown Method {0:string}", 1, string);
-                break;
+                System_Console_writeLine("HTTPRequest_parse: Unknown Method {0:string}", 1, string1);
+                goto HTTPRequest_parse_error;
             }
             string1++[0] = '\0';
 
-            System_SSize space = System_String8_indexOf(string1, ' ');
+            System_SSize space = System_String8_indexOf__char(string1, ' ');
             if (space == -1) {
-                System_Console_writeLine("HTTPRequest_parse: No Space after URI {0:string}", 1, string);
-                break;
+                System_Console_writeLine("HTTPRequest_parse: No Space after URI {0:string}", 1, string1);
+                goto HTTPRequest_parse_error;
             }
             string1[space] = '\0';
+            System_SSize questionMark = System_String8_indexOf__char(string1, '?');
+            if (questionMark != -1) string1[questionMark] = '\0';
             httpRequest->uri.source = System_String8_copy(string1);
-            System_SSize questionMark = System_String8_indexOf(httpRequest->uri.source, '?');
-            if (questionMark > -1) {
-                httpRequest->uri.source[questionMark] = '\0';
-                httpRequest->uri.queryString = httpRequest->uri.source + questionMark + 1;
+            String8 queryString = null;
+            if (questionMark != -1) {
+                queryString = string1 + questionMark + 1;
             }
+            if (!String8_isNullOrEmpty(queryString)) {
+                HTTPRequest_parseQueryString(&httpRequest->query, queryString);
+            }
+            
             string1 += space + 1;
 
             if (!String8_equalsSubstring(string1, "HTTP/", 5)) {
-                System_Console_writeLine("HTTPRequest_parse: No HTTP {0:string} {1:string}", 2, string, httpRequest->uri.source);
-                break;
+                System_Console_writeLine("HTTPRequest_parse: No HTTP {0:string} {1:string}", 2, string1, httpRequest->uri.source);
+                goto HTTPRequest_parse_error;
             }
             string1 += 5;
             System_Char8 version[8]; Stack_clear(version);
             System_String8_copyTo(string1, version);
 
-            if (httpRequest->uri.queryString)
+            if (questionMark != -1)
                 System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string}?{2:string} HTTP/{3:string}", 4,
-                    string, httpRequest->uri.source, httpRequest->uri.queryString, version);
+                    Network_HTTPMethod_toString(httpRequest->method), httpRequest->uri.source, queryString, version);
             else
                 System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string} HTTP/{2:string}", 3,
-                    string, httpRequest->uri.source, version);
+                    Network_HTTPMethod_toString(httpRequest->method), httpRequest->uri.source, version);
 
-            goto nextHeader;
+            if (httpRequest->query.length) {
+                System_Console_write__string("HTTPRequest_parse: Query ");
+                for (Size m = 0 ; m < httpRequest->query.length; ++m) {
+                    System_Console_write("{0:string}{1:string}={2:string} ", 3, !m ? "?" : "&", 
+                        array_item(httpRequest->query.key, m), array_item(httpRequest->query.value, m)); 
+                }
+                System_Console_writeLineEmpty();
+            }
         }
-
-        System_SSize dot = System_String8_indexOf(string, ':');
-        if (dot == -1) {
-            System_Console_writeLine("HTTPRequest_parse: No Header Name {0:string}", 1, string);
-            break;
+        else {
+            System_SSize dot = System_String8_indexOf__char(string, ':');
+            if (dot == -1) {
+                System_Console_writeLine("HTTPRequest_parse: No Header Name {0:string}", 1, string);
+                goto HTTPRequest_parse_error;
+            }
+            string[dot] = '\0';
+            
+            String8 key = System_String8_copy(string);
+            String8 value = System_String8_copy(string + dot + 2);
+            if (String8_equals(key, "Content-Type")) contentType = value;
+            System_String8Dictionary_add(&httpRequest->header, key, value);
         }
-        string[dot] = '\0'; if (string[dot + 1] == ' ') string[++dot] = '\0';
-        
-        System_String8Dictionary_add(&httpRequest->header, System_String8_copy(string), System_String8_copy(string + dot + 1));
-
-nextHeader:
         string += linefeed + 1;
-    }    
+    }
+    if (String8_isNullOrEmpty(contentType)) ;
+    else if (String8_equalsSubstring(contentType, "multipart/form-data; boundary=", 30)) {
+        String8 boundary = contentType + 30;
+        Size boundaryL = String8_get_Length(boundary);
+        /* Console_write("HTTPRequest_parse: multipart/form-data with boundary", 0);
+        Console_write__string_size(string, remainSize);
+        Console_writeLineEmpty();
+        Console_writeLine("<<<END", 0);*/
+        while (true) {
+            Size rn = String8_indexOf__char(string, '\n');
+            if (rn == -1 || rn < 2) break;
+            string[rn] = '\0'; string[rn - 1] = '\0';
+            Console_writeLine("HTTPRequest_parse: {0:string}", 1, string);
+            if (!String8_equalsSubstring(string + 2, boundary, boundaryL)) break;
+            if (String8_equalsSubstring(string + 2 + boundaryL, "--", 2)) break;
+            string += rn + 1;
+            remainSize -= rn + 1;
+            rn = String8_indexOf__char(string, '\n');
+            if (rn == -1 || rn < 2) break;
+            string[rn] = '\0'; string[rn - 1] = '\0';
+            
+            String8 content_disposition = null;
+            String8 content_name = null;
+            String8 content_type = null;
+            String8 file_name = null;
+            if (String8_equalsSubstring(string, "Content-Disposition", 19)) {
+                String8 string1 = string;
+
+                Size colon = String8_indexOf__char(string1, ':');
+                string1[colon] = '\0'; if (string1[colon + 1] == ' ') ++colon;
+                content_disposition = string1 + colon + 1;
+                
+                string1 += colon + 1;
+                Size n = String8_indexOf(string1, "name=");
+                if (n == -1) break;
+                Size fn = String8_indexOf__char(string1 + n + 6, '"');
+                if (fn == -1) break;
+                string1[n + 6 + fn] = '\0';
+                content_name = string1 + n + 6;
+                Console_writeLine("HTTPRequest_parse: Content-Name {0:string}", 1, content_name);
+
+                string1 += n + 6 + fn + 1;
+                Size n1 = String8_indexOf(string1, "filename=");
+                if (n1 != -1) {
+                    Size fn1 = String8_indexOf__char(string1 + n1 + 10, '"');
+                    if (fn1 == -1) break;
+                    string1[n1 + 10 + fn1] = '\0';
+                    file_name = string1 + n1 + 10;
+                    Console_writeLine("HTTPRequest_parse: Content-FileName {0:string}", 1, file_name);
+                    string1 += n1 + 10 + fn1 + 1;
+                }
+
+                string += rn + 1;
+                remainSize -= rn + 1;
+                rn = String8_indexOf__char(string, '\n');
+                if (rn == -1) break;
+                string[rn] = '\0'; string[rn - 1] = '\0';
+            }
+            else break;
+            
+            if (String8_equalsSubstring(string, "Content-Type", 12)) {
+                Size colon = String8_indexOf__char(string, ':');
+                string[colon] = '\0'; if (string[colon + 1] == ' ') ++colon;
+                content_type = string + colon + 1;
+                Console_writeLine("HTTPRequest_parse: Content-Type {0:string}", 1, content_type);
+
+                string += rn + 1;
+                remainSize -= rn + 1;
+                rn = String8_indexOf__char(string, '\n');
+                if (rn == -1) break;
+                string[rn] = '\0'; string[rn - 1] = '\0';
+            }
+
+            if (rn < 2) {
+                string += rn + 1;
+                Size end = Memory_indexOf__other(string, remainSize, boundary, boundaryL);
+                if (end == -1) break;                    
+                String8 content_value = Memory_allocArray(typeof(Char8), end); Memory_copyTo(string, end - 4, content_value);
+                if (!String8_isNullOrEmpty(file_name)) {
+                    String content_container = Memory_allocClass(typeof(String));
+                    content_container->length = end - 4;
+                    content_container->value = content_value;
+                    Console_writeLine("HTTPRequest_parse: Content-Value ... length {0:uint}", 1, end - 4);
+
+                    VarDictionary_add(&httpRequest->files, String8_copy(file_name), content_container);
+                    String8Dictionary_add(&httpRequest->form, String8_copy(content_name), String8_copy(file_name));
+                }
+                else {
+                    Console_writeLine("HTTPRequest_parse: Content-Value {0:string}", 1, content_value);
+                    String8Dictionary_add(&httpRequest->form, String8_copy(content_name), content_value);
+                }
+                string += end - 2;
+            }
+        }
+    }
+    else if (String8_equals(contentType, "application/x-www-form-urlencoded")) {
+        if (!string) {
+            HTTPRequest_parseQueryString(&httpRequest->form, string);
+        }
+    }
+    else if (String8_equals(contentType, "text/plain")) {
+        while (true) {
+            Size rn = String8_indexOf__char(string, '\n');
+            if (rn == -1) break;
+            string[rn] = '\0'; string[rn - 1] = '\0';
+            Size eq = String8_indexOf__char(string, '=');
+            if (eq != -1) {
+                string[eq] = '\0';
+                String8Dictionary_add(&httpRequest->form, String8_copy(string), String8_copy(string + eq + 1));
+            }
+            string += rn + 1;
+        }
+    }
+    else {
+        Console_writeLine("HTTPRequest_parse: Unknown Content-Type {0:string}", 1, contentType);
+    }
+    if (httpRequest->form.length) {
+        System_Console_write__string("HTTPRequest_parse: Form ");
+        for (Size m = 0 ; m < httpRequest->form.length; ++m) {
+            System_Console_write("{0:string}{1:string}={2:string} ", 3, !m ? "?" : "&", 
+                array_item(httpRequest->form.key, m), array_item(httpRequest->form.value, m)); 
+        }
+        System_Console_writeLineEmpty();
+    }
+    if (httpRequest->files.length) {
+        System_Console_write__string("HTTPRequest_parse: Files ");
+        for (Size m = 0 ; m < httpRequest->files.length; ++m) {
+            System_Console_write("{0:string}{1:string} ", 2, array_item(httpRequest->files.key, m),
+                m == httpRequest->files.length - 1 ? " " : ","); 
+        }
+        System_Console_writeLineEmpty();
+    }
+    return httpRequest;
+
+HTTPRequest_parse_error:
     Memory_free(httpRequest);
     return null;
 }
@@ -194,7 +376,7 @@ System_Char8 pretext_HTML[] =
 Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_String8 requestPath, System_String8 text, System_Size fileSize, System_Size mime) {
 
     String8 shortName = String8_copy(requestPath + String8_get_Length(ECSX_WWWDirectoryName));
-    String8 ecsxName = String8_concat1("HTTP_", shortName);
+    String8 ecsxName = String8_concat2("HTTP_", shortName);
     for (Size c = 0, length = String8_get_Length(ecsxName); c < length; ++c) {
         Char8 z = ecsxName[c];
         if (!c && (z < 0x41 || z > 0x5A) && (z < 0x61 || z > 0x7A)) {
@@ -206,33 +388,31 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
             continue;
         }
     }
-    
-    String8 fileName1 = String8_concat1(shortName, ".o");
+    String8 fileName1 = String8_concat2(shortName, ".o");
     String8_exchange(&fileName1, Path_combine(ECSX_TempDirectoryName, fileName1));
     struct FileInfo fileInfo0; Stack_clear(fileInfo0); FileInfo_init(&fileInfo0, requestPath);
     struct FileInfo fileInfo1; Stack_clear(fileInfo1); FileInfo_init(&fileInfo1, fileName1);
     if (fileInfo1.status.mode & System_FileInfo_Type_Regular) {
         if (fileInfo0.status.modifyTime.sec <= fileInfo1.status.modifyTime.sec) {
-            System_Console_writeLine("ECSXService_serve: File not updated, using {0:string}", 1, fileName1);
+            ECSX_updateTempDirectory();
+            System_Console_writeLine("ECSXService_serve: using old {0:string}", 1, fileName1);
             goto ECSXService_serve_render;
         }
     }
-
     struct System_MemoryStream stream; Stack_clear(stream);
     MemoryStream_write__string_size(&stream, pretext_C, sizeof(pretext_C) - 1);
     MemoryStream_write(&stream, "void {0:string}(Network_HTTPRequest request, Network_HTTPResponse response) ", 1, ecsxName);
     MemoryStream_write__string(&stream, "{\n");
-    MemoryStream_write__string(&stream, "MemoryStream_write__string(response->stream,\n\"");
+    MemoryStream_write__string(&stream, "MemoryStream_write__string(&response->stream,\n\"");
 
     System_Size C = 0, ecsx_qualified = 0;
-
     for (Size c = 0; c < fileSize; ++c) {
         if (C == 0) {
             if (c + 1 < fileSize && text[c] == '<' && text[c + 1] == '%') {
                 ecsx_qualified = 1;
                 MemoryStream_write__string(&stream, "\");\n");
                 if (c + 2 < fileSize && text[c + 2] == '=') {
-                    MemoryStream_write__string(&stream, "MemoryStream_writeLine(response->stream,");
+                    MemoryStream_write__string(&stream, "MemoryStream_writeLine(&response->stream,");
                     C = 2; c += 2;
                     continue;
                 }
@@ -254,7 +434,7 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
         }
         if (C == 1) {
             if (c + 1 < fileSize && text[c] == '%' && text[c + 1] == '>') {
-                MemoryStream_write__string(&stream, "MemoryStream_write__string(response->stream,\n\"");
+                MemoryStream_write__string(&stream, "MemoryStream_write__string(&response->stream,\n\"");
                 C = 0; ++c; ecsx_qualified = 2;
                 continue;
             }
@@ -262,7 +442,7 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
         if (C == 2) {
             if (c + 1 < fileSize && text[c] == '%' && text[c + 1] == '>') {
                 MemoryStream_write__string(&stream, ");\n");
-                MemoryStream_write__string(&stream, "MemoryStream_write__string(response->stream,\n\"");
+                MemoryStream_write__string(&stream, "MemoryStream_write__string(&response->stream,\n\"");
                 C = 0; ++c; ecsx_qualified = 2;
                 continue;
             }
@@ -277,7 +457,7 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
     System_String8 buffer = MemoryStream_final__size(&stream, &bufferSize);
 
     if (ecsx_qualified < 2) {
-        System_Console_writeLine__string("ECSXService_serve unqualified");
+        System_Console_writeLine__string("ECSXService_serve: unqualified");
 
         Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
         response->body.length = fileSize;
@@ -292,8 +472,7 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
 
     ECSX_updateTempDirectory();
 
-    struct File output; Stack_clear(output);
-    String8 fileName2 = String8_concat1(shortName, ".c");
+    String8 fileName2 = String8_concat2(shortName, ".c");
     String8 fileName2_directory = Path_getDirectoryName(fileName2);
     if (!Directory_exists(fileName2_directory))
         if (Directory_create__recursive(ECSX_TempDirectoryName, fileName2_directory))
@@ -302,12 +481,14 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
             Console_writeLine("ECSXService_serve: directory not created {0:string}{1:string}", 2, ECSX_TempDirectoryName, fileName2_directory);
     Memory_free(fileName2_directory);
     String8_exchange(&fileName2, Path_combine(ECSX_TempDirectoryName, fileName2));
+
+    struct File output; Stack_clear(output);
     if (stack_System_File_open(&output, fileName2, File_Mode_readWrite | File_Mode_create | File_Mode_truncate))
         File_write__string_size(&output, buffer, bufferSize);
     File_free(&output);
     Memory_free(buffer);
 
-    String8 fileName3 = String8_concat1(shortName, ".gcc.output");
+    String8 fileName3 = String8_concat2(shortName, ".gcc.output");
     String8_exchange(&fileName3, Path_combine(ECSX_TempDirectoryName, fileName3));
     stack_System_File_open(&output, fileName3, File_Mode_readWrite | File_Mode_create | File_Mode_truncate);
     System_File_write__string_size(&output, pretext_HTML, sizeof(pretext_HTML) - 1);
@@ -322,7 +503,7 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
     Memory_free(fileName2);
 
     if (gcc) {
-        System_Console_writeLine__string("ECSXService_serve unqualified: GCC compiler error");
+        System_Console_writeLine__string("ECSXService_serve: unqualified, GCC compiler error");
 
         File_set_Position(&output, 0);
         bufferSize = File_get_Length(&output);
@@ -344,7 +525,7 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
     File_delete(fileName3);
     Memory_free(fileName3);
 
-    System_Console_writeLine("ECSXService_serve: File updated, now using {0:string}", 1, fileName1);
+    System_Console_writeLine("ECSXService_serve: using new {0:string}", 1, fileName1);
 
 ECSXService_serve_render:
 
@@ -352,12 +533,12 @@ ECSXService_serve_render:
     System_ELF64Assembly_read(&assembly, fileName1);
     System_ELF64Assembly_link(&assembly);
 
-    function_Network_HTTPRequest_render render = null;
+    function_Network_HTTPRequest_render HTTP_render = null;
     System_ELFAssembly_Symbol symbol1 = System_ELF64Assembly_getSymbol(&assembly, ecsxName);
     if (symbol1 && symbol1->value) {
-        render = (function_Network_HTTPRequest_render)((System_Size)assembly.link + symbol1->value);
+        HTTP_render = (function_Network_HTTPRequest_render)((System_Size)assembly.link + symbol1->value);
     }
-    if (!render) {
+    if (!HTTP_render) {
         Console_writeLine("ECSXService_serve: No ELFSymbol (function_Network_HTTPRequest_render) {0:string}", 1, ecsxName);
         System_ELF64Assembly_free(&assembly);
         Memory_free(ecsxName);
@@ -366,10 +547,9 @@ ECSXService_serve_render:
         return null;
     }
     Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
-    response->stream = new_MemoryStream();
 
-    render(request, response);
-    response->body.value = MemoryStream_final__size(response->stream, &response->body.length);
+    HTTP_render(request, response);
+    response->body.value = MemoryStream_final__size(&response->stream, &response->body.length);
 
     System_ELF64Assembly_free(&assembly);
     Memory_free(ecsxName);
@@ -389,8 +569,6 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     }
 
     System_Console_writeLine("HTTPService_serve: request->uri.source {0:string}", 1, request->uri.source);
-    if (request->uri.queryString)
-        System_Console_writeLine("HTTPService_serve: request->uri.queryString ?{0:string}", 1, request->uri.queryString);
 
     // Get a worker for the URI
     System_String8 requestPath = Path_combine(ECSX_WWWDirectoryName, request->uri.source);
@@ -429,8 +607,8 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     if (fileSize > 2 && fileSize < 0x400000) { // Just serve not 4MB
         String8 buffer = Memory_allocArray(typeof(Char8), fileSize + 1);
         struct File file; Stack_clear(file); 
-        stack_System_File_open(&file, requestPath, System_File_Mode_readOnly);
-        System_File_read(&file, buffer, fileSize);
+        if (stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) 
+            System_File_read(&file, buffer, fileSize);
         System_File_free(&file);
         if (response = ECSXService_serve(request, requestPath, buffer, fileSize, mime)) {
             System_Memory_free(requestPath);

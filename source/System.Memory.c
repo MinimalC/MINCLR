@@ -33,12 +33,23 @@
 
 struct System_Type System_MemoryType = { .base = { .type = typeof(System_Type) }, .name = "Memory" };
 
-SSize System_Memory_indexOf(Var ptr, Char8 needle, Size count) {
+SSize System_Memory_indexOf(Var ptr, Size count, Char8 needle) {
 
     SSize i = 0;
     String8 ptrBytes = (String8)ptr;
-    while (++i < count)
+    do {
         if (*ptrBytes++ == needle) return i;
+    } while (++i < count);
+    return -1;
+}
+
+SSize System_Memory_indexOf__other(Var ptr, Size count, Var needle, Size needle_count) {
+
+    SSize i = 0;
+    String8 ptrBytes = (String8)ptr;
+    do {
+        if (Memory_equals(ptrBytes++, needle, needle_count)) return i;
+    } while (++i < count);
     return -1;
 }
 
@@ -64,7 +75,7 @@ void System_Memory_moveTo(Var src, Size count, Var dest) {
     while (n--) { destByte = *destBytes; *destBytes++ = *srcBytes; *srcBytes++ = destByte; }
 }
 
-void System_Memory_set(Var dest, Char8 src, Size length) {
+void System_Memory_set(Var dest, Size length, Char8 src) {
 
     Size n = length;
     String8 destBytes = (String8)dest;

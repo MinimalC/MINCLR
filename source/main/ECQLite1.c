@@ -10,6 +10,7 @@ int ECQLite1_main(int argc, char * argv[]) {
         System_Console_writeLine__string("  ... CREATE Table SET Person .... 1000 \"Name Birthdate Email Telefon\"");
         System_Console_writeLine__string("  ... CREATE Person SET Hans 12.11.1984 hans@mail.de +491765432109");
         System_Console_writeLine__string("  ... SELECT Person WHERE Hans");
+        System_Console_writeLine__string("  ... DELETE Person WHERE Hans");
         return false;
     }
 
@@ -28,7 +29,18 @@ int ECQLite1_main(int argc, char * argv[]) {
             Console_writeLineEmpty();
             goto return_true;
         }
-        else Console_write("{0:string} not found.", 1, table_name);
+        Console_write("{0:string} not found.", 1, table_name);
+        goto return_false;
+    }
+
+    if (String8_equals("DELETE", argv[2]) || String8_equals("delete", argv[2])) {
+        table_name = argv[3];
+
+        if (System_ECQLite_delete__arguments(database, table_name, argc - 5, (System_Var *)(argv + 5))) {
+            Console_writeLine("{0:string} deleted.", 1, table_name);
+            goto return_true;
+        }
+        Console_writeLine("{0:string} not deleted.", 1, table_name);
         goto return_false;
     }
 

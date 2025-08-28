@@ -44,6 +44,14 @@ System_Size System_String8Dictionary_add(System_String8Dictionary that, System_S
     return index;
 }
 
+void  System_String8Dictionary_resize(System_String8Dictionary that, System_Size capacity) {
+    if (!that->key) that->key = System_Memory_allocArray(typeof(System_String8), capacity);
+    else System_Memory_reallocArray((System_Var ref)&that->key, capacity);
+    if (!that->value) that->value = System_Memory_allocArray(typeof(System_String8), capacity);
+    else System_Memory_reallocArray((System_Var ref)&that->value, capacity);
+    that->capacity = capacity;
+}
+
 void System_String8Dictionary_remove(System_String8Dictionary that, System_String8 key) {
     /* TODO: say key is null, move all other, then say --length */
     System_Console_writeLine__string("System_String8Dictionary_remove not implemented");
@@ -61,7 +69,7 @@ System_Size  System_String8Dictionary_get_key(System_String8Dictionary that, Sys
     for (Size i = 0; i < that->length; ++i)
         if (String8_equals(array_item(that->key, i), key))
             return i;
-    return -1;
+    return 0;
 }
 
 System_String8  System_String8Dictionary_get_value(System_String8Dictionary that, System_String8 key) {
@@ -82,14 +90,6 @@ void  System_String8Dictionary_set_key(System_String8Dictionary that, System_Str
 void  System_String8Dictionary_set_value(System_String8Dictionary that, System_String8 key, System_String8 value) {
     System_Size index = System_String8Dictionary_get_key(that, key);
     array(that->value)[index] = value;
-}
-
-void  System_String8Dictionary_resize(System_String8Dictionary that, System_Size capacity) {
-    if (!that->value) that->value = System_Memory_allocArray(typeof(System_String8), capacity);
-    else System_Memory_reallocArray((System_Var ref)&that->value, capacity);
-    if (!that->key) that->key = System_Memory_allocArray(typeof(System_String8), capacity);
-    else System_Memory_reallocArray((System_Var ref)&that->key, capacity);
-    that->capacity = capacity;
 }
 
 System_IEnumerator  System_String8Dictionary_getEnumerator(System_String8Dictionary that) {

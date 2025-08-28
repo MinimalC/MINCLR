@@ -13,25 +13,25 @@
 struct System_Type System_PathType = { .base = { .type = typeof(System_Type) }, .name = "Path" };
 
 System_String8 System_Path_getDirectoryName(System_String8 path) {
-    SSize i = System_String8_lastIndexOf(path, '/');
+    SSize i = System_String8_lastIndexOf__char(path, '/');
     if (i > -1) return System_String8_copySubstring(path, i + 1);
     return String8_Empty;
 }
 
 System_String8 System_Path_getFileName(System_String8 path) {
-    SSize i = System_String8_lastIndexOf(path, '/');
+    SSize i = System_String8_lastIndexOf__char(path, '/');
     if (i > -1) return System_String8_copyOf(path, i + 1);
     return String8_Empty;
 }
 
 System_String8 System_Path_getFileNameExt(System_String8 path) {
-    SSize i = System_String8_lastIndexOf(path, '.');
+    SSize i = System_String8_lastIndexOf__char(path, '.');
     if (i > -1) return System_String8_copyOf(path, i + 1);
     return String8_Empty;
 }
 
 System_String8 System_Path_getFileNameNoExt(System_String8 path) {
-    SSize i = System_String8_lastIndexOf(path, '.');
+    SSize i = System_String8_lastIndexOf__char(path, '.');
     if (i > -1) return System_String8_copySubstring(path, i);
     return String8_Empty;
 }

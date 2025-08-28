@@ -54,6 +54,8 @@ export System_Bool  System_ECQLite_create(System_ECQLite that, System_String8 ta
 export System_Bool  System_ECQLite_create__arguments(System_ECQLite that, System_String8 tableName, System_Size argc, System_Var argv[]);
 export System_Bool  System_ECQLite_select(System_ECQLite that, System_String8 tableName, System_ECQLite_Table reture, ...);
 export System_Bool  System_ECQLite_select__arguments(System_ECQLite that, System_String8 tableName, System_ECQLite_Table reture, System_Size argc, System_Var argv[]);
+export System_Bool  System_ECQLite_delete(System_ECQLite that, System_String8 tableName, ...);
+export System_Bool  System_ECQLite_delete__arguments(System_ECQLite that, System_String8 tableName, Size argc, Var argv[]);
 
 #if defined(using_System)
 #define ECQLite  System_ECQLite

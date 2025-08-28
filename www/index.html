@@ -4,7 +4,57 @@
     This is the Hello World example.<br />
 <%
     String8 now_string = DateTime_now_toString();
-    MemoryStream_writeLine(response->stream, "Heute ist der {0:string}.", 1, now_string);
+    MemoryStream_writeLine(&response->stream, "Heute ist der {0:string}.", 1, now_string);
     Memory_free(now_string);
 %><br />
+
+<form  method="post" enctype="multipart/form-data">
+
+    <div>Name: <input type="text" name="Name"></div>
+
+    <div>File: <input type="file" name="File"></div>
+    <div>File1: <input type="file" name="File1"></div>
+
+    <textarea name="text" rows=10></textarea>
+
+    <input type="submit" value="Send" />
+
+</form>
+
+<div><%
+    if (request->query.length) {
+        MemoryStream_write__string(&response->stream, "Query ");
+        for (Size m = 0 ; m < request->query.length; ++m) {
+            MemoryStream_write(&response->stream, "{0:string}{1:string}={2:string} ", 3, !m ? "?" : "&",
+                array_item(request->query.key, m), array_item(request->query.value, m));
+        }
+        MemoryStream_writeLineEmpty(&response->stream);
+    }
+%></div>
+<div><%
+    if (request->form.length) {
+        MemoryStream_write__string(&response->stream, "Form ");
+        for (Size m = 0 ; m < request->form.length; ++m) {
+            MemoryStream_write(&response->stream, "{0:string}{1:string}={2:string} ", 3, !m ? "?" : "&",
+                array_item(request->form.key, m), array_item(request->form.value, m));
+        }
+        MemoryStream_writeLineEmpty(&response->stream);
+    }
+%></div>
+<div><%
+    if (request->files.length) {
+        MemoryStream_write__string(&response->stream, "Files ");
+        for (Size m = 0 ; m < request->files.length; ++m) {
+            MemoryStream_write(&response->stream, "{0:string}{1:string} ", 2, array_item(request->files.key, m),
+                m == request->files.length - 1 ? " " : ",");
+
+            String data = array_item(request->files.value, m);
+            if (data->length) {
+                MemoryStream_write(&response->stream, "size {0:uint}{1:string} ", 2, data->length,
+                    m == request->files.length - 1 ? " " : ",");
+            }
+        }
+        MemoryStream_writeLineEmpty(&response->stream);
+    }
+%></div>
 </body></html>

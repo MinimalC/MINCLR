@@ -15,6 +15,7 @@
 #define have_Network_HTTPRequest
 
 typedef System_IntPtr Network_HTTPMethod;
+export System_String8 Network_HTTPMethod_toString(Network_HTTPMethod value);
 enum {
     Network_HTTPMethod_GET = 1,
     Network_HTTPMethod_HEAD,
@@ -22,6 +23,16 @@ enum {
     Network_HTTPMethod_PUT,
     Network_HTTPMethod_OPTIONS,
     Network_HTTPMethod_DELETE,
+};
+
+typedef System_UInt16 Network_HTTPStatus;
+export System_String8 Network_HTTPStatus_toString(Network_HTTPStatus value);
+enum {
+    Network_HTTPStatus_OK = 200,
+    Network_HTTPStatus_MovedPermanently = 301,
+    Network_HTTPStatus_SeeOther = 303,
+    Network_HTTPStatus_FileNotFound = 404,
+    Network_HTTPStatus_Error = 500,
 };
 
 typedef struct Network_MimeType {
@@ -34,8 +45,6 @@ const System_Size Network_MimeTypes_Capacity;
 typedef struct Network_URI {
 
     System_String8 source;
-
-    System_String8 queryString;
 
 } * Network_URI;
 
@@ -50,11 +59,19 @@ typedef struct Network_HTTPRequest {
 
     struct System_String8Dictionary header;
 
+    struct System_String8Dictionary query;
+
+    struct System_String8Dictionary form;
+
+    struct System_VarDictionary files;
+
 } * Network_HTTPRequest;
 
 export struct System_Type Network_HTTPRequestType;
 
-export void base_Network_HTTPRequest_free(Network_HTTPRequest that);
+export Network_HTTPRequest  new_Network_HTTPRequest();
+export void  Network_HTTPRequest_init(Network_HTTPRequest that);
+export void  Network_HTTPRequest_free(Network_HTTPRequest that);
 
 typedef struct Network_HTTPResponse {
     struct System_Object base;
@@ -69,7 +86,7 @@ typedef struct Network_HTTPResponse {
 
     struct System_String body;
 
-    System_MemoryStream stream;
+    struct System_MemoryStream stream;
 
 } * Network_HTTPResponse;
 
@@ -77,7 +94,9 @@ export struct System_Type Network_HTTPResponseType;
 
 typedef void delegate(Network_HTTPRequest_render)(Network_HTTPRequest request, Network_HTTPResponse response);
 
-export void base_Network_HTTPResponse_free(Network_HTTPResponse that);
-export Network_HTTPResponse Network_HTTPResponse_create(Network_HTTPStatus status);
+export Network_HTTPResponse  new_Network_HTTPResponse();
+export void  Network_HTTPResponse_init(Network_HTTPResponse that);
+export Network_HTTPResponse  Network_HTTPResponse_create(Network_HTTPStatus status);
+export void  Network_HTTPResponse_free(Network_HTTPResponse that);
 
 #endif

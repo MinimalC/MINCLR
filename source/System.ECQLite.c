@@ -479,7 +479,7 @@ next_table3:
     reture->tableSize = 64;
 
     for (Size c = 0, table_columns_position = 0; c < table_types_length; ++c) {
-        SSize i = System_String8_indexOf(table_columns + table_columns_position, ' ');
+        SSize i = System_String8_indexOf__char(table_columns + table_columns_position, ' ');
         if (i < 0) i = System_String8_get_Length(table_columns + table_columns_position);
         if (!i) break;
         Memory_copyTo(table_columns + table_columns_position, i, scratch);
@@ -547,4 +547,123 @@ reture_true:
     System_Console_debugLineEmpty();
     #endif
     return true;
+}
+
+
+
+System_Bool  System_ECQLite_delete(System_ECQLite that, System_String8 tableName, ...) {
+    Arguments args;
+    Arguments_start(args, tableName);
+    Var argv[System_Arguments_Limit];
+    Size argc = stack_System_Arguments_get(args, argv);
+    Arguments_end(args);
+    return System_ECQLite_delete__arguments(that, tableName, argc, argv);
+}
+
+System_Bool  System_ECQLite_delete__arguments(System_ECQLite that, System_String8 tableName, Size argc, Var argv[]) {
+
+    System_ECQLite_Database database = (System_ECQLite_Database)that->link;
+
+    #if DEBUG == DEBUG_System_ECQLite
+    Console_debugLineEmpty();
+    Console_debugLine("Database_query: sizeof(struct System_ECQLite_Database) {0:uint}, size {1:uint}", 2, sizeof(struct System_ECQLite_Database), database->size);
+    #endif
+
+    System_String8 table_position = ((System_String8)that->link) + sizeof(struct System_ECQLite_Database), row_position = null, column = null;
+
+    System_ECQLite_DataTable table = (System_ECQLite_DataTable)table_position;
+
+    #if DEBUG == DEBUG_System_ECQLite
+    Console_debugLine("ECQLite Table: position {0:uint}", 1, table_position - (System_String8)that->link);
+    #endif
+
+    if ( table->hash != 0xD448264D19F3348A ) {
+        System_Exception_throw(new_System_IOException("No ECQLite Table"));
+        return false;
+    }
+
+    UInt64 table_hash = System_String8_getSipHash(tableName);
+    String8 table_types = null, table_indices = null, table_columns = null;
+    /* Get Table Data */
+    while (table_position < ((System_String8)that->link) + database->size) {
+        table = (System_ECQLite_DataTable)table_position;
+        if (table->hash != 0xD448264D19F3348A) goto next_table3;
+
+        row_position = table_position + sizeof(struct System_ECQLite_DataTable);
+        while (row_position < table_position + database->tableSize) {
+            System_ECQLite_DataRow row = (System_ECQLite_DataRow)row_position;
+            if (!row->length) break;
+            if (row->hash == table_hash) {
+                column = row_position + sizeof(struct System_ECQLite_DataRow);
+                ++column; column += String8_get_Length(column) + 1;
+                ++column; table_types = column; column += String8_get_Length(column) + 1;
+                ++column; table_indices = column; column += String8_get_Length(column) + 1;
+                ++column; table_columns = column;
+                break;
+            }
+            row_position += row->length;
+        }
+        if (table_types) break;
+
+next_table3:
+        if (table_position == ((System_String8)that->link) + sizeof(struct System_ECQLite_Database)) table_position = (System_String8)that->link;
+        table_position += database->tableSize;
+    }
+    if (!table_types) {
+        System_Exception_throw(new_System_IOException(System_String8_format("No Table {0:string}", 1, tableName)));
+        return false;
+    }
+    #if DEBUG == DEBUG_System_ECQLite
+    Console_debugLine("Found Table {0:string} {1:string} {2:string} {3:string}", 4, tableName, table_types, table_indices, table_columns);
+    #endif
+    Size table_types_length = String8_get_Length(table_types);
+
+    // Calculate Hash of arguments
+    struct Crypto_SipHash48 sipHash48; Stack_clear(sipHash48); Crypto_SipHash48_init(&sipHash48);
+    for (Size c = 0; c < argc && c < table_types_length; ++c)
+        if (table_types[c] == System_TypeCode_String)
+            if (argv[c]) {
+                Size length = String8_get_Length(argv[c]);
+                if (table_indices[c] == '1')
+                    Crypto_SipHash48_update(&sipHash48, argv[c], length);
+            }
+    System_UInt64 row_hash = Crypto_SipHash48_final(&sipHash48);
+    
+    table_position = ((System_String8)that->link) + sizeof(struct System_ECQLite_Database);
+
+    while (table_position < ((System_String8)that->link) + database->size) {
+        table = (System_ECQLite_DataTable)table_position;
+        if (table->hash != table_hash) goto next_table4;
+
+        row_position = table_position + sizeof(struct System_ECQLite_DataTable);
+        while (row_position < table_position + database->tableSize) {
+            System_ECQLite_DataRow row = (System_ECQLite_DataRow)row_position;
+            if (!row->length) break;
+
+            if (row->hash == row_hash) {
+
+                // Delete this one
+                Size length = row->length - sizeof(struct System_ECQLite_DataRow);
+                Memory_clear(row + sizeof(struct System_ECQLite_DataRow), length);
+                row->hash = 0;
+                #if DEBUG == DEBUG_System_ECQLite
+                Console_debugLine("Table {0:string}: row deleted, length {1:uint32}", 2, tableName, row->length);
+                #endif
+
+                return true;
+            }
+
+            row_position += row->length;
+        }
+
+next_table4:
+        if (table_position == ((System_String8)that->link) + sizeof(struct System_ECQLite_Database)) table_position = (System_String8)that->link;
+        table_position += database->tableSize;
+    }
+
+    #if DEBUG == DEBUG_System_ECQLite
+    Console_debugLine("Table {0:string}: Data not deleted.", 1, tableName);
+    #endif
+
+    return false;
 }
