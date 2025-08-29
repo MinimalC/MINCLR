@@ -195,7 +195,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             rn = String8_indexOf__char(string, '\n');
             if (rn == -1 || rn < 2) break;
             string[rn] = '\0'; string[rn - 1] = '\0';
-            
+
             String8 content_disposition = null;
             String8 content_name = null;
             String8 content_type = null;
@@ -204,6 +204,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
                 String8 string1 = string;
 
                 Size colon = String8_indexOf__char(string1, ':');
+                if (colon == -1) break;
                 string1[colon] = '\0'; if (string1[colon + 1] == ' ') ++colon;
                 content_disposition = string1 + colon + 1;
                 
@@ -237,6 +238,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             
             if (String8_equalsSubstring(string, "Content-Type", 12)) {
                 Size colon = String8_indexOf__char(string, ':');
+                if (colon == -1) break;
                 string[colon] = '\0'; if (string[colon + 1] == ' ') ++colon;
                 content_type = string + colon + 1;
                 Console_writeLine("HTTPRequest_parse: Content-Type {0:string}", 1, content_type);
@@ -250,6 +252,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
 
             if (rn < 2) {
                 string += rn + 1;
+                remainSize -= rn + 1;
                 Size end = Memory_indexOf__other(string, remainSize, boundary, boundaryL);
                 if (end == -1) break;                    
                 String8 content_value = Memory_allocArray(typeof(Char8), end); Memory_copyTo(string, end - 4, content_value);
@@ -267,7 +270,9 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
                     String8Dictionary_add(&httpRequest->form, String8_copy(content_name), content_value);
                 }
                 string += end - 2;
+                remainSize -= end - 2;
             }
+            else break;
         }
     }
     else if (String8_equals(contentType, "application/x-www-form-urlencoded")) {
