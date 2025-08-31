@@ -28,7 +28,6 @@
             MemoryStream_write(&response->stream, "{0:string}{1:string}={2:string} ", 3, !m ? "?" : "&",
                 array_item(request->query.key, m), array_item(request->query.value, m));
         }
-        MemoryStream_writeLineEmpty(&response->stream);
     }
 %></div>
 <div><%
@@ -38,7 +37,6 @@
             MemoryStream_write(&response->stream, "{0:string}{1:string}={2:string} ", 3, !m ? "?" : "&",
                 array_item(request->form.key, m), array_item(request->form.value, m));
         }
-        MemoryStream_writeLineEmpty(&response->stream);
     }
 %></div>
 <div><%
@@ -54,7 +52,6 @@
                     m == request->files.length - 1 ? " " : ",");
             }
         }
-        MemoryStream_writeLineEmpty(&response->stream);
     }
 %></div>
 </body></html>

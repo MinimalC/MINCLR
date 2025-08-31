@@ -37,6 +37,8 @@ export System_Bool  System_Char8_isPrintable(System_Char8 that);
 
 export struct System_Type  System_String8Type;
 
+export System_String8  System_String8_exchange(System_String8 ref that, System_String8 other);
+export System_UInt64  System_String8_getSipHash(System_String8 that);
 export System_SSize  System_String8_indexOf(System_String8 that, System_String8 other);
 export System_SSize  System_String8_indexOf__char(System_String8 that, System_Char8 character);
 export System_SSize  System_String8_lastIndexOf(System_String8 that, System_String8 other);
@@ -64,8 +66,8 @@ export System_Bool  System_String8_equalsSubstring(System_String8 that, System_S
 export System_Bool  System_String8_isNullOrEmpty(System_String8 that);
 export System_Bool  System_String8_startsWith(System_String8 that, System_String8 other);
 export System_Bool  System_String8_endsWith(System_String8 that, System_String8 other);
-export System_String8  System_String8_exchange(System_String8 ref that, System_String8 other);
-export System_UInt64  System_String8_getSipHash(System_String8 that);
+export System_String8  System_String8_encodeBase64(System_String8 that);
+export System_String8  System_String8_decodeBase64(System_String8 that);
 
 #define inline_System_String8_equals(chars0, chars1)  (0 == System_String8_compare(chars0, chars1))
 #define inline_System_String8_equalsSubstring(chars0, chars1, n)  (0 == System_String8_compareSubstring(chars0, chars1, n))
@@ -89,6 +91,8 @@ export System_Size  stack_System_String8_formatEnd__arguments(System_String8 for
 export System_Size  stack_System_String8_formatEnd__limit_arguments(System_String8 format, System_Char8 suffix, System_Size limit, System_Char8 message[], System_Size argc, System_Var argv[]);
 
 #if defined(using_System)
+#define String8_exchange  System_String8_exchange
+#define String8_getSipHash  System_String8_getSipHash
 #define String8_indexOf  System_String8_indexOf
 #define String8_indexOf__char  System_String8_indexOf__char
 #define String8_lastIndexOf  System_String8_lastIndexOf
@@ -115,8 +119,8 @@ export System_Size  stack_System_String8_formatEnd__limit_arguments(System_Strin
 #define String8_isNullOrEmpty  System_String8_isNullOrEmpty
 #define String8_startsWith  System_String8_startsWith
 #define String8_endsWith  System_String8_endsWith
-#define String8_exchange  System_String8_exchange
-#define String8_getSipHash  System_String8_getSipHash
+#define String8_encodeBase64  System_String8_encodeBase64
+#define String8_decodeBase64  System_String8_decodeBase64
 
 #define String8_formatLimit_VALUE  System_String8_FormatLimit_VALUE
 #define String8_format  System_String8_format

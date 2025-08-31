@@ -6,6 +6,14 @@ STRING8  name  = "test01_System_String8";
 STRING8  final_name  = "main_test01_System_String8";
 STRING8  command  = "./home/test01_System_String8";
 STRING8  empty  = " \t";
+STRING8  lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+STRING8  base64 = "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGVpdXNtb2QgdGVtcG9yIGluY2lkdW50IHV0IGxhYm9yZSBldCBkb2xvcmUgbWFnbmEgYWxpcXVhLiBVdCBlbmltIGFkIG1pbmltIHZlbmlhbSwgcXVpcyBub3N0cnVkIGV4ZXJjaXRhdGlvbiB1bGxhbWNvIGxhYm9yaXMgbmlzaSB1dCBhbGlxdWlkIGV4IGVhIGNvbW1vZGkgY29uc2VxdWF0LiBRdWlzIGF1dGUgaXVyZSByZXByZWhlbmRlcml0IGluIHZvbHVwdGF0ZSB2ZWxpdCBlc3NlIGNpbGx1bSBkb2xvcmUgZXUgZnVnaWF0IG51bGxhIHBhcmlhdHVyLiBFeGNlcHRldXIgc2ludCBvYmNhZWNhdCBjdXBpZGl0YXQgbm9uIHByb2lkZW50LCBzdW50IGluIGN1bHBhIHF1aSBvZmZpY2lhIGRlc2VydW50IG1vbGxpdCBhbmltIGlkIGVzdCBsYWJvcnVtLg==";
+
+STRING8 System_String8_Base64EncodeTable
+    = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+        'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+        'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/', };
 
 int System_Runtime_main(int argc, char * argv[]) {
 
@@ -58,6 +66,20 @@ int System_Runtime_main(int argc, char * argv[]) {
     else
         Console_writeLine__string("Test07: SUCCESS: String8_concat__arguments");
     Memory_free(concatN);
+
+    String8 base64_encoded = System_String8_encodeBase64(lorem_ipsum);
+    if (!String8_equals(base64_encoded, base64))
+        Console_writeLine("Test08: ERROR: String8_encodeBase64: {0:string}", 1, base64_encoded);
+    else
+        Console_writeLine__string("Test08: SUCCESS: System_String8_encodeBase64");
+
+    String8 base64_decoded = System_String8_decodeBase64(base64_encoded);
+    if (!String8_equals(base64_decoded, lorem_ipsum))
+        Console_writeLine("Test09: ERROR: String8_decodeBase64: {0:string}", 1, base64_decoded);
+    else
+        Console_writeLine__string("Test09: SUCCESS: System_String8_decodeBase64");
+    Memory_free(base64_encoded);
+    Memory_free(base64_decoded);
 
     return true;
 }

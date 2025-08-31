@@ -458,12 +458,11 @@ void System_Memory_reallocArray(System_Var ref thatPtr, System_Size count) {
     if (header->type != typeof(System_Memory_Header)) return;
 
     System_Size new_size = count * header->elementType->size;
-    if (new_size <= header->length) {
+    if (new_size == header->length) {
 #if DEBUG == DEBUG_System_Memory
-    System_Console_writeLine("System_Memory_reallocArray, clear: using System_Memory_Header typeof({0:string}), sizeof({1:uint}), old length {2:uint} => new length {3:uint}", 4, 
+    System_Console_writeLine("System_Memory_reallocArray, not: using System_Memory_Header typeof({0:string}), sizeof({1:uint}), old length {2:uint} => new length {3:uint}", 4, 
         header->elementType->name, header->elementType->size, header->length, new_size);
 #endif
-        System_Memory_clear(that + new_size, header->length - new_size);
         return;
     }
 #if DEBUG == DEBUG_System_Memory
@@ -471,7 +470,10 @@ void System_Memory_reallocArray(System_Var ref thatPtr, System_Size count) {
         header->elementType->name, header->elementType->size, header->length, new_size);
 #endif
     System_Var that_new = System_Memory_allocArray(header->elementType, count);
-    Memory_moveTo(that, header->length, that_new);
+    if (new_size < header->length)
+        Memory_moveTo(that, new_size, that_new);
+    else
+        Memory_moveTo(that, header->length, that_new);
     Memory_free(that);
     *thatPtr = that_new;
 }
