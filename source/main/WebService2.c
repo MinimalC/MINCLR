@@ -90,12 +90,18 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
                 break;
             }
             *(string1 + space) = '\0';
-            System_SSize questionMark = System_String8_indexOf__char(httpRequest->uri.source, '?');
-            if (questionMark > -1) {
-                *(httpRequest->uri.source + questionMark) = '\0';
-                httpRequest->queryString = String8_copy(httpRequest->uri.source + questionMark + 1);
+
+            System_SSize questionMark = System_String8_indexOf__char(string1, '?');
+            String8 queryString = null;
+            if (questionMark != -1) {
+                string1[questionMark] = '\0';
+                queryString = string1 + questionMark + 1;
+            }
+            if (!String8_isNullOrEmpty(queryString)) {
+                Network_HTTPRequest_parseQueryString(&httpRequest->query, queryString);
             }
             httpRequest->uri.source = System_String8_copy(string1);
+
             string1 += space + 1;
 
             if (!String8_equalsSubstring(string1, "HTTP/", 5)) {
@@ -104,9 +110,9 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             }
             string1 += 5;
             String8 version = System_String8_copy(string1);
-            if (httpRequest->queryString)
+            if (!String8_isNullOrEmpty(queryString))
                 System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string}?{2:string} HTTP/{3:string}", 4,
-                    string, httpRequest->uri.source, httpRequest->queryString, version);
+                    string, httpRequest->uri.source, queryString, version);
             else
                 System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string} HTTP/{2:string}", 3,
                     string, httpRequest->uri.source, version);
@@ -139,12 +145,9 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         System_String8 key = array(request->header.key)[i];
         System_String8 value = array(request->header.value)[i];
         System_Console_writeLine("HTTPService_serve: {0:string}: {1:string}", 2, key, value);
-        // if (String8_equals(key, "Connection") && String8_equals(value, "keep-alive")) keepAlive = true;
     }
 
     System_Console_writeLine("HTTPService_serve: request->uri.source {0:string}", 1, request->uri.source);
-    if (request->queryString)
-        System_Console_writeLine("HTTPService_serve: request->queryString ?{0:string}", 1, request->queryString);
 
     // Get a worker for the URI
     System_String8 currentDirectory = System_Directory_get_current();

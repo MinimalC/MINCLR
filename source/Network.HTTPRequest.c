@@ -35,11 +35,51 @@ System_String8 Network_HTTPMethod_toString(Network_HTTPMethod value) {
     default: return "Unknown";
 } }
 
+System_String8 Network_HTTPConnection_toString(Network_HTTPConnection value) {
+    switch (value) {
+    case Network_HTTPConnection_Close: return "Close";
+    case Network_HTTPConnection_KeepAlive: return "KeepAlive";
+    default: return "Unknown";
+} }
+
+System_String8 Network_HTTPUpgrade_toString(Network_HTTPUpgrade value) {
+    switch (value) {
+    case Network_HTTPUpgrade_None: return "None";
+    case Network_HTTPUpgrade_WebSocket: return "WebSocket";
+    default: return "Unknown";
+} }
+
 void Network_URI_free(Network_URI that) {
     if (that->source) System_Memory_free(that->source);
 }
 
 /** struct Network_HTTPRequest  **/
+
+void Network_HTTPRequest_parseQueryString(String8Dictionary that, System_String8 queryString) {
+    String8 scratch = String8_copy(queryString);
+    String8 key = String8_Empty, value = String8_Empty;
+    for (Size q0 = 0, q1 = 0, l = String8_get_Length(scratch); q1 < l; ++q1) {
+        if (scratch[q1] == '=') {
+            scratch[q1] = '\0';
+            key = String8_copy(scratch + q0);
+            q0 = q1 + 1;
+        }
+        if (scratch[q1] == '&') {
+            scratch[q1] = '\0';
+            value = String8_copy(scratch + q0);
+            q0 = q1 + 1;
+            String8Dictionary_add(that, key, value);
+            key = String8_Empty;
+            value = String8_Empty;
+        }
+        if (q1 == l - 1) {
+            value = String8_copy(scratch + q0);
+            String8Dictionary_add(that, key, value);
+            break;
+        }
+    }
+    Memory_free(scratch);
+}
 
 Network_HTTPRequest  new_Network_HTTPRequest() {
     Network_HTTPRequest that = (Network_HTTPRequest)System_Memory_allocClass(typeof(Network_HTTPRequest));
@@ -94,6 +134,7 @@ Network_HTTPResponse Network_HTTPResponse_create(Network_HTTPStatus status) {
 }
 
 void Network_HTTPResponse_free(Network_HTTPResponse that) {
+    System_Memory_free(that->asyncThread);
     System_Memory_free(that->header);
     System_String_free(&that->head);
     System_String_free(&that->body);

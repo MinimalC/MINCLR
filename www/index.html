@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html><head>
 <title>Hello World</title>
 </head><body>
@@ -54,4 +55,21 @@
         }
     }
 %></div>
+<div id="target"></div>
+<script type="text/javascript">
+
+
+function websocket_open(event) {
+    this.send(null);
+}
+function websocket_message(event) {
+  document.getElementById("target").innerText = event.data;
+}
+
+var req = new WebSocket("ws://" + location.host + "/websocket.html");
+req.binaryType = "text";
+req.addEventListener("open", websocket_open);
+req.addEventListener("message", websocket_message);
+
+</script>
 </body></html>

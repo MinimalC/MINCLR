@@ -14,7 +14,7 @@
 #if !defined(have_Network_HTTPRequest)
 #define have_Network_HTTPRequest
 
-typedef System_IntPtr Network_HTTPMethod;
+typedef System_UInt8 Network_HTTPMethod;
 export System_String8 Network_HTTPMethod_toString(Network_HTTPMethod value);
 enum {
     Network_HTTPMethod_GET = 1,
@@ -33,6 +33,21 @@ enum {
     Network_HTTPStatus_SeeOther = 303,
     Network_HTTPStatus_FileNotFound = 404,
     Network_HTTPStatus_Error = 500,
+};
+
+typedef System_UInt8 Network_HTTPConnection;
+export System_String8 Network_HTTPConnection_toString(Network_HTTPConnection value);
+enum {
+    Network_HTTPConnection_Close,
+    Network_HTTPConnection_KeepAlive,
+    Network_HTTPConnection_Upgrade,
+};
+
+typedef System_UInt8 Network_HTTPUpgrade;
+export System_String8 Network_HTTPUpgrade_toString(Network_HTTPUpgrade value);
+enum {
+    Network_HTTPUpgrade_None,
+    Network_HTTPUpgrade_WebSocket,
 };
 
 typedef struct Network_MimeType {
@@ -54,6 +69,12 @@ typedef struct Network_HTTPRequest {
     struct System_Object base;
 
     Network_HTTPMethod method;
+    
+    System_UInt8 mimeType;
+    
+    Network_HTTPConnection connection;
+
+    Network_HTTPUpgrade upgrade;
 
     struct Network_URI uri;
 
@@ -69,6 +90,7 @@ typedef struct Network_HTTPRequest {
 
 export struct System_Type Network_HTTPRequestType;
 
+export void Network_HTTPRequest_parseQueryString(String8Dictionary that, System_String8 queryString);
 export Network_HTTPRequest  new_Network_HTTPRequest();
 export void  Network_HTTPRequest_init(Network_HTTPRequest that);
 export void  Network_HTTPRequest_free(Network_HTTPRequest that);
@@ -78,15 +100,21 @@ typedef struct Network_HTTPResponse {
 
     struct System_String head;
 
-    Network_HTTPStatus status;
-
     System_String8Dictionary header;
 
-    /* System_Bool keepAlive; */
+    Network_HTTPStatus status;
+
+    System_UInt8 mimeType;
+
+    Network_HTTPConnection connection;
+
+    Network_HTTPUpgrade upgrade;
 
     struct System_String body;
 
     struct System_MemoryStream stream;
+
+    System_Thread asyncThread;
 
 } * Network_HTTPResponse;
 

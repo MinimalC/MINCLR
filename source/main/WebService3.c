@@ -3,6 +3,7 @@
 #include <min/System.h>
 
 struct Network_MimeType  Network_MimeTypes[] = {
+    { "", "" },
     { "txt", "text/plain" },
     { "md", "text/markdown" },
     { "htm", "text/html" },
@@ -40,43 +41,6 @@ struct Network_MimeType  Network_MimeTypes[] = {
 
 const System_Size Network_MimeTypes_Capacity = sizeof_array(Network_MimeTypes);
 
-void HTTPRequest_parseQueryString(String8Dictionary that, System_String8 queryString) {
-    String8 scratch = String8_copy(queryString);
-    String8 key = null, value = null;
-    for (Size q0 = 0, q1 = 0, l = String8_get_Length(scratch); q1 < l; ++q1) {
-        if (scratch[q1] == '=') {
-            scratch[q1] = '\0';
-            key = String8_copy(scratch + q0);
-            q0 = q1 + 1;
-        }
-        if (scratch[q1] == '&') {
-            scratch[q1] = '\0';
-            value = String8_copy(scratch + q0);
-            q0 = q1 + 1;
-            if (!String8_isNullOrEmpty(key) && !String8_isNullOrEmpty(value))
-                String8Dictionary_add(that, key, value);
-            else if (!String8_isNullOrEmpty(key))
-                String8Dictionary_add(that, key, value);
-            else if (!String8_isNullOrEmpty(value))
-                String8Dictionary_add(that, value, key);
-            key = null;
-            value = null;
-        }
-        if (q1 == l - 1) {
-            if (!key) key = String8_copy(scratch + q0);
-            else if (!value) value = String8_copy(scratch + q0);
-            break;
-        }
-    }
-    if (!String8_isNullOrEmpty(key) && !String8_isNullOrEmpty(value))
-        String8Dictionary_add(that, key, value);
-    else if (!String8_isNullOrEmpty(key))
-        String8Dictionary_add(that, key, value);
-    else if (!String8_isNullOrEmpty(value))
-        String8Dictionary_add(that, value, key);
-    Memory_free(scratch);
-}
-
 Network_HTTPRequest HTTPRequest_parse(System_String message) {
     Console_assert(message);
     Console_assert(message->length);
@@ -86,6 +50,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
     System_String8 string = message->value;
     System_Size remainSize = message->length;
     System_String8 contentType = null;
+    System_String8 connection = null;
     while (true) {
         System_SSize linefeed = System_String8_indexOf__char(string, '\n');
         if (linefeed == -1) {
@@ -99,7 +64,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
                 string[linefeed - 1] = '\0';
         if (linefeed < 2) {
             string += linefeed + 1;
-            System_Console_writeLine("HTTPRequest_parse: End of Header", 0);
+            // System_Console_writeLine("HTTPRequest_parse: End of Header", 0);
             break;
         }
         if (!httpRequest->method) {
@@ -123,16 +88,17 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
                 goto HTTPRequest_parse_error;
             }
             string1[space] = '\0';
+
             System_SSize questionMark = System_String8_indexOf__char(string1, '?');
-            if (questionMark != -1) string1[questionMark] = '\0';
-            httpRequest->uri.source = System_String8_copy(string1);
             String8 queryString = null;
             if (questionMark != -1) {
+                string1[questionMark] = '\0';
                 queryString = string1 + questionMark + 1;
             }
             if (!String8_isNullOrEmpty(queryString)) {
-                HTTPRequest_parseQueryString(&httpRequest->query, queryString);
+                Network_HTTPRequest_parseQueryString(&httpRequest->query, queryString);
             }
+            httpRequest->uri.source = System_String8_copy(string1);
             
             string1 += space + 1;
 
@@ -144,21 +110,12 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             System_Char8 version[8]; Stack_clear(version);
             System_String8_copyTo(string1, version);
 
-            if (questionMark != -1)
+            if (!String8_isNullOrEmpty(queryString))
                 System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string}?{2:string} HTTP/{3:string}", 4,
                     Network_HTTPMethod_toString(httpRequest->method), httpRequest->uri.source, queryString, version);
             else
                 System_Console_writeLine("HTTPRequest_parse: {0:string} {1:string} HTTP/{2:string}", 3,
                     Network_HTTPMethod_toString(httpRequest->method), httpRequest->uri.source, version);
-
-            if (httpRequest->query.length) {
-                System_Console_write__string("HTTPRequest_parse: Query ");
-                for (Size m = 0 ; m < httpRequest->query.length; ++m) {
-                    System_Console_write("{0:string}{1:string}={2:string} ", 3, !m ? "?" : "&", 
-                        array_item(httpRequest->query.key, m), array_item(httpRequest->query.value, m)); 
-                }
-                System_Console_writeLineEmpty();
-            }
         }
         else {
             System_SSize dot = System_String8_indexOf__char(string, ':');
@@ -171,6 +128,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
             String8 key = System_String8_copy(string);
             String8 value = System_String8_copy(string + dot + 2);
             if (String8_equals(key, "Content-Type")) contentType = value;
+            if (String8_equals(key, "Connection")) connection = value;
             System_String8Dictionary_add(&httpRequest->header, key, value);
         }
         string += linefeed + 1;
@@ -277,7 +235,7 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
     }
     else if (String8_equals(contentType, "application/x-www-form-urlencoded")) {
         if (!string) {
-            HTTPRequest_parseQueryString(&httpRequest->form, string);
+            Network_HTTPRequest_parseQueryString(&httpRequest->form, string);
         }
     }
     else if (String8_equals(contentType, "text/plain")) {
@@ -296,6 +254,14 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
     else {
         Console_writeLine("HTTPRequest_parse: Unknown Content-Type {0:string}", 1, contentType);
     }
+    if (httpRequest->query.length) {
+        System_Console_write__string("HTTPRequest_parse: Query ");
+        for (Size m = 0 ; m < httpRequest->query.length; ++m) {
+            System_Console_write("{0:string}{1:string}={2:string} ", 3, !m ? "?" : "&", 
+                array_item(httpRequest->query.key, m), array_item(httpRequest->query.value, m)); 
+        }
+        System_Console_writeLineEmpty();
+    }
     if (httpRequest->form.length) {
         System_Console_write__string("HTTPRequest_parse: Form ");
         for (Size m = 0 ; m < httpRequest->form.length; ++m) {
@@ -312,6 +278,13 @@ Network_HTTPRequest HTTPRequest_parse(System_String message) {
         }
         System_Console_writeLineEmpty();
     }
+    if (connection) {
+        /* if (String8_equalsSubstring(connection, "close", 5)) 
+            httpRequest->connection = Network_HTTPConnection_Close; */
+        if (String8_equalsSubstring(connection, "keep-alive", 10)) 
+            httpRequest->connection = Network_HTTPConnection_KeepAlive;
+    }
+
     return httpRequest;
 
 HTTPRequest_parse_error:
@@ -326,6 +299,12 @@ String8 ECSX_WWWDirectoryName = null;
 String8 ECSX_TempDirectoryName = null;
 
 void ECSX_updateTempDirectory() {
+    if (!Directory_exists(ECSX_TempDirectoryName))
+        if (!Directory_create(ECSX_TempDirectoryName)) {
+            System_Console_writeLine__string(".temp directory not created.");
+            return;
+        }
+    
     System_DirectoryList current = System_Directory_list__recursive(ECSX_WWWDirectoryName, true);
     System_DirectoryList temp = System_Directory_list__recursive(ECSX_TempDirectoryName, true);
 
@@ -378,7 +357,7 @@ System_Char8 pretext_HTML[] =
     "<html><head>\n"
     "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
 
-Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_String8 requestPath, System_String8 text, System_Size fileSize, System_Size mime) {
+Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_String8 requestPath, System_String8 text, System_Size fileSize) {
 
     String8 shortName = String8_copy(requestPath + String8_get_Length(ECSX_WWWDirectoryName));
     String8 ecsxName = String8_concat2("HTTP_", shortName);
@@ -458,22 +437,33 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
         MemoryStream_write__string(&stream, "\");\n");
     }
     MemoryStream_write__string(&stream, "}\n");
-    System_Size bufferSize = 0;
-    System_String8 buffer = MemoryStream_final__size(&stream, &bufferSize);
 
+    if (ecsx_qualified < 1) {
+        System_Console_writeLine__string("ECSXService_serve: disqualified");
+
+        MemoryStream_free(&stream);
+        Memory_free(ecsxName);
+        Memory_free(fileName1);
+        Memory_free(shortName);
+        return null;
+    }
     if (ecsx_qualified < 2) {
         System_Console_writeLine__string("ECSXService_serve: unqualified");
 
         Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
         response->body.length = fileSize;
         response->body.value = Memory_addReference(text);
-
-        Memory_free(buffer);
+        response->mimeType = request->mimeType;
+        
+        MemoryStream_free(&stream);
         Memory_free(ecsxName);
         Memory_free(fileName1);
         Memory_free(shortName);
-        return null;
+        return response;
     }
+
+    System_Size bufferSize = 0;
+    System_String8 buffer = MemoryStream_final__size(&stream, &bufferSize);
 
     ECSX_updateTempDirectory();
 
@@ -518,6 +508,7 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
         Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
         response->body.length = bufferSize;
         response->body.value = buffer;
+        response->mimeType = request->mimeType;
 
         File_free(&output);
         Memory_free(fileName3);
@@ -552,6 +543,8 @@ ECSXService_serve_render:
         return null;
     }
     Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
+    response->connection = Network_HTTPConnection_Close;
+    response->mimeType = request->mimeType;
 
     HTTP_render(request, response);
     response->body.value = MemoryStream_final__size(&response->stream, &response->body.length);
@@ -570,7 +563,6 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         System_String8 key = array(request->header.key)[i];
         System_String8 value = array(request->header.value)[i];
         System_Console_writeLine("HTTPService_serve: {0:string}: {1:string}", 2, key, value);
-        // if (String8_equals(key, "Connection") && String8_equals(value, "keep-alive")) keepAlive = true;
     }
 
     System_Console_writeLine("HTTPService_serve: request->uri.source {0:string}", 1, request->uri.source);
@@ -597,15 +589,15 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     }
     System_String8 requestExt = System_Path_getFileNameExt(requestPath);
     System_Size mime = 0;
-    while (++mime < Network_MimeTypes_Capacity) {
+    while (++mime < Network_MimeTypes_Capacity)
         if (String8_equals(requestExt, Network_MimeTypes[mime].extension)) break;
-    }
-    if (mime == Network_MimeTypes_Capacity) {
-        mime = 0;
+    if (mime == Network_MimeTypes_Capacity) mime = 0;
+    request->mimeType = mime;
+    System_Memory_free(requestExt);
+    if (!request->mimeType) {
         System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
         response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
         System_Memory_free(requestPath);
-        System_Memory_free(requestExt);
         goto respond;
     }
     Size fileSize = fileInfo.status.size;
@@ -615,9 +607,8 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         if (stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) 
             System_File_read(&file, buffer, fileSize);
         System_File_free(&file);
-        if (response = ECSXService_serve(request, requestPath, buffer, fileSize, mime)) {
+        if (response = ECSXService_serve(request, requestPath, buffer, fileSize)) {
             System_Memory_free(requestPath);
-            System_Memory_free(requestExt);
             System_Memory_free(buffer);
             goto respond;
         }
@@ -625,20 +616,25 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
         response->body.length = fileSize;
         response->body.value = buffer;
-        System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(fileSize));
-        System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[mime].name);
-        System_String8Dictionary_add(response->header, "Connection", "close");
+        response->connection = Network_HTTPConnection_Close;
+        response->mimeType = request->mimeType;
         System_Memory_free(requestPath);
-        System_Memory_free(requestExt);
         goto respond;
     }
 
     System_Console_writeLine("HTTPService_serve: 404 FileNotFound {0:string}", 1, requestPath);
     response = Network_HTTPResponse_create(Network_HTTPStatus_FileNotFound);
     System_Memory_free(requestPath);
-    System_Memory_free(requestExt);
     
 respond:
+
+    System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(response->body.length));
+    System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[response->mimeType].name);
+    /* if (response->connection == Network_HTTPConnection_KeepAlive)
+        System_String8Dictionary_add(response->header, "Connection", "keep-alive"); else */ 
+    if (response->connection == Network_HTTPConnection_Close)
+        System_String8Dictionary_add(response->header, "Connection", "close");
+
     struct MemoryStream scratch; Stack_clear(scratch);
     MemoryStream_writeLine(&scratch, "HTTP/1.1 {0:uint} {1:string}\r", 2, response->status, Network_HTTPStatus_toString(response->status));
     for (System_Size i = 0; i < response->header->length; ++i) {
@@ -649,7 +645,7 @@ respond:
     MemoryStream_write__string(&scratch, "\r\n");
     response->head.value = MemoryStream_final__size(&scratch, &response->head.length);
 
-    if (response->body.length && System_String8_startsWith(Network_MimeTypes[mime].name, "text/"))
+    if (response->body.length && System_String8_startsWith(Network_MimeTypes[request->mimeType].name, "text/"))
         System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->head.value, response->body.value);
     else
         System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->head.value);
@@ -712,14 +708,6 @@ int System_Runtime_main(int argc, String8 argv[]) {
     ECSX_TempDirectoryName = Path_combine(ECSX_RootDirectoryName, "/.temp");
     if (FileInfo_isLink(ECSX_TempDirectoryName))
         String8_exchange(&ECSX_TempDirectoryName, FileInfo_readLink(ECSX_TempDirectoryName));
-    if (!Directory_exists(ECSX_TempDirectoryName))
-        if (!Directory_create(ECSX_TempDirectoryName)) {
-            System_Console_writeLine__string(".temp directory not created.");
-            Memory_free(ECSX_RootDirectoryName);
-            Memory_free(ECSX_WWWDirectoryName);
-            Memory_free(ECSX_TempDirectoryName);
-            return false;
-        }
     ECSX_updateTempDirectory();
 
     Network_TCPSocket sockets[64]; Stack_clear(sockets); System_Size socketC = 1;
@@ -743,46 +731,47 @@ int System_Runtime_main(int argc, String8 argv[]) {
 
         if (System_Runtime_HitCTRLC) break;
 
-        System_Size active = Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_IN, polls);
+        System_Size active = Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_IN | Network_PollFlags_ERROR, polls);
         for (System_Size i = 0; i < socketC; ++i) {
+            if (!sockets[i] || !sockets[i]->socketId) continue;
             if (polls[i] & Network_PollFlags_ERROR) {
-                System_Console_writeLine("HTTPService_serve: POLLIN: POLLERR", 0);
+                System_Console_writeLine("HTTPService_serve: Socket {0:uint}: POLLERROR", 1, i);
                 Network_TCPSocket_close(sockets[i]);
+                System_Memory_free(sockets[i]);
                 continue;
             }
             if (!(polls[i] & Network_PollFlags_IN)) continue;
             if (i == 0) {
                 if (socketC == 64) {
-                    System_Console_writeLine("HTTPService_serve: NO MORE ACCEPTs", 0);
+                    System_Console_writeLine("HTTPService_serve: NO MORE ACCEPTs!", 0);
                     continue;
                 }
                 Network_TCPSocket incoming0 = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
                 if (incoming0) {
                     Network_TCPSocket_setSocketOption(incoming0, Network_SocketOption_LINGER, 1UL << 32);
 
-                    System_Console_writeLine("HTTPService_serve: ACCEPT: socket {0:uint}", 1, socketC);
+                    System_Console_writeLine("HTTPService_serve: Socket {0:uint}: ACCEPT0:", 1, socketC);
                     sockets[socketC++] = incoming0;
                 }
                 /* Network_TCPSocket incoming[8]; System_Stack_clear(incoming);
-                for (System_Size n = 0; n < 8; ++n) 
-                    incoming[n] = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
                 for (System_Size n = 0; n < 8; ++n) {
+                    incoming[n] = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
                     if (incoming[n]) {
                         Network_TCPSocket_setSocketOption(incoming[n], Network_SocketOption_LINGER, 1UL << 32);
 
-                        System_Console_writeLine("HTTPService_serve: ACCEPT: socket {0:uint}", 1, socketC);
+                        System_Console_writeLine("HTTPService_serve: Socket {0:uint}: ACCEPT0:", 1, socketC);
                         sockets[socketC++] = incoming[n];
                     }
                 }*/
                 continue;
             }
-            if (!sockets[i]) continue;
 
-            System_Console_writeLine("HTTPService_serve: socket {0:uint}: receiving message", 1, i);
+            System_Console_writeLine("HTTPService_serve: Socket {0:uint}: receiving message:", 1, i);
             System_String message = Network_TCPSocket_receive__flags(sockets[i], 0);
             if (!message) {
                 System_Console_writeLine("HTTPService_serve: No Message", 0);
                 Network_TCPSocket_close(sockets[i]);
+                System_Memory_free(sockets[i]);
                 continue;
             }
             Network_HTTPRequest request = HTTPRequest_parse(message);
@@ -790,6 +779,7 @@ int System_Runtime_main(int argc, String8 argv[]) {
             if (!request) {
                 System_Console_writeLine("HTTPService_serve: Message not parsed", 0);
                 Network_TCPSocket_close(sockets[i]);
+                System_Memory_free(sockets[i]);
                 continue;
             }
             responses[i] = HTTPService_serve(request);
@@ -797,47 +787,50 @@ int System_Runtime_main(int argc, String8 argv[]) {
             if (!responses[i]) {
                 System_Console_writeLine("HTTPService_serve: No response", 0);
                 Network_TCPSocket_close(sockets[i]);
+                System_Memory_free(sockets[i]);
                 continue;
             }
         }
 
         if (System_Runtime_HitCTRLC) break;
 
-        active += Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_OUT, polls);
+        active += Network_TCPSocket_pollAny(sockets, socketC, Network_PollFlags_OUT | Network_PollFlags_ERROR, polls);
         for (System_Size i = 1; i < socketC; ++i) {
+            if (!sockets[i] || !sockets[i]->socketId) continue;
             if (polls[i] & Network_PollFlags_ERROR) {
-                System_Console_writeLine("HTTPService_serve: POLLOUT: POLLERR", 0);
+                System_Console_writeLine("HTTPService_serve: Socket {0:uint}: POLLERROR", 1, i);
                 Network_TCPSocket_close(sockets[i]);
+                System_Memory_free(sockets[i]);
                 continue;
             }
             if (!(polls[i] & Network_PollFlags_OUT)) continue;
-            if (!sockets[i]) continue;
             if (!responses[i]) continue;
 
-            System_Console_writeLine("HTTPService_serve: socket {0:uint}: sending message", 1, i);
+            System_Console_writeLine("HTTPService_serve: Socket {0:uint}: sending message.", 1, i);
 
             Network_TCPSocket_send(sockets[i], &responses[i]->head, Network_MessageFlags_NOSIGNAL);
             if (responses[i]->body.length)
                 Network_TCPSocket_send(sockets[i], &responses[i]->body, Network_MessageFlags_NOSIGNAL);
 
-            Network_TCPSocket_close(sockets[i]);
             System_Memory_free(responses[i]);
+            Network_TCPSocket_close(sockets[i]);
+            System_Memory_free(sockets[i]);
         }
 
         for (System_Size i = socketC; i; --i) {
-            if (sockets[i - 1] && !sockets[i - 1]->socketId) {
-                System_Console_writeLine("HTTPService_serve: socket {0:uint}: free", 1, i - 1);
-                polls[i - 1] = 0;
-                System_Memory_free(sockets[i - 1]);
+            if (!sockets[i - 1] || !sockets[i - 1]->socketId) {
+                System_Console_writeLine("HTTPService_serve: Socket {0:uint}: free.", 1, i - 1);
                 if (responses[i - 1]) System_Memory_free(responses[i - 1]);
+                if (sockets[i - 1]) System_Memory_free(sockets[i - 1]);
+                if (polls[i - 1]) polls[i - 1] = 0;
                 for (System_Size n = i; n < socketC; ++n) {
+                    responses[n - 1] = responses[n];
                     sockets[n - 1] = sockets[n];
                     polls[n - 1] = polls[n];
-                    responses[n - 1] = responses[n];
                 }
+                responses[socketC] = null;
                 sockets[socketC] = null;
                 polls[socketC] = 0;
-                responses[socketC] = null;
                 --socketC;
             }
         }
@@ -847,22 +840,21 @@ int System_Runtime_main(int argc, String8 argv[]) {
             if (incoming0) {
                 Network_TCPSocket_setSocketOption(incoming0, Network_SocketOption_LINGER, 1UL << 32);
 
-                System_Console_writeLine("HTTPService_serve: ACCEPT: socket {0:uint}", 1, socketC);
+                System_Console_writeLine("HTTPService_serve: Socket {0:uint}: ACCEPT1:", 1, socketC);
                 sockets[socketC++] = incoming0;
             }
         }
     }
 
-    for (System_Size i = 1; i < socketC; ++i) {
+    for (System_Size i = 0; i < socketC; ++i) {
+        if (responses[i]) System_Memory_free(responses[i]);
         if (sockets[i]) {
-            System_Console_writeLine("HTTPService_serve: socket {0:uint}: finally free", 1, i);
+            System_Console_writeLine("HTTPService_serve: Socket {0:uint}: finally free.", 1, i);
+            Network_TCPSocket_close(sockets[i]);
             System_Memory_free(sockets[i]);
-            if (responses[i]) System_Memory_free(responses[i]);
         }
     }
 
-    Network_TCPSocket_close(sockets[0]);
-    System_Memory_free(sockets[0]);
     System_Memory_free(ECSX_TempDirectoryName);
     System_Memory_free(ECSX_WWWDirectoryName);
     System_Memory_free(ECSX_RootDirectoryName);
