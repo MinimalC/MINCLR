@@ -357,6 +357,8 @@ System_Char8 pretext_HTML[] =
     "<html><head>\n"
     "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
 
+typedef IntPtr  ECSXService_serve_thread(Size argc, Var argv[]);
+
 Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_String8 requestPath, System_String8 text, System_Size fileSize) {
 
     String8 shortName = String8_copy(requestPath + String8_get_Length(ECSX_WWWDirectoryName));
@@ -525,6 +527,25 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
 
 ECSXService_serve_render:
 
+    Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
+    response->connection = Network_HTTPConnection_Close;
+    response->mimeType = request->mimeType;
+
+    response->asyncThread = System_Thread_create(ECSXService_serve_thread, 4, Memory_addReference(fileName1), Memory_addReference(ecsxName), request, response);
+
+    Memory_free(ecsxName);
+    Memory_free(fileName1);
+    Memory_free(shortName);
+    return response;
+}
+
+IntPtr  ECSXService_serve_thread(Size argc, Var argv[]) {
+
+    if (argc < 4) return false;
+
+    String8 fileName1 = argv[0];
+    String8 ecsxName = argv[1];
+
     struct System_ELF64Assembly assembly; Stack_clear(assembly);
     System_ELF64Assembly_read(&assembly, fileName1);
     System_ELF64Assembly_link(&assembly);
@@ -539,23 +560,20 @@ ECSXService_serve_render:
         System_ELF64Assembly_free(&assembly);
         Memory_free(ecsxName);
         Memory_free(fileName1);
-        Memory_free(shortName);
         return null;
     }
     Console_writeLine("ECSXService_serve: ELFSymbol {0:string}", 1, ecsxName);
-    
-    Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
-    response->connection = Network_HTTPConnection_Close;
-    response->mimeType = request->mimeType;
+
+    Network_HTTPRequest request = argv[2];
+    Network_HTTPResponse response = argv[3];
 
     HTTP_render(request, response);
     response->body.value = MemoryStream_final__size(&response->stream, &response->body.length);
 
     System_ELF64Assembly_free(&assembly);
-    Memory_free(ecsxName);
     Memory_free(fileName1);
-    Memory_free(shortName);
-    return response;
+    Memory_free(ecsxName);
+    return true;
 }
 
 Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
@@ -630,6 +648,11 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
     
 respond:
 
+    return response;
+}
+
+void HTTPService_serve_response(Network_HTTPResponse response) {
+
     System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(response->body.length));
     System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[response->mimeType].name);
     /* if (response->connection == Network_HTTPConnection_KeepAlive)
@@ -647,12 +670,10 @@ respond:
     MemoryStream_write__string(&scratch, "\r\n");
     response->head.value = MemoryStream_final__size(&scratch, &response->head.length);
 
-    if (response->body.length && System_String8_startsWith(Network_MimeTypes[request->mimeType].name, "text/"))
+    if (response->body.length && System_String8_startsWith(Network_MimeTypes[response->mimeType].name, "text/"))
         System_Console_writeLine("HTTPResponse_toMessage: {0:string}{1:string}", 2, response->head.value, response->body.value);
     else
         System_Console_writeLine("HTTPResponse_toMessage: {0:string}", 1, response->head.value);
-
-    return response;
 }
 
 __volatile__ System_Bool System_Runtime_HitCTRLC = false;
@@ -807,10 +828,14 @@ int System_Runtime_main(int argc, String8 argv[]) {
             }
             if (!(polls[i] & Network_PollFlags_OUT)) continue;
             if (!responses[i]) continue;
-
+            if (responses[i]->asyncThread && !System_Thread_join__dontwait(responses[i]->asyncThread, true)) continue;
+            
             System_Console_writeLine("HTTPService_serve: Socket {0:uint}: sending message.", 1, i);
+            
+            HTTPService_serve_response(responses[i]);
 
-            Network_TCPSocket_send(sockets[i], &responses[i]->head, Network_MessageFlags_NOSIGNAL);
+            if (responses[i]->head.length)
+                Network_TCPSocket_send(sockets[i], &responses[i]->head, Network_MessageFlags_NOSIGNAL);
             if (responses[i]->body.length)
                 Network_TCPSocket_send(sockets[i], &responses[i]->body, Network_MessageFlags_NOSIGNAL);
 

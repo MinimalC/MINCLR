@@ -359,10 +359,17 @@ System_Size System_Memory_debug__min_i_max(System_Size min, System_Size index, S
                 }
 
                 ++unfree;
-                System_Console_write__string(header->elementType->name);
-                if (header->length > header->elementType->size * 1) 
-                    System_Console_write__string("[]");
-                System_Console_write__string(", ");
+                if (header->elementType == typeof(System_Char8)) {
+                    System_Console_write__string("\"");
+                    System_Console_write__string(item);
+                    System_Console_write__string("\", ");
+                }
+                else {
+                    System_Console_write__string(header->elementType->name);
+                    if (header->length > header->elementType->size * 1) 
+                        System_Console_write__string("[]");
+                    System_Console_write__string(", ");
+                }
             }
 
 #if DEBUG == DEBUG_System_Memory
