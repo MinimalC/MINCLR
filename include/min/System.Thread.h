@@ -5,12 +5,12 @@
 #if !defined(have_System_Thread)
 #define have_System_Thread
 
-typedef System_Int32  System_Thread_TID;
+typedef System_Int32  System_Thread_ID;
 
 typedef System_fixed struct System_Thread {
 	struct System_Object  base;
 
-    atomic System_Thread_TID threadId;
+    atomic System_Thread_ID threadId;
 
     atomic System_Int32 returnValue;
 
@@ -24,6 +24,7 @@ export struct System_Type  System_ThreadType;
 
 #if !defined(System_internal)
 import thread System_Thread System_Thread_Current;
+import thread System_Thread_ID System_Thread_TID;
 #endif
 
 typedef System_IntPtr delegate(System_Thread_main)(System_Size argc, System_Var argv[]);
@@ -37,7 +38,6 @@ export void System_Thread_millisleep(System_Size milliseconds);
 export void System_Thread_yield(void);
 import void System_Thread_boot(void) noreturn;
 import void System_Thread_terminate(System_Thread that, System_IntPtr returnValue) noreturn;
-export System_Var System_Thread_createStorage(void);
 export System_Var System_Thread_getRegister(void);
 export void System_Thread_setRegister(System_Var fs);
 /* export System_Var __tls_get_addr(System_Var index); */

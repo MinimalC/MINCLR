@@ -6,7 +6,7 @@ struct System_Atomic rwlock = { };
 
 System_Bool Dummy0(System_Size argc, System_Var argv[]) {
 
-    System_Console_writeLine("System_Thread_TID: {0:uint32} System_Thread_getRegister: {1:uint:hex}", 2, System_Syscall_gettid(), System_Thread_getRegister());
+    System_Console_writeLine("System_Thread_TID: {0:uint32} System_Thread_getRegister: {1:uint:hex}", 2, System_Thread_TID, System_Thread_getRegister());
     if (!System_Thread_Current)
         System_Console_write__string("System_Thread_Current: 0x0\n");
     else
@@ -82,7 +82,7 @@ int System_Runtime_main(int argc, char * argv[]) {
     System_Signal_act(System_Signal_Number_SIGFPE, System_Runtime_sigfault);
     System_Signal_act(System_Signal_Number_SIGSEGV, System_Runtime_sigfault);
 
-    System_Console_writeLine("System_Thread_PID: {0:uint32}, System_Thread_getRegister: {1:uint:hex}", 2, System_Thread_PID, System_Thread_getRegister());
+    System_Console_writeLine("System_Thread_PID: {0:uint32}, System_Thread_TID: {1:uint32}", 2, System_Thread_PID, System_Thread_TID);
 
     System_Size dummyC = 0;
     System_Thread dummys[64]; System_Stack_clear(dummys);

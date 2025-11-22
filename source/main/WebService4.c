@@ -357,7 +357,7 @@ System_Char8 pretext_HTML[] =
     "<html><head>\n"
     "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n";
 
-typedef IntPtr  ECSXService_serve_thread(Size argc, Var argv[]);
+IntPtr  ECSXService_serve_thread(Size argc, Var argv[]);
 
 Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_String8 requestPath, System_String8 text, System_Size fileSize) {
 
@@ -526,6 +526,8 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
     System_Console_writeLine("ECSXService_serve: using new {0:string}", 1, fileName1);
 
 ECSXService_serve_render:
+
+    
 
     Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
     response->connection = Network_HTTPConnection_Close;

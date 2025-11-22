@@ -24,7 +24,7 @@ int Shell1_main(int argc, char * argv[]) {
     Char8 backspace = terminal.controlChars[System_Terminal_ControlChar_ERASE];
 
     // Set style to bold, red foreground.
-    System_Console_writeLine__string("\e[1;31mHello World.\e[0m");
+    System_Console_writeLine__string("\e[1;31mHello World.\e[0m Type \"exit\" or \"cursor\" <Enter>.");
 
     Size position = 0, length = 0, n = 0, x = 0, y = 0;
     Char8 input[4096]; Stack_clear(input);

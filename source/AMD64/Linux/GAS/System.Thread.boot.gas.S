@@ -13,6 +13,10 @@ System_Thread_boot:
     syscall
     movq System_Thread_Current@GOTTPOFF(%rip),%rax
     movq %rbx,%fs:(%rax)
+    movq $186,%rax      # System_Syscall_Command_gettid  
+    syscall
+    movq System_Thread_TID@GOTTPOFF(%rip),%rcx
+    movq %rax,%fs:(%rcx)
 
 boot_no_tls:
     movq 8(%rsp),%r11   # arg2: function

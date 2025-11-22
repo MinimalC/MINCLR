@@ -8,8 +8,6 @@
 #endif
 #if !defined(have_System_UInt8)
 #define have_System_UInt8
-
-export struct System_Type  System_UInt8Type;
 enum {
     System_UInt8_String8Capacity_base2 = 8,
     System_UInt8_String8Capacity_base4 = 4,
@@ -17,6 +15,7 @@ enum {
     System_UInt8_String8Capacity_base16 = 2,
     System_UInt8_String8Capacity_base10 = 3,
 };
+export struct System_Type  System_UInt8Type;
 export System_Bool  System_UInt8_isPrintable(System_UInt8 that);
 #define inline_System_UInt8_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 export System_Size  stack_System_UInt8_toString8base2(System_UInt8 that, System_Char8 array[System_UInt8_String8Capacity_base2 + 1]);
@@ -65,8 +64,6 @@ export System_UInt8  System_UInt8_divRem(System_UInt8 divident, System_UInt8 div
 #endif
 #if !defined(have_System_UInt16)
 #define have_System_UInt16
-
-export struct System_Type  System_UInt16Type;
 enum {
     System_UInt16_String8Capacity_base2 = 16,
     System_UInt16_String8Capacity_base4 = 8,
@@ -74,6 +71,7 @@ enum {
     System_UInt16_String8Capacity_base16 = 4,
     System_UInt16_String8Capacity_base10 = 5,
 };
+export struct System_Type  System_UInt16Type;
 export System_Bool  System_UInt16_isPrintable(System_UInt16 that);
 #define inline_System_UInt16_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 export System_Size  stack_System_UInt16_toString8base2(System_UInt16 that, System_Char8 array[System_UInt16_String8Capacity_base2 + 1]);
@@ -122,8 +120,6 @@ export System_UInt16  System_UInt16_divRem(System_UInt16 divident, System_UInt16
 #endif
 #if !defined(have_System_UInt32)
 #define have_System_UInt32
-
-export struct System_Type  System_UInt32Type;
 enum {
     System_UInt32_String8Capacity_base2 = 32,
     System_UInt32_String8Capacity_base4 = 16,
@@ -131,6 +127,7 @@ enum {
     System_UInt32_String8Capacity_base16 = 8,
     System_UInt32_String8Capacity_base10 = 10,
 };
+export struct System_Type  System_UInt32Type;
 export System_Bool  System_UInt32_isPrintable(System_UInt32 that);
 #define inline_System_UInt32_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 export System_Size  stack_System_UInt32_toString8base2(System_UInt32 that, System_Char8 array[System_UInt32_String8Capacity_base2 + 1]);
@@ -179,8 +176,6 @@ export System_UInt32  System_UInt32_divRem(System_UInt32 divident, System_UInt32
 #endif
 #if !defined(have_System_UInt64)
 #define have_System_UInt64
-
-export struct System_Type  System_UInt64Type;
 enum {
     System_UInt64_String8Capacity_base2 = 64,
     System_UInt64_String8Capacity_base4 = 32,
@@ -188,6 +183,7 @@ enum {
     System_UInt64_String8Capacity_base16 = 16,
     System_UInt64_String8Capacity_base10 = 20,
 };
+export struct System_Type  System_UInt64Type;
 export System_Bool  System_UInt64_isPrintable(System_UInt64 that);
 #define inline_System_UInt64_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 export System_Size  stack_System_UInt64_toString8base2(System_UInt64 that, System_Char8 array[System_UInt64_String8Capacity_base2 + 1]);
@@ -244,16 +240,14 @@ export System_UInt64  System_UInt64_divRem(System_UInt64 divident, System_UInt64
 #endif
 #if !defined(have_System_Int8)
 #define have_System_Int8
-
-export struct System_Type  System_Int8Type;
-
 enum {
-    System_Int8_String8Capacity_base2 = 9,
-    System_Int8_String8Capacity_base4 = 5,
-    System_Int8_String8Capacity_base8 = 4,
-    System_Int8_String8Capacity_base16 = 3,
-    System_Int8_String8Capacity_base10 = 4,
+    System_Int8_String8Capacity_base2 = 8 + 1,
+    System_Int8_String8Capacity_base4 = 4 + 1,
+    System_Int8_String8Capacity_base8 = 3 + 1,
+    System_Int8_String8Capacity_base16 = 2 + 1,
+    System_Int8_String8Capacity_base10 = 3 + 1,
 };
+export struct System_Type  System_Int8Type;
 export System_Bool  System_Int8_isPrintable(System_Int8 that);
 #define inline_System_Int8_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 export System_Size  stack_System_Int8_toString8base2(System_Int8 that, System_Char8 array[System_Int8_String8Capacity_base2 + 1]);
@@ -286,16 +280,14 @@ export System_String8  System_Int8_toString8base10(System_Int8 that);
 #endif
 #if !defined(have_System_Int16)
 #define have_System_Int16
-
-export struct System_Type  System_Int16Type;
-
 enum {
-    System_Int16_String8Capacity_base2 = 17,
-    System_Int16_String8Capacity_base4 = 9,
-    System_Int16_String8Capacity_base8 = 7,
-    System_Int16_String8Capacity_base16 = 5,
-    System_Int16_String8Capacity_base10 = 6,
+    System_Int16_String8Capacity_base2 = 16 + 1,
+    System_Int16_String8Capacity_base4 = 8 + 1,
+    System_Int16_String8Capacity_base8 = 6 + 1,
+    System_Int16_String8Capacity_base16 = 4 + 1,
+    System_Int16_String8Capacity_base10 = 5 + 1,
 };
+export struct System_Type  System_Int16Type;
 export System_Bool  System_Int16_isPrintable(System_Int16 that);
 #define inline_System_Int16_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 export System_Size  stack_System_Int16_toString8base2(System_Int16 that, System_Char8 array[System_Int16_String8Capacity_base2 + 1]);
@@ -328,16 +320,14 @@ export System_String8  System_Int16_toString8base10(System_Int16 that);
 #endif
 #if !defined(have_System_Int32)
 #define have_System_Int32
-
-export struct System_Type  System_Int32Type;
-
 enum {
-    System_Int32_String8Capacity_base2 = 33,
-    System_Int32_String8Capacity_base4 = 17,
-    System_Int32_String8Capacity_base8 = 12,
-    System_Int32_String8Capacity_base16 = 9,
-    System_Int32_String8Capacity_base10 = 11,
+    System_Int32_String8Capacity_base2 = 32 + 1,
+    System_Int32_String8Capacity_base4 = 16 + 1,
+    System_Int32_String8Capacity_base8 = 11 + 1,
+    System_Int32_String8Capacity_base16 = 8 + 1,
+    System_Int32_String8Capacity_base10 = 10 + 1,
 };
+export struct System_Type  System_Int32Type;
 export System_Bool  System_Int32_isPrintable(System_Int32 that);
 #define inline_System_Int32_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 export System_Size  stack_System_Int32_toString8base2(System_Int32 that, System_Char8 array[System_Int32_String8Capacity_base2 + 1]);
@@ -370,16 +360,14 @@ export System_String8  System_Int32_toString8base10(System_Int32 that);
 #endif
 #if !defined(have_System_Int64)
 #define have_System_Int64
-
-export struct System_Type  System_Int64Type;
-
 enum {
-    System_Int64_String8Capacity_base2 = 65,
-    System_Int64_String8Capacity_base4 = 33,
-    System_Int64_String8Capacity_base8 = 23,
-    System_Int64_String8Capacity_base16 = 17,
-    System_Int64_String8Capacity_base10 = 21,
+    System_Int64_String8Capacity_base2 = 64 + 1,
+    System_Int64_String8Capacity_base4 = 32 + 1,
+    System_Int64_String8Capacity_base8 = 22 + 1,
+    System_Int64_String8Capacity_base16 = 16 + 1,
+    System_Int64_String8Capacity_base10 = 20 + 1,
 };
+export struct System_Type  System_Int64Type;
 export System_Bool  System_Int64_isPrintable(System_Int64 that);
 #define inline_System_Int64_isPrintable(CHAR)  (CHAR > 0x1F && CHAR < 0x7F) || (CHAR > 0x9F && CHAR != 0xAD)
 export System_Size  stack_System_Int64_toString8base2(System_Int64 that, System_Char8 array[System_Int64_String8Capacity_base2 + 1]);

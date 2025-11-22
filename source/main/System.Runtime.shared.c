@@ -27,6 +27,10 @@ asm(
 #if !defined(have_System_Syscall)
 #include <min/System.Syscall.h>
 #endif
+#if !defined(have_System_Thread)
+#include <min/System.Thread.h>
+extern thread System_Thread_ID System_Thread_TID;
+#endif
 #if !defined(have_System_Console)
 #include <min/System.Console.h>
 #endif
@@ -122,10 +126,22 @@ void System_Runtime_start(System_Var  * stack) {
     }
     #endif
 
+    System_Thread_PID = System_Syscall_getpid();
+    if (interp) {
+        System_Var tls = System_ELF64Assembly_createThread();
+        if (tls) {
+            System_Thread_setRegister(tls);
+            System_Thread_TID = System_Thread_PID;
+        }
+        #if DEBUG == DEBUG_System_ELFAssembly
+        System_Console_writeLine("System_Runtime_start: AddressOf ThreadLocalStorage: {0:uint:hex}", 1, tls);
+        #endif
+    }
+
     function_System_Runtime_main entry = &System_Runtime_main;
     if (interp) {
         System_String8 entryName = null;
-        System_String8 fileNames[4]; Stack_clear(fileNames);
+        System_String8 fileNames[4]; System_Stack_clear(fileNames);
         fileNames[0] = System_Path_getFileName(name);
         for (System_String8 n = fileNames[0]; *n; ++n)
             switch (*n) { /* TODO */
@@ -136,7 +152,7 @@ void System_Runtime_start(System_Var  * stack) {
         System_Size * symbol1_value = null;
         System_ELF64Assembly assembly1 = null;
         System_ELF64Assembly_Symbol symbol1 = null;
-        for (Size s = 0; s < 3; ++s) {
+        for (System_Size s = 0; s < 3; ++s) {
             symbol1 = System_ELF64Assembly_getGlobalSymbol(fileNames[s], &assembly1);
             if (assembly1 && symbol1) {
                 symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
@@ -146,7 +162,6 @@ void System_Runtime_start(System_Var  * stack) {
             }
         }
         #if DEBUG == DEBUG_System_ELFAssembly
-        System_Thread_PID = System_Syscall_getpid();
         System_Console_writeLine("This is INTERP, PID {0:int32}", 1, System_Thread_PID);
         if (!entryName) entryName = "System_Runtime_main";
         System_Console_writeLine("System_Runtime_start: AddressOf {0:string}: {1:uint:hex}", 2, entryName, entry);
@@ -155,10 +170,10 @@ void System_Runtime_start(System_Var  * stack) {
         #endif
         if (!entry) {
             System_Console_writeLine("System_Runtime_start: no {0:string}, {1:string}, {2:string} or System_Runtime_main found.", 3, fileNames[0], fileNames[1], fileNames[2]);
-            for (Size s = 0; s < 3; ++s) System_Memory_free(fileNames[s]);
+            for (System_Size s = 0; s < 3; ++s) System_Memory_free(fileNames[s]);
             System_Console_exit(false);
         }
-        for (Size s = 0; s < 3; ++s) System_Memory_free(fileNames[s]);
+        for (System_Size s = 0; s < 3; ++s) System_Memory_free(fileNames[s]);
     }
     else {
         #if DEBUG == DEBUG_System_ELFAssembly

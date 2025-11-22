@@ -31,9 +31,7 @@ struct System_Type System_ThreadType = {
 
 export thread System_Thread System_Thread_Current = null;
 
-System_Var System_Thread_createStorage(void) {
-    return System_ELF64Assembly_createThread();
-}
+export thread System_Thread_ID System_Thread_TID = 0;
 
 enum {
     ARCH_SET_GS = 0x1001,
@@ -103,7 +101,7 @@ static void System_Thread_sigchild(System_Signal_Number number, System_Signal_In
 
 System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
 
-    System_Var tls = System_Thread_createStorage();
+    System_Var tls = System_ELF64Assembly_createThread();
 
     System_Var stack = System_Syscall_mmap(STACK_SIZE, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, 
         System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous | System_Memory_MapFlags_Stack | System_Memory_MapFlags_GrowsDown);
@@ -146,10 +144,11 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     #else
     flags |= CLONE_THREAD;
     #endif
-    System_Thread_TID reture = System_Syscall_clone__full(flags, stack_top, &that->threadId, !tls ? null : &tls, null);
+    System_Thread_ID reture = System_Syscall_clone__full(flags, stack_top, &that->threadId, !tls ? null : &tls, null);
     System_ErrorCode errno = System_Syscall_get_Error();
     if (errno) {
         System_Console_writeLine("System_Thread_create Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+        System_Memory_free(that);
         return null;
     }
     #if DEBUG == DEBUG_System_Thread

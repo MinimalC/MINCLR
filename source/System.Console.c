@@ -91,7 +91,7 @@ System_Size System_Console_execute__stdout_stderr_arguments(System_String8 fileN
 System_Size System_Console_execute__stdout_stderr_stdin_arguments(System_String8 fileName, File stdout, File stderr, File stdin, Size argc, System_String8 argv[]) {
 
     System_Signal_block__number(System_Signal_Number_SIGCHILD);
-    System_Thread_TID pid = System_Syscall_fork();
+    System_Thread_ID pid = System_Syscall_fork();
     System_ErrorCode error = 0;
     if (!pid) { // i'm the child
         if (stdout) System_Syscall_dup2(stdout->fileId, 1);

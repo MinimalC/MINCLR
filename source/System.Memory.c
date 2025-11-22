@@ -166,9 +166,7 @@ struct System_Type  System_Memory_HeaderType = {
     .size = sizeof(struct System_Memory_Header),
 };
 
-export System_Var  System_Memory_ProcessVars[] = { 0, 0, 0, 0 };
-
-export thread System_Var  System_Memory_ThreadVars[] = { 0, 0, 0, 0 };
+System_Var  System_Memory_ProcessVars[] = { 0, 0, 0, 0 };
 
 #define ROUND(X,ALIGN)  (((X) + (ALIGN - 1)) & ~(ALIGN - 1))
 
@@ -178,9 +176,8 @@ System_Var  System_Memory_alloc__internal_min_i_max(System_Type type, System_Siz
     real_size = ROUND(real_size, 8);
     real_size += sizeof(struct System_Memory_Header);
 
-    System_Var map;
-    System_VarArray mem64k;
-    mem64k = System_Memory_ProcessVars[index];
+    System_Var map = null;
+    System_VarArray mem64k = System_Memory_ProcessVars[index];
     if (!mem64k) {
         map = System_Syscall_mmap(min, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
         if (!map) return null; // throw
@@ -205,11 +202,11 @@ System_Console_writeLine("System_Memory_ProcessVars({0:uint}): new length {1:uin
 #if DEBUG == DEBUG_System_Memory
             System_Size payload;
             System_Size pageSize = System_UInt64_divRem(max - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(System_Var), &payload);
+            mem64h->type = typeof(System_Memory_Page);
 #endif
             mem64h->length = max;
             array(mem64k->value)[i] = mem64h;
 #if DEBUG == DEBUG_System_Memory
-            mem64h->type = typeof(System_Memory_Page);
 System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pageSize {2:uint}, payload {3:uint}", 4, i, max, pageSize, payload);
 #endif
         }
