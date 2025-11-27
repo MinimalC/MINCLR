@@ -24,8 +24,8 @@ System_Bool Dummy0(System_Size argc, System_Var argv[]) {
     }
     System_Console_writeLine("Child{0:uint}: {1:uint}. read number {2:uint:bin}", 3, argv[0], i, number);
     System_Atomic_readUnlock(&rwlock);
-    
-    return false;
+
+    return System_Size_Max;
 }
 
 System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
@@ -65,10 +65,48 @@ System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
     return (System_IntPtr)argv[0];
 }
 
+System_IntPtr Dummy4(System_Size argc, System_Var argv[]) {
+
+    System_Size i = 0;
+    while (!System_Atomic_writeLock__dontwait(&rwlock, true)) {
+        if (i != System_Size_Max) ++i;
+        System_Atomic_delay();
+        System_Atomic_fence();
+    }
+    number |= (System_Size)argv[0];
+    System_Console_writeLine("Child{0:uint}: {1:uint}. write number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_writeUnlock(&rwlock);
+
+    System_Thread_sleep(2);
+    System_Console_writeLine("Child{0:uint}.", 1, argv[0]);
+
+    i = 0;
+    while (!System_Atomic_readLock__dontwait(&rwlock, true)) {
+        if (i != System_Size_Max) ++i;
+        System_Atomic_delay();
+        System_Atomic_fence();
+    }
+    System_Console_writeLine("Child{0:uint}: {1:uint}. read number {2:uint:bin}", 3, argv[0], i, number);
+    System_Exception_throw(new_System_IOException("TestException"));
+    System_Atomic_readUnlock(&rwlock);
+
+    i = 0;
+    while (!System_Atomic_writeLock__dontwait(&rwlock, true)) {
+        if (i != System_Size_Max) ++i;
+        System_Atomic_delay();
+        System_Atomic_fence();
+    }
+    number &= ~(System_Size)argv[0];
+    System_Console_writeLine("Child{0:uint}: {1:uint}. write number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_writeUnlock(&rwlock);
+
+    return (System_IntPtr)argv[0];
+}
+
 void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info info, System_Var context) {
     System_Console_writeLine("{0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}, sigfault.address {4:uint:hex}", 5,
         System_Signal_Number_toString(number), info->number, info->errno, info->code, info->sigfault.address);
-    System_Thread_terminate(System_Thread_Current, false);
+    System_Thread_terminate(false);
 }
 
 int System_Runtime_main(int argc, char * argv[]) {
@@ -95,7 +133,7 @@ int System_Runtime_main(int argc, char * argv[]) {
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 32);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 64);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 128);
-    dummys[dummyC++] = System_Thread_create(Dummy3, 1, 256);
+    dummys[dummyC++] = System_Thread_create(Dummy4, 1, 256);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 512);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 1024);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 2048);
@@ -112,7 +150,7 @@ int System_Runtime_main(int argc, char * argv[]) {
             if (!retures[i]) {
                 retures[i] = System_Thread_join__dontwait(dummys[i], true);
                 if (!retures[i]) System_Console_writeLine("Wait on Child{0:uint}", 1, i);
-                else System_Console_writeLine("Child{0:uint} returning {1:uint}.", 2, i, dummys[i]->returnValue);
+                else System_Console_writeLine("Child{0:uint} return number {1:uint:bin}.", 2, i, dummys[i]->returnValue);
             }
 
         System_Size r = 0;

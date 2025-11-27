@@ -783,6 +783,8 @@ export System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalSymbol(System_S
 export System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
 import System_Var System_ELF64Assembly_jump(System_ELF64Assembly assembly, System_Size relocationOffset);
 export System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_Size relocationOffset);
+export System_Size System_ELF64Assembly_calculateThreadSize(void);
+export void System_ELF64Assembly_createThreadStorage(System_Var tls);
 export System_Var System_ELF64Assembly_createThread(void);
 
 export System_String8 System_ELFAssembly_AMD64_toString(System_UInt32 value);

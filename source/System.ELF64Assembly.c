@@ -377,7 +377,8 @@ void System_ELF64Assembly_link__globally(System_ELF64Assembly assembly, System_B
             if (enum_hasFlag(program->flags, System_ELFAssembly_ProgramFlags_Executable))
                 protection |= System_Memory_PageFlags_Execute;
 
-            System_Syscall_mprotect(assembly->link + program->virtualAddress, program->memorySize, protection);
+            if (protection != System_ELFAssembly_ProgramFlags_Readable | System_ELFAssembly_ProgramFlags_Writable)
+                System_Syscall_mprotect(assembly->link + program->virtualAddress, program->memorySize, protection);
         }
     }
     /* for (System_Size i = 0; i < assembly->header->sectionHeaderCount; ++i) {
@@ -390,7 +391,8 @@ void System_ELF64Assembly_link__globally(System_ELF64Assembly assembly, System_B
             if (section->flags & System_ELFAssembly_SectionFlags_Executable)
                 protection |= System_Memory_PageFlags_Execute;
 
-            System_Syscall_mprotect(assembly->link + section->virtualAddress, section->size, protection);
+            if (protection != System_Memory_PageFlags_Read | System_Memory_PageFlags_Write)
+                System_Syscall_mprotect(assembly->link + section->virtualAddress, section->size, protection);
         }
     } */
 
@@ -601,6 +603,30 @@ error:
     System_Console_writeLine("ELFAssembly_resolve error: {0:string}, {1:uint:hex} old => new ?", 2, name, *address);
 #endif
     return System_ELF64Assembly_nothing;
+}
+
+System_Size System_ELF64Assembly_calculateThreadSize(void) {
+
+    System_Size size = 0;
+    for (System_Size i = 0; i < System_ELF64Assembly_loadedCount; ++i) {
+        System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
+        if (!assembly->threadStorageSize) continue;
+
+        size += assembly->threadStorageSize;
+    }
+    return size;    
+}
+
+void System_ELF64Assembly_createThreadStorage(System_Var tls) {
+    System_Size position = 0;
+
+    for (System_Size i = 0; i < System_ELF64Assembly_loadedCount; ++i) {
+        System_ELF64Assembly assembly = System_ELF64Assembly_loaded[i];
+        if (!assembly->threadStorageSize) continue;
+
+        System_Memory_copyTo(assembly->threadStorage, assembly->threadStorageSize, tls + position);
+        position += assembly->threadStorageSize;
+    }
 }
 
 System_Var System_ELF64Assembly_createThread(void) {

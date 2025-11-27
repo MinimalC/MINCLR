@@ -15,4 +15,8 @@ export System_Size * System_Runtime_stack;
 
 export System_Size System_Runtime_pageSize;
 
+export System_Var System_Runtime_getGlobalOffsetTable();
+
+export System_Var System_Runtime_getStackPosition();
+
 #endif

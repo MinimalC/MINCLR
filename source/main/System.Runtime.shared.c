@@ -55,6 +55,14 @@ System_Size * System_Runtime_stack = null;
 
 System_Size System_Runtime_pageSize = 0;
 
+System_Var System_Runtime_getGlobalOffsetTable() {
+    System_Var reture; asm("leaq _GLOBAL_OFFSET_TABLE_(%%rip),%0" : "=r"(reture)); return reture;
+}
+
+System_Var System_Runtime_getStackPosition() {
+    System_Var reture; asm("leaq (%%rsp),%0" : "=r"(reture)); return reture;
+}
+
 void System_Runtime_start(System_Var  * stack) {
 
     System_Runtime_stack = (System_Size *)stack;
@@ -126,9 +134,11 @@ void System_Runtime_start(System_Var  * stack) {
     }
     #endif
 
-    System_Thread_PID = System_Syscall_getpid();
     if (interp) {
-        System_Var tls = System_ELF64Assembly_createThread();
+        System_Thread_PID = System_Syscall_getpid();
+        System_Size tlsSize = System_ELF64Assembly_calculateThreadSize();
+        System_Var tls = System_Memory_allocArray(typeof(System_Char8), tlsSize);
+        // System_Var tls = System_Syscall_mmap(tlsSize, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
         if (tls) {
             System_Thread_setRegister(tls);
             System_Thread_TID = System_Thread_PID;

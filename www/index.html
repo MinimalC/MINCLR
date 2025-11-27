@@ -55,9 +55,13 @@
         }
     }
 %></div>
-<div id="target"></div>
+<div id="target0"></div>
+<div id="target1"></div>
+<div id="target2"></div>
+<div id="target3"></div>
+<div id="target4"></div>
 <script type="text/javascript">
-
+/*
 
 function websocket_open(event) {
     this.send(null);
@@ -66,10 +70,51 @@ function websocket_message(event) {
   document.getElementById("target").innerText = event.data;
 }
 
-var req = new WebSocket("ws://" + location.host + "/websocket.html");
+var req = new WebSocket("http://" + location.host + "/websocket.html");
 req.binaryType = "text";
 req.addEventListener("open", websocket_open);
 req.addEventListener("message", websocket_message);
+*/
+
+var xhttp0 = new XMLHttpRequest();
+xhttp0.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+       document.getElementById("target0").innerHTML = xhttp0.responseText;
+};
+xhttp0.open("GET", "websocket.html", true);
+xhttp0.send();
+
+var xhttp1 = new XMLHttpRequest();
+xhttp1.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+       document.getElementById("target1").innerHTML = xhttp1.responseText;
+};
+xhttp1.open("GET", "websocket.html", true);
+xhttp1.send();
+
+var xhttp2 = new XMLHttpRequest();
+xhttp2.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+       document.getElementById("target2").innerHTML = xhttp2.responseText;
+};
+xhttp2.open("GET", "websocket.html", true);
+xhttp2.send();
+
+var xhttp3 = new XMLHttpRequest();
+xhttp3.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+       document.getElementById("target3").innerHTML = xhttp3.responseText;
+};
+xhttp3.open("GET", "websocket.html", true);
+xhttp3.send();
+
+var xhttp4 = new XMLHttpRequest();
+xhttp4.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+       document.getElementById("target4").innerHTML = xhttp4.responseText;
+};
+xhttp4.open("GET", "websocket.html", true);
+xhttp4.send();
 
 </script>
 </body></html>

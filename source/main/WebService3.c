@@ -664,7 +664,7 @@ void System_Runtime_CTRLC(System_Signal_Number number) {
 void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info info, System_Var context) {
     System_Console_writeLine("{0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}, sigfault.address {4:uint:hex}", 5,
         System_Signal_Number_toString(number), info->number, info->errno, info->code, info->sigfault.address);
-    System_Thread_terminate(null, false);
+    System_Thread_terminate(false);
 }
 
 int System_Runtime_main(int argc, String8 argv[]) {

@@ -16,7 +16,22 @@
 
 /** struct System_Exception **/
 
-System_Exception System_Exception_current = null;
+export thread System_Exception System_Exception_current = null;
+
+void  System_Exception_print(System_Exception that) {
+    if (!that) return;
+    Type type = that->base.type;
+    if (!type) return;
+
+    if (that->message && that->error)
+        Console_writeLine("throws {0:string}: error {2:string}({1:uint}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error), that->message);
+    else if (that->message)
+        Console_writeLine("throws {0:string}: {1:string}", 2, type->name, that->message);
+    else if (that->error)
+        Console_writeLine("throws {0:string}: error {2:string}({1:uint})", 3, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error));
+    else
+        Console_writeLine("throws {0:string}", 1, type->name);
+}
 
 /** function System_Exception_throw 
     Throws a System_Exception.
@@ -30,16 +45,7 @@ void  System_Exception_throw(System_Exception that) {
     System_Exception_current = that;
 
 #if DEBUG == DEBUG_System_Exception
-    Type type = that->base.type;
-
-    if (that->message && that->error)
-        Console_writeLine("throws {0:string}: error {2:string}({1:uint}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error), that->message);
-    else if (that->message)
-        Console_writeLine("throws {0:string}: {1:string}", 2, type->name, that->message);
-    else if (that->error)
-        Console_writeLine("throws {0:string}: error {2:string}({1:uint})", 3, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error));
-    else
-        Console_writeLine("throws {0:string}", 1, type->name);
+    System_Exception_print(that);
 #endif
 }
 
@@ -54,16 +60,7 @@ void  System_Exception_terminate(System_Exception that) {
 #endif
 
 #if DEBUG && DEBUG != DEBUG_System_Exception
-    Type type = that->base.type;
-
-    if (that->message && that->error)
-        Console_writeLine("throws {0:string}: error {2:string}({1:uint}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error), that->message);
-    else if (that->message)
-        Console_writeLine("throws {0:string}: {1:string}", 2, type->name, that->message);
-    else if (that->error)
-        Console_writeLine("throws {0:string}: error {2:string}({1:uint})", 3, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error));
-    else
-        Console_writeLine("throws {0:string}", 1, type->name);
+    System_Exception_print(that);
 #endif
     System_Syscall_terminate(false);
 }

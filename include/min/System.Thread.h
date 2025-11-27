@@ -16,8 +16,6 @@ typedef System_fixed struct System_Thread {
 
     System_Var stack;
 
-    System_Var tls;
-
 }  * System_Thread;
 
 export struct System_Type  System_ThreadType;
@@ -37,7 +35,7 @@ export void System_Thread_microsleep(System_Size microseconds);
 export void System_Thread_millisleep(System_Size milliseconds);
 export void System_Thread_yield(void);
 import void System_Thread_boot(void) noreturn;
-import void System_Thread_terminate(System_Thread that, System_IntPtr returnValue) noreturn;
+import void System_Thread_terminate(System_IntPtr returnValue) noreturn;
 export System_Var System_Thread_getRegister(void);
 export void System_Thread_setRegister(System_Var fs);
 /* export System_Var __tls_get_addr(System_Var index); */

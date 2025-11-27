@@ -102,6 +102,10 @@ System_SSize  System_Syscall_time(void) {
 #endif
 }
 
+System_SSize  System_Syscall_getrandom(System_Var buffer, System_IntPtr length, System_IntPtr flags) {
+    return System_Syscall_call03(System_Syscall_Command_getrandom, (System_IntPtr)buffer, length, flags);
+}
+
 System_IntPtr  System_Syscall_open(System_String8 fileName, System_IntPtr flags, System_IntPtr mode) {
     return System_Syscall_call03(System_Syscall_Command_open, (System_IntPtr)fileName, flags, mode);
 }

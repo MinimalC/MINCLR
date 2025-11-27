@@ -44,6 +44,8 @@ export void  System_Syscall_terminate(System_Size code)  noreturn;
 export void  System_Syscall_gettimeofday(System_TimeSpan value, System_TimeZone zone);
 export System_Time  System_Syscall_time(void);
 
+export System_SSize  System_Syscall_getrandom(System_Var buffer, System_IntPtr length, System_IntPtr flags);
+
 typedef System_IntPtr  System_Syscall_StandardFile;
 enum {
     System_Syscall_StandardFile_STDIN,

@@ -9,12 +9,11 @@
 #include <min/System.Console.h>
 #include <min/System.Environment.h>
 #include <min/System.ELFAssembly.h>
+#include <min/System.Thread.h>
+extern thread System_Thread_ID System_Thread_TID;
 
+#define ROUND(X,ALIGN)  (((X) + (ALIGN - 1)) & ~(ALIGN - 1))
 #define ROUNDDOWN(X,ALIGN)  ((X) & ~(ALIGN - 1))
-
-System_Var Environment_GetGlobalOffsetTable() {
-    System_Var reture; asm("lea _GLOBAL_OFFSET_TABLE_(%%rip),%0" : "=r"(reture) ); return reture;
-}
 
 void System_Runtime_relocate(System_Var base, System_ELF64Assembly_Relocation relocation, System_ELF64Assembly_Symbol dynamicSymbols, System_String8 dynamicStrings) {
 
@@ -47,11 +46,14 @@ void System_Runtime_relocate(System_Var base, System_ELF64Assembly_Relocation re
         if (symbol->value && symbol->size)
             System_Memory_copyTo(base + symbol->value, symbol->size, address);
         break;
+    case System_ELFAssembly_AMD64_TPOFF64:
+        if (symbol->value)
+            *address = symbol->value + relocation->addend;
+        break;
 #if DEBUG
     default:
         System_Console_writeLine("INTERP ELFRelocation unlinked: offset {0:uint:hex}, type {1:uint32:hex}, symbol {2:uint32:hex}, addend {3:uint:hex}; address {4:uint:hex}: old {5:uint:hex} => new {6:uint:hex}", 7,
             relocation->offset, relocation->type, relocation->symbol, relocation->addend, address, oldies, *address);
-
         if (symbol)
             System_Console_writeLine("       Symbol: name {0:string}, info {1:uint8:hex}, other {2:uint8:hex}, sectionIndex {3:uint16}, value {4:uint64:hex}, size {5:uint64}", 6, 
                 dynamicStrings + symbol->name, symbol->info, symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
@@ -78,6 +80,7 @@ void System_Runtime_selflink(System_Var base) {
     System_ELF64Assembly_ProgramHeader programs = (System_ELF64Assembly_ProgramHeader)(base + header->programHeaderOffset);
     System_ELF64Assembly_DynamicEntry dynamics = null;
     System_Size dynamicsCount = 0;
+    System_Size threadStorageSize = 0; System_Var threadStorage = null;
     for (i = 0; i < 32 && i < header->programHeaderCount; ++i) {
         System_ELF64Assembly_ProgramHeader program = (System_ELF64Assembly_ProgramHeader)((System_Var)programs + (i * header->programHeaderSize));
 
@@ -85,7 +88,10 @@ void System_Runtime_selflink(System_Var base) {
             dynamics = (System_ELF64Assembly_DynamicEntry)(base + program->virtualAddress);
             dynamicsCount = program->fileSize / sizeof(struct System_ELF64Assembly_DynamicEntry);
         }
-
+        if (program->type == System_ELFAssembly_ProgramType_ThreadLocalStorage) {
+            threadStorage = base + program->virtualAddress;
+            threadStorageSize = program->memorySize;
+        }
 #if DEBUG == DEBUG_System_ELFAssembly
         System_Console_writeLine("ELFProgramHeader({0:uint}): type {1:string}, flags {2:uint32:bin}, offset {3:uint:hex}, virtualAddress {4:uint:hex}, physicalAddress {5:uint:hex}, fileSize {6:uint:hex}, memorySize {7:uint:hex}", 8, i,
             System_ELFAssembly_ProgramType_toString(program->type), program->flags, program->offset, program->virtualAddress, program->physicalAddress, program->fileSize, program->memorySize);
@@ -156,6 +162,12 @@ void System_Runtime_selflink(System_Var base) {
     if (PLT_relocation)
         for (i = 0; i < PLT_relocationCount; ++i)
             System_Runtime_relocate(base, PLT_relocation + i, dynamicSymbols, dynamicStrings);
+    // if (PLT) PLT[0] += (System_Size)base;
+    System_Thread_PID = System_Syscall_getpid();
+    if (threadStorage) {
+        System_Thread_setRegister(threadStorage);
+        System_Thread_TID = System_Thread_PID;
+    }
 }
 
 void System_Runtime_readlink(System_ELF64Assembly assembly, System_Var base) {
@@ -193,7 +205,7 @@ void System_Runtime_readlink(System_ELF64Assembly assembly, System_Var base) {
     System_ELF64Assembly_SectionHeader sections = assembly->sections = (System_ELF64Assembly_SectionHeader)(assembly->link + header->sectionHeaderOffset);
     System_ELF64Assembly_SectionHeader stringSection = (System_ELF64Assembly_SectionHeader)((System_Var)sections + (header->stringSectionIndex * header->sectionHeaderSize));
     assembly->sectionsStrings = (System_String8)(assembly->link + stringSection->offset);
-    for (System_Size i = 0; i < header->sectionHeaderCount; ++i) {
+    for (i = 0; i < header->sectionHeaderCount; ++i) {
         System_ELF64Assembly_SectionHeader section = (System_ELF64Assembly_SectionHeader)((System_Var)sections + (i * header->sectionHeaderSize));
 
         if (System_String8_equals(assembly->sectionsStrings + section->name, ".dynsym"))
@@ -262,7 +274,6 @@ void System_Runtime_readlink(System_ELF64Assembly assembly, System_Var base) {
             symbol->other, symbol->sectionIndex, symbol->value, symbol->size);
     }
 #endif
-
     System_ELF64Assembly_loaded[System_ELF64Assembly_loadedCount++] = assembly;
 }
 
@@ -328,7 +339,7 @@ int System_Runtime_main(int argc, char  * argv[]) {
     System_ELF64Assembly assembly_vdso = System_Memory_allocClass(typeof(System_ELF64Assembly));
     System_Runtime_readlink(assembly_vdso, vdso);
 
-    System_ELF64Assembly assembly = (System_ELF64Assembly)System_Memory_allocClass(typeof(System_ELF64Assembly));
+    System_ELF64Assembly assembly = System_Memory_allocClass(typeof(System_ELF64Assembly));
 #if DEBUG == DEBUG_System_ELFAssembly
     System_ELF64Assembly_read__print(assembly, name, true);
 #else
@@ -403,4 +414,5 @@ int System_Runtime_main(int argc, char  * argv[]) {
     
     __asm__ __volatile__( "jmp *%%r11" : : : "memory" );
 
+    __asm__ __volatile__( "hlt" );
 }

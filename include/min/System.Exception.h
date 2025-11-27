@@ -27,13 +27,16 @@ export struct System_Type  System_NotImplementedExceptionType;
 export struct System_Type  System_ArgumentExceptionType;
 export struct System_Type  System_InvalidExceptionType;
 
-export System_Exception  System_Exception_current;
+#if !defined(System_internal)
+import thread System_Exception  System_Exception_current;
+#endif
 
 typedef void delegate(System_Exception_init)(System_Exception that, System_String8 message);
 
 export void  base_System_Exception_init(System_Exception that, System_String8 message);
 export void  base_System_Exception_free(System_Exception that);
 export void  System_Exception_throw(System_Exception that);
+export void  System_Exception_print(System_Exception that);
 export void  System_Exception_terminate(System_Exception that) noreturn;
 export System_Bool  System_Exception_catch(System_Exception * that, System_Type type);
 export System_Bool  System_Exception_catch__any(System_Exception * that, System_Type type, System_Bool any);

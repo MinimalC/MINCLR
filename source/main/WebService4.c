@@ -527,7 +527,6 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
 
 ECSXService_serve_render:
 
-    
 
     Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
     response->connection = Network_HTTPConnection_Close;
@@ -570,7 +569,14 @@ IntPtr  ECSXService_serve_thread(Size argc, Var argv[]) {
     Network_HTTPResponse response = argv[3];
 
     HTTP_render(request, response);
-    response->body.value = MemoryStream_final__size(&response->stream, &response->body.length);
+
+    System_Size responseSize = 0;
+    System_String8 responseText = MemoryStream_final__size(&response->stream, &responseSize);
+
+    System_String8 finalText = System_Memory_allocStaticArray(typeof(System_Char8), responseSize);
+    System_Memory_copyTo(responseText, responseSize, finalText);
+    response->body.value = finalText;
+    response->body.length = responseSize;
 
     System_ELF64Assembly_free(&assembly);
     Memory_free(fileName1);
@@ -687,7 +693,7 @@ void System_Runtime_CTRLC(System_Signal_Number number) {
 void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info info, System_Var context) {
     System_Console_writeLine("{0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}, sigfault.address {4:uint:hex}", 5,
         System_Signal_Number_toString(number), info->number, info->errno, info->code, info->sigfault.address);
-    System_Thread_terminate(null, false);
+    System_Thread_terminate(false);
 }
 
 int System_Runtime_main(int argc, String8 argv[]) {

@@ -69,7 +69,9 @@ export System_SSize  System_Memory_alphacompare(System_Var memory0, System_Var m
 export System_SSize  System_Memory_alphacomparedescending(System_Var memory0, System_Var memory1, System_Size itemSize);
 
 export System_Var  System_Memory_allocClass(System_Type type);
+export System_Var  System_Memory_allocStaticClass(System_Type type, System_Size count);
 export System_Var  System_Memory_allocArray(System_Type type, System_Size count);
+export System_Var  System_Memory_allocStaticArray(System_Type type, System_Size count);
 export void System_Memory_reallocArray(System_Var ref that, System_Size count);
 export System_Bool System_Memory_isAllocated(System_Var that);
 export System_Var System_Memory_addReference(System_Var that);

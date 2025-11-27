@@ -53,11 +53,19 @@ void  System_Console_sync() {
     No return
 **/
 void System_Console_exit(const Size code)  {
+    /*if (System_Thread_Current) {
+        System_Int32_atomic_exchange(&System_Thread_Current->returnValue, code);
+        System_Int32_atomic_exchange(&System_Thread_Current->threadId, 0);
+        System_Syscall_munmap(System_Thread_Current->stack);
+        System_Thread_Current->stack = null;
+        System_Syscall_munmap(System_Thread_Current->tls);
+        System_Thread_Current->tls = null;
+    }*/
 #if DEBUG == DEBUG_System_Syscall_mmap
-    System_Syscall_mmap__debug();
+    if (System_Thread_TID == System_Thread_PID) System_Syscall_mmap__debug();
 #endif
 #if DEBUG
-    System_Memory_debug();
+    System_Memory_debug__threadId(System_Thread_TID);
 #endif
     if (System_Exception_current) System_Exception_terminate(System_Exception_current);
     System_Syscall_terminate(code);
