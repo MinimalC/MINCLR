@@ -28,6 +28,7 @@
 #endif
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
+extern thread System_Exception System_Exception_current;
 #endif
 #if !defined(have_System_Directory)
 #include <min/System.Directory.h>
@@ -408,11 +409,11 @@ System_Size System_Memory_debug__min_i_max_threadId(System_Size min, System_Size
 
             if (header->refCount && header->elementType) {
 
-                /* LIE about that *
+                /* LIE about that */
                 if (System_Exception_current) {
                     if (item == System_Exception_current) goto continue_position;
                     if (item == System_Exception_current->message) goto continue_position;
-                }*/
+                }
 
                 ++unfree;
                 if (header->elementType == typeof(System_Char8)) {
@@ -470,6 +471,9 @@ void System_Memory_cleanup__min_i_max_threadId(System_Size min, System_Size inde
 }
 
 void System_Memory_cleanup__threadId(System_Thread_ID threadId) {
+#if DEBUG
+    System_Memory_debug__threadId(System_Thread_TID);
+#endif
     System_Memory_cleanup__min_i_max_threadId(1024, 0, 4194304, threadId);
     System_Memory_cleanup__min_i_max_threadId(512, 1, 8388608, threadId);
     System_Memory_cleanup__min_i_max_threadId(64, 2, 0xFFFFFFFFU, threadId);

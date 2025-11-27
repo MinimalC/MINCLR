@@ -58,10 +58,10 @@ void  System_Exception_terminate(System_Exception that) {
 #if DEBUG
     System_Console_write__string("TERMINIERT: ");
 #endif
-
 #if DEBUG && DEBUG != DEBUG_System_Exception
     System_Exception_print(that);
 #endif
+    System_Memory_cleanup__threadId(System_Thread_TID);
     System_Syscall_terminate(false);
 }
 

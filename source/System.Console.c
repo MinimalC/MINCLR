@@ -64,10 +64,8 @@ void System_Console_exit(const Size code)  {
 #if DEBUG == DEBUG_System_Syscall_mmap
     if (System_Thread_TID == System_Thread_PID) System_Syscall_mmap__debug();
 #endif
-#if DEBUG
-    System_Memory_debug__threadId(System_Thread_TID);
-#endif
     if (System_Exception_current) System_Exception_terminate(System_Exception_current);
+    System_Memory_cleanup__threadId(System_Thread_TID);
     System_Syscall_terminate(code);
 }
 
