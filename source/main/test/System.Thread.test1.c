@@ -2,18 +2,10 @@
 #include <min/System.h>
 
 atomic System_Size  number = 0;
+struct System_Atomic rwlock = { };
 
-System_IntPtr Dummy0(System_Size argc, System_Var argv[]) {
+System_Bool Dummy0(System_Size argc, System_Var argv[]) {
 
-    System_Console_writeLine("Child{0:uint}", 1, argv[0]);
-
-    System_Size i = 0;
-    while (!System_Size_atomic_expect(&number, 0, (System_Size)argv[0])) {
-        if (i != System_Size_Max) ++i;
-        System_Atomic_fence();
-    }
-    System_Console_writeLine("Child{0:uint}: {1:uint}. wrote number {2:uint:bin}.", 3, argv[0], i, number);
-    System_Thread_microsleep(330);
     System_Console_writeLine("System_Thread_TID: {0:uint32} System_Thread_getRegister: {1:uint:hex}", 2, System_Thread_TID, System_Thread_getRegister());
     if (!System_Thread_Current)
         System_Console_write__string("System_Thread_Current: 0x0\n");
@@ -21,52 +13,86 @@ System_IntPtr Dummy0(System_Size argc, System_Var argv[]) {
         System_Console_writeLine("System_Thread_Current: 0x{0:uint:hex}, base.type 0x{1:uint:hex}, threadId {2:int32}, returnValue {3:uint32}", 4, 
             System_Thread_Current, System_Thread_Current->base.type, System_Thread_Current->threadId, System_Thread_Current->returnValue);
 
-    i = 0;
-    while (!System_Size_atomic_expect(&number, (System_Size)argv[0], 0)) {
+    System_Thread_sleep(2);
+    System_Console_writeLine("Child{0:uint}.", 1, argv[0]);
+
+    System_Size i = 0;
+    while (!System_Atomic_readLock__dontwait(&rwlock, true)) {
         if (i != System_Size_Max) ++i;
         System_Atomic_fence();
     }
-    return (System_IntPtr)argv[0];
+    System_Console_writeLine("Child{0:uint}: {1:uint}. read number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_readUnlock(&rwlock);
+
+    return true;
 }
 
 System_IntPtr Dummy3(System_Size argc, System_Var argv[]) {
 
-    System_Console_writeLine("Child{0:uint}", 1, argv[0]);
-
     System_Size i = 0;
-    while (!System_Size_atomic_expect(&number, 0, (System_Size)argv[0])) {
+    while (!System_Atomic_writeLock__dontwait(&rwlock, true)) {
         if (i != System_Size_Max) ++i;
         System_Atomic_fence();
     }
-    System_Console_writeLine("Child{0:uint}: {1:uint}. wrote number {2:uint:bin}.", 3, argv[0], i, number);
+    number |= (System_Size)argv[0];
+    System_Console_writeLine("Child{0:uint}: {1:uint}. write number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_writeUnlock(&rwlock);
+
     System_Thread_microsleep(330);
+    System_Console_writeLine("Child{0:uint}.", 1, argv[0]);
 
     i = 0;
-    while (!System_Size_atomic_expect(&number, (System_Size)argv[0], 0)) {
+    while (!System_Atomic_readLock__dontwait(&rwlock, true)) {
         if (i != System_Size_Max) ++i;
         System_Atomic_fence();
     }
+    System_Console_writeLine("Child{0:uint}: {1:uint}. read number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_readUnlock(&rwlock);
+
+    i = 0;
+    while (!System_Atomic_writeLock__dontwait(&rwlock, true)) {
+        if (i != System_Size_Max) ++i;
+        System_Atomic_fence();
+    }
+    number &= ~(System_Size)argv[0];
+    System_Console_writeLine("Child{0:uint}: {1:uint}. write number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_writeUnlock(&rwlock);
+
     return (System_IntPtr)argv[0];
 }
 
 System_IntPtr Dummy4(System_Size argc, System_Var argv[]) {
 
-    System_Console_writeLine("Child{0:uint}", 1, argv[0]);
-
     System_Size i = 0;
-    while (!System_Size_atomic_expect(&number, 0, (System_Size)argv[0])) {
+    while (!System_Atomic_writeLock__dontwait(&rwlock, true)) {
         if (i != System_Size_Max) ++i;
         System_Atomic_fence();
     }
-    System_Console_writeLine("Child{0:uint}: {1:uint}. wrote number {2:uint:bin}.", 3, argv[0], i, number);
-    System_Exception_throw(new_System_IOException("TestException"));
+    number |= (System_Size)argv[0];
+    System_Console_writeLine("Child{0:uint}: {1:uint}. write number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_writeUnlock(&rwlock);
+
     System_Thread_microsleep(330);
+    System_Console_writeLine("Child{0:uint}.", 1, argv[0]);
 
     i = 0;
-    while (!System_Size_atomic_expect(&number, (System_Size)argv[0], 0)) {
+    while (!System_Atomic_readLock__dontwait(&rwlock, true)) {
         if (i != System_Size_Max) ++i;
         System_Atomic_fence();
     }
+    System_Console_writeLine("Child{0:uint}: {1:uint}. read number {2:uint:bin}", 3, argv[0], i, number);
+    System_Exception_throw(new_System_IOException("TestException"));
+    System_Atomic_readUnlock(&rwlock);
+
+    i = 0;
+    while (!System_Atomic_writeLock__dontwait(&rwlock, true)) {
+        if (i != System_Size_Max) ++i;
+        System_Atomic_fence();
+    }
+    number &= ~(System_Size)argv[0];
+    System_Console_writeLine("Child{0:uint}: {1:uint}. write number {2:uint:bin}", 3, argv[0], i, number);
+    System_Atomic_writeUnlock(&rwlock);
+
     return (System_IntPtr)argv[0];
 }
 
@@ -92,7 +118,7 @@ int System_Runtime_main(int argc, char * argv[]) {
     System_Size dummyC = 0;
     System_Thread dummys[64]; System_Stack_clear(dummys);
 
-    dummys[dummyC++] = System_Thread_create(Dummy0, 1, 1);
+    dummys[dummyC++] = System_Thread_create((function_System_Thread_main)Dummy0, 1, 1);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 2);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 4);
     dummys[dummyC++] = System_Thread_create(Dummy3, 1, 8);

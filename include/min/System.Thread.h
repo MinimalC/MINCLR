@@ -32,7 +32,6 @@ export System_Thread System_Thread_create__arguments(function_System_Thread_main
 export void System_Thread_sleep(System_Size seconds);
 export void System_Thread_nanosleep(System_Size nanoseconds);
 export void System_Thread_microsleep(System_Size microseconds);
-export void System_Thread_millisleep(System_Size milliseconds);
 export void System_Thread_yield(void);
 import void System_Thread_boot(void) noreturn;
 import void System_Thread_terminate(System_IntPtr returnValue) noreturn;

@@ -23,14 +23,16 @@ void  System_Exception_print(System_Exception that) {
     Type type = that->base.type;
     if (!type) return;
 
-    if (that->message && that->error)
+    if (type->name && that->message && that->error)
         Console_writeLine("throws {0:string}: error {2:string}({1:uint}): {3:string}", 4, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error), that->message);
-    else if (that->message)
+    else if (type->name && that->message)
         Console_writeLine("throws {0:string}: {1:string}", 2, type->name, that->message);
-    else if (that->error)
+    else if (type->name && that->error)
         Console_writeLine("throws {0:string}: error {2:string}({1:uint})", 3, type->name, that->error, enum_getName(typeof(System_ErrorCode), that->error));
-    else
+    else if (type->name)
         Console_writeLine("throws {0:string}", 1, type->name);
+    else
+        Console_writeLine__string("throws an Exception");
 }
 
 /** function System_Exception_throw 
@@ -61,7 +63,20 @@ void  System_Exception_terminate(System_Exception that) {
 #if DEBUG && DEBUG != DEBUG_System_Exception
     System_Exception_print(that);
 #endif
-    System_Memory_cleanup__threadId(System_Thread_TID);
+    /*if (System_Thread_Current) {
+        if (System_Thread_Current->stack) {
+            System_Syscall_munmap(System_Thread_Current->stack, STACK_SIZE);
+            System_Thread_Current->stack = null;
+        }
+        System_Int32_atomic_exchange(&System_Thread_Current->returnValue, code);
+        System_Int32_atomic_exchange(&System_Thread_Current->threadId, 0);
+    }*/
+    System_Memory_free(that);
+    if (System_Thread_TID == System_Thread_PID) {
+        System_Var tls = System_Thread_getRegister();
+        System_Memory_freeClass(&tls);
+    }
+    System_Memory_cleanup();
     System_Syscall_terminate(false);
 }
 

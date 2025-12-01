@@ -166,13 +166,6 @@ void System_Thread_sleep(System_Size seconds) {
     if (errno) System_Console_writeLine("System_Thread_sleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
-void System_Thread_millisleep(System_Size milliseconds) {
-    struct System_TimeSpan time = { .sec = 0, .usec = milliseconds * 1000 * 1000, };
-    System_Syscall_nanosleep(&time, &time);
-    System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Thread_millisleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-}
-
 void System_Thread_microsleep(System_Size microseconds) {
     struct System_TimeSpan time = { .sec = 0, .usec = microseconds * 1000, };
     System_Syscall_nanosleep(&time, &time);
@@ -211,20 +204,21 @@ System_Bool System_Thread_join(System_Thread that) {
 
 System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
 
+    if (!that->threadId) return true;
+
 #if defined(use_System_Thread_SIGCHILD)
 
     if (that->threadId) {
         System_IntPtr status = 0;
         System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait);
-        if (reture == that->threadId) that->returnValue = status >> 8;
-
-        System_ErrorCode errno = System_Syscall_get_Error();
-        if (errno) {
-            System_Console_writeLine("System_Thread_join {0:uint} Error: {1:string}", 2, that->threadId, enum_getName(typeof(System_ErrorCode), errno));
+        if (reture == that->threadId) {
+            that->returnValue = status >> 8;
             that->threadId = 0;
             return true;
         }
-        if (reture == that->threadId) {
+        System_ErrorCode errno = System_Syscall_get_Error();
+        if (errno) {
+            System_Console_writeLine("System_Thread_join {0:uint} Error: {1:string}", 2, that->threadId, enum_getName(typeof(System_ErrorCode), errno));
             that->threadId = 0;
             return true;
         }
@@ -234,17 +228,13 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
 #else /* if !defined(use_System_Thread_SIGCHILD) */
 
     System_Atomic_fence();
-    if (that->threadId) {
-        while (!System_Int32_atomic_expect((atomic System_Int32 *)&that->threadId, 0, 0)) {
-            if (dontwait) return false;
-            System_Thread_yield();
-            System_Atomic_fence();
-        }
-        that->threadId = 0;
+    while (!System_Int32_atomic_expect((atomic System_Int32 *)&that->threadId, 0, 0)) {
+        if (dontwait) return false;
+        System_Thread_yield();
+        System_Atomic_fence();
     }
 
 #endif
-
 #if DEBUG == DEBUG_System_Thread
     System_Console_write__string("System_Thread_join: was terminated\n");
 #endif

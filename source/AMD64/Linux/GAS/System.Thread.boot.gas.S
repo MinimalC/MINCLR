@@ -60,10 +60,13 @@ System_Thread_terminate:
 	movq %fs:(%rdi), %rdi
     call System_Exception_print@PLT
 
+	movq	%fs:0, %rdx
+	movq	System_Exception_current@gottpoff(%rip), %rdi
+	addq	%rdx, %rdi
+	call	System_Memory_freeClass@PLT
+
 .terminate_no_exception:
-    movq System_Thread_TID@GOTTPOFF(%rip),%rdi
-    movq %fs:(%rdi),%rdi
-    call System_Memory_cleanup__threadId@PLT
+    call System_Memory_cleanup@PLT
 
     movq (%rsp),%r10
 

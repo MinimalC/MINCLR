@@ -298,6 +298,8 @@ String8 ECSX_WWWDirectoryName = null;
 
 String8 ECSX_TempDirectoryName = null;
 
+VarDictionary ECSX_AssemblyCache = null;
+
 void ECSX_updateTempDirectory() {
     if (!Directory_exists(ECSX_TempDirectoryName))
         if (!Directory_create(ECSX_TempDirectoryName)) {
@@ -305,6 +307,7 @@ void ECSX_updateTempDirectory() {
             return;
         }
     
+    if (!ECSX_AssemblyCache) ECSX_AssemblyCache = System_Memory_allocClass(typeof(System_VarDictionary));
     System_DirectoryList current = System_Directory_list__recursive(ECSX_WWWDirectoryName, true);
     System_DirectoryList temp = System_Directory_list__recursive(ECSX_TempDirectoryName, true);
 
@@ -317,6 +320,7 @@ void ECSX_updateTempDirectory() {
                     if (String8_compare(old_entry->name, new_entry->name) == String8_get_Length(new_entry->name)) break;
             }
             if (n == current->length) { // deleted
+                VarDictionary_remove(ECSX_AssemblyCache, old_entry->name);
                 String8 fileName = Path_combine(ECSX_TempDirectoryName, old_entry->name);
                 if (File_delete(fileName))
                     Console_writeLine("ECSXService_serve: file deleted {0:string}", 1, fileName);
@@ -522,20 +526,26 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
     File_free(&output);
     File_delete(fileName3);
     Memory_free(fileName3);
-
+                
     System_Console_writeLine("ECSXService_serve: using new {0:string}", 1, fileName1);
 
 ECSXService_serve_render:
 
+    if (!System_VarDictionary_containsKey(ECSX_AssemblyCache, fileName1)) {
+        System_ELF64Assembly assembly = System_Memory_allocClass(typeof(System_ELF64Assembly));
+        System_ELF64Assembly_read(assembly, fileName1);
+        System_ELF64Assembly_link(assembly);
+        VarDictionary_add(ECSX_AssemblyCache, fileName1, assembly);
+    }
 
     Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_OK);
     response->connection = Network_HTTPConnection_Close;
     response->mimeType = request->mimeType;
 
-    response->asyncThread = System_Thread_create(ECSXService_serve_thread, 4, Memory_addReference(fileName1), Memory_addReference(ecsxName), request, response);
+    response->asyncFileName = fileName1;
+    response->asyncECSXName = ecsxName;
+    response->asyncThread = System_Thread_create(ECSXService_serve_thread, 4, fileName1, ecsxName, request, response);
 
-    Memory_free(ecsxName);
-    Memory_free(fileName1);
     Memory_free(shortName);
     return response;
 }
@@ -547,20 +557,19 @@ IntPtr  ECSXService_serve_thread(Size argc, Var argv[]) {
     String8 fileName1 = argv[0];
     String8 ecsxName = argv[1];
 
-    struct System_ELF64Assembly assembly; Stack_clear(assembly);
-    System_ELF64Assembly_read(&assembly, fileName1);
-    System_ELF64Assembly_link(&assembly);
+    if (!System_VarDictionary_containsKey(ECSX_AssemblyCache, fileName1)) {
+        Console_writeLine("ECSXService_serve: No ELFAssembly {0:string}", 1, fileName1);
+        return null;
+    }
+    System_ELF64Assembly assembly = System_VarDictionary_get_value(ECSX_AssemblyCache, fileName1);
 
     function_Network_HTTPRequest_render HTTP_render = null;
-    System_ELFAssembly_Symbol symbol1 = System_ELF64Assembly_getSymbol(&assembly, ecsxName);
+    System_ELFAssembly_Symbol symbol1 = System_ELF64Assembly_getSymbol(assembly, ecsxName);
     if (symbol1 && symbol1->value) {
-        HTTP_render = (function_Network_HTTPRequest_render)((System_Size)assembly.link + symbol1->value);
+        HTTP_render = (function_Network_HTTPRequest_render)((System_Size)assembly->link + symbol1->value);
     }
     if (!HTTP_render) {
         Console_writeLine("ECSXService_serve: No ELFSymbol (function_Network_HTTPRequest_render) {0:string}", 1, ecsxName);
-        System_ELF64Assembly_free(&assembly);
-        Memory_free(ecsxName);
-        Memory_free(fileName1);
         return null;
     }
     Console_writeLine("ECSXService_serve: ELFSymbol {0:string}", 1, ecsxName);
@@ -570,17 +579,12 @@ IntPtr  ECSXService_serve_thread(Size argc, Var argv[]) {
 
     HTTP_render(request, response);
 
-    System_Size responseSize = 0;
-    System_String8 responseText = MemoryStream_final__size(&response->stream, &responseSize);
-
-    System_String8 finalText = System_Memory_allocStaticArray(typeof(System_Char8), responseSize);
-    System_Memory_copyTo(responseText, responseSize, finalText);
+    System_String8 finalText = System_Memory_allocStaticArray(typeof(System_Char8), response->stream.size);
+    System_Memory_copyTo(response->stream.buffer, response->stream.size, finalText);
     response->body.value = finalText;
-    response->body.length = responseSize;
+    response->body.length = response->stream.size;
 
-    System_ELF64Assembly_free(&assembly);
-    Memory_free(fileName1);
-    Memory_free(ecsxName);
+    MemoryStream_close(&response->stream);
     return true;
 }
 
@@ -870,7 +874,7 @@ int System_Runtime_main(int argc, String8 argv[]) {
             }
         }
 
-        if (!active) { // System_Thread_millisleep(500);
+        if (!active) { // System_Thread_microsleep(500);
             Network_TCPSocket incoming0 = Network_TCPSocket_accept__flags(sockets[0], Network_SocketType_NONBLOCK | Network_SocketType_CLOSEONEXEC);
             if (incoming0) {
                 Network_TCPSocket_setSocketOption(incoming0, Network_SocketOption_LINGER, 1UL << 32);
@@ -893,5 +897,6 @@ int System_Runtime_main(int argc, String8 argv[]) {
     System_Memory_free(ECSX_TempDirectoryName);
     System_Memory_free(ECSX_WWWDirectoryName);
     System_Memory_free(ECSX_RootDirectoryName);
+    System_Memory_free(ECSX_AssemblyCache);
     return false;
 }

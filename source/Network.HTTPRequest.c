@@ -139,6 +139,8 @@ void Network_HTTPResponse_free(Network_HTTPResponse that) {
     System_String_free(&that->head);
     System_String_free(&that->body);
     MemoryStream_free(&that->stream);
+    Memory_free(that->asyncFileName);
+    Memory_free(that->asyncECSXName);
 }
 
 struct System_Type_FunctionInfo Network_HTTPResponseTypeFunctions[] = {

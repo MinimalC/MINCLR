@@ -35,13 +35,14 @@ export void  System_VarDictionary_free(System_VarDictionary that);
 export System_Size System_VarDictionary_add(System_VarDictionary that, System_String8 key, System_Var value);
 export System_Size  System_VarDictionary_get_Length(System_VarDictionary that);
 export System_Var  System_VarDictionary_get_index(System_VarDictionary that, System_Size index);
-export System_Size  System_VarDictionary_get_key(System_VarDictionary that, System_Var key);
-export System_Var  System_VarDictionary_get_value(System_VarDictionary that, System_Var key);
+export System_Size  System_VarDictionary_get_key(System_VarDictionary that, System_String8 key);
+export System_Var  System_VarDictionary_get_value(System_VarDictionary that, System_String8 key);
 export void  System_VarDictionary_set_index(System_VarDictionary that, System_Size index, System_Var value);
-export void  System_VarDictionary_set_key(System_VarDictionary that, System_Var old, System_Var new);
-export void  System_VarDictionary_set_value(System_VarDictionary that, System_Var key, System_Var value);
+export void  System_VarDictionary_set_value(System_VarDictionary that, System_String8 key, System_Var value);
 export void  System_VarDictionary_copyTo(System_VarDictionary that, System_VarDictionary other, System_Size offset);
 export void  System_VarDictionary_resize(System_VarDictionary that, System_Size length);
+export void  System_VarDictionary_remove(System_VarDictionary that, System_String8 key);
+export System_Bool  System_VarDictionary_containsKey(System_VarDictionary that, System_String8 key);
 export System_IEnumerator  System_VarDictionary_getEnumerator(System_VarDictionary that);
 
 #if defined(using_System)
@@ -55,6 +56,7 @@ export System_IEnumerator  System_VarDictionary_getEnumerator(System_VarDictiona
 #define VarDictionary_get_index  System_VarDictionary_get_index
 #define VarDictionary_set_index  System_VarDictionary_set_index
 #define VarDictionary_resize  System_VarDictionary_resize
+#define VarDictionary_remove  System_VarDictionary_remove
 #define VarDictionary_getEnumerator  System_VarDictionary_getEnumerator
 #endif
 

@@ -16,13 +16,7 @@ typedef System_fixed struct System_Atomic {
 export struct System_Type  System_AtomicType;
 
 export void System_Atomic_fence();
-export void System_Atomic_delay();
-export void System_Atomic_delay2();
-export void System_Atomic_delay4();
-export void System_Atomic_delay8();
-export void System_Atomic_delay16();
-export void System_Atomic_delay32();
-export void System_Atomic_delay64();
+export void System_Atomic_pause();
 
 export System_Bool System_Size_atomic_expect(atomic System_Size * that, System_Size comparison, System_Size value);
 export System_Size System_Size_atomic_exchange(atomic System_Size * that, System_Size value);

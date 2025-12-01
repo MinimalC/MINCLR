@@ -36,11 +36,12 @@ void System_VarDictionary_free(System_VarDictionary that) {
 }
 
 System_Size System_VarDictionary_add(System_VarDictionary that, System_String8 key, System_Var value) {
-    /* TODO: if System_VarDictionary_contains key, throw */
+    System_Size index = System_VarDictionary_get_key(that, key);
+    // TODO: throw if VarDictionary_contains that key
     if (that->length + 1 > that->capacity) {
         System_VarDictionary_resize(that, that->capacity + System_VarDictionary_Capacity);
     }
-    System_Size index = that->length++;
+    index = that->length++;
     array(that->key)[index] = key;
     array(that->value)[index] = value;
     return index;
@@ -54,9 +55,22 @@ void  System_VarDictionary_resize(System_VarDictionary that, System_Size capacit
     that->capacity = capacity;
 }
 
-void System_VarDictionary_remove(System_VarDictionary that, System_Var key) {
-    /* TODO: say key is null, move all other, then say --length */
-    System_Console_writeLine__string("System_VarDictionary_remove not implemented");
+void System_VarDictionary_remove(System_VarDictionary that, System_String8 key) {
+    System_Size index = System_VarDictionary_get_key(that, key);
+    System_Memory_free(array_item(that->key, index));
+    System_Memory_free(array_item(that->value, index));
+    for (System_Size i = index + 1; i < that->length; ++i) {
+        array_item(that->key, i - 1) = array_item(that->key, i);
+        array_item(that->value, i - 1) = array_item(that->value, i);
+        --that->length;
+    }    
+}
+
+System_Bool  System_VarDictionary_containsKey(System_VarDictionary that, System_String8 key) {
+    for (Size i = 0; i < that->length; ++i)
+        if (String8_equals(array_item(that->key, i), key))
+            return true;
+    return false;
 }
 
 System_Size  System_VarDictionary_get_Length(System_VarDictionary that) {
@@ -67,14 +81,14 @@ System_Var  System_VarDictionary_get_index(System_VarDictionary that, System_Siz
     return array(that->key)[index];
 }
 
-System_Size  System_VarDictionary_get_key(System_VarDictionary that, System_Var key) {
+System_Size  System_VarDictionary_get_key(System_VarDictionary that, System_String8 key) {
     for (Size i = 0; i < that->length; ++i)
         if (String8_equals(array_item(that->key, i), key))
             return i;
     return 0;
 }
 
-System_Var  System_VarDictionary_get_value(System_VarDictionary that, System_Var key) {
+System_Var  System_VarDictionary_get_value(System_VarDictionary that, System_String8 key) {
     System_Size index = System_VarDictionary_get_key(that, key);
     return array(that->value)[index];
 }
@@ -83,12 +97,7 @@ void  System_VarDictionary_set_index(System_VarDictionary that, System_Size inde
     array(that->value)[index] = value;
 }
 
-void  System_VarDictionary_set_key(System_VarDictionary that, System_Var old, System_Var new) {
-    System_Size index = System_VarDictionary_get_key(that, old);
-    array(that->key)[index] = new;
-}
-
-void  System_VarDictionary_set_value(System_VarDictionary that, System_Var key, System_Var value) {
+void  System_VarDictionary_set_value(System_VarDictionary that, System_String8 key, System_Var value) {
     System_Size index = System_VarDictionary_get_key(that, key);
     array(that->value)[index] = value;
 }

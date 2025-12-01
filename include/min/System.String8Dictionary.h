@@ -40,10 +40,10 @@ export System_String8  System_String8Dictionary_get_index(System_String8Dictiona
 export System_Size  System_String8Dictionary_get_key(System_String8Dictionary that, System_String8 key);
 export System_String8  System_String8Dictionary_get_value(System_String8Dictionary that, System_String8 key);
 export void  System_String8Dictionary_set_index(System_String8Dictionary that, System_Size index, System_String8 value);
-export void  System_String8Dictionary_set_key(System_String8Dictionary that, System_String8 old, System_String8 new);
 export void  System_String8Dictionary_set_value(System_String8Dictionary that, System_String8 key, System_String8 value);
 export void  System_String8Dictionary_copyTo(System_String8Dictionary that, System_String8Dictionary other, System_Size offset);
 export void  System_String8Dictionary_resize(System_String8Dictionary that, System_Size length);
+export void  System_String8Dictionary_remove(System_String8Dictionary that, System_String8 key);
 export System_IEnumerator  System_String8Dictionary_getEnumerator(System_String8Dictionary that);
 
 #if defined(using_System)
@@ -57,6 +57,7 @@ export System_IEnumerator  System_String8Dictionary_getEnumerator(System_String8
 #define String8Dictionary_get_index  System_String8Dictionary_get_index
 #define String8Dictionary_set_index  System_String8Dictionary_set_index
 #define String8Dictionary_resize  System_String8Dictionary_resize
+#define String8Dictionary_remove  System_String8Dictionary_remove
 #endif
 #endif
 /* Gemeinfrei. Public Domain. */

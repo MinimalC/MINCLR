@@ -53,19 +53,24 @@ void  System_Console_sync() {
     No return
 **/
 void System_Console_exit(const Size code)  {
-    /*if (System_Thread_Current) {
-        System_Int32_atomic_exchange(&System_Thread_Current->returnValue, code);
-        System_Int32_atomic_exchange(&System_Thread_Current->threadId, 0);
-        System_Syscall_munmap(System_Thread_Current->stack);
-        System_Thread_Current->stack = null;
-        System_Syscall_munmap(System_Thread_Current->tls);
-        System_Thread_Current->tls = null;
-    }*/
 #if DEBUG == DEBUG_System_Syscall_mmap
     if (System_Thread_TID == System_Thread_PID) System_Syscall_mmap__debug();
 #endif
-    if (System_Exception_current) System_Exception_terminate(System_Exception_current);
-    System_Memory_cleanup__threadId(System_Thread_TID);
+    if (System_Exception_current) 
+        System_Exception_terminate(System_Exception_current);
+    /*if (System_Thread_Current) {
+        if (System_Thread_Current->stack) {
+            System_Syscall_munmap(System_Thread_Current->stack, STACK_SIZE);
+            System_Thread_Current->stack = null;
+        }
+        System_Int32_atomic_exchange(&System_Thread_Current->returnValue, code);
+        System_Int32_atomic_exchange(&System_Thread_Current->threadId, 0);
+    }*/
+    if (System_Thread_TID == System_Thread_PID) {
+        System_Var tls = System_Thread_getRegister();
+        System_Memory_freeClass(&tls);
+    }
+    System_Memory_cleanup();
     System_Syscall_terminate(code);
 }
 

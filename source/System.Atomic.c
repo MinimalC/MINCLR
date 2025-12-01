@@ -19,19 +19,21 @@ System_Bool System_Atomic_readLock__dontwait(System_Atomic that, System_Bool don
     if (that->writers != -1)
     while (!System_Int32_atomic_expect(&that->writers, 0, -1)) {
         if (dontwait) return false;
-        System_Atomic_delay8();
+        System_Atomic_pause();
         System_Atomic_fence();
     }
     System_Int32_atomic_increment(&that->readers);
+    System_Atomic_fence();
     return true;
 }
 
 void System_Atomic_readUnlock(System_Atomic that) {
+    System_Atomic_fence();
     System_Int32 reader = System_Int32_atomic_decrement(&that->readers);
     System_Atomic_fence();
     if (!reader)
     while (!System_Int32_atomic_expect(&that->writers, -1, 0)) {
-        System_Atomic_delay8();
+        System_Atomic_pause();
         System_Atomic_fence();
     }
 }
@@ -44,64 +46,28 @@ System_Bool System_Atomic_writeLock__dontwait(System_Atomic that, System_Bool do
     System_Atomic_fence();
     while (!System_Int32_atomic_expect(&that->writers, 0, 1)) {
         if (dontwait) return false;
-        System_Atomic_delay8();
+        System_Atomic_pause();
         System_Atomic_fence();
     }
     return true;
 }
 
 void System_Atomic_writeUnlock(System_Atomic that) {
+    System_Atomic_fence();
     System_Int32_atomic_decrement(&that->writers);
     System_Atomic_fence();
 }
 
 
+#if defined(have_AMD64)
+
 void System_Atomic_fence() {
     __asm__("mfence");
 }
 
-void System_Atomic_delay() {
-    __asm__ __volatile__ ("nop");
+void System_Atomic_pause() {
+    __asm__("pause");
 }
-
-void System_Atomic_delay2() {
-    __asm__ __volatile__ (
-        "nop;nop;"
-    );
-}
-
-void System_Atomic_delay4() {
-    __asm__ __volatile__ (
-        "nop;nop;nop;nop;"
-    );
-}
-
-void System_Atomic_delay8() {
-    __asm__ __volatile__ (
-        "nop;nop;nop;nop;nop;nop;nop;nop;"
-    );
-}
-
-void System_Atomic_delay16() {
-    __asm__ __volatile__ (
-        "nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;"
-    );
-}
-
-void System_Atomic_delay32() {
-    __asm__ __volatile__ (
-        "nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;  nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;"
-    );
-}
-
-void System_Atomic_delay64() {
-    __asm__ __volatile__ (
-        "nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;  nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;"
-        "nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;  nop;nop;nop;nop;nop;nop;nop;nop; nop;nop;nop;nop;nop;nop;nop;nop;"
-    );
-}
-
-#if defined(have_AMD64)
 
 System_Bool System_Size_atomic_expect(atomic System_Size * that, System_Size comparison, System_Size value) {
     System_Size reture = 0;

@@ -402,6 +402,12 @@ int System_Runtime_main(int argc, char  * argv[]) {
             *symbol1_value = (System_Size)System_Memory_ProcessVars[i];
     } */
 
+    symbol1 = System_ELF64Assembly_getGlobalSymbol("System_Thread_PID", &assembly1);
+    if (symbol1) {
+        symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
+        *symbol1_value = System_Thread_PID;
+    }
+
     System_Var entry = assembly->link + assembly->header->entryPoint;
     // System_Var entry = (System_Var)System_Environment_AuxValues[System_Environment_AuxType_ENTRY];
 #if DEBUG == DEBUG_System_ELFAssembly

@@ -116,6 +116,10 @@ typedef struct Network_HTTPResponse {
 
     System_Thread asyncThread;
 
+    System_String8 asyncFileName;
+
+    System_String8 asyncECSXName;
+
 } * Network_HTTPResponse;
 
 export struct System_Type Network_HTTPResponseType;
