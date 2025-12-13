@@ -83,7 +83,9 @@ export System_Var System_Memory_addReference(System_Var that);
 export void  System_Memory_freeClass(System_Var ref that);
 export void  System_Memory_freeStruct(System_Var that, System_Type type);
 export void  System_Memory_debug(void);
+export void  System_Memory_debug__threadId(System_Thread_ID threadId);
 export void  System_Memory_cleanup(void);
+export void  System_Memory_cleanup__threadId(System_Thread_ID threadId);
 
 #define System_Memory_free(THAT) System_Memory_freeClass((System_Var ref)&THAT)
 

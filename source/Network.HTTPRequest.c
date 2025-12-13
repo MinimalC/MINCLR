@@ -121,14 +121,11 @@ Network_HTTPResponse new_Network_HTTPResponse() {
     return that;
 }
 
-void Network_HTTPResponse_init(Network_HTTPResponse that) {
-    that->header = System_Memory_allocClass(typeof(System_String8Dictionary));
-}
+void Network_HTTPResponse_init(Network_HTTPResponse that) { }
 
 Network_HTTPResponse Network_HTTPResponse_create(Network_HTTPStatus status) {
 
-    Network_HTTPResponse response = System_Memory_allocClass(typeof(Network_HTTPResponse));
-    response->header = System_Memory_allocClass(typeof(System_String8Dictionary));
+    Network_HTTPResponse response = new_Network_HTTPResponse();
     response->status = status;
     return response;
 }

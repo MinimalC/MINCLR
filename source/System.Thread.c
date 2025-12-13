@@ -22,11 +22,16 @@
 
 /** struct System_Thread */
 
+struct System_Type_FunctionInfo  System_ThreadTypeFunctions[] = {
+    { .function = base_System_Object_free, .value = System_Thread_free },
+};
+
 struct System_Type System_ThreadType = { 
     .base = { .type = typeof(System_Type) }, 
     .name = "Thread", 
     .size = sizeof(struct System_Thread),
     .baseType = typeof(System_Object),
+    .functions = { .length = sizeof_array(System_ThreadTypeFunctions), .value = &System_ThreadTypeFunctions },
 };
 
 export thread System_Thread System_Thread_Current = null;
@@ -61,6 +66,23 @@ void System_Thread_yield(void) {
 enum {
     STACK_SIZE = (8 * 1024 * 1024)
 };
+
+void System_Thread_free(System_Thread that) {
+    if (that->runtime) { 
+#if DEBUG
+        Console_writeLine("System_Thread_free: DANGER. Thread {0:int32} is running", 1, that->threadId);
+#endif
+        return; 
+    }
+    if (that->threadId) {
+        System_Memory_cleanup__threadId(that->threadId);
+        that->threadId = 0;
+    } 
+    if (that->stack) {
+        System_Syscall_munmap(that->stack, STACK_SIZE);
+        that->stack = null;
+    }
+}
 
 enum {
     CLONE_VM = 0x00000100,
@@ -108,6 +130,7 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
 
     System_Thread that = System_Memory_allocClass(typeof(System_Thread));
     that->stack = stack;
+    that->runtime = true;
 
     System_Size * stack_top = stack + STACK_SIZE;
 
@@ -204,26 +227,24 @@ System_Bool System_Thread_join(System_Thread that) {
 
 System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait) {
 
-    if (!that->threadId) return true;
+    if (!that->runtime) return true;
 
 #if defined(use_System_Thread_SIGCHILD)
 
-    if (that->threadId) {
-        System_IntPtr status = 0;
-        System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait);
-        if (reture == that->threadId) {
-            that->returnValue = status >> 8;
-            that->threadId = 0;
-            return true;
-        }
-        System_ErrorCode errno = System_Syscall_get_Error();
-        if (errno) {
-            System_Console_writeLine("System_Thread_join {0:uint} Error: {1:string}", 2, that->threadId, enum_getName(typeof(System_ErrorCode), errno));
-            that->threadId = 0;
-            return true;
-        }
-        return false;
+    System_IntPtr status = 0;
+    System_IntPtr reture = System_Syscall_wait(that->threadId, &status, dontwait);
+    if (reture == that->threadId) {
+        that->returnValue = status >> 8;
+        that->runtime = false;
+        return true;
     }
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) {
+        System_Console_writeLine("System_Thread_join {0:uint} Error: {1:string}", 2, that->threadId, enum_getName(typeof(System_ErrorCode), errno));
+        that->runtime = false;
+        return true;
+    }
+    return false;
 
 #else /* if !defined(use_System_Thread_SIGCHILD) */
 
@@ -233,12 +254,12 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
         System_Thread_yield();
         System_Atomic_fence();
     }
-
-#endif
+    that->runtime = false;
 #if DEBUG == DEBUG_System_Thread
     System_Console_write__string("System_Thread_join: was terminated\n");
 #endif
     return true;
+#endif
 }
 
 #endif

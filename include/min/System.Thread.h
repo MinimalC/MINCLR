@@ -14,6 +14,8 @@ typedef System_fixed struct System_Thread {
 
     atomic System_Int32 returnValue;
 
+    System_Bool runtime;
+
     System_Var stack;
 
 }  * System_Thread;
@@ -40,5 +42,6 @@ export void System_Thread_setRegister(System_Var fs);
 /* export System_Var __tls_get_addr(System_Var index); */
 export System_Bool System_Thread_join(System_Thread that);
 export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait);
+export void System_Thread_free(System_Thread that);
 
 #endif

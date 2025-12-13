@@ -116,7 +116,7 @@ int System_Runtime_main(int argc, char * argv[]) {
         for (System_Size i = 0; i < dummyC; ++i)
             if (!retures[i]) {
                 retures[i] = System_Thread_join__dontwait(dummys[i], true);
-                if (dummys[i]->threadId) System_Console_writeLine("Wait on Child{0:uint}, threadId {1:int32}", 2, (1 << i), dummys[i]->threadId);
+                if (dummys[i]->runtime) System_Console_writeLine("Wait on Child{0:uint}, threadId {1:int32}", 2, (1 << i), dummys[i]->threadId);
                 else System_Console_writeLine("Child{0:uint} return number {1:uint:bin}.", 2, (1 << i), dummys[i]->returnValue);
             }
 

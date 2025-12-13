@@ -179,7 +179,7 @@ struct System_Type  System_Memory_HeaderType = {
 
 System_Var  System_Memory_ProcessVars[] = { 0, 0, 0, 0 };
 
-struct System_Atomic  System_Memory_ProcessLock = { 0, 0 };
+atomic System_Int32  System_Memory_ProcessLock = 0;
 
 #define ROUND(X,ALIGN)  (((X) + (ALIGN - 1)) & ~(ALIGN - 1))
 
@@ -200,19 +200,19 @@ System_Var  System_Memory_alloc__internal_min_i_max_threadId(System_Type type, S
         Console_writeLine("System_Memory_alloc: typeof({0:string}) 0x{1:uint:hex}, sizeof({2:uint}), count {3:uint}, {4:string} {5:int32}, locks {6:string} {7:int32}", 8, 
             type->name, type, type->size, length, System_Thread_TID == System_Thread_PID ? "processId" : "threadId", System_Thread_TID, threadId == System_Thread_PID ? "processId" : "threadId", threadId);
 #endif
-    System_VarArray mem64k = System_Memory_ProcessVars[index];
     System_Var map = null;
+    System_VarArray mem64k = System_Memory_ProcessVars[index];
     if (!mem64k) {
+        if (lock) while(!System_Int32_atomic_expect(&System_Memory_ProcessLock, 0, System_Thread_TID)) { System_Atomic_pause(); System_Atomic_fence(); }
         map = System_Syscall_mmap(min, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
         if (!map) return null; // throw
 
-        if (lock) System_Atomic_writeLock(&System_Memory_ProcessLock);
         mem64k = (System_VarArray)map;
         mem64k->base.type = typeof(System_VarArray);
         mem64k->length = (min - sizeof(struct System_VarArray)) / sizeof(System_Var);
         mem64k->value = ((System_Var)mem64k + sizeof(struct System_VarArray));
         System_Memory_ProcessVars[index] = mem64k;
-        if (lock) System_Atomic_writeUnlock(&System_Memory_ProcessLock);
+        if (lock) while(!System_Int32_atomic_expect(&System_Memory_ProcessLock, System_Thread_TID, 0)) { System_Atomic_pause(); System_Atomic_fence(); }
 #if DEBUG == DEBUG_System_Memory
 System_Console_writeLine("System_Memory_ProcessVars({0:uint}): new length {1:uint}", 2, index, mem64k->length);
 #endif
@@ -225,7 +225,6 @@ System_Console_writeLine("System_Memory_ProcessVars({0:uint}): new length {1:uin
             map = System_Syscall_mmap(max, System_Memory_PageFlags_Read | System_Memory_PageFlags_Write, System_Memory_MapFlags_Private | System_Memory_MapFlags_Anonymous);
             if (!map) return null; // throw
 
-            if (lock) System_Atomic_writeLock(&System_Memory_ProcessLock);
             mem64h = (System_Memory_Page)map;
 #if DEBUG == DEBUG_System_Memory
             System_Size payload;
@@ -234,8 +233,13 @@ System_Console_writeLine("System_Memory_ProcessVars({0:uint}): new length {1:uin
 #endif
             mem64h->length = max;
             mem64h->threadId = threadId;
-            array(mem64k->value)[i] = mem64h;
-            if (lock) System_Atomic_writeUnlock(&System_Memory_ProcessLock);
+            if (lock) while(!System_Int32_atomic_expect(&System_Memory_ProcessLock, 0, System_Thread_TID)) { System_Atomic_pause(); System_Atomic_fence(); }
+            for (System_Size j = i; j < mem64k->length; ++j) {
+                if (array(mem64k->value)[j]) continue;
+                array(mem64k->value)[j] = mem64h;
+                break;
+            }
+            if (lock) while(!System_Int32_atomic_expect(&System_Memory_ProcessLock, System_Thread_TID, 0)) { System_Atomic_pause(); System_Atomic_fence(); }
 #if DEBUG == DEBUG_System_Memory
 System_Console_writeLine("System_Memory_Page({0:uint}): new length {1:uint}, pageSize {2:uint}, payload {3:uint}", 4, i, max, pageSize, payload);
 #endif
@@ -472,9 +476,9 @@ void System_Memory_cleanup__min_i_max_threadId(System_Size min, System_Size inde
         mem64h = (System_Memory_Page)array(mem64k->value)[i];
         if (!mem64h || mem64h->threadId != threadId) continue;
 
-        if (lock) System_Atomic_writeLock(&System_Memory_ProcessLock);
+        if (lock) while(!System_Int32_atomic_expect(&System_Memory_ProcessLock, 0, System_Thread_TID)) { System_Atomic_pause(); System_Atomic_fence(); }
         array(mem64k->value)[i] = null;
-        if (lock) System_Atomic_writeUnlock(&System_Memory_ProcessLock);
+        if (lock) while(!System_Int32_atomic_expect(&System_Memory_ProcessLock, System_Thread_TID, 0)) { System_Atomic_pause(); System_Atomic_fence(); }
         System_Syscall_munmap(mem64h, max);
     }
     if (threadId == System_Thread_PID) {
@@ -527,14 +531,12 @@ System_Var  System_Memory_addReference(System_Var that) {
     if (header->type != typeof(System_Memory_Header)) return that;
 
     System_Bool lock = page->threadId != System_Thread_TID;
-    if (lock) { 
-        System_Int32_atomic_expect(&page->lock, 0, System_Thread_TID);
 #if DEBUG 
-        System_Console_writeLine("System_Memory_addReference: other threadId {1:int32}: typeof({0:string})", 2, header->type->name, System_Thread_TID);
+    if (lock) System_Console_writeLine("System_Memory_addReference: other threadId {1:int32}: typeof({0:string})", 2, header->type->name, System_Thread_TID);
 #endif
-    }
+    if (lock) while (!System_Int32_atomic_expect(&page->lock, 0, System_Thread_TID)) { System_Atomic_pause(); System_Atomic_fence(); }
     ++header->refCount;
-    if (lock) System_Int32_atomic_expect(&page->lock, System_Thread_TID, 0);
+    if (lock) while (!System_Int32_atomic_expect(&page->lock, System_Thread_TID, 0)) { System_Atomic_pause(); System_Atomic_fence(); }
     return that;
 }
 
@@ -594,8 +596,20 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
 	Console_assert(header->type == typeof(System_Memory_Header));
 #endif
     if (header->type != typeof(System_Memory_Header)) goto return_free;
-
-    if (page->threadId != System_Thread_TID) {
+	if (header->refCount < System_Memory_ReferenceState_Used) {
+        #if DEBUG
+        System_Console_writeLine("System_Memory_freeClass: typeof({0:string}): header->refCount < System_Memory_ReferenceState_Used", 1, header->elementType->name);
+        #endif
+        goto return_free;
+    }
+    System_Bool lock = page->threadId != System_Thread_TID;
+    if (lock) while (!System_Int32_atomic_expect(&page->lock, 0, System_Thread_TID)) { System_Atomic_pause(); System_Atomic_fence(); }
+    --header->refCount;
+    if (lock) while (!System_Int32_atomic_expect(&page->lock, System_Thread_TID, 0)) { System_Atomic_pause(); System_Atomic_fence(); }
+    if (header->refCount >= System_Memory_ReferenceState_Used) {
+        goto return_free;
+    }
+    if (lock) {
 #if DEBUG
         if (System_String8_equals(header->elementType->name, "Char8"))
             System_Console_writeLine("System_Memory_freeClass: other threadId {1:int32}: \"{0:string}\":", 2, that, System_Thread_TID);
@@ -603,15 +617,6 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
             System_Console_writeLine("System_Memory_freeClass: other threadId {1:int32}: typeof({0:string})", 2, header->elementType->name, System_Thread_TID);
 #endif
         goto return_free; // throw?
-    }
-	if (header->refCount < System_Memory_ReferenceState_Used) {
-        #if DEBUG
-        System_Console_writeLine("System_Memory_freeClass: typeof({0:string}): header->refCount < System_Memory_ReferenceState_Used", 1, header->elementType->name);
-        #endif
-        goto return_free;
-    }
-	if (--header->refCount >= System_Memory_ReferenceState_Used) {
-        goto return_free;
     }
     header->refCount = System_Memory_ReferenceState_Disposing;
     System_Memory_freeStruct(that, header->elementType);

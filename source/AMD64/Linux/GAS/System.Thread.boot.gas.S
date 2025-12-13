@@ -86,6 +86,7 @@ System_Thread_terminate:
     movq %r10,%rdi
     lock xchgl %edi,12(%rbx)  # that->returnValue
     lock xchgl %esi,8(%rbx)   # that->threadId
+    /* lock xchgl %esi,16(%rbx)  # that->runtime */
     mfence
 
     /*movq (%rsp),%rax  # arg0: returnValue

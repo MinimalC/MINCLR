@@ -544,7 +544,7 @@ ECSXService_serve_render:
 
     response->asyncFileName = fileName1;
     response->asyncECSXName = ecsxName;
-    response->asyncThread = System_Thread_create(ECSXService_serve_thread, 4, fileName1, ecsxName, request, response);
+    response->asyncThread = System_Thread_create(ECSXService_serve_thread, 2, request, response);
 
     Memory_free(shortName);
     return response;
@@ -552,30 +552,25 @@ ECSXService_serve_render:
 
 IntPtr  ECSXService_serve_thread(Size argc, Var argv[]) {
 
-    if (argc < 4) return false;
+    Network_HTTPRequest request = argv[0];
+    Network_HTTPResponse response = argv[1];
 
-    String8 fileName1 = argv[0];
-    String8 ecsxName = argv[1];
-
-    if (!System_VarDictionary_containsKey(ECSX_AssemblyCache, fileName1)) {
-        Console_writeLine("ECSXService_serve: No ELFAssembly {0:string}", 1, fileName1);
+    if (!System_VarDictionary_containsKey(ECSX_AssemblyCache, response->asyncFileName)) {
+        Console_writeLine("ECSXService_serve: No ELFAssembly {0:string}", 1, response->asyncFileName);
         return null;
     }
-    System_ELF64Assembly assembly = System_VarDictionary_get_value(ECSX_AssemblyCache, fileName1);
+    System_ELF64Assembly assembly = System_VarDictionary_get_value(ECSX_AssemblyCache, response->asyncFileName);
 
     function_Network_HTTPRequest_render HTTP_render = null;
-    System_ELFAssembly_Symbol symbol1 = System_ELF64Assembly_getSymbol(assembly, ecsxName);
+    System_ELFAssembly_Symbol symbol1 = System_ELF64Assembly_getSymbol(assembly, response->asyncECSXName);
     if (symbol1 && symbol1->value) {
         HTTP_render = (function_Network_HTTPRequest_render)((System_Size)assembly->link + symbol1->value);
     }
     if (!HTTP_render) {
-        Console_writeLine("ECSXService_serve: No ELFSymbol (function_Network_HTTPRequest_render) {0:string}", 1, ecsxName);
+        Console_writeLine("ECSXService_serve: No ELFSymbol (function_Network_HTTPRequest_render) {0:string}", 1, response->asyncECSXName);
         return null;
     }
-    Console_writeLine("ECSXService_serve: ELFSymbol {0:string}", 1, ecsxName);
-
-    Network_HTTPRequest request = argv[2];
-    Network_HTTPResponse response = argv[3];
+    Console_writeLine("ECSXService_serve: ELFSymbol {0:string}", 1, response->asyncECSXName);
 
     HTTP_render(request, response);
 
@@ -664,6 +659,8 @@ respond:
 }
 
 void HTTPService_serve_response(Network_HTTPResponse response) {
+
+    if (!response->header) response->header = System_Memory_allocClass(typeof(System_String8Dictionary));
 
     System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(response->body.length));
     System_String8Dictionary_add(response->header, "Content-Type", Network_MimeTypes[response->mimeType].name);
