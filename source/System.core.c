@@ -46,6 +46,7 @@
 
 #include "System.Signal.c"
 #include "System.Atomic.c"
+#include "System.Autex.c"
 
 #include "System.DateTime.c"
 

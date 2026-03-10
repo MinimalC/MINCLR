@@ -31,9 +31,9 @@ typedef System_IntPtr delegate(System_Thread_main)(System_Size argc, System_Var 
 
 export System_Thread System_Thread_create(function_System_Thread_main function, ...);
 export System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]);
-export void System_Thread_sleep(System_Size seconds);
-export void System_Thread_nanosleep(System_Size nanoseconds);
-export void System_Thread_microsleep(System_Size microseconds);
+export System_Bool System_Thread_sleep(System_Size seconds);
+export System_Bool System_Thread_nanosleep(System_Size nanoseconds);
+export System_Bool System_Thread_microsleep(System_Size microseconds);
 export void System_Thread_yield(void);
 import void System_Thread_boot(void) noreturn;
 import void System_Thread_terminate(System_IntPtr returnValue) noreturn;
@@ -43,5 +43,5 @@ export void System_Thread_setRegister(System_Var fs);
 export System_Bool System_Thread_join(System_Thread that);
 export System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwait);
 export void System_Thread_free(System_Thread that);
-
+export void System_Thread_cancel(System_Thread that);
 #endif

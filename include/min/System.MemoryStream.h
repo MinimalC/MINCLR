@@ -48,6 +48,7 @@ export void  System_MemoryStream_close(System_MemoryStream that);
 export System_String8  System_MemoryStream_final(System_MemoryStream that);
 export System_String8  System_MemoryStream_final__size(System_MemoryStream that, System_Size out size); 
 export System_String8  System_MemoryStream_snapshot(System_MemoryStream that);
+export System_String8  System_MemoryStream_snapshot__size(System_MemoryStream that, System_Size out size); 
 
 #if defined(using_System)
 #define MemoryStream  System_MemoryStream
@@ -74,5 +75,6 @@ export System_String8  System_MemoryStream_snapshot(System_MemoryStream that);
 #define MemoryStream_final  System_MemoryStream_final
 #define MemoryStream_final__size  System_MemoryStream_final__size
 #define MemoryStream_snapshot  System_MemoryStream_snapshot
+#define MemoryStream_snapshot__size  System_MemoryStream_snapshot__size
 #endif
 #endif

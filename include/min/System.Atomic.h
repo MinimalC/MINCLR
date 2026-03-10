@@ -19,6 +19,7 @@ export void System_Atomic_fence();
 export void System_Atomic_pause();
 
 export System_Bool System_Size_atomic_expect(atomic System_Size * that, System_Size comparison, System_Size value);
+export System_Bool System_Size_atomic_await(atomic System_Size * that, System_Size comparison);
 export System_Size System_Size_atomic_exchange(atomic System_Size * that, System_Size value);
 export System_Size System_Size_atomic_exchange_add(atomic System_Size * that, System_Size value);
 export System_Size System_Size_atomic_add(atomic System_Size * that, System_Size value);
@@ -34,6 +35,7 @@ export System_Bool System_Size_atomic_bit_test_unset(atomic System_Size * that, 
 export System_Bool System_Size_atomic_bit_test_set(atomic System_Size * that, System_Size value);
 
 export System_Bool System_Int32_atomic_expect(atomic System_Int32 * that, System_Int32 comparison, System_Int32 value);
+export System_Bool System_Int32_atomic_await(atomic System_Int32 * that, System_Int32 comparison);
 export System_Int32 System_Int32_atomic_exchange(atomic System_Int32 * that, System_Int32 value);
 export System_Int32 System_Int32_atomic_exchange_add(atomic System_Int32 * that, System_Int32 value);
 export System_Int32 System_Int32_atomic_add(atomic System_Int32 * that, System_Int32 value);

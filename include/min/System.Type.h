@@ -143,11 +143,13 @@ export System_Var System_Type_getMethod(System_Type  that, System_Var function);
 export System_Var System_Type_tryMethod(System_Type  that, System_Var function);
 // inline artificial System_Var inline_System_Type_getMethod(System_Type  that, System_Var function)
 export System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other);
+export System_UInt64 System_Type_getSipHash(System_Type that);
 
 #if defined(using_System)
 #define Type_getMethod  System_Type_getMethod
 #define Type_tryMethod  System_Type_tryMethod
 #define Type_isAssignableFrom  System_Type_isAssignableFrom
+#define Type_getSipHash  System_Type_getSipHash
 #endif
 #endif
 

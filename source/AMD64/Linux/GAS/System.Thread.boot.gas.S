@@ -55,10 +55,11 @@ System_Thread_terminate:
 	leaq .TERMINIERT(%rip), %rdi
     call System_Console_write__string@PLT
 	
-/* if DEBUG && DEBUG != DEBUG_System_Exception */
+# if DEBUG == DEBUG_System_Exception
 	movq System_Exception_current@gottpoff(%rip), %rdi
 	movq %fs:(%rdi), %rdi
     call System_Exception_print@PLT
+# endif
 
 	movq	%fs:0, %rdx
 	movq	System_Exception_current@gottpoff(%rip), %rdi
@@ -84,10 +85,10 @@ System_Thread_terminate:
 
     movq $0,%rsi
     movq %r10,%rdi
+    mfence
     lock xchgl %edi,12(%rbx)  # that->returnValue
     lock xchgl %esi,8(%rbx)   # that->threadId
     /* lock xchgl %esi,16(%rbx)  # that->runtime */
-    mfence
 
     /*movq (%rsp),%rax  # arg0: returnValue
     movl %eax,%edi

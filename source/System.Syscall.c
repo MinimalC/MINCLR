@@ -222,6 +222,10 @@ void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain) 
     (void)System_Syscall_call02(System_Syscall_Command_nanosleep, (System_IntPtr)request, (System_IntPtr)remain);
 }
 
+void  System_Syscall_sched_yield(void) {
+    (void)System_Syscall_call00(System_Syscall_Command_sched_yield);
+}
+
 
 System_Thread_ID  System_Syscall_clone(System_IntPtr flags, System_Var stack) {
     return (System_Thread_ID)System_Syscall_call02(System_Syscall_Command_clone, flags, (System_IntPtr)stack);
@@ -256,6 +260,10 @@ void  System_Syscall_execveat(System_IntPtr dirId, System_String8 pathname, Syst
 }
 
 
+void  System_Syscall_kill(System_Thread_ID processId, System_IntPtr signal) {
+    (void)System_Syscall_call02(System_Syscall_Command_kill, (System_IntPtr)processId, signal);
+}
+
 void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_Var old) {
     (void)System_Syscall_call03(System_Syscall_Command_rt_sigaction, signal, (System_IntPtr)action, (System_IntPtr)old);
 }
@@ -268,12 +276,28 @@ void  System_Syscall_sigqueue(System_Thread_ID id, System_IntPtr signal, System_
     (void)System_Syscall_call03(System_Syscall_Command_rt_sigqueueinfo, (System_IntPtr)id, signal, value);
 }
 
-System_IntPtr System_Syscall_sigwait(System_Var set, System_Var info, System_TimeSpan timeout) {
+System_IntPtr System_Syscall_sigwaitinfo(System_Var set, System_Var info) {
+    return System_Syscall_call03(System_Syscall_Command_rt_sigtimedwait, (System_IntPtr)set, (System_IntPtr)info, null);
+}
+
+System_IntPtr System_Syscall_sigtimedwait(System_Var set, System_Var info, System_TimeSpan timeout) {
     return System_Syscall_call03(System_Syscall_Command_rt_sigtimedwait, (System_IntPtr)set, (System_IntPtr)info, (System_IntPtr)timeout);
 }
 
-void  System_Syscall_sched_yield(void) {
-    (void)System_Syscall_call00(System_Syscall_Command_sched_yield);
+void System_Syscall_timer_create(System_IntPtr clock, System_Var sigevent, System_IntPtr out timerId) {
+    (void)System_Syscall_call03(System_Syscall_Command_timer_create, clock, (System_IntPtr)sigevent, (System_IntPtr)timerId);
+}
+
+void System_Syscall_timer_settime(System_IntPtr timerId, System_IntPtr flags, System_IntervalTimeSpan new_value, System_IntervalTimeSpan old_value) {
+    (void)System_Syscall_call04(System_Syscall_Command_timer_settime, timerId, flags, (System_IntPtr)new_value, (System_IntPtr)old_value);
+}
+
+void System_Syscall_timer_gettime(System_IntPtr timerId, System_IntervalTimeSpan value) {
+    (void)System_Syscall_call02(System_Syscall_Command_timer_gettime, timerId, (System_IntPtr)value);
+}
+
+System_IntPtr System_Syscall_timer_getoverrun(System_IntPtr timerId) {
+    return System_Syscall_call01(System_Syscall_Command_timer_getoverrun, timerId);
 }
 
 System_Thread_ID  System_Thread_PID = 0;

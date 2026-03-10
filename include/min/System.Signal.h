@@ -49,16 +49,18 @@ enum {
 
 export System_String8 System_Signal_Number_toString(System_Signal_Number value);
 
-
 typedef struct System_Signal {
+
 #if System_Size_Bits == 32
     unsigned long mask[2];
 #else /* if System_Size_Bits == 64 */
     unsigned long mask[1];
 #endif
+
 } * System_Signal;
 
 typedef struct System_Signal_Info {
+
     System_UInt32 number; /* Signal number.  */
     System_UInt32 errno; /* If non-zero, an errno value associated with this signal, as defined in <errno.h>.  */
     System_UInt32 code; /* Signal code.  */
@@ -163,6 +165,44 @@ export void System_Signal_get(System_Signal that);
 export void System_Signal_set(System_Signal that);
 export void System_Signal_block(System_Signal that);
 export void System_Signal_unblock(System_Signal that);
+
+typedef System_UInt32 System_Signal_Notify;
+enum {
+    System_Signal_Notify_Signal,
+    System_Signal_Notify_None,
+    System_Signal_Notify_Thread,
+    System_Signal_Notify_ThreadId = 4,
+};
+
+export struct System_Type  System_Signal_NotifyType;
+
+typedef struct System_Signal_Event {
+
+    System_IntPtr value;
+
+    System_Signal_Number number;
+    
+    System_Signal_Notify notify;
+
+    union {
+        struct {
+
+            System_Thread_ID threadId0;
+
+            System_Thread_ID threadId1;
+        };
+
+        struct {
+            
+            void (* function)(System_IntPtr value);
+
+            System_Var attribute;
+        };
+    };
+    
+} * System_Signal_Event;
+
+export struct System_Type  System_Signal_EventType;
 
 export struct System_Type  System_SignalType;
 

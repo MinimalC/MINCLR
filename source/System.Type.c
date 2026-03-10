@@ -31,7 +31,7 @@ String8 System_enum_getName(Type type, IntPtr value) {
 
 /** struct System_Type  **/
 
-System_UInt64 base_System_Type_getSipHash(System_Type that) {
+System_UInt64 System_Type_getSipHash(System_Type that) {
     struct Crypto_SipHash48 sipHash48; System_Stack_clear(sipHash48);
     Crypto_SipHash48_init(&sipHash48);
     Crypto_SipHash48_update(&sipHash48, that->name, System_String8_get_Length(that->name));
@@ -39,7 +39,7 @@ System_UInt64 base_System_Type_getSipHash(System_Type that) {
 }
 
 struct System_Type_FunctionInfo  System_TypeTypeFunctions[] = {
-    { .function = base_System_Object_getSipHash, .value = base_System_Type_getSipHash },
+    { .function = base_System_Object_getSipHash, .value = System_Type_getSipHash },
 };
 
 struct System_Type System_TypeType = { 
@@ -132,7 +132,7 @@ System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other)
     System_Type they = that;
     System_Type_InterfaceInfo info;
     while (they) {
-        if (base_System_Type_getSipHash(other) == base_System_Type_getSipHash(they)) {
+        if (System_Type_getSipHash(other) == System_Type_getSipHash(they)) {
             #if DEBUG == DEBUG_System_Type
             System_Console_writeLine("System_Type_isAssignableFrom({0:string}, {1:string})", 2, that->name, other->name);
             #endif
@@ -140,7 +140,7 @@ System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other)
         }
         for (System_Size f = 0; f < they->interfaces.length; ++f) {
             info = !they->interfaces.value ? null : array(they->interfaces.value) + f;
-            if (info && base_System_Type_getSipHash(other) == base_System_Type_getSipHash(info->interfaceType)) {
+            if (info && System_Type_getSipHash(other) == System_Type_getSipHash(info->interfaceType)) {
                 #if DEBUG == DEBUG_System_Type
                 System_Console_writeLine("System_Type_isAssignableFrom({0:string}, {1:string})", 2, that->name, other->name);
                 #endif

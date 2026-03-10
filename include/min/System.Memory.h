@@ -86,6 +86,7 @@ export void  System_Memory_debug(void);
 export void  System_Memory_debug__threadId(System_Thread_ID threadId);
 export void  System_Memory_cleanup(void);
 export void  System_Memory_cleanup__threadId(System_Thread_ID threadId);
+export void  System_Memory_GC();
 
 #define System_Memory_free(THAT) System_Memory_freeClass((System_Var ref)&THAT)
 

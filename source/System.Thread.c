@@ -34,6 +34,39 @@ struct System_Type System_ThreadType = {
     .functions = { .length = sizeof_array(System_ThreadTypeFunctions), .value = &System_ThreadTypeFunctions },
 };
 
+System_Bool System_Thread_sleep(System_Size seconds) {
+    struct System_TimeSpan time = { .sec = seconds, .usec = 0, };
+    System_Syscall_nanosleep(&time, &time);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) {
+        System_Console_writeLine("System_Thread_sleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+        return false;
+    }
+    return true;
+}
+
+System_Bool System_Thread_microsleep(System_Size microseconds) {
+    struct System_TimeSpan time = { .sec = 0, .usec = microseconds * 1000, };
+    System_Syscall_nanosleep(&time, &time);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) {
+        System_Console_writeLine("System_Thread_microsleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+        return false;
+    }
+    return true;
+}
+
+System_Bool System_Thread_nanosleep(System_Size nanoseconds) {
+    struct System_TimeSpan time = { .sec = 0, .usec = nanoseconds, };
+    System_Syscall_nanosleep(&time, &time);
+    System_ErrorCode errno = System_Syscall_get_Error();
+    if (errno) { 
+        System_Console_writeLine("System_Thread_nanosleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+        return false;
+    }
+    return true;
+}
+
 export thread System_Thread System_Thread_Current = null;
 
 export thread System_Thread_ID System_Thread_TID = 0;
@@ -72,7 +105,7 @@ void System_Thread_free(System_Thread that) {
 #if DEBUG
         Console_writeLine("System_Thread_free: DANGER. Thread {0:int32} is running", 1, that->threadId);
 #endif
-        return; 
+        System_Thread_cancel(that);
     }
     if (that->threadId) {
         System_Memory_cleanup__threadId(that->threadId);
@@ -82,6 +115,22 @@ void System_Thread_free(System_Thread that) {
         System_Syscall_munmap(that->stack, STACK_SIZE);
         that->stack = null;
     }
+}
+
+void System_Thread_cancel(System_Thread that) {
+    System_ErrorCode errno = 0;
+    if (that->threadId || that->runtime) {
+        #if DEBUG
+        System_Console_writeLine("CANCELLING THREAD number {0:uint32}", 1, that->threadId);
+        #endif
+        System_Syscall_kill(that->threadId, System_Signal_Number_SIGCHILD);
+        errno = System_Syscall_get_Error();
+        if (errno) {
+            System_Console_writeLine("System_Syscall_kill Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
+        }
+    }
+    if (!errno) 
+        System_Thread_join(that);
 }
 
 enum {
@@ -115,10 +164,13 @@ System_Thread System_Thread_create(function_System_Thread_main function, ...) {
 }
 
 static void System_Thread_sigchild(System_Signal_Number number, System_Signal_Info info, System_Var context) {
-    System_Console_writeLine("{0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}"
+    #if DEBUG
+    System_Console_writeLine("THREAD {0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}"
         ", sigchild.pid {4:int32}, sigchild.status {5:int32}, sigchild.value0 {6:uint}, sigchild.value1 {7:uint}", 8,
         System_Signal_Number_toString(number), info->number, info->errno, info->code, 
         info->sigchild.pid, info->sigchild.status, info->sigchild.value, info->sigchild.value1);
+    #endif
+    System_Thread_terminate(false);
 }
 
 System_Thread System_Thread_create__arguments(function_System_Thread_main function, System_Size argc, System_Var argv[]) {
@@ -154,11 +206,11 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
         #if !defined(use_System_Thread_SIGCHILD)
         signal_flags = System_Signal_Flags_NOCHILDSTOP | System_Signal_Flags_NOCHILDWAIT;
         #endif
-        #if DEBUG == DEBUG_System_Thread
+        //#if DEBUG == DEBUG_System_Thread
         System_Signal_act__flags(System_Signal_Number_SIGCHILD, System_Thread_sigchild, signal_flags);
-        #else
+        /*#else
         System_Signal_handle__flags(System_Signal_Number_SIGCHILD, function_System_Signal_handler_IGNORE, signal_flags);
-        #endif
+        #endif*/
         System_Thread_sigiset = true;
     }
 
@@ -180,27 +232,6 @@ System_Thread System_Thread_create__arguments(function_System_Thread_main functi
     System_Console_writeLine("System_Thread_create: {0:int32}", 1, that->threadId);
     #endif
     return that;
-}
-
-void System_Thread_sleep(System_Size seconds) {
-    struct System_TimeSpan time = { .sec = seconds, .usec = 0, };
-    System_Syscall_nanosleep(&time, &time);
-    System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Thread_sleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-}
-
-void System_Thread_microsleep(System_Size microseconds) {
-    struct System_TimeSpan time = { .sec = 0, .usec = microseconds * 1000, };
-    System_Syscall_nanosleep(&time, &time);
-    System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Thread_microsleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
-}
-
-void System_Thread_nanosleep(System_Size nanoseconds) {
-    struct System_TimeSpan time = { .sec = 0, .usec = nanoseconds, };
-    System_Syscall_nanosleep(&time, &time);
-    System_ErrorCode errno = System_Syscall_get_Error();
-    if (errno) System_Console_writeLine("System_Thread_nanosleep Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
 }
 
 enum {

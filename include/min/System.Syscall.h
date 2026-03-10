@@ -117,6 +117,7 @@ export System_Var  System_Syscall_mremap(System_Var old_address, System_Size old
 export void  System_Syscall_msync__flags(System_Var address, System_Size length, System_IntPtr flags);
 
 export void  System_Syscall_nanosleep(System_TimeSpan request, System_TimeSpan remain);
+export void  System_Syscall_sched_yield(void);
 
 typedef System_Int32  System_Thread_ID;
 export System_Thread_ID  System_Syscall_clone(System_IntPtr flags, System_Var stack);
@@ -128,12 +129,17 @@ export System_Thread_ID  System_Syscall_fork(void);
 export void  System_Syscall_execve(System_String8 filename, System_String8 * argv, System_String8 * envv);
 export void  System_Syscall_execveat(System_IntPtr dirId, System_String8 pathname, System_String8 * argv, System_String8 * envv, System_IntPtr flags);
 
+export void  System_Syscall_kill(System_Thread_ID processId, System_IntPtr signal);
 export void  System_Syscall_sigaction(System_IntPtr signal, System_Var action, System_Var old);
 export void  System_Syscall_sigprocmask(System_IntPtr how, System_Var set, System_Var old, System_IntPtr setsize);
 import void  System_Syscall_sigreturn(void);
 export void  System_Syscall_sigqueue(System_Thread_ID id, System_IntPtr signal, System_IntPtr value);
-export System_IntPtr  System_Syscall_sigwait(System_Var set, System_Var info, System_TimeSpan timeout);
-export void  System_Syscall_sched_yield(void);
+export System_IntPtr  System_Syscall_sigwaitinfo(System_Var set, System_Var info);
+export System_IntPtr  System_Syscall_sigtimedwait(System_Var set, System_Var info, System_TimeSpan timeout);
+export void System_Syscall_timer_create(System_IntPtr clock, System_Var sigevent, System_IntPtr out timerId);
+export void System_Syscall_timer_settime(System_IntPtr timerId, System_IntPtr flags, System_IntervalTimeSpan new_value, System_IntervalTimeSpan old_value);
+export void System_Syscall_timer_gettime(System_IntPtr timerId, System_IntervalTimeSpan value);
+export System_IntPtr System_Syscall_timer_getoverrun(System_IntPtr timerId);
 
 export System_Thread_ID  System_Thread_PID;
 export System_Thread_ID  System_Syscall_getpid(void);

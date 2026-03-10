@@ -147,6 +147,10 @@ void System_Runtime_start(System_Var  * stack) {
         #if DEBUG == DEBUG_System_ELFAssembly
         System_Console_writeLine("System_Runtime_start: AddressOf ThreadLocalStorage: {0:uint:hex}", 1, System_Thread_getRegister());
         #endif
+
+        #if 0
+        System_Memory_GC();
+        #endif
     }
 
     function_System_Runtime_main entry = &System_Runtime_main;

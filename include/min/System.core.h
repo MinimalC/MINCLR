@@ -35,6 +35,7 @@
 #include "System.Signal.h"
 #include "System.Thread.h"
 #include "System.Atomic.h"
+#include "System.Autex.h"
 
 #include "Crypto.SipHash48.h"
 #include "Crypto.CubeHash512.h"

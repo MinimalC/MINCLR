@@ -75,6 +75,10 @@ System_Bool System_Size_atomic_expect(atomic System_Size * that, System_Size com
     return reture == comparison;
 }
 
+System_Bool System_Size_atomic_await(atomic System_Size * that, System_Size comparison) {
+    return System_Size_atomic_expect(that, comparison, comparison);
+}
+
 System_Size System_Size_atomic_exchange(atomic System_Size * that, System_Size value) {
     System_Size reture = 0;
     __asm__ ("lock xchgq %2, %1" : "=a" (reture), "=m" (*that) : "r" (value), "m" (*that));
@@ -158,6 +162,10 @@ System_Bool System_Int32_atomic_expect(atomic System_Int32 * that, System_Int32 
     System_Int32 reture = 0;
     __asm__ ("lock cmpxchgl %2, %1" : "=a" (reture), "=m" (*that) : "r" (value), "m" (*that), "0" (comparison));
     return reture == comparison;
+}
+
+System_Bool System_Int32_atomic_await(atomic System_Int32 * that, System_Int32 comparison) {
+    return System_Int32_atomic_expect(that, comparison, comparison);
 }
 
 System_Int32 System_Int32_atomic_exchange(atomic System_Int32 * that, System_Int32 value) {

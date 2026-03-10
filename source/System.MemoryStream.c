@@ -36,7 +36,13 @@ String8  System_MemoryStream_final__size(MemoryStream that, System_Size out size
 }
 
 String8  System_MemoryStream_snapshot(MemoryStream that) { 
+    System_Size size = 0;
+    return System_MemoryStream_snapshot__size(that, &size); 
+}
+
+String8  System_MemoryStream_snapshot__size(MemoryStream that, System_Size out size) { 
     
+    *size = that->size;
     String8 reture = Memory_allocArray(typeof(Char8), that->size);
     Memory_copyTo(that->buffer, that->size, reture);
     return reture;
