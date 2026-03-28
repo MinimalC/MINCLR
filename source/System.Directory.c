@@ -275,8 +275,8 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_String8 dir
                 subdirectoryName[subdirectoryNameL++] = '/';
                 subdirectoryNameL += String8_copyTo(entry->name, subdirectoryName + subdirectoryNameL);
                 subdirectoryName[subdirectoryNameL++] = '\0';
-                if (directoriesC < 2048)
-                    directories[directoriesC++] = System_Directory_list__hidden(subdirectoryName, hidden);
+                directories[directoriesC++] = System_Directory_list__hidden(subdirectoryName, hidden);
+                if (directoriesC == 2048) break;
                 // else todo: throw?
             }   
         }
@@ -289,6 +289,10 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_String8 dir
     }
     struct MemoryStream stream; Stack_clear(stream);
     MemoryStream_write__char(&stream, '\0');
+    Size directory0_name_length = String8_get_Length(directories[0]->name);
+    MemoryStream_write__string_size(&stream, directories[0]->name, directory0_name_length);
+    directories[0]->name = (System_Var)1;
+    MemoryStream_write__char(&stream, '\0');
     for (Size position1 = 0; position1 < directories[0]->length; ++position1) {
         DirectoryEntry entry = &array_item(directories[0]->value, position1);
         String8 entry_name = entry->name;
@@ -296,9 +300,8 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_String8 dir
         MemoryStream_write__string(&stream, entry_name);
         MemoryStream_write__char(&stream, '\0');
     }
-    Size directory0_name_length = String8_get_Length(directories[0]->name);
     if (new_size > directories[0]->length) {
-        Size position2 = directories[0]->length;
+        Size new_length = directories[0]->length;
         Memory_reallocArray((System_Var ref)&directories[0]->value, new_size);
         for (Size position = 1; position < directoriesC; ++position) {
             DirectoryList list = directories[position];
@@ -309,7 +312,7 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_String8 dir
                     if (String8_equals(entry->name, "..")) continue;
                 }
                 String8 entry_name = entry->name;
-                DirectoryEntry other = &array_item(directories[0]->value, position2++);
+                DirectoryEntry other = &array_item(directories[0]->value, new_length++);
                 Memory_moveTo((System_Var)entry, sizeof(struct System_DirectoryEntry), (System_Var)other);
                 other->name = (System_Var)stream.position;
                 MemoryStream_write__string(&stream, list->name + directory0_name_length + 1);
@@ -318,13 +321,14 @@ System_DirectoryList  System_Directory_list__recursive_hidden(System_String8 dir
                 MemoryStream_write__char(&stream, '\0');
             }
         }
-        directories[0]->length = position2;
+        directories[0]->length = new_length;
     }
     for (Size position = 1; position < directoriesC; ++position) {
         Memory_free(directories[position]);
     }
     Memory_free(directories[0]->scratch.value);
     directories[0]->scratch.value = MemoryStream_final(&stream);
+    directories[0]->name = (System_Var)directories[0]->name + (System_Size)directories[0]->scratch.value;
     for (Size s = 0; s < directories[0]->length; ++s) {
         System_DirectoryEntry system_directory = &array_item(directories[0]->value, s);
         system_directory->name = (System_Var)system_directory->name + (System_Size)directories[0]->scratch.value;

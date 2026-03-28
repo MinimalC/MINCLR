@@ -141,33 +141,31 @@ System_Size  System_String8_get_Length__max(System_String8 that, System_Size lim
 }
 
 Size  System_String8_copyTo(String8 src, String8 dest) {
-    Size count0 = String8_get_Length(src);
-    Size count1 = count0;
-    while ( count0-- ) *dest++ = *src++;
-    return count1 - count0;
+    Size length = String8_get_Length(src);
+    Size counter = length;
+    while ( counter-- ) *dest++ = *src++;
+    return length;
 }
 
 Size  System_String8_copyToAt(String8 src, String8 dest, Size at) {
-    Size count0 = String8_get_Length(src);
-    Size count1 = count0;
+    Size length = String8_get_Length(src);
+    Size counter = length;
     dest += at;
-    while ( count0-- ) *dest++ = *src++;
-    return count1 - count0;
+    while ( counter-- ) *dest++ = *src++;
+    return length;
 }
 
-Size  System_String8_copySubstringTo(String8 src, Size count, String8 dest) {
-    Size count0 = count;
-    Size count1 = count;
-    while ( count0-- ) *dest++ = *src++;
-    return count1 - count0;
+Size  System_String8_copySubstringTo(String8 src, Size length, String8 dest) {
+    Size counter = length;
+    while ( counter-- ) *dest++ = *src++;
+    return length;
 }
 
-Size  System_String8_copySubstringToAt(String8 src, Size count, String8 dest, Size at) {
-    Size count0 = count;
-    Size count1 = count;
+Size  System_String8_copySubstringToAt(String8 src, Size length, String8 dest, Size at) {
+    Size counter = length;
     dest += at;
-    while ( count0-- ) *dest++ = *src++;
-    return count1 - count0;
+    while ( counter-- ) *dest++ = *src++;
+    return length;
 }
 
 String8  System_String8_copy(String8 that) {
