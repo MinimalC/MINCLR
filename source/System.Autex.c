@@ -27,7 +27,6 @@ System_Bool System_Autex_wait(atomic System_Int32 * address) {
         System_Atomic_fence();
     }
     System_Thread_ID tid_1 = System_Int32_atomic_negation(address);
-    // System_Thread_yield();
     return true;
 }
 
@@ -36,7 +35,6 @@ System_Bool System_Autex_wake(atomic System_Int32 * address) {
 
     System_Thread_ID tid_1 = System_Int32_atomic_exchange(address, 0);
     
-    // System_Thread_yield();
     System_Atomic_fence();
     while (!System_Int32_atomic_await(address, 0)) {
         #if DEBUG

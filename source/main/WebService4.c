@@ -567,7 +567,7 @@ IntPtr  ECSXService_serve_thread(Size argc, Var argv[]) {
         Console_writeLine("ECSXService_serve: DANGER. No ELFAssembly {0:string}", 1, response->asyncFileName);
         return null;
     }
-    Memory_addReference(assembly);
+    // Memory_addReference(assembly);
 
     function_Network_HTTPRequest_render HTTP_render = null;
     System_ELFAssembly_Symbol symbol1 = System_ELF64Assembly_getSymbol(assembly, response->asyncECSXName);
@@ -581,7 +581,7 @@ IntPtr  ECSXService_serve_thread(Size argc, Var argv[]) {
     Console_writeLine("ECSXService_serve: ELFSymbol {0:string}", 1, response->asyncECSXName);
 
     HTTP_render(request, response);
-    Memory_free(assembly);
+    // Memory_free(assembly);
 
     System_String8 finalText = System_Memory_allocStaticArray(typeof(System_Char8), response->stream.size);
     System_Memory_copyTo(response->stream.buffer, response->stream.size, finalText);
@@ -707,7 +707,7 @@ void System_Runtime_CTRLC(System_Signal_Number number) {
 void System_Runtime_sigfault(System_Signal_Number number, System_Signal_Info info, System_Var context) {
     System_Console_writeLine("RUNTIME {0:string}: number {1:uint32}, errno {2:uint32}, code {3:uint32}, sigfault.address {4:uint:hex}", 5,
         System_Signal_Number_toString(number), info->number, info->errno, info->code, info->sigfault.address);
-    System_Thread_terminate(false);
+    System_Console_exit(false);
 }
 
 int System_Runtime_main(int argc, String8 argv[]) {

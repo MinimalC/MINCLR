@@ -482,21 +482,21 @@ void System_Memory_cleanup__min_i_max_threadId(System_Size min, System_Size inde
     }
     #endif
 
-    System_Bool lock = threadId != System_Thread_TID;
     System_VarArray mem64k = System_Memory_ProcessVars[index];
     if (!mem64k) return;
 
-    if (!lock || System_Autex_wait(&System_Memory_ProcessLock)) {
-        for (System_Size i = 0; i < mem64k->length; ++i) {
-            System_Memory_Page mem64h = (System_Memory_Page)array(mem64k->value)[i];
-            if (!mem64h || mem64h->threadId != threadId) continue;
+    for (System_Size i = 0; i < mem64k->length; ++i) {
+        System_Memory_Page mem64h = (System_Memory_Page)array(mem64k->value)[i];
+        if (!mem64h || mem64h->threadId != threadId) continue;
 
-            array(mem64k->value)[i] = null;
-            System_Syscall_munmap(mem64h, max);
-        }
-        if (lock) System_Autex_wake(&System_Memory_ProcessLock);
+        System_Autex_wait(&mem64h->lock);
+        System_Autex_wake(&mem64h->lock);
+        array(mem64k->value)[i] = null;
+        System_Syscall_munmap(mem64h, max);
     }
     if (threadId == System_Thread_PID) {
+        System_Autex_wait(&System_Memory_ProcessLock);
+        System_Autex_wake(&System_Memory_ProcessLock);
         System_Memory_ProcessVars[index] = null;
         System_Syscall_munmap(mem64k, min);
     }
@@ -547,8 +547,8 @@ System_Var  System_Memory_addReference(System_Var that) {
 
     System_Bool lock = page->threadId != System_Thread_TID;
     if (!lock || System_Autex_wait(&page->lock)) {
-        #if DEBUG 
-        if (lock) System_Console_writeLine("System_Memory_addReference: DANGER. other threadId {1:int32}: typeof({0:string})", 2, header->type->name, System_Thread_TID);
+        #if DEBUG == DEBUG_System_Memory
+        if (lock) System_Console_writeLine("System_Memory_addReference: other threadId {1:int32}: typeof({0:string})", 2, header->elementType->name, System_Thread_TID);
         #endif
         ++header->refCount;
         if (lock) System_Autex_wake(&page->lock);
@@ -630,15 +630,15 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
     if (header->refCount >= System_Memory_ReferenceState_Used) {
         goto return_free;
     }
-    #if DEBUG
     if (lock) {
+        #if DEBUG
         if (System_Type_getSipHash(header->elementType) == 0x7B10E531CDEB635A) // "Char8"
             System_Console_writeLine("System_Memory_freeClass: DANGER. other threadId {1:int32}: typeof(string): \"{0:string}\"", 2, that, System_Thread_TID);
         else
             System_Console_writeLine("System_Memory_freeClass: DANGER. other threadId {1:int32}: typeof({0:string})", 2, header->elementType->name, System_Thread_TID);
+        #endif
         goto return_free; // throw?
     }
-    #endif
 
     header->refCount = System_Memory_ReferenceState_Disposing;
     #if 1

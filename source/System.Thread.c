@@ -103,8 +103,10 @@ enum {
 void System_Thread_free(System_Thread that) {
     if (that->runtime) { 
 #if DEBUG
-        Console_writeLine("System_Thread_free: DANGER. Thread {0:int32} is running", 1, that->threadId);
+        Console_writeLine("System_Thread_free: DANGER. Thread {0:int32} is running, cancelling", 1, that->threadId); // "joining"
 #endif
+        // TODO: join or cancel?
+        // System_Thread_join(that);
         System_Thread_cancel(that);
     }
     if (that->threadId) {
@@ -120,17 +122,13 @@ void System_Thread_free(System_Thread that) {
 void System_Thread_cancel(System_Thread that) {
     System_ErrorCode errno = 0;
     if (that->threadId || that->runtime) {
-        #if DEBUG
-        System_Console_writeLine("CANCELLING THREAD number {0:uint32}", 1, that->threadId);
-        #endif
         System_Syscall_kill(that->threadId, System_Signal_Number_SIGCHILD);
         errno = System_Syscall_get_Error();
         if (errno) {
             System_Console_writeLine("System_Syscall_kill Error: {0:string}", 1, enum_getName(typeof(System_ErrorCode), errno));
         }
     }
-    if (!errno) 
-        System_Thread_join(that);
+    if (!errno) System_Thread_join(that);
 }
 
 enum {
@@ -280,9 +278,10 @@ System_Bool System_Thread_join__dontwait(System_Thread that, System_Bool dontwai
 #else /* if !defined(use_System_Thread_SIGCHILD) */
 
     System_Atomic_fence();
-    while (!System_Int32_atomic_expect((atomic System_Int32 *)&that->threadId, 0, 0)) {
+    while (!System_Int32_atomic_await((atomic System_Int32 *)&that->threadId, 0)) {
         if (dontwait) return false;
-        System_Thread_yield();
+        // System_Thread_yield();
+        System_Atomic_pause();
         System_Atomic_fence();
     }
     that->runtime = false;
