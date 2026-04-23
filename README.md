@@ -1,5 +1,52 @@
 ***MINCLR: Minimal C Language Runtime***
 
+**Example Usage**
+
+Open a text editor of your choice and create a file named `Hello.c`.
+
+```
+#define using_System
+#include <min/System.h>
+
+Size Hello(Size argc, String8 argv[]) {
+
+    if (argc > 1) {
+        Console_writeLine("Hello {0:string}!", 1, argv[1]);
+        return true;
+    }
+
+    Console_writeLine__string("Hello World!");
+    return false;
+}
+```
+
+**Quick Start for C developers**
+
+- Instead of the old method,
+    + I would use the new method.
+
+- int printf(char *, ...)
+    +  Size  Console_write(String8 format, ...)
+    +  Size  Console_writeLine(String8 format, ...)
+        Usage: Console_writeLine("{0:string} {1:bool} {2:uint} {3:uint:hex} {4:int} {5:int32}", 6, string, boolean, uint, uint, int, int);
+
+- int strcmp(char * str1, char * str2)
+    strcmp returns the difference of the last two ASCII characters.
+    +  Size  String8_compare(String8 that, String8 other)
+        String8_compare returns the number of characters, which are equal.
+    +  Bool  String8_equals(String8 that, String8 other)
+        String8_equals returns true, if all of the characters are equal.
+
+- int strlen(char * str)
+    + Size  String8_get_Length(String8 that)
+
+- void * malloc (size_t size)
+    + Var  Memory_allocClass(Type type)
+        Usage: File file = Memory_allocClass(typeof(File));
+    + Var  Memory_allocArray(Type type, Size size)
+        Usage: String8 string = Memory_allocArray(typeof(Char8), length + 1);
+
+
 This is currently a DEBUG version. You need t use make.awk, GCC and AMD64 Linux. I didn't try this on other compilers or on Windows.
 
 MINCLR is all about C `typedef struct System_Object * System_Object;`, which doesn't work in C++, CPP, you'd get a compiler exception.
@@ -13,6 +60,11 @@ run.awk @System.config make.awk 1>&2 2>.System...report
 # Extension
 run.awk @System.Extension.config make.awk 1>&2 2>.Extension...report
 ```
+
+To run MINCLR, you need to go to the folder `.make`, because of `System.Interpreter`, this is currently hardcoded into the binaries.
+
+For example, use `./test.sh`, or `cd .make` and then try `./CubeHash512 Hello` or `./SipHash48 Hello`.
+
 
 This is creating the following files:
 
@@ -129,6 +181,3 @@ This is creating the following files:
 .make/WebService2...o
 .make/.System.File.test.txt
 ```
-To run MINCLR, you need to go to the folder `.make`, because of `System.Interpreter`, this is currently hardcoded into the binaries.
-
-For example, use `./test.sh`, or `cd .make` and then try `./CubeHash512 Hello` or `./SipHash48 Hello`.

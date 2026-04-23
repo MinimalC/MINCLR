@@ -164,10 +164,11 @@ void System_Runtime_start(System_Var  * stack) {
             }
         fileNames[1] = System_String8_concat2(fileNames[0], "_main");
         fileNames[2] = System_String8_concat2("main_", fileNames[0]);
+        fileNames[3] = "main";
         System_Size * symbol1_value = null;
         System_ELF64Assembly assembly1 = null;
         System_ELF64Assembly_Symbol symbol1 = null;
-        for (System_Size s = 0; s < 3; ++s) {
+        for (System_Size s = 0; s < 4; ++s) {
             symbol1 = System_ELF64Assembly_getGlobalSymbol(fileNames[s], &assembly1);
             if (assembly1 && symbol1) {
                 symbol1_value = (System_Size *)(assembly1->link + symbol1->value);
