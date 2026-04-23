@@ -25,40 +25,45 @@ Size Hello(Size argc, String8 argv[]) {
 - Instead of the old method,
     + I would use the new method.
 
-- int printf(char *, ...)
-    +  Size  Console_write(String8 format, ...)
-    +  Size  Console_writeLine(String8 format, ...)
+- `int printf(char *, ...)`
+    +  `Size  Console_write(String8 format, ...)`
+    +  `Size  Console_writeLine(String8 format, ...)`
 
-        Usage: Console_writeLine("{0:string} {1:bool} {2:uint} {3:uint:hex} {4:int} {5:int32}", 6, string, boolean, uint, uint, int, int);
+        Usage:
 
-- int strcmp(char * str1, char * str2)
+        `Console_writeLine("{0:string} {1:bool}", 2, string, boolean);`
+
+        `Console_writeLine("{0:uint} {1:uint:hex} {2:int} {3:int32}, 4, uint, uint, int, int);`
+
+- `int strcmp(char * str1, char * str2)`
 
     strcmp returns the difference of the last two ASCII characters.
 
-    +  Size  String8_compare(String8 that, String8 other)
+    +  `Size  String8_compare(String8 that, String8 other)`
 
         String8_compare returns the number of characters, which are equal.
 
-    +  Bool  String8_equals(String8 that, String8 other)
+    +  `Bool  String8_equals(String8 that, String8 other)`
 
         String8_equals returns true, if all of the characters are equal.
 
-- int strlen(char * str)
-    + Size  String8_get_Length(String8 that)
+- `int strlen(char * str)`
+    + `Size  String8_get_Length(String8 that)`
 
-- void * malloc (size_t size)
-    + Var  Memory_allocClass(Type type)
+- `void * malloc (size_t size)`
+    + `Var  Memory_allocClass(Type type)`
 
-        Usage: File file = Memory_allocClass(typeof(File));
+        Usage: `File file = Memory_allocClass(typeof(File));`
 
-    + Var  Memory_allocArray(Type type, Size size)
+    + `Var  Memory_allocArray(Type type, Size size)`
 
-        Usage: String8 string = Memory_allocArray(typeof(Char8), length + 1);
+        Usage: `String8 string = Memory_allocArray(typeof(Char8), length + 1);`
 
 
-This is currently a DEBUG version. You need t use make.awk, GCC and AMD64 Linux. I didn't try this on other compilers or on Windows.
 
 MINCLR is all about C `typedef struct System_Object * System_Object;`, which doesn't work in C++, CPP, you'd get a compiler exception.
+
+This is currently a DEBUG version. You need t use make.awk, GCC and AMD64 Linux. I didn't try this on other compilers or on Windows.
 
 I do want you to use `run.sh`, which is using [make.awk](//github.com/MinimalC/make.awk):
 
