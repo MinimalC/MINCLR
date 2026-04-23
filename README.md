@@ -28,13 +28,19 @@ Size Hello(Size argc, String8 argv[]) {
 - int printf(char *, ...)
     +  Size  Console_write(String8 format, ...)
     +  Size  Console_writeLine(String8 format, ...)
+
         Usage: Console_writeLine("{0:string} {1:bool} {2:uint} {3:uint:hex} {4:int} {5:int32}", 6, string, boolean, uint, uint, int, int);
 
 - int strcmp(char * str1, char * str2)
+
     strcmp returns the difference of the last two ASCII characters.
+
     +  Size  String8_compare(String8 that, String8 other)
+
         String8_compare returns the number of characters, which are equal.
+
     +  Bool  String8_equals(String8 that, String8 other)
+
         String8_equals returns true, if all of the characters are equal.
 
 - int strlen(char * str)
@@ -42,8 +48,11 @@ Size Hello(Size argc, String8 argv[]) {
 
 - void * malloc (size_t size)
     + Var  Memory_allocClass(Type type)
+
         Usage: File file = Memory_allocClass(typeof(File));
+
     + Var  Memory_allocArray(Type type, Size size)
+
         Usage: String8 string = Memory_allocArray(typeof(Char8), length + 1);
 
 
