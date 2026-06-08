@@ -143,29 +143,29 @@ System_Size  System_String8_get_Length__max(System_String8 that, System_Size lim
 Size  System_String8_copyTo(String8 src, String8 dest) {
     Size length = String8_get_Length(src);
     Size counter = length;
-    while ( counter-- ) *dest++ = *src++;
-    return length;
+    while ( counter && *src ) { *dest++ = *src++; --counter; }
+    return length - counter;
 }
 
 Size  System_String8_copyToAt(String8 src, String8 dest, Size at) {
     Size length = String8_get_Length(src);
     Size counter = length;
     dest += at;
-    while ( counter-- ) *dest++ = *src++;
-    return length;
+    while ( counter && *src ) { *dest++ = *src++; --counter; }
+    return length - counter;
 }
 
 Size  System_String8_copySubstringTo(String8 src, Size length, String8 dest) {
     Size counter = length;
-    while ( counter-- ) *dest++ = *src++;
-    return length;
+    while ( counter && *src ) { *dest++ = *src++; --counter; }
+    return length - counter;
 }
 
 Size  System_String8_copySubstringToAt(String8 src, Size length, String8 dest, Size at) {
     Size counter = length;
     dest += at;
-    while ( counter-- ) *dest++ = *src++;
-    return length;
+    while ( counter && *src ) { *dest++ = *src++; --counter; }
+    return length - counter;
 }
 
 String8  System_String8_copy(String8 that) {

@@ -52,6 +52,9 @@ body {
     <div class="struct"> struct System_Atomic  </div>
 </div>
 <div class="block">
+    <div class="struct"> struct System_Autex  </div>
+</div>
+<div class="block">
     <div class="static"> static System_Console </div>
 </div>
 <div class="block">
@@ -59,7 +62,6 @@ body {
     <div class="text">    Quit or Exit the program quietly, writing System_Exception to the Console, before terminating the process.</div>
     <div class="argument">    Argument Size code</div>
     <div class="returns">    No return</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_execute__stdout_stderr_stdin_arguments</div>
@@ -71,7 +73,6 @@ body {
     <div class="argument">    Argument System_Size argc</div>
     <div class="argument">    Argument System_String8 argv[]</div>
     <div class="returns">    Returns the exit status of the program.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_execute__stdout_stderr_stdin</div>
@@ -82,7 +83,6 @@ body {
     <div class="argument">    Argument System_File stdin</div>
     <div class="argument">    Argument ...</div>
     <div class="returns">    Returns the exit status of the program.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_write__string_size </div>
@@ -90,21 +90,18 @@ body {
     <div class="argument">    Argument System_String8 string</div>
     <div class="argument">    Argument System_Size size</div>
     <div class="returns">    Returns the length of the string.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_write__string </div>
     <div class="text">    Write a String8 to System_Console_StdOut, using System_String8_get_Length.</div>
     <div class="argument">    Argument System_String8 string</div>
     <div class="returns">    Returns the length of the string.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_write__char </div>
     <div class="text">    Write a char to System_Console_StdOut.</div>
     <div class="argument">    Argument System_Char8 character</div>
     <div class="returns">    Returns 1.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_write</div>
@@ -113,20 +110,17 @@ body {
     <div class="argument">    Argument ...</div>
     <div class="returns">    Returns the length of the string.</div>
     <div class="text">    Example: Console_write("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_writeLineEmpty</div>
     <div class="text">    Write an empty new line to System_Console_StdOut.</div>
     <div class="returns">    Returns 1.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_writeLine__string</div>
     <div class="function">    Write a string to System_Console_StdOut, this function is using String8_get_Length.</div>
     <div class="argument">    Argument System_String8 string</div>
     <div class="returns">    Returns the length of the string.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_writeLine</div>
@@ -135,7 +129,6 @@ body {
     <div class="argument">    Argument ...</div>
     <div class="returns">    Returns the length of the string.</div>
     <div class="text">    Example: Console_writeLine("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_assert__string8</div>
@@ -146,7 +139,6 @@ body {
     <div class="argument">    Argument System_String8 fileName</div>
     <div class="argument">    Argument System_Size line</div>
     <div class="returns">    Returns true, if the expression is false.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_debug</div>
@@ -155,7 +147,6 @@ body {
     <div class="argument">    Argument ...</div>
     <div class="returns">    Returns the length of the string.</div>
     <div class="text">    Example: Console_debug("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_debug__string_size </div>
@@ -163,21 +154,18 @@ body {
     <div class="argument">    Argument System_String8 string</div>
     <div class="argument">    Argument System_Size size</div>
     <div class="returns">    Returns the length of the string.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_debug__string </div>
     <div class="text">    Write a String8 to System_Console_StdErr, using System_String8_get_Length.</div>
     <div class="argument">    Argument System_String8 string</div>
     <div class="returns">    Returns the length of the string.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_debug__char </div>
     <div class="text">    Write a char to System_Console_StdErr.</div>
     <div class="argument">    Argument System_Char8 character</div>
     <div class="returns">    Returns 1.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_debugLine</div>
@@ -186,20 +174,17 @@ body {
     <div class="argument">    Argument ...</div>
     <div class="returns">    Returns the length of the string.</div>
     <div class="text">    Example: Console_debugLine("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_debugLine__string</div>
     <div class="function">    Write a string to System_Console_StdErr, this function is using String8_get_Length.</div>
     <div class="argument">    Argument System_String8 string</div>
     <div class="returns">    Returns the length of the string.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_debugLineEmpty</div>
     <div class="text">    Write an empty new line to System_Console_StdErr.</div>
     <div class="returns">    Returns 1.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_error</div>
@@ -208,7 +193,6 @@ body {
     <div class="argument">    Argument ...</div>
     <div class="returns">    Returns the length of the string.</div>
     <div class="text">    Example: Console_error("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_error__string_size </div>
@@ -216,21 +200,18 @@ body {
     <div class="argument">    Argument System_String8 string</div>
     <div class="argument">    Argument System_Size size</div>
     <div class="returns">    Returns the length of the string.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_error__string </div>
     <div class="text">    Write a String8 to System_Console_StdErr, using System_String8_get_Length.</div>
     <div class="argument">    Argument System_String8 string</div>
     <div class="returns">    Returns the length of the string.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_error__char </div>
     <div class="text">    Write a char to System_Console_StdErr.</div>
     <div class="argument">    Argument System_Char8 character</div>
     <div class="returns">    Returns 1.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_errorLine</div>
@@ -239,20 +220,17 @@ body {
     <div class="argument">    Argument ...</div>
     <div class="returns">    Returns the length of the string.</div>
     <div class="text">    Example: Console_errorLine("({0:uint}){1:string}", 2, String8_get_Length("Hallo"), "Hallo");</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_errorLine__string</div>
     <div class="function">    Write a string to System_Console_StdErr, this function is using String8_get_Length.</div>
     <div class="argument">    Argument System_String8 string</div>
     <div class="returns">    Returns the length of the string.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Console_errorLineEmpty</div>
     <div class="text">    Write an empty new line to System_Console_StdErr.</div>
     <div class="returns">    Returns 1.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="struct"> struct System_DateTime  </div>
@@ -260,22 +238,18 @@ body {
 <div class="block">
     <div class="function"> function System_DateTime_toString</div>
     <div class="returns">    Returns a formatted String8 of DateTime.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_DateTime_now</div>
     <div class="returns">    Returns a DateTime of DateTime_now.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_DateTime_now_toString</div>
     <div class="returns">    Returns a formatted String8 of DateTime_now.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function stack_System_DateTime_now</div>
     <div class="returns">    Returns DateTime_now, on stack.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="struct"> struct System_Decimal  </div>
@@ -295,18 +269,15 @@ body {
 <div class="block">
     <div class="object"> object System_String8 * System_Environment_Arguments </div>
     <div class="returns">    Returns an array of String8, with System_Environment_Arguments_Count items</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="object"> object System_String8 * System_Environment_AuxValues</div>
     <div class="returns">    Returns an array of System_String8, with System_Environment_AuxValues_Count items</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_String8 System_Environment_AuxType_toString</div>
     <div class="argument">    Argument System_Environment_AuxType value</div>
     <div class="returns">    Returns the name of value in System_String8</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="struct"> struct System_Exception </div>
@@ -314,12 +285,10 @@ body {
 <div class="block">
     <div class="function"> function System_Exception_throw </div>
     <div class="text">    Throws a System_Exception.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Exception_terminate</div>
     <div class="text">    Throws a System_Exception, before terminating the process.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Exception_catch </div>
@@ -327,7 +296,6 @@ body {
     <div class="argument">    argument System_Exception * that</div>
     <div class="argument">    argument System_Type type</div>
     <div class="returns">    Returns true, if there is a System_Exception, false if not.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function System_Exception_catch__any</div>
@@ -336,34 +304,29 @@ body {
     <div class="argument">    argument System_Type type</div>
     <div class="argument">    argument System_Bool any</div>
     <div class="returns">    Returns true, if there is a System_Exception, false if not.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function new_System_Exception</div>
     <div class="text">    Creates a new System_Exception with a message.</div>
     <div class="argument">    argument System_String8 message</div>
     <div class="returns">    Returns the System_Exception.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function base_System_Exception_init</div>
     <div class="text">    Initializes new System_Exception with a message.</div>
     <div class="argument">    argument System_Exception that</div>
     <div class="argument">    argument System_String8 message</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function base_System_Exception_free</div>
     <div class="text">    Free the message.</div>
     <div class="argument">    argument System_Exception that</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function new_System_IOException</div>
     <div class="text">    Creates a new System_IOException with a message.</div>
     <div class="argument">    argument System_String8 message</div>
     <div class="returns">    Returns the System_Exception.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function new_System_IOException__error</div>
@@ -371,35 +334,30 @@ body {
     <div class="argument">    argument System_ErrorCode error</div>
     <div class="argument">    argument System_String8 message</div>
     <div class="returns">    Returns the System_Exception.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function new_System_NotSupportedException</div>
     <div class="text">    Creates a new System_NotSupportedException with a message.</div>
     <div class="argument">    argument System_String8 message</div>
     <div class="returns">    Returns the System_Exception.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function new_System_NotImplementedException</div>
     <div class="text">    Creates a new System_NotImplementedException with a message.</div>
     <div class="argument">    argument System_String8 message</div>
     <div class="returns">    Returns the System_Exception.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function new_System_ArgumentException</div>
     <div class="text">    Creates a new System_ArgumentException with a message.</div>
     <div class="argument">    argument System_String8 message</div>
     <div class="returns">    Returns the System_Exception.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="function"> function new_System_InvalidException</div>
     <div class="text">    Creates a new System_InvalidException with a message.</div>
     <div class="argument">    argument System_String8 message</div>
     <div class="returns">    Returns the System_Exception.</div>
-    <div class="text"></div>
 </div>
 <div class="block">
     <div class="struct"> struct System_File</div>
