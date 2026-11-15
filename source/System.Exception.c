@@ -20,7 +20,9 @@ export thread System_Exception System_Exception_current = null;
 
 void  System_Exception_print(System_Exception that) {
     if (!that) return;
-    Type type = that->base.type;
+    System_UInt64 type_hash = that->base.type;
+    if (!type_hash) return;
+    Type type = System_Type_getBySipHash(type_hash);
     if (!type) return;
 
     if (type->name && that->message && that->error)
@@ -103,7 +105,7 @@ Bool  System_Exception_catch__any(System_Exception ref that, System_Type type, S
     
     if (!System_Exception_current) return false;
 
-    Type exceptionType = System_Exception_current->base.type;
+    Type exceptionType = System_Type_getBySipHash(System_Exception_current->base.type);
 
     if (!any && !System_Type_isAssignableFrom(exceptionType, type)) return false;
 
@@ -157,18 +159,18 @@ struct System_Type_FunctionInfo  System_ExceptionTypeFunctions[] = {
 };
 
 struct System_Type System_ExceptionType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "Exception",
+    .base = { .type = typeof_System_Type },
+    .name = "System.Exception",
     .size = sizeof(struct System_Exception),
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(System_ExceptionTypeFunctions), .value = &System_ExceptionTypeFunctions },
 };
 
 struct System_Type System_IOExceptionType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "IOException",
+    .base = { .type = typeof_System_Type },
+    .name = "System.IOException",
     .size = sizeof(struct System_Exception),
-    .baseType = typeof(System_Exception),
+    .baseType = typeof_System_Exception,
 };
 
 /** function new_System_IOException
@@ -196,10 +198,10 @@ System_Exception  new_System_IOException__error(System_ErrorCode error, System_S
 }
 
 struct System_Type System_NotSupportedExceptionType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "NotSupportedException",
+    .base = { .type = typeof_System_Type },
+    .name = "System.NotSupportedException",
     .size = sizeof(struct System_Exception),
-    .baseType = typeof(System_Exception),
+    .baseType = typeof_System_Exception,
 };
 
 /** function new_System_NotSupportedException
@@ -214,10 +216,10 @@ System_Exception  new_System_NotSupportedException(System_String8 message) {
 }
 
 struct System_Type System_NotImplementedExceptionType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "NotImplementedException",
+    .base = { .type = typeof_System_Type },
+    .name = "System.NotImplementedException",
     .size = sizeof(struct System_Exception),
-    .baseType = typeof(System_Exception),
+    .baseType = typeof_System_Exception,
 };
 
 /** function new_System_NotImplementedException
@@ -232,10 +234,10 @@ System_Exception  new_System_NotImplementedException(System_String8 message) {
 }
 
 struct System_Type System_ArgumentExceptionType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "ArgumentException",
+    .base = { .type = typeof_System_Type },
+    .name = "System.ArgumentException",
     .size = sizeof(struct System_Exception),
-    .baseType = typeof(System_Exception),
+    .baseType = typeof_System_Exception,
 };
 
 /** function new_System_ArgumentException
@@ -250,10 +252,10 @@ System_Exception  new_System_ArgumentException(System_String8 message) {
 }
 
 struct System_Type System_InvalidExceptionType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "InvalidException",
+    .base = { .type = typeof_System_Type },
+    .name = "System.InvalidException",
     .size = sizeof(struct System_Exception),
-    .baseType = typeof(System_Exception),
+    .baseType = typeof_System_Exception,
 };
 
 /** function new_System_InvalidException

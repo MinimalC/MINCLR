@@ -21,7 +21,7 @@
     Returns true or false, if the File exists.
 */
 System_Bool System_File_exists(System_String8 name) {
-    struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo)); System_FileInfo_init(&info, name);
+    struct System_FileInfo info; System_Stack_clearType(info, typeof_System_FileInfo); System_FileInfo_init(&info, name);
     return info.status.mode & FileInfo_Type_Regular;
 }
 
@@ -258,7 +258,7 @@ Size  System_File_get_Length(File that) {
     Size length = System_File_seek(that, 0, Origin_End);
     System_File_seek(that, position, Origin_Begin);
     return length;*/
-    struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo)); System_FileInfo_init__fileId(&info, that->fileId);
+    struct System_FileInfo info; System_Stack_clearType(info, typeof_System_FileInfo); System_FileInfo_init__fileId(&info, that->fileId);
     return info.status.size;
 }
 
@@ -295,10 +295,10 @@ struct System_Type_InterfaceInfo  System_FileTypeInterfaces[] = {
 };
 
 struct System_Type System_FileType = {
-    .base = { .type = typeof(System_Type) },
-	.name = "File",
+    .base = { .type = typeof_System_Type },
+	.name = "System.File",
     .size = sizeof(struct System_File),
-	.baseType = typeof(System_Object),
+	.baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(System_FileTypeFunctions), .value = &System_FileTypeFunctions },
     .interfaces = { .length = sizeof_array(System_FileTypeInterfaces), .value = &System_FileTypeInterfaces },
 };

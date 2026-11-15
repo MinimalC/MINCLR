@@ -10,7 +10,8 @@ Bool main_try() {
 
     System_Exception exception = null;
     if (System_Exception_catch(&exception, typeof(System_IOException))) {
-        Console_writeLine("SUCCESS: catch {0:string}", 1, exception->base.type->name);
+        Type realType = System_Type_getBySipHash(exception->base.type);
+        Console_writeLine("SUCCESS: catch {0:string}", 1, realType->name);
     }
     Console_writeLine__string("This is finally.");
     /* Test02: Close the File */

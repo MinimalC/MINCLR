@@ -25,70 +25,43 @@ typedef System_fixed struct System_Type  * System_Type;
 #include "System.Object.h"
 
 typedef System_fixed struct System_Type_FunctionInfo {
-	struct System_Object  base;
-
 	System_String8  name;
-
 	System_Var function;
-
 	System_Var value;
-
 }  * System_Type_FunctionInfo;
 
 typedef System_fixed struct System_Type_FunctionInfoArray {
-	struct System_Object base;
-
 	System_Size  length;
-
 	struct System_Type_FunctionInfo  (* value)[];
-
 }  * System_Type_FunctionInfoArray;
 
 typedef System_fixed struct System_Type_InterfaceInfo {
-	struct System_Object  base;
-
     System_Type  interfaceType;
-
 	System_Size  offset;
-
 	struct System_Type_FunctionInfoArray  functions;
-
 }  * System_Type_InterfaceInfo;
 
 typedef System_fixed struct System_Type_InterfaceInfoArray {
-	struct System_Object base;
-
 	System_Size  length;
-
 	struct System_Type_InterfaceInfo  (* value)[];
-
 }  * System_Type_InterfaceInfoArray;
 
 typedef System_fixed struct System_Type_FieldInfo {
-	struct System_Object  base;
-
     System_String8  name;
-
     System_IntPtr  value;
-
 }  * System_Type_FieldInfo;
 
 typedef System_fixed struct System_Type_FieldInfoArray {
-	struct System_Object base;
-
 	System_Size  length;
-
 	struct System_Type_FieldInfo  (* value)[];
-
 }  * System_Type_FieldInfoArray;
-
 
 struct System_Type {
 	struct System_Object  base;
 
 	System_String8  name;
 	System_Size  size;
-	System_Type  baseType;
+	System_UInt64  baseType;
 
 	struct System_Type_FunctionInfoArray  functions;
 	struct System_Type_InterfaceInfoArray  interfaces;
@@ -96,47 +69,31 @@ struct System_Type {
 	/* TODO: struct System_Type_PropertyInfoArray  properties; */
 };
 
-/* export struct System_Type  namespace_System; */
-
 export struct System_Type  System_TypeType;
-
-export struct System_Type  System_Type_FunctionInfoType;
-export struct System_Type  System_Type_FunctionInfoArrayType;
-
-export struct System_Type  System_Type_InterfaceInfoType;
-export struct System_Type  System_Type_InterfaceInfoArrayType;
-
-export struct System_Type  System_Type_FieldInfoType;
-export struct System_Type  System_Type_FieldInfoArrayType;
+export struct System_Type  System_VoidType; /* sizeof(void) == 1  */
+export struct System_Type  System_VarType;  /* sizeof(void *) on x86_64 is * 8 == 64bits  */
+export struct System_Type  System_SizeType;
+export struct System_Type  System_SSizeType;
+export struct System_Type  System_IntPtrType;
+export struct System_Type  System_SIntPtrType;
+export struct System_Type  System_BoolType;
 
 #if defined(using_System)
 #define Type  System_Type
 #define TypeType  System_TypeType
-#define Type_FunctionInfo  System_Type_FunctionInfo
-#define Type_FunctionInfoType  System_Type_FunctionInfoType
-#define Type_FunctionInfoArray  System_Type_FunctionInfoArray
-#define Type_FunctionInfoArrayType  System_Type_FunctionInfoArrayType
-#define Type_InterfaceInfo  System_Type_InterfaceInfo
-#define Type_InterfaceInfoType  System_Type_InterfaceInfoType
-#define Type_InterfaceInfoArray  System_Type_InterfaceInfoArray
-#define Type_InterfaceInfoArrayType  System_Type_InterfaceInfoArrayType
-#define Type_FieldInfo  System_Type_FieldInfo
-#define Type_FieldInfoType  System_Type_FieldInfoType
-#define Type_FieldInfoArray  System_Type_FieldInfoArray
-#define Type_FieldInfoArrayType  System_Type_FieldInfoArrayType
-#endif
-
-export struct System_Type  System_VoidType; /* sizeof(void) == 1  */
-export struct System_Type  System_VarType;  /* sizeof(void *) on x86_64 is * 8 == 64bits  */
-export struct System_Type  System_SizeType;
-export struct System_Type  System_IntPtrType;
-export struct System_Type  System_BoolType;
-
-#if defined(using_System)
+#define VoidType  System_VoidType
 #define VarType  System_VarType
 #define SizeType  System_SizeType
+#define SSizeType  System_SSizeType
 #define IntPtrType  System_IntPtrType
+#define SIntPtrType  System_SIntPtrType
 #define BoolType  System_BoolType
+#endif
+
+enum { typeof_System_Type = 0xE8E7E4A139BB3C3D };   /* SipHash48 of "System.Type" */
+
+#if defined(using_System)
+#define typeof_Type  typeof_System_Type
 #endif
 
 export System_Var System_Type_getMethod(System_Type  that, System_Var function);
@@ -144,8 +101,11 @@ export System_Var System_Type_tryMethod(System_Type  that, System_Var function);
 // inline artificial System_Var inline_System_Type_getMethod(System_Type  that, System_Var function)
 export System_Bool  System_Type_isAssignableFrom(System_Type  that, System_Type  other);
 export System_UInt64 System_Type_getSipHash(System_Type that);
+export System_Type System_Type_getBySipHash(System_UInt64 hash);
+export System_Type System_Type_getBySipHash__name(System_UInt64 hash, System_String8 name);
 
 #if defined(using_System)
+#define Type_get  System_Type_get
 #define Type_getMethod  System_Type_getMethod
 #define Type_tryMethod  System_Type_tryMethod
 #define Type_isAssignableFrom  System_Type_isAssignableFrom

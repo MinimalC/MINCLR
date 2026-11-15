@@ -70,10 +70,10 @@ struct System_Type_FunctionInfo  Generic_T0ArrayEnumeratorTypeFunctions[] = {
     { .function = base_System_IEnumerator_moveNext, .value = base_Generic_T0ArrayEnumerator_moveNext },
 };
 
-struct System_Type Generic_T0ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
+struct System_Type Generic_T0ArrayEnumeratorType = { .base = { .type = typeof_System_Type },
     .name = "Generic.T0ArrayEnumerator",
     .size = sizeof(struct Generic_T0ArrayEnumerator),
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
     .functions = { 
         .length = sizeof_array(Generic_T0ArrayEnumeratorTypeFunctions), .value = &Generic_T0ArrayEnumeratorTypeFunctions
     },

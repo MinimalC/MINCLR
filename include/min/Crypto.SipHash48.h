@@ -16,6 +16,8 @@ typedef System_fixed struct Crypto_SipHash48 {
 
 export struct System_Type  Crypto_SipHash48Type;
 
+enum { typeof_Crypto_SipHash48 = 0x2B5F57F44CB8EB47 };
+
 export Crypto_SipHash48  new_Crypto_SipHash48();
 export void  Crypto_SipHash48_init(Crypto_SipHash48 that);
 export void  Crypto_SipHash48_init__key(Crypto_SipHash48 that, System_Char8 key[16]);
@@ -25,6 +27,7 @@ export System_UInt64  Crypto_SipHash48_final(Crypto_SipHash48 that);
 #if defined(using_Crypto)
 #define SipHash48  Crypto_SipHash48
 #define SipHash48Type  Crypto_SipHash48Type
+#define typeof_SipHash48  typeof_Crypto_SipHash48
 #define new_SipHash48  new_Crypto_SipHash48
 #define SipHash48_init  Crypto_SipHash48_init
 #define SipHash48_init__key  Crypto_SipHash48_init__key

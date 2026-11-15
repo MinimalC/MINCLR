@@ -17,6 +17,8 @@ typedef System_fixed struct Crypto_CubeHash512 {
 
 export struct System_Type  Crypto_CubeHash512Type;
 
+enum { typeof_Crypto_CubeHash512 = 0xE164FA77ABFFAE96 };
+
 export Crypto_CubeHash512  new_Crypto_CubeHash512();
 export void  Crypto_CubeHash512_init(Crypto_CubeHash512 that);
 export void  Crypto_CubeHash512_init__size(Crypto_CubeHash512 that, System_Size hashsize);
@@ -29,6 +31,7 @@ export System_Size  stack_Crypto_CubeHash512_toString(Crypto_CubeHash512 that, S
 #if defined(using_Crypto)
 #define CubeHash512  Crypto_CubeHash512
 #define CubeHash512Type  Crypto_CubeHash512Type
+#define typeof_CubeHash512  typeof_Crypto_CubeHash512
 #define new_CubeHash512  new_Crypto_CubeHash512
 #define CubeHash512_init  Crypto_CubeHash512_init
 #define CubeHash512_init__size  Crypto_CubeHash512_init__size

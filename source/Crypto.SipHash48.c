@@ -60,9 +60,9 @@ void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_Var input, System_Si
     UInt64 v0 = that->v0, v1 = that->v1;
     UInt64 v2 = that->v2, v3 = that->v3;
 
-    Size i, k, len;
+    Size i, k, len, length_mod8 = length % 8;
     UInt64 mi, mask;
-	for (i = 0; i * 8 < length - (length % 8); ++i)
+	for (i = 0; i < length - length_mod8; i += 8)
 	{
 		mi = *((UInt64*)(input + i));
 		v3 ^= mi;
@@ -72,7 +72,7 @@ void  Crypto_SipHash48_update(Crypto_SipHash48 that, System_Var input, System_Si
 
 	mi = *((UInt64 *)(input + i));
 	len = (length & 0xff) << 56;
-	mask = length % 8 == 0 ? 0 : 0xffffffffffffffffULL >> (8 * (8 - (length % 8)));
+	mask = length_mod8 == 0 ? 0 : 0xffffffffffffffffULL >> (8 * (8 - (length_mod8)));
 	mi = (mi & mask) ^ len;
 
 	v3 ^= mi;
@@ -103,13 +103,11 @@ struct System_Type_FunctionInfo  Crypto_SipHash48TypeFunctions[] = {
 };
 
 struct System_Type Crypto_SipHash48Type = {
-	.base = { .type = typeof(System_Type) },
+	.base = { .type = typeof_System_Type },
 	.name = "Crypto.SipHash48",
 	.size = sizeof(struct Crypto_SipHash48),
-	.baseType = &System_ObjectType,
-	.functions  = { 
-        .length = sizeof_array(Crypto_SipHash48TypeFunctions), .value = &Crypto_SipHash48TypeFunctions
-    },
+	.baseType = typeof_System_Object,
+	.functions  = { .length = sizeof_array(Crypto_SipHash48TypeFunctions), .value = &Crypto_SipHash48TypeFunctions },
 };
 
 #endif

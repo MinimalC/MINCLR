@@ -25,7 +25,7 @@
 
 /** struct System_Char8  **/
 
-struct System_Type System_Char8Type = { .base = { .type = typeof(System_Type) }, .name = "Char8", .size = 1 };
+struct System_Type System_Char8Type = { .base = { .type = typeof_System_Type }, .name = "System.Char8", .size = 1 };
 
 System_Bool  System_Char8_isNumber(System_Char8 that) {
     return (that >= 0x30 && that <= 0x39);
@@ -63,7 +63,7 @@ System_Bool  System_Char8_isPrintable(System_Char8 that) {
 
 /** struct System_String8 **/
 
-struct System_Type System_String8Type = { .base = { .type = typeof(System_Type) }, .name = "String8", .size = sizeof(System_Var) };
+struct System_Type System_String8Type = { .base = { .type = typeof_System_Type }, .name = "System.String8", .size = sizeof(System_Var) };
 
 System_STRING8  System_String8_Empty = "";
 

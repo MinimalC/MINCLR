@@ -22,6 +22,8 @@ typedef System_fixed struct System_Thread {
 
 export struct System_Type  System_ThreadType;
 
+enum { typeof_System_Thread = 0xA4978BFB1B82602B };
+
 #if !defined(System_internal)
 import thread System_Thread System_Thread_Current;
 import thread System_Thread_ID System_Thread_TID;

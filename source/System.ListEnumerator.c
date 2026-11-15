@@ -57,13 +57,11 @@ struct System_Type_FunctionInfo  System_ListEnumeratorTypeFunctions[] = {
     [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_ListEnumerator_moveNext },
 };
 
-struct System_Type System_ListEnumeratorType = { .base = { .type = typeof(System_Type) },
-    .name = "ListEnumerator",
+struct System_Type System_ListEnumeratorType = { .base = { .type = typeof_System_Type },
+    .name = "System.ListEnumerator",
     .size = sizeof(struct System_ListEnumerator),
-    .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_ListEnumeratorTypeFunctions), .value = &System_ListEnumeratorTypeFunctions
-    },
+    .baseType = typeof_System_Object,
+    .functions = { .length = sizeof_array(System_ListEnumeratorTypeFunctions), .value = &System_ListEnumeratorTypeFunctions },
 };
 
 #endif

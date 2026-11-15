@@ -330,6 +330,8 @@ enum {
 
 export struct System_Type  System_ELFAssembly_SectionTypeType;
 
+enum { typeof_System_ELFAssembly_SectionType = 0x755151B02987C636 };
+
 typedef System_UInt64 System_ELFAssembly_SectionFlags;
 enum {
     System_ELFAssembly_SectionFlags_None,
@@ -766,6 +768,8 @@ typedef struct System_ELF64Assembly {
 
 export struct System_Type  System_ELF64AssemblyType;
 
+enum { typeof_System_ELF64Assembly = 0xE5D1302BD5D09E04 };
+
 export System_ELF64Assembly System_ELF64Assembly_loaded[64];
 export System_Size System_ELF64Assembly_loadedCount;
 
@@ -780,7 +784,9 @@ export System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System
 export System_ELF64Assembly_Symbol System_ELF64Assembly_getSymbol(System_ELF64Assembly assembly, System_String8 name);
 export System_ELF64Assembly_Symbol System_ELF64Assembly_getDynamicSymbol(System_ELF64Assembly assembly, System_String8 name);
 export System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
+export System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalSymbol__next(System_String8 name, System_ELF64Assembly * out_assembly, System_Size next);
 export System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly);
+export System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalDynamicSymbol__next(System_String8 name, System_ELF64Assembly * out_assembly, System_Size next);
 import System_Var System_ELF64Assembly_jump(System_ELF64Assembly assembly, System_Size relocationOffset);
 export System_Var System_ELF64Assembly_resolve(System_ELF64Assembly assembly, System_Size relocationOffset);
 export System_Size System_ELF64Assembly_calculateThreadSize(void);

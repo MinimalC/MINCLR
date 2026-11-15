@@ -27,6 +27,15 @@ export struct System_Type  System_NotImplementedExceptionType;
 export struct System_Type  System_ArgumentExceptionType;
 export struct System_Type  System_InvalidExceptionType;
 
+enum { 
+    typeof_System_Exception = 0xC054CDECFAB5AE1,
+    typeof_System_IOException = 0x77084655CC0DB880,
+    typeof_System_NotSupportedException = 0x4C78E6DC100A4301,
+    typeof_System_NotImplementedException = 0xA938A744F4FA5765,
+    typeof_System_ArgumentException = 0xE31D3AB93AA3699A,
+    typeof_System_InvalidException = 0x221F791CF3073285,
+};
+
 #if !defined(System_internal)
 import thread System_Exception  System_Exception_current;
 #endif

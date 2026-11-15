@@ -11,13 +11,13 @@
 
 /** struct System_DateTime  **/
 
-struct System_Type System_TimeType = { .base = { .type = typeof(System_Type) }, .name = "Time", .size = sizeof(System_Time) };
+struct System_Type System_TimeType = { .base = { .type = typeof_System_Type }, .name = "System.Time", .size = sizeof(System_Time) };
 
-struct System_Type System_TimeSpanType = { .base = { .type = typeof(System_Type) }, .name = "TimeSpan", .size = sizeof(struct System_TimeSpan) };
+struct System_Type System_TimeSpanType = { .base = { .type = typeof_System_Type }, .name = "System.TimeSpan", .size = sizeof(struct System_TimeSpan) };
 
-struct System_Type System_TimeZoneType = { .base = { .type = typeof(System_Type) }, .name = "TimeZone", .size = sizeof(struct System_TimeZone) };
+struct System_Type System_TimeZoneType = { .base = { .type = typeof_System_Type }, .name = "System.TimeZone", .size = sizeof(struct System_TimeZone) };
 
-struct System_Type System_DateTimeType = { .base = { .type = typeof(System_Type) }, .name = "DateTime", .size = sizeof(struct System_DateTime) };
+struct System_Type System_DateTimeType = { .base = { .type = typeof_System_Type }, .name = "System.DateTime", .size = sizeof(struct System_DateTime) };
 
 /** function System_DateTime_toString
     Returns a formatted String8 of DateTime.

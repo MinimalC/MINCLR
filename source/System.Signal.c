@@ -25,7 +25,7 @@ String8 System_Signal_Number_toString(System_Signal_Number value) {
 
 /** struct System_Signal  **/
 
-struct System_Type System_SignalType = { .base = { .type = typeof(System_Type) }, .name = "Signal", };
+struct System_Type System_SignalType = { .base = { .type = typeof_System_Type }, .name = "System.Signal", };
 
 void System_Signal_add(System_Signal that, System_Signal_Number number) {
     that->mask[0] |= ((System_Signal_Number)1 << (number - 1));

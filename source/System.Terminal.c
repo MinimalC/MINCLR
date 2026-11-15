@@ -12,8 +12,8 @@
 /** struct System_Terminal **/
 
 struct System_Type System_TerminalType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "Terminal",
+    .base = { .type = typeof_System_Type },
+    .name = "System.Terminal",
     .size = sizeof(struct System_Terminal),
 };
 

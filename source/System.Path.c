@@ -10,7 +10,7 @@
 
 /** struct System_Path  **/
 
-struct System_Type System_PathType = { .base = { .type = typeof(System_Type) }, .name = "Path" };
+struct System_Type System_PathType = { .base = { .type = typeof_System_Type }, .name = "System.Path" };
 
 System_String8 System_Path_getDirectoryName(System_String8 path) {
     SSize i = System_String8_lastIndexOf__char(path, '/');

@@ -14,7 +14,7 @@ int SipHash48_main(int argc, char * argv[]) {
 
     for (Size i = 1; i < argc; ++i) {
         Stack_clear(sipHash48); SipHash48_init(&sipHash48);
-        Stack_clearType(file, typeof(System_File));
+        Stack_clearType(file, typeof_System_File);
         UInt64 hash_value = 0;
         if (String8_equals(argv[i], "--file")) {
             if (i + 1 == argc) { 

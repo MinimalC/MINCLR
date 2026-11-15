@@ -189,10 +189,10 @@ struct System_Type_InterfaceInfo  System_MemoryStreamTypeInterfaces[] = {
 };
 
 struct System_Type System_MemoryStreamType = {
-    .base = { .type = typeof(System_Type) },
-	.name = "MemoryStream",
+    .base = { .type = typeof_System_Type },
+	.name = "System.MemoryStream",
     .size = sizeof(struct System_MemoryStream),
-	.baseType = typeof(System_Object),
+	.baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(System_MemoryStreamTypeFunctions), .value = &System_MemoryStreamTypeFunctions },
     .interfaces = { .length = sizeof_array(System_MemoryStreamTypeInterfaces), .value = &System_MemoryStreamTypeInterfaces },
 };

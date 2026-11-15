@@ -125,13 +125,11 @@ struct System_Type_FunctionInfo  Crypto_CubeHash512TypeFunctions[] = {
 };
 
 struct System_Type Crypto_CubeHash512Type = {
-	.base = { .type = typeof(System_Type) },
+	.base = { .type = typeof_System_Type },
 	.name = "Crypto.CubeHash512",
 	.size = sizeof(struct Crypto_CubeHash512),
-	.baseType = &System_ObjectType,
-	.functions  = { 
-        .length = sizeof_array(Crypto_CubeHash512TypeFunctions), .value = &Crypto_CubeHash512TypeFunctions
-    },
+	.baseType = typeof_System_Object,
+	.functions  = { .length = sizeof_array(Crypto_CubeHash512TypeFunctions), .value = &Crypto_CubeHash512TypeFunctions },
 };
 
 #endif

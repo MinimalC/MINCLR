@@ -29,6 +29,8 @@ typedef System_fixed struct System_VarDictionary {
 
 export struct System_Type  System_VarDictionaryType;
 
+enum { typeof_System_VarDictionary = 0x2426F0E43314B3A8 };
+
 export System_VarDictionary  new_System_VarDictionary();
 export void  System_VarDictionary_init(System_VarDictionary that);
 export void  System_VarDictionary_free(System_VarDictionary that);
@@ -77,6 +79,8 @@ typedef System_fixed struct System_VarDictionaryEnumerator {
 }  * System_VarDictionaryEnumerator;
 
 export struct System_Type  System_VarDictionaryEnumeratorType;
+
+enum { typeof_System_VarDictionaryEnumerator = 0x883F9257BA991A9F };
 
 typedef void delegate(System_VarDictionaryEnumerator_free)(System_VarDictionaryEnumerator that);
 typedef void delegate(System_VarDictionaryEnumerator_init)(System_VarDictionaryEnumerator that, System_VarDictionary array);

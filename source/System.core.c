@@ -58,3 +58,5 @@
 #include "System.ECQLite.c"
 
 #include "System.MemoryStream.c"
+
+#include "System.Type.auto.c"

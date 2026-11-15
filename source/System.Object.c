@@ -19,7 +19,7 @@
 Type  System_Object_get_Type(Object that) {
     Console_assert(that);
     Console_assert(that->type);
-    return that->type;
+    return System_Type_getBySipHash(that->type);
 }
 
 System_Bool  System_Object_isInstanceof(System_Object that, System_Type type) {
@@ -83,8 +83,8 @@ struct System_Type_FunctionInfo  System_ObjectTypeFunctions[] = {
 };
 
 struct System_Type System_ObjectType = { 
-    .base = { .type = typeof(System_Type) },
-	.name = "Object",
+    .base = { .type = typeof_System_Type },
+	.name = "System.Object",
 	.size = sizeof(struct System_Object),
 	.baseType = null, /* this is System_Object */
 	.functions  = { .length = sizeof_array(System_ObjectTypeFunctions), .value = &System_ObjectTypeFunctions },

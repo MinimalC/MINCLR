@@ -90,6 +90,8 @@ typedef struct Network_HTTPRequest {
 
 export struct System_Type Network_HTTPRequestType;
 
+enum { typeof_Network_HTTPRequest = 0xFF6D52F2BF41E290 };
+
 export void Network_HTTPRequest_parseQueryString(String8Dictionary that, System_String8 queryString);
 export Network_HTTPRequest  new_Network_HTTPRequest();
 export void  Network_HTTPRequest_init(Network_HTTPRequest that);
@@ -123,6 +125,8 @@ typedef struct Network_HTTPResponse {
 } * Network_HTTPResponse;
 
 export struct System_Type Network_HTTPResponseType;
+
+enum { typeof_Network_HTTPResponse = 0xD2D14E2AF8708C1B };
 
 typedef void delegate(Network_HTTPRequest_render)(Network_HTTPRequest request, Network_HTTPResponse response);
 

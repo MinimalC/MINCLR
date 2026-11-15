@@ -18,7 +18,7 @@
 /** struct System_Directory  **/
 
 System_Bool System_Directory_exists(System_String8 name) {
-    struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo)); System_FileInfo_init(&info, name);
+    struct System_FileInfo info; System_Stack_clearType(info, typeof_System_FileInfo); System_FileInfo_init(&info, name);
     return info.status.mode & FileInfo_Type_Directory;
 }
 
@@ -353,13 +353,13 @@ struct System_Type_FunctionInfo  System_DirectoryTypeFunctions[] = {
 };
 
 struct System_Type System_DirectoryType = { 
-    .base = { .type = typeof(System_Type) }, .name = "Directory",
-    .size = sizeof(struct System_Directory), .baseType = typeof(System_Object), 
+    .base = { .type = typeof_System_Type }, .name = "System.Directory",
+    .size = sizeof(struct System_Directory), .baseType = typeof_System_Object, 
     .functions = { .length = sizeof_array(System_DirectoryTypeFunctions), .value = &System_DirectoryTypeFunctions },
 };
 
 struct System_Type System_DirectoryEntryType = { 
-    .base = { .type = typeof(System_Type) }, .name = "DirectoryEntry",
+    .base = { .type = typeof_System_Type }, .name = "System.DirectoryEntry",
     .size = sizeof(struct System_DirectoryEntry),
 };
 
@@ -373,7 +373,7 @@ struct System_Type_FunctionInfo  System_DirectoryListTypeFunctions[] = {
 };
 
 struct System_Type System_DirectoryListType = { 
-    .base = { .type = typeof(System_Type) }, .name = "DirectoryList",
-    .size = sizeof(struct System_DirectoryList), .baseType = typeof(System_Object), 
+    .base = { .type = typeof_System_Type }, .name = "System.DirectoryList",
+    .size = sizeof(struct System_DirectoryList), .baseType = typeof_System_Object, 
     .functions = { .length = sizeof_array(System_DirectoryListTypeFunctions), .value = &System_DirectoryListTypeFunctions },
 };

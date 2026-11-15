@@ -12,7 +12,7 @@
 /** struct System_FileInfo  **/
 
 System_Bool System_FileInfo_isLink(System_String8 linkName) {
-    struct System_FileInfo info; System_Stack_clearType(info, typeof(System_FileInfo)); System_FileInfo_init(&info, linkName);
+    struct System_FileInfo info; System_Stack_clearType(info, typeof_System_FileInfo); System_FileInfo_init(&info, linkName);
     if (info.status.mode & FileInfo_Type_Link) return true;
     return false;
 }
@@ -51,9 +51,9 @@ struct System_Type_FunctionInfo  System_FileInfoTypeFunctions[] = {
 };
 
 struct System_Type System_FileInfoType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "FileInfo",
+    .base = { .type = typeof_System_Type },
+    .name = "System.FileInfo",
     .size = sizeof(struct System_FileInfo),
-    .baseType = &System_ObjectType,
+    .baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(System_FileInfoTypeFunctions), .value = &System_FileInfoTypeFunctions },
 };

@@ -46,6 +46,8 @@ typedef struct System_DateTime {
 
 export struct System_Type  System_DateTimeType;
 
+enum { typeof_System_DateTime = 0xA1BAD6CAD690FF65 };
+
 export System_String8 System_DateTime_toString(System_DateTime that);
 export System_String8 System_DateTime_now_toString();
 export System_DateTime System_DateTime_now();

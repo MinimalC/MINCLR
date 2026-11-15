@@ -16,8 +16,11 @@ enum { false, true } ;
 
 typedef _Bool  System_Bool;
 
+enum { typeof_System_Bool = 0x752CF5DE23F7FD8A }; /* SipHash48 of "System.Bool" */
+
 #if defined(using_System)
 #define Bool  System_Bool
+#define typeof_Bool  typeof_System_Bool
 #endif
 
 /*#if defined(__builtin_alloca)
@@ -145,9 +148,7 @@ typedef _Bool  System_Bool;
 
 #define nameof(TYPE)  (#TYPE)
 
-#define typeof(name)  (&name##Type)
-
-/* You don't want to do while (i < 0), instead you would use while (i < -1). */
+#define typeof(NAME)  System_Type_getBySipHash__name(typeof_##NAME, #NAME)
 
 typedef void  System_Void;
 typedef void  * System_Var; /* Var is not unsafe in C */
@@ -156,11 +157,21 @@ typedef __SIZE_TYPE__  System_IntPtr;
 typedef __PTRDIFF_TYPE__  System_SSize;
 typedef __PTRDIFF_TYPE__  System_SIntPtr;
 
+enum {
+    typeof_System_Void = 0x4ED3958608084B91, 
+    typeof_System_Var = 0x49677B5E84B3F345, 
+    typeof_System_Size = 0xC3BDF34730D92860, 
+    typeof_System_SSize = 0x6587DC13991B72FA, 
+    typeof_System_IntPtr = 0xBA6542A6FE107CE5, 
+    typeof_System_SIntPtr = 0x35B92AF950AEB9A8, 
+};
+
 #if defined(using_System)
+#define Void  System_Void
 #define Var  System_Var
 #define Size  System_Size
-#define IntPtr  System_IntPtr
 #define SSize  System_SSize
+#define IntPtr  System_IntPtr
 #define SIntPtr  System_SIntPtr
 #endif
 
@@ -183,6 +194,17 @@ typedef signed long int  System_Int64;
 #else
 typedef signed long long int  System_Int64;
 #endif
+
+enum {
+    typeof_System_UInt8 = 0xF6F155E3CDA8F129, 
+    typeof_System_UInt16 = 0xAFA9093B384410A8, 
+    typeof_System_UInt32 = 0x507BA323EC45103F,
+    typeof_System_UInt64 = 0x90AEB3BC6A207A10,
+    typeof_System_Int8 = 0x4FE25647EC1EC4C3, 
+    typeof_System_Int16 = 0x84A6F7855735B6F1, 
+    typeof_System_Int32 = 0xDD4CC7A6664ADD90,
+    typeof_System_Int64 = 0x4ABF21ADAB09ED77,
+};
 
 #if defined(using_System)
 #define UInt8  System_UInt8
@@ -219,6 +241,11 @@ typedef signed long long int  System_Int64;
 #endif
 
 typedef char  System_Char8,  * System_String8,  System_STRING8[];
+
+enum {
+    typeof_System_Char8 = 0xC6D8AE20585BE9EA, 
+    typeof_System_String8 = 0x363DC668B298C7C0, 
+};
 
 export System_Char8  System_String8_Empty[1];
 
@@ -257,5 +284,13 @@ enum {
 #define String8_Empty  System_String8_Empty
 #define Stack_clear  System_Stack_clear
 #define Stack_clearType  System_Stack_clearType
+#define typeof_Void  typeof_System_Void
+#define typeof_Var  typeof_System_Var
+#define typeof_Size  typeof_System_Size
+#define typeof_SSize  typeof_System_SSize
+#define typeof_IntPtr  typeof_System_IntPtr
+#define typeof_SIntPtr  typeof_System_SIntPtr
+#define typeof_Char8  typeof_System_Char8
+#define typeof_String8  typeof_System_String8
 #endif
 #endif

@@ -23,6 +23,8 @@ typedef System_fixed struct System_UInt8Array {
 
 export struct System_Type  System_UInt8ArrayType;
 
+enum { typeof_System_UInt8Array = 0x59DB4FA3507B7677 };
+
 typedef void delegate(System_UInt8Array_init)(System_UInt8Array that, System_Size length);
 typedef System_Size  delegate(System_UInt8Array_get_Length)(System_UInt8Array that);
 typedef System_UInt8  delegate(System_UInt8Array_get_index)(System_UInt8Array that, System_Size index);
@@ -101,6 +103,8 @@ typedef System_fixed struct System_UInt16Array {
 }  * System_UInt16Array;
 
 export struct System_Type  System_UInt16ArrayType;
+
+enum { typeof_System_UInt16Array = 0xFE1361415325A4B3 };
 
 typedef void delegate(System_UInt16Array_init)(System_UInt16Array that, System_Size length);
 typedef System_Size  delegate(System_UInt16Array_get_Length)(System_UInt16Array that);
@@ -181,6 +185,8 @@ typedef System_fixed struct System_UInt32Array {
 
 export struct System_Type  System_UInt32ArrayType;
 
+enum { typeof_System_UInt32Array = 0x7B955E2E8E9CC5F6 };
+
 typedef void delegate(System_UInt32Array_init)(System_UInt32Array that, System_Size length);
 typedef System_Size  delegate(System_UInt32Array_get_Length)(System_UInt32Array that);
 typedef System_UInt32  delegate(System_UInt32Array_get_index)(System_UInt32Array that, System_Size index);
@@ -259,6 +265,8 @@ typedef System_fixed struct System_UInt64Array {
 }  * System_UInt64Array;
 
 export struct System_Type  System_UInt64ArrayType;
+
+enum { typeof_System_UInt64Array = 0xC4291678A1AB7B36 };
 
 typedef void delegate(System_UInt64Array_init)(System_UInt64Array that, System_Size length);
 typedef System_Size  delegate(System_UInt64Array_get_Length)(System_UInt64Array that);
@@ -339,6 +347,8 @@ typedef System_fixed struct System_Int8Array {
 
 export struct System_Type  System_Int8ArrayType;
 
+enum { typeof_System_Int8Array = 0x4D7A1BE9F5D35079 };
+
 typedef void delegate(System_Int8Array_init)(System_Int8Array that, System_Size length);
 typedef System_Size  delegate(System_Int8Array_get_Length)(System_Int8Array that);
 typedef System_Int8  delegate(System_Int8Array_get_index)(System_Int8Array that, System_Size index);
@@ -417,6 +427,8 @@ typedef System_fixed struct System_Int16Array {
 }  * System_Int16Array;
 
 export struct System_Type  System_Int16ArrayType;
+
+enum { typeof_System_Int16Array = 0x64C3AFDD5F0A5700 };
 
 typedef void delegate(System_Int16Array_init)(System_Int16Array that, System_Size length);
 typedef System_Size  delegate(System_Int16Array_get_Length)(System_Int16Array that);
@@ -497,6 +509,8 @@ typedef System_fixed struct System_Int32Array {
 
 export struct System_Type  System_Int32ArrayType;
 
+enum { typeof_System_Int32Array = 0xBB3F9E639B38E49B };
+
 typedef void delegate(System_Int32Array_init)(System_Int32Array that, System_Size length);
 typedef System_Size  delegate(System_Int32Array_get_Length)(System_Int32Array that);
 typedef System_Int32  delegate(System_Int32Array_get_index)(System_Int32Array that, System_Size index);
@@ -576,6 +590,8 @@ typedef System_fixed struct System_Int64Array {
 
 export struct System_Type  System_Int64ArrayType;
 
+enum { typeof_System_Int64Array = 0xE820328F9D2F80F4 };
+
 typedef void delegate(System_Int64Array_init)(System_Int64Array that, System_Size length);
 typedef System_Size  delegate(System_Int64Array_get_Length)(System_Int64Array that);
 typedef System_Int64  delegate(System_Int64Array_get_index)(System_Int64Array that, System_Size index);
@@ -649,6 +665,8 @@ typedef System_fixed struct System_UInt8ArrayEnumerator {
 
 export struct System_Type  System_UInt8ArrayEnumeratorType;
 
+enum { typeof_System_UInt8ArrayEnumerator = 0x70ED8E014709937B };
+
 typedef void delegate(System_UInt8ArrayEnumerator_init)(System_UInt8ArrayEnumerator that, System_UInt8Array array);
 typedef System_UInt8 delegate(System_UInt8ArrayEnumerator_get_current)(System_UInt8ArrayEnumerator that);
 typedef System_Bool delegate(System_UInt8ArrayEnumerator_moveNext)(System_UInt8ArrayEnumerator that);
@@ -695,6 +713,8 @@ typedef System_fixed struct System_UInt16ArrayEnumerator {
 }  * System_UInt16ArrayEnumerator;
 
 export struct System_Type  System_UInt16ArrayEnumeratorType;
+
+enum { typeof_System_UInt16ArrayEnumerator = 0xBC12D7A83247EB43 };
 
 typedef void delegate(System_UInt16ArrayEnumerator_init)(System_UInt16ArrayEnumerator that, System_UInt16Array array);
 typedef System_UInt16 delegate(System_UInt16ArrayEnumerator_get_current)(System_UInt16ArrayEnumerator that);
@@ -743,6 +763,8 @@ typedef System_fixed struct System_UInt32ArrayEnumerator {
 
 export struct System_Type  System_UInt32ArrayEnumeratorType;
 
+enum { typeof_System_UInt32ArrayEnumerator = 0x9BC5ECC9FD53BB89 };
+
 typedef void delegate(System_UInt32ArrayEnumerator_init)(System_UInt32ArrayEnumerator that, System_UInt32Array array);
 typedef System_UInt32 delegate(System_UInt32ArrayEnumerator_get_current)(System_UInt32ArrayEnumerator that);
 typedef System_Bool delegate(System_UInt32ArrayEnumerator_moveNext)(System_UInt32ArrayEnumerator that);
@@ -789,6 +811,8 @@ typedef System_fixed struct System_UInt64ArrayEnumerator {
 }  * System_UInt64ArrayEnumerator;
 
 export struct System_Type  System_UInt64ArrayEnumeratorType;
+
+enum { typeof_System_UInt64ArrayEnumerator = 0x9C8EA7000765142F };
 
 typedef void delegate(System_UInt64ArrayEnumerator_init)(System_UInt64ArrayEnumerator that, System_UInt64Array array);
 typedef System_UInt64 delegate(System_UInt64ArrayEnumerator_get_current)(System_UInt64ArrayEnumerator that);
@@ -837,6 +861,8 @@ typedef System_fixed struct System_Int8ArrayEnumerator {
 
 export struct System_Type  System_Int8ArrayEnumeratorType;
 
+enum { typeof_System_Int8ArrayEnumerator = 0x8A840BF249EE28A0 };
+
 typedef void delegate(System_Int8ArrayEnumerator_init)(System_Int8ArrayEnumerator that, System_Int8Array array);
 typedef System_Int8 delegate(System_Int8ArrayEnumerator_get_current)(System_Int8ArrayEnumerator that);
 typedef System_Bool delegate(System_Int8ArrayEnumerator_moveNext)(System_Int8ArrayEnumerator that);
@@ -883,6 +909,8 @@ typedef System_fixed struct System_Int16ArrayEnumerator {
 }  * System_Int16ArrayEnumerator;
 
 export struct System_Type  System_Int16ArrayEnumeratorType;
+
+enum { typeof_System_Int16ArrayEnumerator = 0x3970F5AD7F465AF2 };
 
 typedef void delegate(System_Int16ArrayEnumerator_init)(System_Int16ArrayEnumerator that, System_Int16Array array);
 typedef System_Int16 delegate(System_Int16ArrayEnumerator_get_current)(System_Int16ArrayEnumerator that);
@@ -931,6 +959,8 @@ typedef System_fixed struct System_Int32ArrayEnumerator {
 
 export struct System_Type  System_Int32ArrayEnumeratorType;
 
+enum { typeof_System_Int32ArrayEnumerator = 0x8DFA2856E94F1B28 };
+
 typedef void delegate(System_Int32ArrayEnumerator_init)(System_Int32ArrayEnumerator that, System_Int32Array array);
 typedef System_Int32 delegate(System_Int32ArrayEnumerator_get_current)(System_Int32ArrayEnumerator that);
 typedef System_Bool delegate(System_Int32ArrayEnumerator_moveNext)(System_Int32ArrayEnumerator that);
@@ -977,6 +1007,8 @@ typedef System_fixed struct System_Int64ArrayEnumerator {
 }  * System_Int64ArrayEnumerator;
 
 export struct System_Type  System_Int64ArrayEnumeratorType;
+
+enum { typeof_System_Int64ArrayEnumerator = 0x3EF1046B1FD88472 };
 
 typedef void delegate(System_Int64ArrayEnumerator_init)(System_Int64ArrayEnumerator that, System_Int64Array array);
 typedef System_Int64 delegate(System_Int64ArrayEnumerator_get_current)(System_Int64ArrayEnumerator that);

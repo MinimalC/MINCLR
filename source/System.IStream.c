@@ -34,12 +34,10 @@ struct System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
     { .function = base_System_IStream_set_Position, .value = null },
 };
 
-struct System_Type System_IStreamType = { .base = { .type = typeof(System_Type) },
-	.name = "IStream",
+struct System_Type System_IStreamType = { .base = { .type = typeof_System_Type },
+	.name = "System.IStream",
     .size = sizeof(struct System_IStream),
-    .functions = { 
-        .length = sizeof_array(System_IStreamTypeFunctions), .value = &System_IStreamTypeFunctions
-    },
+    .functions = { .length = sizeof_array(System_IStreamTypeFunctions), .value = &System_IStreamTypeFunctions },
 };
 
 void  System_IStream_write(IStream stream, String8 format, ...) {

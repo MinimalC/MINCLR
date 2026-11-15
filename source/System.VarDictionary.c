@@ -120,10 +120,10 @@ struct System_Type_InterfaceInfo  System_VarDictionaryTypeInterfaces[] = {
     { .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type System_VarDictionaryType = { .base = { .type = typeof(System_Type) },
-    .name = "VarDictionary",
+struct System_Type System_VarDictionaryType = { .base = { .type = typeof_System_Type },
+    .name = "System.VarDictionary",
     .size = sizeof(struct System_VarDictionary),
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(System_VarDictionaryTypeFunctions), .value = &System_VarDictionaryTypeFunctions },
     .interfaces = { .length = sizeof_array(System_VarDictionaryTypeInterfaces), .value = &System_VarDictionaryTypeInterfaces },
 };
@@ -183,13 +183,11 @@ struct System_Type_FunctionInfo  System_VarDictionaryEnumeratorTypeFunctions[] =
     [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_VarDictionaryEnumerator_moveNext },
 };
 
-struct System_Type System_VarDictionaryEnumeratorType = { .base = { .type = typeof(System_Type) },
-    .name = "VarDictionaryEnumerator",
+struct System_Type System_VarDictionaryEnumeratorType = { .base = { .type = typeof_System_Type },
+    .name = "System.VarDictionaryEnumerator",
     .size = sizeof(struct System_VarDictionaryEnumerator),
-    .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_VarDictionaryEnumeratorTypeFunctions), .value = &System_VarDictionaryEnumeratorTypeFunctions
-    },
+    .baseType = typeof_System_Object,
+    .functions = { .length = sizeof_array(System_VarDictionaryEnumeratorTypeFunctions), .value = &System_VarDictionaryEnumeratorTypeFunctions },
 };
 
 #endif

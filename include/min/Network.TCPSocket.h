@@ -195,6 +195,8 @@ typedef System_fixed /* final */ struct Network_TCPSocket {
 
 export struct System_Type  Network_TCPSocketType;
 
+enum { typeof_Network_TCPSocket = 0xC3E048FCDCB0718B };
+
 export Network_TCPSocket  new_Network_TCPSocket();
 export Network_TCPSocket  new_Network_TCPSocket__flags(System_IntPtr flags);
 export void  Network_TCPSocket_init(Network_TCPSocket that);

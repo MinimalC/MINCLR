@@ -27,12 +27,10 @@ struct System_Type_FunctionInfo  System_DictionaryTypeFunctions[] = {
     [0] = { .function = base_System_Object_init, .value = base_System_Dictionary_init },
     [1] = { .function = base_System_Object_free, .value = base_System_Dictionary_free },
 };
-struct System_Type System_DictionaryType = { .base = { .type = typeof(System_Type) },
-    .name = "Dictionary",
+struct System_Type System_DictionaryType = { .base = { .type = typeof_System_Type },
+    .name = "System.Dictionary",
     .size = sizeof(struct System_Dictionary),
-    .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_DictionaryTypeFunctions), .value = &System_DictionaryTypeFunctions
-    },
+    .baseType = typeof_System_Object,
+    .functions = { .length = sizeof_array(System_DictionaryTypeFunctions), .value = &System_DictionaryTypeFunctions },
 };
 #endif

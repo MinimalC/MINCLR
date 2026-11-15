@@ -28,10 +28,10 @@
 
 /** struct Network_TCPSocket  **/
 
-struct System_Type Network_TCPSocketType = { .base = { .type = typeof(System_Type) },
-    .name = "TCPSocket",
+struct System_Type Network_TCPSocketType = { .base = { .type = typeof_System_Type },
+    .name = "Network.TCPSocket",
     .size = sizeof(struct Network_TCPSocket),
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
 };
 
 Network_TCPSocket  new_Network_TCPSocket() {

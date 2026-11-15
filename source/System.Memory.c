@@ -35,7 +35,7 @@ extern thread System_Exception System_Exception_current;
 
 /** struct System_Memory  **/
 
-struct System_Type System_MemoryType = { .base = { .type = typeof(System_Type) }, .name = "Memory" };
+struct System_Type System_MemoryType = { .base = { .type = typeof_System_Type }, .name = "System.Memory" };
 
 SSize System_Memory_indexOf(Var ptr, Size count, Char8 needle) {
 
@@ -139,7 +139,7 @@ System_SSize System_Memory_alphacomparedescending(System_Var memory0, System_Var
 
 typedef struct System_Memory_Page {
 #if DEBUG == DEBUG_System_Memory
-    System_Type type;
+    System_UInt64 type;
 #endif
 
     Size length;
@@ -151,26 +151,28 @@ typedef struct System_Memory_Page {
 }  * System_Memory_Page;
 
 typedef struct System_Memory_Header {
-    System_Type type;
+    System_UInt64 type;
 
     UInt length;
 
     UInt refCount;
 
-    Type elementType;
+    System_UInt64 elementType;
 
 } * System_Memory_Header;
 
 #if DEBUG == DEBUG_System_Memory
+enum { typeof_System_Memory_Page = 0x135A2F6803DF0D87 };
 struct System_Type  System_Memory_PageType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "Memory.Page",
+    .base = { .type = typeof_System_Type },
+    .name = "System.Memory.Page",
     .size = sizeof(struct System_Memory_Page),
 };
 #endif
+enum { typeof_System_Memory_Header = 0xCAE1E1C456ABFA99 };
 struct System_Type  System_Memory_HeaderType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "Memory.Header",
+    .base = { .type = typeof_System_Type },
+    .name = "System.Memory.Header",
     .size = sizeof(struct System_Memory_Header),
 };
 
@@ -201,7 +203,7 @@ System_Var  System_Memory_alloc__internal_min_i_max_threadId(System_Type type, S
             if (!map) return null; // throw
 
             mem64k = (System_VarArray)map;
-            mem64k->base.type = typeof(System_VarArray);
+            mem64k->base.type = typeof_System_VarArray;
             mem64k->length = (min - sizeof(struct System_VarArray)) / sizeof(System_Var);
             mem64k->value = ((System_Var)mem64k + sizeof(struct System_VarArray));
             System_Memory_ProcessVars[index] = mem64k;
@@ -225,7 +227,7 @@ System_Var  System_Memory_alloc__internal_min_i_max_threadId(System_Type type, S
                 #if DEBUG == DEBUG_System_Memory
                 System_Size payload;
                 System_Size pageSize = System_UInt64_divRem(max - sizeof(struct System_Memory_Page), sizeof(struct System_Memory_Header) + sizeof(System_Var), &payload);
-                mem64h->type = typeof(System_Memory_Page);
+                mem64h->type = typeof_System_Memory_Page;
                 #endif
                 mem64h->length = max;
                 mem64h->threadId = threadId;
@@ -252,11 +254,11 @@ System_Var  System_Memory_alloc__internal_min_i_max_threadId(System_Type type, S
             while (position + real_size < ((System_Var)mem64h + mem64h->length)) {
                 System_Memory_Header header = (System_Memory_Header)position;
                 #if DEBUG
-                if (header->type) Console_assert(header->type == typeof(System_Memory_Header));
+                if (header->type) Console_assert(header->type == typeof_System_Memory_Header);
                 #endif
                 /* expect first if this is unfree, move next */
                 if (header->length && header->refCount) {
-                    Console_assert(header->type == typeof(System_Memory_Header));
+                    Console_assert(header->type == typeof_System_Memory_Header);
                     Console_assert(header->elementType);
                     position += sizeof(struct System_Memory_Header) + header->length;
                     #if DEBUG == DEBUG_System_Memory
@@ -271,7 +273,7 @@ System_Var  System_Memory_alloc__internal_min_i_max_threadId(System_Type type, S
                         System_Memory_Header header2 = (System_Memory_Header)position2;
                         if (!header2->type) break;
                         #if DEBUG
-                        Console_assert(header2->type == typeof(System_Memory_Header));
+                        Console_assert(header2->type == typeof_System_Memory_Header);
                         #endif
                         if (header2->length && !header2->elementType) {
                             header->length += sizeof(struct System_Memory_Header) + header2->length;
@@ -293,7 +295,7 @@ System_Var  System_Memory_alloc__internal_min_i_max_threadId(System_Type type, S
                     System_Var position1 = position + real_size;
                     if (position1 + sizeof(struct System_Memory_Header) < ((System_Var)mem64h + mem64h->length)) {
                         System_Memory_Header header1 = (System_Memory_Header)position1;
-                        header1->type = typeof(System_Memory_Header);
+                        header1->type = typeof_System_Memory_Header;
                         header1->length = header->length - real_size;
                         #if DEBUG == DEBUG_System_Memory
                         header1_length = header1->length;
@@ -301,16 +303,16 @@ System_Var  System_Memory_alloc__internal_min_i_max_threadId(System_Type type, S
                     }
                     /* reset header */
                     header->length = real_size - sizeof(struct System_Memory_Header);
-                    header->elementType = type;
+                    header->elementType = System_Type_getSipHash(type);
                     header->refCount = System_Memory_ReferenceState_Used;
                     #if DEBUG == DEBUG_System_Memory
                     System_Console_writeLine("System_Memory_Header({0:uint}): old {1:string} typeof({2:string}), length {3:uint}, free space {4:uint}", 5, index1, 
-                        System_Type_isAssignableFrom(type, typeof(System_Object)) ? "class" : "struct", header->elementType->name, header->length, header1_length);
+                        System_Type_isAssignableFrom(type, typeof(System_Object)) ? "class" : "struct", type->name, header->length, header1_length);
                     #endif
                     System_Var var1 = (position + sizeof(struct System_Memory_Header));
                     if (System_Type_isAssignableFrom(type, typeof(System_Object))) {
                         for (System_Size vi = 0; vi < length; ++vi)
-                            ((System_Object)(var1 + vi * type->size))->type = type;
+                            ((System_Object)(var1 + vi * type->size))->type = System_Type_getSipHash(type);
                     }
                     if (lock) System_Autex_wake(&mem64h->lock);
                     return var1;
@@ -320,18 +322,18 @@ System_Var  System_Memory_alloc__internal_min_i_max_threadId(System_Type type, S
 
                 /* create a new header */
                 header->length = real_size - sizeof(struct System_Memory_Header);
-                header->elementType = type;
+                header->elementType = System_Type_getSipHash(type);
                 header->refCount = System_Memory_ReferenceState_Used;
-                header->type = typeof(System_Memory_Header);
+                header->type = typeof_System_Memory_Header;
             // System_Syscall_mprotect(header, sizeof(System_Var), System_Memory_PageFlags_Read);
                 #if DEBUG == DEBUG_System_Memory
                 System_Console_writeLine("System_Memory_Header({0:uint}): new {1:string} typeof({2:string}), length {3:uint}", 4, index1, 
-                    System_Type_isAssignableFrom(type, typeof(System_Object)) ? "class" : "struct", header->elementType->name, header->length);
+                    System_Type_isAssignableFrom(type, typeof(System_Object)) ? "class" : "struct", type->name, header->length);
                 #endif
                 System_Var var0 = (position + sizeof(struct System_Memory_Header));
                 if (System_Type_isAssignableFrom(type, typeof(System_Object))) {
                     for (System_Size vi = 0; vi < length; ++vi)
-                        ((System_Object)(var0 + vi * type->size))->type = type;
+                        ((System_Object)(var0 + vi * type->size))->type = System_Type_getSipHash(type);
                 }
                 if (lock) System_Autex_wake(&mem64h->lock);
                 return var0;
@@ -413,9 +415,9 @@ System_Size System_Memory_debug__min_i_max_threadId(System_Size min, System_Size
             System_Memory_Header header = (System_Memory_Header)position;
             if (!header->length || !header->type) break;
 #if DEBUG
-            Console_assert(header->type == typeof(System_Memory_Header));
+            Console_assert(header->type == typeof_System_Memory_Header);
 #endif
-            if (header->type != typeof(System_Memory_Header)) break;
+            if (header->type != typeof_System_Memory_Header) break;
 
             System_Var item = position + sizeof(struct System_Memory_Header);
 
@@ -428,14 +430,15 @@ System_Size System_Memory_debug__min_i_max_threadId(System_Size min, System_Size
                 }
 
                 ++unfree;
-                if (System_Type_getSipHash(header->elementType) == 0x7B10E531CDEB635A) {  // "Char8"
+                if (header->elementType == typeof_System_Char8) {  // "Char8"
                     System_Console_write__string("\"");
                     System_Console_write__string(item);
                     System_Console_write__string("\", ");
                 }
                 else {
-                    System_Console_write__string(header->elementType->name);
-                    if (header->length > header->elementType->size * 1) 
+                    System_Type realType = System_Type_getBySipHash(header->elementType);
+                    System_Console_write__string(realType->name);
+                    if (header->length > realType->size * 1) 
                         System_Console_write__string("[]");
                     System_Console_write__string(", ");
                 }
@@ -541,9 +544,9 @@ System_Var  System_Memory_addReference(System_Var that) {
 
     System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
     #if DEBUG == DEBUG_System_Memory
-    Console_assert(header->type == typeof(System_Memory_Header));
+    Console_assert(header->type == typeof_System_Memory_Header);
     #endif
-    if (header->type != typeof(System_Memory_Header)) return that;
+    if (header->type != typeof_System_Memory_Header) return that;
 
     System_Bool lock = page->threadId != System_Thread_TID;
     if (!lock || System_Autex_wait(&page->lock)) {
@@ -567,23 +570,24 @@ void System_Memory_reallocArray(System_Var ref thatPtr, System_Size count) {
 
     System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
     #if DEBUG
-	Console_assert(header->type == typeof(System_Memory_Header));
+	Console_assert(header->type == typeof_System_Memory_Header);
     #endif
-    if (header->type != typeof(System_Memory_Header)) return;
+    if (header->type != typeof_System_Memory_Header) return;
 
-    System_Size new_size = count * header->elementType->size;
+    System_Type realType = System_Type_getBySipHash(header->elementType);
+    System_Size new_size = count * realType->size;
     if (new_size == header->length) {
     #if DEBUG == DEBUG_System_Memory
     System_Console_writeLine("System_Memory_reallocArray, not: using System_Memory_Header typeof({0:string}), sizeof({1:uint}), old length {2:uint} => new length {3:uint}", 4, 
-        header->elementType->name, header->elementType->size, header->length, new_size);
+        realType->name, realType->size, header->length, new_size);
     #endif
         return;
     }
     #if DEBUG == DEBUG_System_Memory
     System_Console_writeLine("System_Memory_reallocArray, reallocating: using System_Memory_Header typeof({0:string}), sizeof({1:uint}), old length {2:uint} => new length {3:uint}", 4, 
-        header->elementType->name, header->elementType->size, header->length, new_size);
+        realType->name, realType->size, header->length, new_size);
     #endif
-    System_Var that_new = System_Memory_allocArray(header->elementType, count);
+    System_Var that_new = System_Memory_allocArray(realType, count);
     if (new_size < header->length)
         Memory_moveTo(that, new_size, that_new);
     else
@@ -600,6 +604,7 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
 	Console_assert(that);
     #endif
     if (!that) goto return_free;
+    System_Type realType;
 
     System_Memory_Page page = System_Memory_isAllocated(that);
     if (!page) {
@@ -609,15 +614,17 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
         goto return_free; 
     }
     System_Memory_Header header = ((System_Var)that - sizeof(struct System_Memory_Header));
-	if (header->type != typeof(System_Memory_Header)) {
+	if (header->type != typeof_System_Memory_Header) {
         #if DEBUG
-        System_Console_writeLine("System_Memory_freeClass: typeof({0:string}): DANGER. header->type != typeof(System_Memory_Header)", 1, header->elementType->name);
+        realType = System_Type_getBySipHash(header->elementType);
+        System_Console_writeLine("System_Memory_freeClass: typeof({0:string}): DANGER. header->type != typeof_System_Memory_Header", 1, realType->name);
         #endif
         goto return_free;
     }
 	if (header->refCount < System_Memory_ReferenceState_Used) {
         #if DEBUG
-        System_Console_writeLine("System_Memory_freeClass: typeof({0:string}): header->refCount < System_Memory_ReferenceState_Used", 1, header->elementType->name);
+        realType = System_Type_getBySipHash(header->elementType);
+        System_Console_writeLine("System_Memory_freeClass: typeof({0:string}): header->refCount < System_Memory_ReferenceState_Used", 1, realType->name);
         #endif
         goto return_free;
     }
@@ -632,17 +639,19 @@ void  System_Memory_freeClass(System_Var ref thatPtr) {
     }
     if (lock) {
         #if DEBUG
-        if (System_Type_getSipHash(header->elementType) == 0x7B10E531CDEB635A) // "Char8"
+        realType = System_Type_getBySipHash(header->elementType);
+        if (header->elementType == typeof_System_Char8) // "Char8"
             System_Console_writeLine("System_Memory_freeClass: DANGER. other threadId {1:int32}: typeof(string): \"{0:string}\"", 2, that, System_Thread_TID);
         else
-            System_Console_writeLine("System_Memory_freeClass: DANGER. other threadId {1:int32}: typeof({0:string})", 2, header->elementType->name, System_Thread_TID);
+            System_Console_writeLine("System_Memory_freeClass: DANGER. other threadId {1:int32}: typeof({0:string})", 2, realType->name, System_Thread_TID);
         #endif
         goto return_free; // throw?
     }
 
     header->refCount = System_Memory_ReferenceState_Disposing;
     #if 1
-    System_Memory_freeStruct(that, header->elementType);
+    realType = System_Type_getBySipHash(header->elementType);
+    System_Memory_freeStruct(that, realType);
     header->refCount = System_Memory_ReferenceState_Disposed;
 
     System_Memory_clear(that, header->length);
@@ -696,9 +705,9 @@ System_IntPtr System_Memory_GC_Thread(System_Size argc, System_Var argv[]) {
                     System_Memory_Header header = (System_Memory_Header)position;
                     if (!header->length || !header->type) break;
         #if DEBUG
-                    Console_assert(header->type == typeof(System_Memory_Header));
+                    Console_assert(header->type == typeof_System_Memory_Header);
         #endif
-                    if (header->type != typeof(System_Memory_Header)) break;
+                    if (header->type != typeof_System_Memory_Header) break;
 
                     System_Var that = position + sizeof(struct System_Memory_Header);
 

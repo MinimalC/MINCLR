@@ -25,6 +25,8 @@ typedef System_fixed struct System_VarArray {
 
 export struct System_Type  System_VarArrayType;
 
+enum { typeof_System_VarArray = 0x37BAB96EFB65CE5B };
+
 typedef void delegate(System_VarArray_init)(System_VarArray that, System_Size capacity);
 typedef void delegate(System_VarArray_free)(System_VarArray that);
 typedef System_Size  delegate(System_VarArray_get_Length)(System_VarArray that);
@@ -96,6 +98,8 @@ typedef System_fixed struct System_VarArrayEnumerator {
 }  * System_VarArrayEnumerator;
 
 export struct System_Type  System_VarArrayEnumeratorType;
+
+enum { typeof_System_VarArrayEnumerator = 0x12FA9DCE7497985C };
 
 typedef void delegate(System_VarArrayEnumerator_free)(System_VarArrayEnumerator that);
 typedef void delegate(System_VarArrayEnumerator_init)(System_VarArrayEnumerator that, System_VarArray array);

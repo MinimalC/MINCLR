@@ -9,6 +9,8 @@ typedef System_IntPtr  System_ErrorCode;
 
 export struct System_Type  System_ErrorCodeType;
 
+enum { typeof_System_ErrorCode = 0x4B07C185A919D53B };
+
 #if defined(using_System)
 #define ErrorCode  System_ErrorCode
 #define ErrorCodeType  System_ErrorCodeType

@@ -84,16 +84,12 @@ struct System_Type_InterfaceInfo  System_String8ArrayTypeInterfaces[] = {
     [1] = { .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type System_String8ArrayType = { .base = { .type = typeof(System_Type) },
-    .name = "String8Array",
+struct System_Type System_String8ArrayType = { .base = { .type = typeof_System_Type },
+    .name = "System.String8Array",
     .size = sizeof(struct System_String8Array),
-    .baseType = typeof(System_Object),
-    .functions = {
-        .length = sizeof_array(System_String8ArrayTypeFunctions), .value = &System_String8ArrayTypeFunctions
-    },
-    .interfaces = {
-        .length = sizeof_array(System_String8ArrayTypeInterfaces), .value = &System_String8ArrayTypeInterfaces
-    },
+    .baseType = typeof_System_Object,
+    .functions = { .length = sizeof_array(System_String8ArrayTypeFunctions), .value = &System_String8ArrayTypeFunctions },
+    .interfaces = { .length = sizeof_array(System_String8ArrayTypeInterfaces), .value = &System_String8ArrayTypeInterfaces },
 };
 
 #endif
@@ -149,13 +145,11 @@ struct System_Type_FunctionInfo  System_String8ArrayEnumeratorTypeFunctions[] = 
     [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_String8ArrayEnumerator_moveNext },
 };
 
-struct System_Type System_String8ArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
-    .name = "String8ArrayEnumerator",
+struct System_Type System_String8ArrayEnumeratorType = { .base = { .type = typeof_System_Type },
+    .name = "System.String8ArrayEnumerator",
     .size = sizeof(struct System_String8ArrayEnumerator),
-    .baseType = typeof(System_Object),
-    .functions = {
-        .length = sizeof_array(System_String8ArrayEnumeratorTypeFunctions), .value = &System_String8ArrayEnumeratorTypeFunctions
-    },
+    .baseType = typeof_System_Object,
+    .functions = { .length = sizeof_array(System_String8ArrayEnumeratorTypeFunctions), .value = &System_String8ArrayEnumeratorTypeFunctions },
 };
 
 #endif

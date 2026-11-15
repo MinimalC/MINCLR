@@ -89,8 +89,8 @@ For example, use `./test.sh`, or `cd .make` and then try `./CubeHash512 Hello` o
 
 ```
 SipHash48:
-0x634858001AB66950: System.Type
-0x577F630E3A272ECD: System_Type
+0xE8E7E4A139BB3C3D: System.Type
+0x36C602317CA4A42D: System_Type
 
 CubeHash256:
 0xB2FF183593B30CEF9997A03D4A3E8A8A5370B270DF73365C68EC5ECB3A39D41A617D6BCCE77BF4935048180ADBD5D4DD1353D5411F5675BF5125AA04C4A0C2D: System.Type
@@ -102,9 +102,9 @@ CubeHash512:
 
 System.Syscall:
 Syscall is right
-__vdso_gettimeofday: 1777110079.945883 timezone: minutesWest 0, dstTime 0
-System_Syscall_time: now 1777110079, das sind etwa 857 Tage, 9 Stunden, 41 Minuten, 19 Sekunden
-DateTime_now_toString: 25.4.2026 9:41:19
+__vdso_gettimeofday: 1794730904.653226 timezone: minutesWest 0, dstTime 0
+System_Syscall_time: now 1794730904, das sind etwa 865 Tage, 8 Stunden, 21 Minuten, 44 Sekunden
+DateTime_now_toString: 15.11.2026 8:21:44
 
 ECQLite:
 Person: Name Hans, Geburtsdatum 12.11.1984, Email hans@mail.de, Telefon +491765432109
@@ -112,24 +112,24 @@ Produkt: Name Redmi6A, Kategorie Android, Größe 16x9, Gewicht 300g
 Produkt deleted.
 Produkt not found.
 Katalog not found.
-TERMINIERT: throws IOException: No Table Katalog
+TERMINIERT: throws System.IOException: No Table Katalog
 
 System.Exception:
-SUCCESS: catch IOException
+SUCCESS: catch System.IOException
 This is finally.
 SUCCESS: returning false
-TERMINIERT: throws IOException: error ENOENT(2): File not found
+TERMINIERT: throws System.IOException: error ENOENT(2): File not found
 
 System.File:
 Position 5 is correct
 HaLLo is correct, 5 bytes read
-SUCCESS: catch IOException
+SUCCESS: catch System.IOException
 
 System.FileInfo:
 FileInfo.name: ./.System.File.test.txt, File (100664), UserID: 1000, GroupID: 1000
-ContainerId: 804, INodeId: 6232225, Hardlinks: 1, deviceId: 0, size: 5, BulkSize: 4096, Blocks: 8 
+ContainerId: 804, INodeId: 6293023, Hardlinks: 1, deviceId: 0, size: 5, BulkSize: 4096, Blocks: 8
 FileInfo.name: ./.System.File.test.txt, Directory (40775), UserID: 1000, GroupID: 1000
-ContainerId: 804, INodeId: 6275210, Hardlinks: 2, deviceId: 0, size: 12288, BulkSize: 4096, Blocks: 24 
+ContainerId: 804, INodeId: 6292867, Hardlinks: 2, deviceId: 0, size: 4096, BulkSize: 4096, Blocks: 8
 SUCCESS: FILENOTFOUND ENOFILE
 
 System.Math:
@@ -151,9 +151,9 @@ Test09: SUCCESS: System_Memory_sort descending FFFFEEEEDDDDCCCCBBBBAAAA999988887
 Test10: SUCCESS: System_Memory_reallocArray AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEEFFFFFFFFFFFFFFFF
 
 System.MemoryStream:
-File System.core...C, size 707029
-MemoryStream size*1 707029, capacity 720896, position 707029
-MemoryStream size/2 353514, capacity 393216, position 353514
+File System.core...C, size 727841
+MemoryStream size*1 727841, capacity 786432, position 727841
+MemoryStream size/2 363920, capacity 393216, position 363920
 
 System.String8:
 Test00: SUCCESS: String8_isNullOrEmpty
@@ -168,176 +168,136 @@ Test08: SUCCESS: System_String8_encodeBase64
 Test09: SUCCESS: System_String8_decodeBase64
 
 System.Directory:
-inode 5FC08A type 4 name .
+inode 600583 type 4 name .
 inode 5FC00C type 4 name ..
-inode 5E005E type 8 name CubeHash256
-inode 5F1845 type 8 name CubeHash256...ASM
-inode 5F1844 type 8 name CubeHash256...C
-inode 5F1868 type 8 name CubeHash256...o
-inode 5F1479 type 8 name CubeHash256.a
-inode 5E0064 type 8 name CubeHash512
-inode 5F1843 type 8 name CubeHash512...ASM
-inode 5F1842 type 8 name CubeHash512...C
-inode 5F1867 type 8 name CubeHash512...o
-inode 5F147A type 8 name CubeHash512.a
-inode 5E000F type 8 name ECQLite.test
-inode 5F183D type 8 name ECQLite.test...ASM
-inode 5F183C type 8 name ECQLite.test...C
-inode 5F1864 type 8 name ECQLite.test...o
-inode 5F1466 type 8 name ECQLite.test.a
-inode 5E005D type 8 name ECQLite1
-inode 5F1853 type 8 name ECQLite1...ASM
-inode 5F1852 type 8 name ECQLite1...C
-inode 5F187D type 8 name ECQLite1...o
-inode 5F1476 type 8 name ECQLite1.a
-inode 5F1454 type 8 name ELFAssembly.read
-inode 5F184F type 8 name ELFAssembly.read...ASM
-inode 5F184E type 8 name ELFAssembly.read...C
-inode 5F1877 type 8 name ELFAssembly.read...o
-inode 5F1477 type 8 name ELFAssembly.read.a
-inode 5E0060 type 8 name Eratosthenes
-inode 5F184D type 8 name Eratosthenes...ASM
-inode 5F184C type 8 name Eratosthenes...C
-inode 5F1875 type 8 name Eratosthenes...o
-inode 5F1478 type 8 name Eratosthenes.a
-inode 5F189D type 8 name Extension...ASM
-inode 5F189C type 8 name Extension...C
-inode 5F189E type 8 name Extension...o
-inode 5E006B type 8 name Extension.so
-inode 5F145D type 8 name Hello...ASM
-inode 5F1459 type 8 name Hello...C
-inode 5F1462 type 8 name Hello...o
-inode 5F1480 type 8 name Hello.a
-inode 5F1899 type 8 name RenderC
-inode 5F1855 type 8 name RenderC...ASM
-inode 5F1854 type 8 name RenderC...C
-inode 5F187E type 8 name RenderC...o
-inode 5E005F type 8 name Shell1
-inode 5F1847 type 8 name Shell1...ASM
-inode 5F1846 type 8 name Shell1...C
-inode 5F186F type 8 name Shell1...o
-inode 5F147B type 8 name Shell1.a
-inode 5E0067 type 8 name SipHash48
-inode 5F1841 type 8 name SipHash48...ASM
-inode 5F1840 type 8 name SipHash48...C
-inode 5F1866 type 8 name SipHash48...o
-inode 5F147C type 8 name SipHash48.a
-inode 5F1573 type 8 name System...html
-inode 5E0007 type 8 name System...txt
-inode 5E0010 type 8 name System.Directory.test
-inode 5F18A7 type 8 name System.Directory.test...ASM
-inode 5F189F type 8 name System.Directory.test...C
-inode 5F18A8 type 8 name System.Directory.test...o
-inode 5F1467 type 8 name System.Directory.test.a
-inode 5F1816 type 8 name System.ELF64Assembly.jump.gas...ASM
-inode 5F1817 type 8 name System.ELF64Assembly.jump.gas...o
-inode 5E0012 type 8 name System.Exception.test
-inode 5F1824 type 8 name System.Exception.test...ASM
-inode 5F1823 type 8 name System.Exception.test...C
-inode 5F1858 type 8 name System.Exception.test...o
-inode 5F1468 type 8 name System.Exception.test.a
-inode 5E0014 type 8 name System.File.test
-inode 5F1826 type 8 name System.File.test...ASM
-inode 5F1825 type 8 name System.File.test...C
-inode 5F1859 type 8 name System.File.test...o
-inode 5F1469 type 8 name System.File.test.a
-inode 5E0015 type 8 name System.FileInfo.test
-inode 5F1829 type 8 name System.FileInfo.test...ASM
-inode 5F1828 type 8 name System.FileInfo.test...C
-inode 5F185A type 8 name System.FileInfo.test...o
-inode 5F146A type 8 name System.FileInfo.test.a
-inode 5F1814 type 8 name System.Integers.gas...ASM
-inode 5F1815 type 8 name System.Integers.gas...o
-inode 5E0017 type 8 name System.Integers.test
-inode 5F183B type 8 name System.Integers.test...ASM
-inode 5F183A type 8 name System.Integers.test...C
-inode 5F1863 type 8 name System.Integers.test...o
-inode 5F146B type 8 name System.Integers.test.a
-inode 5E006A type 8 name System.Interpreter
-inode 5F1822 type 8 name System.Interpreter...ASM
-inode 5F1821 type 8 name System.Interpreter...C
-inode 5F1857 type 8 name System.Interpreter...o
-inode 5F1464 type 8 name System.Interpreter.a
-inode 5E001E type 8 name System.Math.test
-inode 5F182B type 8 name System.Math.test...ASM
-inode 5F182A type 8 name System.Math.test...C
-inode 5F185B type 8 name System.Math.test...o
-inode 5F146C type 8 name System.Math.test.a
-inode 5E0036 type 8 name System.Memory.test
-inode 5F182D type 8 name System.Memory.test...ASM
-inode 5F182C type 8 name System.Memory.test...C
-inode 5F185C type 8 name System.Memory.test...o
-inode 5F146D type 8 name System.Memory.test.a
-inode 5F1453 type 8 name System.MemoryStream.test
-inode 5F183F type 8 name System.MemoryStream.test...ASM
-inode 5F183E type 8 name System.MemoryStream.test...C
-inode 5F1865 type 8 name System.MemoryStream.test...o
-inode 5F146F type 8 name System.MemoryStream.test.a
-inode 5E007D type 8 name System.Path.test
-inode 5F182F type 8 name System.Path.test...ASM
-inode 5F182E type 8 name System.Path.test...C
-inode 5F185D type 8 name System.Path.test...o
-inode 5F1470 type 8 name System.Path.test.a
-inode 5F1820 type 8 name System.Runtime.shared...ASM
-inode 5F181F type 8 name System.Runtime.shared...C
-inode 5F1856 type 8 name System.Runtime.shared...o
-inode 5F1463 type 8 name System.Runtime.shared.a
-inode 5E0059 type 8 name System.Signal.test
-inode 5F1831 type 8 name System.Signal.test...ASM
-inode 5F1830 type 8 name System.Signal.test...C
-inode 5F185E type 8 name System.Signal.test...o
-inode 5F1471 type 8 name System.Signal.test.a
-inode 5E0058 type 8 name System.String8.test
-inode 5F1833 type 8 name System.String8.test...ASM
-inode 5F1832 type 8 name System.String8.test...C
-inode 5F185F type 8 name System.String8.test...o
-inode 5F1472 type 8 name System.String8.test.a
-inode 5F1812 type 8 name System.Syscall.gas...ASM
-inode 5F1813 type 8 name System.Syscall.gas...o
-inode 5F181A type 8 name System.Syscall.sigreturn.gas...ASM
-inode 5F181B type 8 name System.Syscall.sigreturn.gas...o
-inode 5E005A type 8 name System.Syscall.test
-inode 5F1835 type 8 name System.Syscall.test...ASM
-inode 5F1834 type 8 name System.Syscall.test...C
-inode 5F1860 type 8 name System.Syscall.test...o
-inode 5F1473 type 8 name System.Syscall.test.a
-inode 5E005B type 8 name System.Terminal.test
-inode 5F1837 type 8 name System.Terminal.test...ASM
-inode 5F1836 type 8 name System.Terminal.test...C
-inode 5F1861 type 8 name System.Terminal.test...o
-inode 5F1474 type 8 name System.Terminal.test.a
-inode 5E0089 type 8 name System.Thread.boot.gas...ASM
-inode 5F1819 type 8 name System.Thread.boot.gas...o
-inode 5E005C type 8 name System.Thread.test
-inode 5F1839 type 8 name System.Thread.test...ASM
-inode 5F1838 type 8 name System.Thread.test...C
-inode 5F1862 type 8 name System.Thread.test...o
-inode 5F1475 type 8 name System.Thread.test.a
-inode 5E0083 type 8 name System.Timer.test
-inode 5F1456 type 8 name System.Timer.test...ASM
-inode 5E006C type 8 name System.Timer.test...C
-inode 5F1457 type 8 name System.Timer.test...o
-inode 5F145F type 8 name System.a
-inode 5F1811 type 8 name System.core...ASM
-inode 5F180F type 8 name System.core...C
-inode 5F181C type 8 name System.core...o
-inode 5E0004 type 8 name System.so
-inode 5E0068 type 8 name WebService2
-inode 5F184B type 8 name WebService2...ASM
-inode 5F184A type 8 name WebService2...C
-inode 5F1874 type 8 name WebService2...o
-inode 5F147E type 8 name WebService2.a
-inode 5E0069 type 8 name WebService3
-inode 5F1851 type 8 name WebService3...ASM
-inode 5F1850 type 8 name WebService3...C
-inode 5F187C type 8 name WebService3...o
-inode 5F147F type 8 name WebService3.a
-inode 5F145C type 8 name WebService4
-inode 5F164A type 8 name WebService4...ASM
-inode 5F1648 type 8 name WebService4...C
-inode 5F164B type 8 name WebService4...o
-inode 5F1465 type 8 name WebService4.a
-inode 5F18A0 type 8 name database.ecql
+inode 600611 type 8 name CubeHash256
+inode 6005D3 type 8 name CubeHash256...ASM
+inode 6005D2 type 8 name CubeHash256...C
+inode 6005F7 type 8 name CubeHash256...o
+inode 600612 type 8 name CubeHash512
+inode 6005D5 type 8 name CubeHash512...ASM
+inode 6005D4 type 8 name CubeHash512...C
+inode 6005F8 type 8 name CubeHash512...o
+inode 6005FF type 8 name ECQLite.test
+inode 6005AE type 8 name ECQLite.test...ASM
+inode 6005AD type 8 name ECQLite.test...C
+inode 6005E5 type 8 name ECQLite.test...o
+inode 60060E type 8 name ECQLite1
+inode 6005CD type 8 name ECQLite1...ASM
+inode 6005CC type 8 name ECQLite1...C
+inode 6005F4 type 8 name ECQLite1...o
+inode 60060F type 8 name ELFAssembly.read
+inode 6005CF type 8 name ELFAssembly.read...ASM
+inode 6005CE type 8 name ELFAssembly.read...C
+inode 6005F5 type 8 name ELFAssembly.read...o
+inode 600610 type 8 name Eratosthenes
+inode 6005D1 type 8 name Eratosthenes...ASM
+inode 6005D0 type 8 name Eratosthenes...C
+inode 6005F6 type 8 name Eratosthenes...o
+inode 60061B type 8 name Extension...ASM
+inode 60061A type 8 name Extension...C
+inode 60061C type 8 name Extension...o
+inode 60061D type 8 name Extension.so
+inode 600613 type 8 name Shell1
+inode 6005D9 type 8 name Shell1...ASM
+inode 6005D6 type 8 name Shell1...C
+inode 6005F9 type 8 name Shell1...o
+inode 600614 type 8 name SipHash48
+inode 6005DB type 8 name SipHash48...ASM
+inode 6005DA type 8 name SipHash48...C
+inode 6005FA type 8 name SipHash48...o
+inode 600619 type 8 name System...html
+inode 600618 type 8 name System...txt
+inode 600600 type 8 name System.Directory.test
+inode 6005B1 type 8 name System.Directory.test...ASM
+inode 6005B0 type 8 name System.Directory.test...C
+inode 6005E6 type 8 name System.Directory.test...o
+inode 60059F type 8 name System.ELF64Assembly.jump.gas...ASM
+inode 6005A0 type 8 name System.ELF64Assembly.jump.gas...o
+inode 600601 type 8 name System.Exception.test
+inode 6005B3 type 8 name System.Exception.test...ASM
+inode 6005B2 type 8 name System.Exception.test...C
+inode 6005E7 type 8 name System.Exception.test...o
+inode 600602 type 8 name System.File.test
+inode 6005B5 type 8 name System.File.test...ASM
+inode 6005B4 type 8 name System.File.test...C
+inode 6005E8 type 8 name System.File.test...o
+inode 600603 type 8 name System.FileInfo.test
+inode 6005B7 type 8 name System.FileInfo.test...ASM
+inode 6005B6 type 8 name System.FileInfo.test...C
+inode 6005E9 type 8 name System.FileInfo.test...o
+inode 60059D type 8 name System.Integers.gas...ASM
+inode 60059E type 8 name System.Integers.gas...o
+inode 600604 type 8 name System.Integers.test
+inode 6005B9 type 8 name System.Integers.test...ASM
+inode 6005B8 type 8 name System.Integers.test...C
+inode 6005EA type 8 name System.Integers.test...o
+inode 6005FE type 8 name System.Interpreter
+inode 6005AB type 8 name System.Interpreter...ASM
+inode 6005A9 type 8 name System.Interpreter...C
+inode 6005E4 type 8 name System.Interpreter...o
+inode 600605 type 8 name System.Math.test
+inode 6005BB type 8 name System.Math.test...ASM
+inode 6005BA type 8 name System.Math.test...C
+inode 6005EB type 8 name System.Math.test...o
+inode 600606 type 8 name System.Memory.test
+inode 6005BD type 8 name System.Memory.test...ASM
+inode 6005BC type 8 name System.Memory.test...C
+inode 6005EC type 8 name System.Memory.test...o
+inode 600607 type 8 name System.MemoryStream.test
+inode 6005BF type 8 name System.MemoryStream.test...ASM
+inode 6005BE type 8 name System.MemoryStream.test...C
+inode 6005ED type 8 name System.MemoryStream.test...o
+inode 600608 type 8 name System.Path.test
+inode 6005C1 type 8 name System.Path.test...ASM
+inode 6005C0 type 8 name System.Path.test...C
+inode 6005EE type 8 name System.Path.test...o
+inode 6005A8 type 8 name System.Runtime.shared...ASM
+inode 6005A7 type 8 name System.Runtime.shared...C
+inode 6005E3 type 8 name System.Runtime.shared...o
+inode 600609 type 8 name System.Signal.test
+inode 6005C3 type 8 name System.Signal.test...ASM
+inode 6005C2 type 8 name System.Signal.test...C
+inode 6005EF type 8 name System.Signal.test...o
+inode 60060A type 8 name System.String8.test
+inode 6005C5 type 8 name System.String8.test...ASM
+inode 6005C4 type 8 name System.String8.test...C
+inode 6005F0 type 8 name System.String8.test...o
+inode 60059B type 8 name System.Syscall.gas...ASM
+inode 60059C type 8 name System.Syscall.gas...o
+inode 6005A3 type 8 name System.Syscall.sigreturn.gas...ASM
+inode 6005A4 type 8 name System.Syscall.sigreturn.gas...o
+inode 60060B type 8 name System.Syscall.test
+inode 6005C7 type 8 name System.Syscall.test...ASM
+inode 6005C6 type 8 name System.Syscall.test...C
+inode 6005F1 type 8 name System.Syscall.test...o
+inode 60060C type 8 name System.Terminal.test
+inode 6005C9 type 8 name System.Terminal.test...ASM
+inode 6005C8 type 8 name System.Terminal.test...C
+inode 6005F2 type 8 name System.Terminal.test...o
+inode 6005A1 type 8 name System.Thread.boot.gas...ASM
+inode 6005A2 type 8 name System.Thread.boot.gas...o
+inode 60060D type 8 name System.Thread.test
+inode 6005CB type 8 name System.Thread.test...ASM
+inode 6005CA type 8 name System.Thread.test...C
+inode 6005F3 type 8 name System.Thread.test...o
+inode 60059A type 8 name System.core...ASM
+inode 600599 type 8 name System.core...C
+inode 6005A5 type 8 name System.core...o
+inode 6005A6 type 8 name System.so
+inode 600615 type 8 name WebService2
+inode 6005DD type 8 name WebService2...ASM
+inode 6005DC type 8 name WebService2...C
+inode 6005FB type 8 name WebService2...o
+inode 600616 type 8 name WebService3
+inode 6005E0 type 8 name WebService3...ASM
+inode 6005DE type 8 name WebService3...C
+inode 6005FC type 8 name WebService3...o
+inode 600617 type 8 name WebService4
+inode 6005E2 type 8 name WebService4...ASM
+inode 6005E1 type 8 name WebService4...C
+inode 6005FD type 8 name WebService4...o
+inode 60061E type 8 name database.ecql
 
 System.Integers:
 UInt8: 127 on stack
@@ -415,78 +375,72 @@ Test20: "/home/user1/" & "./Documents/whaat/Downloads/../../../../../.System.Fil
 
 System.Signal:
 SIGSEGV: number 11, errno 0, code 1, sigfault.address FFFF
-SIGILL: number 4, errno 0, code 2, sigfault.address 7F86F1F8681B
-SIGFPE: number 8, errno 0, code 1, sigfault.address 7F86F1F86840
+SIGILL: number 4, errno 0, code 2, sigfault.address 7F2E6941785F
+SIGFPE: number 8, errno 0, code 1, sigfault.address 7F2E69417884
 SUCCESS
 SIGBUS:
 
 System.Thread:
-System_Thread_PID: 120046, System_Thread_TID: 120046
-Wait on Child1, threadId 120047
-Child64
+System_Thread_PID: 1469970, System_Thread_TID: 1469970
+Child2
+Child2: 0. wrote number 10.
 Child8
 Child32
-Child64: 0. wrote number 1000000.
-Child256
-Child32: 12411. wrote number 100000.
-Child32768
-Child1024
-Child2048
-Child128
-Child4096
-Child512
-Child2
-Child1
-Wait on Child2, threadId 120048
-Wait on Child4, threadId 120049
-Child16384
-Child4
 Child16
-Child8192
-Wait on Child8, threadId 120050
-Wait on Child16, threadId 120051
-Wait on Child32, threadId 120052
-Child64 return number 1000000.
-Wait on Child128, threadId 120054
-Child1: 106005. wrote number 1.
-Wait on Child256, threadId 120055
-Wait on Child512, threadId 120056
-Wait on Child1024, threadId 120057
-Wait on Child2048, threadId 120058
-Wait on Child4096, threadId 120059
-Wait on Child8192, threadId 120060
-Wait on Child16384, threadId 120061
-Wait on Child32768, threadId 120062
-System_Thread_TID: 120047 System_Thread_getRegister: 7FDD5CD58FE8
-System_Thread_Current: 0x7FDD5CD59058, base.type 0x7FDD5D1A8860, threadId 120047, returnValue 0
-Child4096: 105965. wrote number 1000000000000.
-Child16384: 119416. wrote number 100000000000000.
-Child4: 139687. wrote number 100.
-Child8192: 178136. wrote number 10000000000000.
-Child256: 325801. wrote number 100000000.
-THREAD TERMINIERT: throws IOException: TestException
-Child8: 560101. wrote number 1000.
-Child1024: 429842. wrote number 10000000000.
-Child16: 176951. wrote number 10000.
-Child512: 401429. wrote number 1000000000.
-Child128: 399099. wrote number 10000000.
-Child32768: 325837. wrote number 1000000000000000.
-Child2048: 246607. wrote number 100000000000.
-Child2: 256101. wrote number 10.
-Child1 return number 1.
+Child8: 0. wrote number 1000.
+Child4
+Child1024
+Child128
+Child64
+Child128: 0. wrote number 10000000.
+Child64: 8899. wrote number 1000000.
+Wait on Child1, threadId 1469971
 Child2 return number 10.
-Child4 return number 100.
+Child1024: 17776. wrote number 10000000000.
+Child512
+Child512: 2976. wrote number 1000000000.
+Child16384
+Child4: 45164. wrote number 100.
+Child2048
+Child16384: 7247. wrote number 100000000000000.
+Child2048: 21358. wrote number 100000000000.
+Child256
+Wait on Child4, threadId 1469973
 Child8 return number 1000.
-Child16 return number 10000.
-Child32 return number 100000.
+Wait on Child16, threadId 1469975
+Wait on Child32, threadId 1469976
+Child64 return number 1000000.
 Child128 return number 10000000.
-Child256 return number 100000000.
+Wait on Child256, threadId 1469979
+Child8192
+Child1
+Child4096
 Child512 return number 1000000000.
 Child1024 return number 10000000000.
+Wait on Child2048, threadId 1469982
+Wait on Child4096, threadId 1469983
+Wait on Child8192, threadId 1469984
+Child16384 return number 100000000000000.
+Wait on Child32768, threadId 1469986
+Child32768
+Child8192: 89701. wrote number 10000000000000.
+Child1: 509019. wrote number 1.
+System_Thread_TID: 1469971 System_Thread_getRegister: 7F9431E1AFE8
+System_Thread_Current: 0x7F9431E1B058, base.type 0xA4978BFB1B82602B, threadId 1469971, returnValue 0
+Child32: 101683. wrote number 100000.
+Child16: 258989. wrote number 10000.
+Child4096: 316745. wrote number 1000000000000.
+Child256: 214989. wrote number 100000000.
+THREAD TERMINIERT: Child32768: 177878. wrote number 1000000000000000.
+throws System.IOException: TestException
+Child1 return number 1.
+Child4 return number 100.
+Child16 return number 10000.
+Child32 return number 100000.
+Child256 return number 100000000.
 Child2048 return number 100000000000.
 Child4096 return number 1000000000000.
 Child8192 return number 10000000000000.
-Child16384 return number 100000000000000.
 Child32768 return number 1000000000000000.
 This is Parent
 ```

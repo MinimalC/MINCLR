@@ -14,6 +14,8 @@
 
 /** struct System_Autex  **/
 
+struct System_Type System_AutexType = { .base = { .type = typeof_System_Type }, .name = "System.Autex" };
+
 System_Bool System_Autex_wait(atomic System_Int32 * address) {
     Size rounds = 0;
     System_Thread_ID tid = System_Thread_TID;
@@ -69,8 +71,3 @@ System_Bool System_Autex_wake(atomic System_Int32 * address) {
     }
     return true;
 }
-
-struct System_Type System_AutexType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "Autex",
-};

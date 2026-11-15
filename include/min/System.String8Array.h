@@ -27,6 +27,8 @@ typedef System_fixed struct System_String8Array {
 
 export struct System_Type  System_String8ArrayType;
 
+enum { typeof_System_String8Array = 0xD86C6BF67B515EC8 };
+
 typedef void delegate(System_String8Array_init)(System_String8Array that, System_Size capacity);
 typedef System_Size  delegate(System_String8Array_get_Length)(System_String8Array that);
 typedef System_String8  delegate(System_String8Array_get_index)(System_String8Array that, System_Size index);
@@ -102,6 +104,8 @@ typedef System_fixed struct System_String8ArrayEnumerator {
 }  * System_String8ArrayEnumerator;
 
 export struct System_Type  System_String8ArrayEnumeratorType;
+
+enum { typeof_System_String8ArrayEnumerator = 0x1BF0F4D18B070C29 };
 
 typedef void delegate(System_String8ArrayEnumerator_init)(System_String8ArrayEnumerator that, System_String8Array array);
 typedef System_String8 delegate(System_String8ArrayEnumerator_get_current)(System_String8ArrayEnumerator that);

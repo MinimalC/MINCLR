@@ -24,18 +24,18 @@
 
 /** static System_Console **/
 
-struct System_Type System_ConsoleType = { .base = { .type = typeof(System_Type) }, .name = "Console", };
+struct System_Type System_ConsoleType = { .base = { .type = typeof_System_Type }, .name = "System.Console", };
 
 struct System_File  System_Console_StdIn = {
-    .base = { .type = typeof(System_File) },
+    .base = { .type = typeof_System_File },
     .fileId = System_Syscall_StandardFile_STDIN,
 };
 struct System_File  System_Console_StdOut = {
-    .base = { .type = typeof(System_File) },
+    .base = { .type = typeof_System_File },
     .fileId = System_Syscall_StandardFile_STDOUT,
 };
 struct System_File  System_Console_StdErr = {
-    .base = { .type = typeof(System_File) },
+    .base = { .type = typeof_System_File },
     .fileId = System_Syscall_StandardFile_STDERR,
 };
 

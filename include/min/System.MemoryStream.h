@@ -8,9 +8,7 @@
 #if !defined(have_System_MemoryStream)
 #define have_System_MemoryStream
 
-enum {
-    System_MemoryStream_Capacity = 65536,
-};
+enum { System_MemoryStream_Capacity = 65536 };
 
 typedef System_fixed struct System_MemoryStream {
 	struct System_Object  base;
@@ -26,6 +24,8 @@ typedef System_fixed struct System_MemoryStream {
 }  * System_MemoryStream;
 
 export struct System_Type  System_MemoryStreamType;
+
+enum { typeof_System_MemoryStream = 0xD34A681CBB9693B };
 
 export System_MemoryStream  new_System_MemoryStream();
 export void  System_MemoryStream_free(System_MemoryStream that);

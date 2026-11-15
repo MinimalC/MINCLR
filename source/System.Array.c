@@ -28,7 +28,7 @@ void  base_System_Array_free(System_Array that) {
 	Console_assert(that);
 
 #if DEBUG == DEBUG_System_Object
-	System_Type type = ((System_Object)that)->type;
+	System_Type type = System_Type_get(((System_Object)that)->type);
     Size start_null = 0;
 #endif
 
@@ -111,10 +111,10 @@ struct System_Type_InterfaceInfo System_ArrayTypeInterfaces[] = {
 };
 
 struct System_Type System_ArrayType = {
-    .base = { .type = typeof(System_Type) },
-	.name = "Array",
+    .base = { .type = typeof_System_Type },
+	.name = "System.Array",
 	.size = sizeof(struct System_Array),
-	.baseType = &System_ObjectType,
+	.baseType = typeof_System_Object,
     .functions = { 
         .length = sizeof_array(System_ArrayTypeFunctions), .value = &System_ArrayTypeFunctions,
     },
@@ -177,10 +177,10 @@ struct System_Type_FunctionInfo  System_ArrayEnumeratorTypeFunctions[] = {
 };
 
 struct System_Type System_ArrayEnumeratorType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "ArrayEnumerator",
+    .base = { .type = typeof_System_Type },
+    .name = "System.ArrayEnumerator",
     .size = sizeof(struct System_ArrayEnumerator),
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
     .functions = { 
         .length = sizeof_array(System_ArrayEnumeratorTypeFunctions), .value = &System_ArrayEnumeratorTypeFunctions
     },

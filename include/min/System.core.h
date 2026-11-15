@@ -52,5 +52,6 @@
 #include "Network.HTTPRequest.h"
 
 #include "System.ECQLite.h"
+#include "System.HashTable.h"
 
 #endif

@@ -81,6 +81,8 @@ typedef System_fixed struct System_File {
 
 export struct System_Type  System_FileType;
 
+enum { typeof_System_File = 0x54C4337B68B7D54B };
+
 export System_Bool  System_File_exists(System_String8 name);
 export System_Bool  System_File_delete(System_String8 name);
 export System_File  System_File_open(System_String8 name, System_File_Mode flags);

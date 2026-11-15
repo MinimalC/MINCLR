@@ -27,10 +27,10 @@ struct System_Type_FunctionInfo  System_ThreadTypeFunctions[] = {
 };
 
 struct System_Type System_ThreadType = { 
-    .base = { .type = typeof(System_Type) }, 
-    .name = "Thread", 
+    .base = { .type = typeof_System_Type }, 
+    .name = "System.Thread", 
     .size = sizeof(struct System_Thread),
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(System_ThreadTypeFunctions), .value = &System_ThreadTypeFunctions },
 };
 

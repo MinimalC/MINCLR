@@ -15,7 +15,7 @@ int CubeHash256_main(int argc, char * argv[]) {
     
     for (Size i = 1; i < argc; ++i) {
         Stack_clear(cubeHash512); CubeHash512_init__size(&cubeHash512, 256);
-        Stack_clearType(file, typeof(System_File));
+        Stack_clearType(file, typeof_System_File);
         if (String8_equals(argv[i], "--file")) {
             if (i + 1 == argc) { 
                 System_Console_writeLine("No file specified.", 0); 

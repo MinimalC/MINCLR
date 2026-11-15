@@ -46,6 +46,8 @@ typedef struct System_ECQLite {
 
 export struct System_Type  System_ECQLiteType;
 
+enum { typeof_System_ECQLite = 0x16CD88FF22151CFF };
+
 export System_ECQLite  new_System_ECQLite();
 export void  System_ECQLite_init(System_ECQLite that);
 export void  System_ECQLite_free(System_ECQLite that);

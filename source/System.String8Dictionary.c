@@ -110,10 +110,10 @@ struct System_Type_InterfaceInfo  System_String8DictionaryTypeInterfaces[] = {
     { .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type System_String8DictionaryType = { .base = { .type = typeof(System_Type) },
-    .name = "String8Dictionary",
+struct System_Type System_String8DictionaryType = { .base = { .type = typeof_System_Type },
+    .name = "System.String8Dictionary",
     .size = sizeof(struct System_String8Dictionary),
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(System_String8DictionaryTypeFunctions), .value = &System_String8DictionaryTypeFunctions },
     .interfaces = { .length = sizeof_array(System_String8DictionaryTypeInterfaces), .value = &System_String8DictionaryTypeInterfaces },
 };
@@ -171,13 +171,11 @@ struct System_Type_FunctionInfo  System_String8DictionaryEnumeratorTypeFunctions
     [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_String8DictionaryEnumerator_moveNext },
 };
 
-struct System_Type System_String8DictionaryEnumeratorType = { .base = { .type = typeof(System_Type) },
-    .name = "String8DictionaryEnumerator",
+struct System_Type System_String8DictionaryEnumeratorType = { .base = { .type = typeof_System_Type },
+    .name = "System.String8DictionaryEnumerator",
     .size = sizeof(struct System_String8DictionaryEnumerator),
-    .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_String8DictionaryEnumeratorTypeFunctions), .value = &System_String8DictionaryEnumeratorTypeFunctions
-    },
+    .baseType = typeof_System_Object,
+    .functions = { .length = sizeof_array(System_String8DictionaryEnumeratorTypeFunctions), .value = &System_String8DictionaryEnumeratorTypeFunctions },
 };
 
 #endif

@@ -17,7 +17,7 @@
 
 /** struct Generic_T0  **/
 
-struct System_Type Generic_T0Type = { .base = { .type = typeof(System_Type) },
+struct System_Type Generic_T0Type = { .base = { .type = typeof_System_Type },
     .name = "Generic.T0",
     .size = sizeof(struct Generic_T0),
 };
@@ -46,10 +46,10 @@ struct System_Type_FunctionInfo  Generic1_T1TypeFunctions[] = {
     { .function = base_System_Object_free, .value = base_Generic1_T1_free },
 };
 
-struct System_Type Generic1_T1Type = { .base = { .type = typeof(System_Type) },
+struct System_Type Generic1_T1Type = { .base = { .type = typeof_System_Type },
     .name = "Generic1.T1",
     .size = sizeof(struct Generic1_T1),
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
     .functions = { 
         .length = sizeof_array(Generic1_T1TypeFunctions), .value = &Generic1_T1TypeFunctions
     },

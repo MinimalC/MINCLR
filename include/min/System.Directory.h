@@ -14,6 +14,8 @@ typedef System_fixed struct System_Directory {
 
 export struct System_Type  System_DirectoryType;
 
+enum { typeof_System_Directory = 0x5F4E8A0094D01284 };
+
 typedef System_fixed struct System_DirectoryEntry {
 
     System_IntPtr inode;
@@ -25,6 +27,8 @@ typedef System_fixed struct System_DirectoryEntry {
 }  * System_DirectoryEntry;
 
 export struct System_Type  System_DirectoryEntryType;
+
+enum { typeof_System_DirectoryEntry = 0xCF5846D775EE9559 };
 
 typedef System_Char8 System_Directory_Type;
 enum {
@@ -52,6 +56,8 @@ typedef System_fixed struct System_DirectoryList {
 }  * System_DirectoryList;
 
 export struct System_Type  System_DirectoryListType;
+
+enum { typeof_System_DirectoryList = 0x72F198708FADBD98 };
 
 export System_Bool System_Directory_exists(System_String8 name);
 export System_Bool System_Directory_change(System_String8 path);

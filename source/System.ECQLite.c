@@ -28,10 +28,10 @@ struct System_Type_FunctionInfo  System_ECQLiteTypeFunctions[] = {
     { .function = base_System_Object_free, .value = System_ECQLite_free },
 };
 
-struct System_Type System_ECQLiteType = { .base = { .type = typeof(System_Type) }, 
-    .name = "ECQLite", 
+struct System_Type System_ECQLiteType = { .base = { .type = typeof_System_Type }, 
+    .name = "System.ECQLite", 
     .size = sizeof(struct System_ECQLite), 
-    .baseType = typeof(System_Object), 
+    .baseType = typeof_System_Object, 
 	.functions  = { .length = sizeof_array(System_ECQLiteTypeFunctions), .value = &System_ECQLiteTypeFunctions },
 };
 

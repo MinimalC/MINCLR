@@ -34,12 +34,10 @@ struct System_Type_FieldInfo  System_Syscall_CommandTypeFields[] = {
 #endif
 };
 
-struct System_Type System_Syscall_CommandType = { .base = { .type = typeof(System_Type) },
-    .name = "Syscall.Command",
+struct System_Type System_Syscall_CommandType = { .base = { .type = typeof_System_Type },
+    .name = "System.Syscall.Command",
     .size = sizeof(System_Syscall_Command),
-	.fields = {
-        .value = &System_Syscall_CommandTypeFields, .length = sizeof_array(System_Syscall_CommandTypeFields),
-    },
+	.fields = { .value = &System_Syscall_CommandTypeFields, .length = sizeof_array(System_Syscall_CommandTypeFields) },
 };
 
 #endif
@@ -52,12 +50,10 @@ struct System_Type_FieldInfo  System_ErrorCodeTypeFields[] = {
 #include <min/System.ErrorCode.generic.asm.h>
 };
 
-struct System_Type System_ErrorCodeType = { .base = { .type = typeof(System_Type) },
-    .name = "ErrorCode",
+struct System_Type System_ErrorCodeType = { .base = { .type = typeof_System_Type },
+    .name = "System.ErrorCode",
     .size = sizeof(System_ErrorCode),
-	.fields = {
-        .value = &System_ErrorCodeTypeFields, .length = sizeof_array(System_ErrorCodeTypeFields),
-    },
+	.fields = { .value = &System_ErrorCodeTypeFields, .length = sizeof_array(System_ErrorCodeTypeFields) },
 };
 
 #endif
@@ -66,7 +62,7 @@ struct System_Type System_ErrorCodeType = { .base = { .type = typeof(System_Type
 
 /** struct System_Syscall  **/
 
-struct System_Type System_SyscallType = { .base = { .type = typeof(System_Type) }, .name = "Syscall", };
+struct System_Type System_SyscallType = { .base = { .type = typeof_System_Type }, .name = "System.Syscall" };
 
 System_ErrorCode System_Syscall_error = 0;
 

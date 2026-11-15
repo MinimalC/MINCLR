@@ -71,10 +71,10 @@ struct System_Type_InterfaceInfo  Generic_T0ArrayTypeInterfaces[] = {
     { .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type Generic_T0ArrayType = { .base = { .type = typeof(System_Type) },
+struct System_Type Generic_T0ArrayType = { .base = { .type = typeof_System_Type },
     .name = "Generic.T0Array",
     .size = sizeof(struct Generic_T0Array),
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(Generic_T0ArrayTypeFunctions), .value = &Generic_T0ArrayTypeFunctions },
     .interfaces = { .length = sizeof_array(Generic_T0ArrayTypeInterfaces), .value = &Generic_T0ArrayTypeInterfaces },
 };

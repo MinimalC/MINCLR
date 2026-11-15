@@ -8,7 +8,7 @@
 
 /** struct System_Atomic  **/
 
-struct System_Type System_AtomicType = { .base = { .type = typeof(System_Type) }, .name = "Atomic", .size = sizeof(struct System_Atomic) };
+struct System_Type System_AtomicType = { .base = { .type = typeof_System_Type }, .name = "System.Atomic", .size = sizeof(struct System_Atomic) };
 
 System_Bool System_Atomic_readLock(System_Atomic that) {
     return System_Atomic_readLock__dontwait(that, false);

@@ -47,10 +47,10 @@ struct System_Type_FunctionInfo  System_ELF64AssemblyTypeFunctions[] = {
     { .function = base_System_Object_free, .value = System_ELF64Assembly_free },
 };
 
-struct System_Type System_ELF64AssemblyType = { .base = { .type = typeof(System_Type), }, 
-    .name = "ELF64Assembly", 
+struct System_Type System_ELF64AssemblyType = { .base = { .type = typeof_System_Type, }, 
+    .name = "System.ELF64Assembly", 
     .size = sizeof(struct System_ELF64Assembly), 
-    .baseType = typeof(System_Object),
+    .baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(System_ELF64AssemblyTypeFunctions), .value = &System_ELF64AssemblyTypeFunctions },
 };
 
@@ -60,7 +60,7 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
     Console_assert(!assembly->buffer);
     if (assembly->buffer) return; // throw
 
-    struct System_File file; System_Stack_clearType(file, typeof(System_File));
+    struct System_File file; System_Stack_clearType(file, typeof_System_File);
     if (!stack_System_File_open(&file, name, System_File_Mode_readOnly)) return;
     System_Size fileSize = System_File_get_Length(&file);
 
@@ -210,6 +210,10 @@ System_ELF64Assembly_SectionHeader System_ELF64Assembly_getSection(System_ELF64A
 }
 
 System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
+    return System_ELF64Assembly_getGlobalSymbol__next(name, out_assembly, 0);
+}
+
+System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalSymbol__next(System_String8 name, System_ELF64Assembly * out_assembly, System_Size next) {
     Console_assert(name);
 
     for (System_Size l = 0; l < System_ELF64Assembly_loadedCount; ++l) {
@@ -220,6 +224,7 @@ System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalSymbol(System_String8 
         System_ELF64Assembly_Symbol symbol = assembly->symbols + i;
         if (!symbol->sectionIndex) continue;
         if (System_String8_equals(assembly->symbolStrings + symbol->name, name)) {
+            if (next) { --next; break; }
             *out_assembly = assembly;
             return symbol;
         }
@@ -229,6 +234,10 @@ System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalSymbol(System_String8 
 }
 
 System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalDynamicSymbol(System_String8 name, System_ELF64Assembly * out_assembly) {
+    return System_ELF64Assembly_getGlobalDynamicSymbol__next(name, out_assembly, 0);
+}
+
+System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalDynamicSymbol__next(System_String8 name, System_ELF64Assembly * out_assembly, System_Size next) {
     Console_assert(name);
 
     for (System_Size l = 0; l < System_ELF64Assembly_loadedCount; ++l) {
@@ -239,6 +248,7 @@ System_ELF64Assembly_Symbol System_ELF64Assembly_getGlobalDynamicSymbol(System_S
         System_ELF64Assembly_Symbol symbol = assembly->dynamicSymbols + i;
         if (!symbol->sectionIndex) continue;
         if (System_String8_equals(assembly->dynamicStrings + symbol->name, name)) {
+            if (next) { --next; break; }
             *out_assembly = assembly;
             return symbol;
         }
@@ -815,7 +825,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_ABITypeFields[] = {
     { .name = "Standalone", .value = System_ELFAssembly_ABI_Standalone },
 };
 
-struct System_Type System_ELFAssembly_ABIType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ELFAssembly_ABIType = { .base = { .type = typeof_System_Type },
     .name = "ABI",
     .size = sizeof(System_ELFAssembly_ABI),
 	.fields = { 
@@ -850,7 +860,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_AssemblyTypeTypeFields[] = {
     { .name = "ProcessorSpecificHigh", .value = System_ELFAssembly_AssemblyType_ProcessorSpecificHigh },
 };
 
-struct System_Type System_ELFAssembly_AssemblyTypeType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ELFAssembly_AssemblyTypeType = { .base = { .type = typeof_System_Type },
     .name = "AssemblyType",
     .size = sizeof(System_ELFAssembly_AssemblyType),
 	.fields = { 
@@ -1049,7 +1059,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_MachineTypeFields[] = {
     { .name = "ALPHA", .value = System_ELFAssembly_Machine_ALPHA },
 };
 
-struct System_Type System_ELFAssembly_MachineType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ELFAssembly_MachineType = { .base = { .type = typeof_System_Type },
     .name = "Machine",
     .size = sizeof(System_ELFAssembly_Machine),
 	.fields = { 
@@ -1091,7 +1101,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_ProgramTypeTypeFields[] = {
     { .name = "GNU_ReadOnlyRelocation", .value = System_ELFAssembly_ProgramType_GNU_ReadOnlyRelocation },
 };
 
-struct System_Type System_ELFAssembly_ProgramTypeType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ELFAssembly_ProgramTypeType = { .base = { .type = typeof_System_Type },
     .name = "ProgramType",
     .size = sizeof(System_ELFAssembly_ProgramType),
 	.fields = { 
@@ -1106,7 +1116,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_ProgramFlagsTypeFields[] = {
     { .name = "Readable", .value = System_ELFAssembly_ProgramFlags_Readable },
 };
 
-struct System_Type System_ELFAssembly_ProgramFlagsType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ELFAssembly_ProgramFlagsType = { .base = { .type = typeof_System_Type },
     .name = "ProgramFlags",
     .size = sizeof(System_ELFAssembly_ProgramFlags),
 	.fields = { 
@@ -1153,7 +1163,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_SectionTypeTypeFields[] = {
     { .name = "HIUSER", .value = System_ELFAssembly_SectionType_HIUSER },
 };
 
-struct System_Type System_ELFAssembly_SectionTypeType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ELFAssembly_SectionTypeType = { .base = { .type = typeof_System_Type },
     .name = "SectionType",
     .size = sizeof(System_ELFAssembly_SectionType),
 	.fields = { 
@@ -1170,7 +1180,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_SectionFlagsTypeFields[] = {
     { .name = "Strings", .value = System_ELFAssembly_SectionFlags_Strings },
 };
 
-struct System_Type System_ELFAssembly_SectionFlagsType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ELFAssembly_SectionFlagsType = { .base = { .type = typeof_System_Type },
     .name = "SectionFlags",
     .size = sizeof(System_ELFAssembly_SectionFlags),
 	.fields = { 
@@ -1263,7 +1273,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_DynamicTypeTypeFields[] = {
     { .name = "EXTRANUM", .value = System_ELFAssembly_DynamicType_EXTRANUM },
 };
 
-struct System_Type System_ELFAssembly_DynamicTypeType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ELFAssembly_DynamicTypeType = { .base = { .type = typeof_System_Type },
     .name = "DynamicType",
     .size = sizeof(System_ELFAssembly_DynamicType),
 	.fields = { 
@@ -1318,7 +1328,7 @@ struct System_Type_FieldInfo  System_ELFAssembly_AMD64RelocationTypeFields[] = {
     { .name = "REX_GOTPCRELX", .value = System_ELFAssembly_AMD64_REX_GOTPCRELX },
 };
 
-struct System_Type System_ELFAssembly_AMD64RelocationType = { .base = { .type = typeof(System_Type) },
+struct System_Type System_ELFAssembly_AMD64RelocationType = { .base = { .type = typeof_System_Type },
     .name = "AMD64Relocation",
     .size = sizeof(System_ELFAssembly_AMD64RelocationType),
 	.fields = { 

@@ -69,16 +69,12 @@ struct System_Type_InterfaceInfo  System_VarArrayTypeInterfaces[] = {
     [1] = { .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type System_VarArrayType = { .base = { .type = typeof(System_Type) },
-    .name = "VarArray",
+struct System_Type System_VarArrayType = { .base = { .type = typeof_System_Type },
+    .name = "System.VarArray",
     .size = sizeof(struct System_VarArray),
-    .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_VarArrayTypeFunctions), .value = &System_VarArrayTypeFunctions
-    },
-    .interfaces = {
-        .length = sizeof_array(System_VarArrayTypeInterfaces), .value = &System_VarArrayTypeInterfaces
-    },
+    .baseType = typeof_System_Object,
+    .functions = { .length = sizeof_array(System_VarArrayTypeFunctions), .value = &System_VarArrayTypeFunctions },
+    .interfaces = { .length = sizeof_array(System_VarArrayTypeInterfaces), .value = &System_VarArrayTypeInterfaces },
 };
 
 #endif
@@ -136,13 +132,11 @@ struct System_Type_FunctionInfo  System_VarArrayEnumeratorTypeFunctions[] = {
     [3] = { .function = base_System_IEnumerator_moveNext, .value = base_System_VarArrayEnumerator_moveNext },
 };
 
-struct System_Type System_VarArrayEnumeratorType = { .base = { .type = typeof(System_Type) },
-    .name = "VarArrayEnumerator",
+struct System_Type System_VarArrayEnumeratorType = { .base = { .type = typeof_System_Type },
+    .name = "System.VarArrayEnumerator",
     .size = sizeof(struct System_VarArrayEnumerator),
-    .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_VarArrayEnumeratorTypeFunctions), .value = &System_VarArrayEnumeratorTypeFunctions
-    },
+    .baseType = typeof_System_Object,
+    .functions = {  .length = sizeof_array(System_VarArrayEnumeratorTypeFunctions), .value = &System_VarArrayEnumeratorTypeFunctions },
 };
 
 #endif

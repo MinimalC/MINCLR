@@ -108,10 +108,10 @@ struct System_Type_FunctionInfo Network_HTTPRequestTypeFunctions[] = {
 };
 
 struct System_Type Network_HTTPRequestType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "HTTPRequest",
+    .base = { .type = typeof_System_Type },
+    .name = "Network.HTTPRequest",
     .size = sizeof(struct Network_HTTPRequest),
-    .baseType = &System_ObjectType,
+    .baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(Network_HTTPRequestTypeFunctions), .value = &Network_HTTPRequestTypeFunctions, },
 };
 
@@ -146,10 +146,10 @@ struct System_Type_FunctionInfo Network_HTTPResponseTypeFunctions[] = {
 };
 
 struct System_Type Network_HTTPResponseType = {
-    .base = { .type = typeof(System_Type) },
-    .name = "HTTPResponse",
+    .base = { .type = typeof_System_Type },
+    .name = "Network.HTTPResponse",
     .size = sizeof(struct Network_HTTPResponse),
-    .baseType = &System_ObjectType,
+    .baseType = typeof_System_Object,
     .functions = { .length = sizeof_array(Network_HTTPResponseTypeFunctions), .value = &Network_HTTPResponseTypeFunctions, },
 };
 

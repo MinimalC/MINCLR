@@ -35,10 +35,10 @@ struct System_Type_FunctionInfo  System_StringTypeFunctions[] = {
     { .function = base_System_Object_getSipHash, .value = System_String_getSipHash },
 };
 
-struct System_Type System_StringType = { .base = { .type = typeof(System_Type) },
-	.name = "String",
+struct System_Type System_StringType = { .base = { .type = typeof_System_Type },
+	.name = "System.String",
 	.size = sizeof(struct System_String),
-	.baseType = null, /* this is a struct */
+	.baseType = typeof_System_Object,
 	.functions  = { .length = sizeof_array(System_StringTypeFunctions), .value = &System_StringTypeFunctions },
 };
 

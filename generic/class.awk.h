@@ -19,6 +19,8 @@ typedef System_fixed struct Generic_T0 {
 
 export struct System_Type  Generic_T0Type;
 
+enum { typeof_Generic_T0 = SIPHASH48(Generic_T0) };
+
 typedef void delegate(Generic_T0_init)(Generic_T0 that);
 typedef void delegate(Generic_T0_free)(Generic_T0 that);
 

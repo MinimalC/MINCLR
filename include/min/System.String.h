@@ -15,6 +15,8 @@ typedef System_fixed struct System_String {
 
 export struct System_Type  System_StringType;
 
+enum { typeof_System_String = 0xA7B70FE36460A771 };
+
 export void System_String_free(System_String that);
 export System_UInt64 System_String_getSipHash(System_String that);
 

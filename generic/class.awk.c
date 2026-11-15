@@ -37,13 +37,11 @@ struct System_Type_FunctionInfo  Generic_T0TypeFunctions[] = {
     { .function = base_System_Object_free, .value = base_Generic_T0_free },
 };
 
-struct System_Type Generic_T0Type = { .base = { .type = typeof(System_Type) },
+struct System_Type Generic_T0Type = { .base = { .type = typeof_System_Type },
     .name = "Generic.T0",
     .size = sizeof(struct Generic_T0),
-    .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(Generic_T0TypeFunctions), .value = &Generic_T0TypeFunctions
-    },
+    .baseType = typeof_System_Object,
+    .functions = { .length = sizeof_array(Generic_T0TypeFunctions), .value = &Generic_T0TypeFunctions },
 };
 
 #endif

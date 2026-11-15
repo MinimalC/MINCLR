@@ -30,6 +30,8 @@ typedef System_fixed struct System_Array {
 
 export struct System_Type  System_ArrayType;
 
+enum { typeof_System_Array = 0x857E46BC7F7AAA0 };
+
 typedef void  delegate(System_Array_init)(System_Array that, System_Size capacity);
 typedef System_Size  delegate(System_Array_get_Length)(System_Array that);
 typedef System_Object  delegate(System_Array_get_index)(System_Array that, System_Size index);
@@ -84,6 +86,8 @@ typedef System_fixed struct System_ArrayEnumerator {
 }  * System_ArrayEnumerator;
 
 export struct System_Type  System_ArrayEnumeratorType;
+
+enum { typeof_System_ArrayEnumerator = 0x3A43F93895CC9862 };
 
 typedef void delegate(System_ArrayEnumerator_free)(System_ArrayEnumerator that);
 typedef void delegate(System_ArrayEnumerator_init)(System_ArrayEnumerator that, System_Array array);

@@ -10,9 +10,7 @@
 
 /** struct System_ICollection  **/
 
-struct System_Type System_ICollectionType = { .base = { .type = typeof(System_Type) },
-	.name = "ICollection",
-};
+struct System_Type System_ICollectionType = { .base = { .type = typeof_System_Type }, .name = "System.ICollection" };
 
 System_Var  base_System_ICollection_get_index(System_ICollection that) { return null; }
 void  base_System_ICollection_set_index(System_ICollection that, System_Var value) { }

@@ -11,6 +11,8 @@
 
 typedef System_UInt32  System_FileInfo_Type;
 
+enum { typeof_System_FileInfo = 0x2581533F43A5F21D };
+
 enum {
     System_FileInfo_Type_Regular          = 0100000,
     System_FileInfo_Type_Directory        = 0040000,

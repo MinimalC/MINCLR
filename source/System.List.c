@@ -85,16 +85,12 @@ struct System_Type_InterfaceInfo  System_ListTypeInterfaces[] = {
     [1] = { .interfaceType = &System_IEnumerableType },
 };
 
-struct System_Type System_ListType = { .base = { .type = typeof(System_Type) },
-    .name = "List",
+struct System_Type System_ListType = { .base = { .type = typeof_System_Type },
+    .name = "System.List",
     .size = sizeof(struct System_List),
-    .baseType = typeof(System_Object),
-    .functions = { 
-        .length = sizeof_array(System_ListTypeFunctions), .value = &System_ListTypeFunctions
-    },
-    .interfaces = {
-        .length = sizeof_array(System_ListTypeInterfaces), .value = &System_ListTypeInterfaces
-    },
+    .baseType = typeof_System_Object,
+    .functions = { .length = sizeof_array(System_ListTypeFunctions), .value = &System_ListTypeFunctions },
+    .interfaces = { .length = sizeof_array(System_ListTypeInterfaces), .value = &System_ListTypeInterfaces },
 };
 
 #endif

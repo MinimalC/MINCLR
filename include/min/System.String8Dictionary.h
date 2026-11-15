@@ -31,6 +31,8 @@ typedef System_fixed struct System_String8Dictionary {
 
 export struct System_Type  System_String8DictionaryType;
 
+enum { typeof_System_String8Dictionary = 0x65209CCA5A029470 };
+
 export System_String8Dictionary  new_System_String8Dictionary();
 export void  System_String8Dictionary_init(System_String8Dictionary that);
 export void  System_String8Dictionary_free(System_String8Dictionary that);
@@ -76,6 +78,8 @@ typedef System_fixed struct System_String8DictionaryEnumerator {
 }  * System_String8DictionaryEnumerator;
 
 export struct System_Type  System_String8DictionaryEnumeratorType;
+
+enum { typeof_System_String8DictionaryEnumerator = 0x87DA7A58CE9411FA };
 
 typedef void delegate(System_String8DictionaryEnumerator_init)(System_String8DictionaryEnumerator that, System_String8Dictionary array);
 typedef System_String8 delegate(System_String8DictionaryEnumerator_get_current)(System_String8DictionaryEnumerator that);

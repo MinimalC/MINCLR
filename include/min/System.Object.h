@@ -7,11 +7,13 @@
 
 typedef struct System_Object {
 
-    System_Type  type;
+    System_UInt64  type;
 
 } * System_Object;
 
 export struct System_Type  System_ObjectType;
+
+enum { typeof_System_Object = 0xE6842CB8D343FDC5 }; /* SipHash48 of "System.Object" */
 
 typedef void delegate(System_Object_free)(System_Object that);
 typedef void delegate(System_Object_init)(System_Object that);
@@ -37,7 +39,7 @@ export System_Object  System_Object_asInstanceof(System_Object that, System_Type
 #define System_Object_init(o)  ((function_System_Object_init)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_init))(o)
 #define System_Object_getSipHash(o)  ((function_System_Object_getSipHash)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_Object_getSipHash))(o)
 
-#define inline_System_Object_get_Type(that)  ((System_Object)that)->type
+#define inline_System_Object_get_Type(that)  System_Type_get(((System_Object)that)->type)
 #define inline_System_Object_isInstanceof(o,T)  (System_Object_isInstanceof((System_Object)o,typeof(T)))
 #define inline_System_Object_asInstanceof(o,T)  ((T)System_Object_asInstanceof((System_Object)o,typeof(T)))
 
@@ -46,6 +48,7 @@ export System_Object  System_Object_asInstanceof(System_Object that, System_Type
 #define Object  System_Object
 #define ObjectType  System_ObjectType
 #define new_Object  new_System_Object
+#define typeof_Object  typeof_System_Object
 
 #define Object_get_Type  System_Object_get_Type
 #define Object_isInstanceof  System_Object_isInstanceof
