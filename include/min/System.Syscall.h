@@ -79,7 +79,7 @@ export System_IntPtr  System_Syscall_openat(System_IntPtr directoryId, System_St
 export System_IntPtr  System_Syscall_dup2(System_IntPtr fileId, System_IntPtr newId);
 export System_Size  System_Syscall_read(System_IntPtr fileId, const System_Var buffer, System_Size count);
 export System_Size  System_Syscall_write(System_IntPtr fileId, const System_Var buffer, System_Size count);
-export System_Size  System_Syscall_lseek(System_IntPtr fileId, System_Size offset, System_IntPtr whence);
+export System_Size  System_Syscall_lseek(System_IntPtr fileId, System_SSize offset, System_IntPtr whence);
 export void  System_Syscall_ftruncate(System_IntPtr fileId, System_Size length);
 export void  System_Syscall_fsync(System_IntPtr fileId);
 export void  System_Syscall_close(System_IntPtr fileId);

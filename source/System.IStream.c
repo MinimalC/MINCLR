@@ -17,7 +17,11 @@ System_Size  base_System_IStream_write__string_size(IStream that, String8 value,
 
 void  base_System_IStream_sync(IStream that) {  }
 
-System_Size  base_System_IStream_read(IStream that, String8 value, Size count) { return 0; }
+System_Size  base_System_IStream_readBytes(IStream that, String8 value, Size count) { return 0; }
+
+System_String8  base_System_IStream_readLine(System_IStream that) { return 0; }
+
+System_String8  base_System_IStream_readText(System_IStream that) { return 0; }
 
 System_Size  base_System_IStream_seek(IStream that, SSize offset, Origin origin) { }
 
@@ -28,7 +32,9 @@ void  base_System_IStream_set_Position(IStream that, Size value) { }
 struct System_Type_FunctionInfo  System_IStreamTypeFunctions[] = {
     { .function = base_System_IStream_write__string_size, .value = null },
     { .function = base_System_IStream_sync, .value = null },
-    { .function = base_System_IStream_read, .value = null },
+    { .function = base_System_IStream_readBytes, .value = null },
+    { .function = base_System_IStream_readLine, .value = null },
+    { .function = base_System_IStream_readText, .value = null },
     { .function = base_System_IStream_seek, .value = null },
     { .function = base_System_IStream_get_Position, .value = null },
     { .function = base_System_IStream_set_Position, .value = null },

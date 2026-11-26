@@ -34,21 +34,25 @@ export void  System_IStream_writeEnd__arguments(System_IStream stream, System_St
 
 typedef System_Size  delegate(System_IStream_write__string_size)(System_IStream that, System_String8 value, System_Size count);
 typedef void  delegate(System_IStream_sync)(System_IStream that);
-typedef System_Size  delegate(System_IStream_read)(System_IStream that, System_String8 value, System_Size count);
+typedef System_Size  delegate(System_IStream_readBytes)(System_IStream that, System_String8 value, System_Size count);
+typedef System_String8  delegate(System_IStream_readLine)(System_IStream that);
+typedef System_String8  delegate(System_IStream_readText)(System_IStream that);
 typedef System_Size  delegate(System_IStream_seek)(System_IStream that, System_SSize offset, System_Origin origin);
 typedef System_IntPtr  delegate(System_IStream_get_Position)(System_IStream that);
 typedef void  delegate(System_IStream_set_Position)(System_IStream that, System_Size value);
 
 export System_Size  base_System_IStream_write__string_size(System_IStream that, System_String8 value, System_Size count);
 export void  base_System_IStream_sync(System_IStream that);
-export System_Size  base_System_IStream_read(System_IStream that, System_String8 value, System_Size count);
+export System_Size  base_System_IStream_readBytes(System_IStream that, System_String8 value, System_Size count);
+export System_String8  base_System_IStream_readLine(System_IStream that);
+export System_String8  base_System_IStream_readText(System_IStream that);
 export System_Size  base_System_IStream_seek(System_IStream that, System_SSize offset, System_Origin origin);
 export System_IntPtr  base_System_IStream_get_Position(System_IStream that);
 export void  base_System_IStream_set_Position(System_IStream that, System_Size value);
 
 #define System_IStream_write__string_size(o,...)  ((function_System_IStream_write__string_size)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_write__string_size))(o, __VA_ARGS__)
 #define System_IStream_sync(o)      ((function_System_IStream_sync)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_sync))(o)
-#define System_IStream_read(o,...)  ((function_System_IStream_read)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_read))(o, __VA_ARGS__)
+#define System_IStream_readBytes(o,...)  ((function_System_IStream_readBytes)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_readBytes))(o, __VA_ARGS__)
 #define System_IStream_seek(o,...)  ((function_System_IStream_seek)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_seek))(o, __VA_ARGS__)
 #define System_IStream_get_Position(o)      ((function_System_IStream_get_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_get_Position))(o)
 #define System_IStream_set_Position(o,...)  ((function_System_IStream_set_Position)System_Type_getMethod(System_Object_get_Type((System_Object)o), base_System_IStream_set_Position))(o, __VA_ARGS__)
@@ -64,7 +68,7 @@ export void  base_System_IStream_set_Position(System_IStream that, System_Size v
 
 #define IStream_write__string_size  System_IStream_write__string_size
 #define IStream_sync  System_IStream_sync
-#define IStream_read  System_IStream_read
+#define IStream_readBytes  System_IStream_readBytes
 #define IStream_seek  System_IStream_seek
 #define IStream_get_Position  System_IStream_get_Position
 #define IStream_set_Position  System_IStream_set_Position

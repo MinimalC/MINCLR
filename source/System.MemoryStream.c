@@ -59,7 +59,7 @@ void  System_MemoryStream_free(MemoryStream that) {
     System_MemoryStream_close(that);
 }
 
-Size  System_MemoryStream_read(MemoryStream that, String8 value, Size count) {
+Size  System_MemoryStream_readBytes(MemoryStream that, String8 value, Size count) {
     SSize count1 = count;
     if (that->position + count1 > that->size)
         count1 = that->size - that->position;
@@ -69,6 +69,10 @@ Size  System_MemoryStream_read(MemoryStream that, String8 value, Size count) {
     }
     return count1;
 }
+
+// String8  System_MemoryStream_readLine(MemoryStream that) { }
+
+// String8  System_MemoryStream_readText(MemoryStream that) { }
 
 Size  System_MemoryStream_write__string_size(MemoryStream that, String8 value, Size count) {
     if (that->position + count >= that->capacity) {
@@ -178,7 +182,7 @@ struct System_Type_FunctionInfo  System_MemoryStreamTypeFunctions[] = {
     { .function = base_System_Object_free, .value = System_MemoryStream_free },
     { .function = base_System_IStream_write__string_size, .value = System_MemoryStream_write__string_size },
     { .function = base_System_IStream_sync, .value = System_MemoryStream_sync },
-    { .function = base_System_IStream_read, .value = System_MemoryStream_read },
+    { .function = base_System_IStream_readBytes, .value = System_MemoryStream_readBytes },
     { .function = base_System_IStream_seek, .value = System_MemoryStream_seek },
     { .function = base_System_IStream_get_Position, .value = System_MemoryStream_get_Position },
     { .function = base_System_IStream_set_Position, .value = System_MemoryStream_set_Position },

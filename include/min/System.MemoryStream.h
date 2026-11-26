@@ -39,7 +39,7 @@ export System_Size  System_MemoryStream_writeLine(System_MemoryStream that, Syst
 export System_Size  System_MemoryStream_writeEnd__arguments(System_MemoryStream that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 export void  System_MemoryStream_sync(System_MemoryStream that);
 export System_Size  System_MemoryStream_seek(System_MemoryStream that, System_SSize offset, System_Origin origin);
-export System_Size  System_MemoryStream_read(System_MemoryStream that, System_String8 value, System_Size count);
+export System_Size  System_MemoryStream_readBytes(System_MemoryStream that, System_String8 value, System_Size count);
 export System_Size  System_MemoryStream_get_Position(System_MemoryStream that);
 export void  System_MemoryStream_set_Position(System_MemoryStream that, System_Size value);
 export System_Size  System_MemoryStream_get_Length(System_MemoryStream that);

@@ -31,7 +31,7 @@ int Shell1_main(int argc, char * argv[]) {
     Char8 text[4096]; Stack_clear(text);
 
     while (true) {
-        length = System_File_read(&System_Console_StdIn, input, 4096);
+        length = System_File_readBytes(&System_Console_StdIn, input, 4096);
 
         for (n = 0; n < length; ++n) {
 

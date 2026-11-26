@@ -192,7 +192,7 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         {
             response->body.length = fileSize;
             response->body.value = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
-            System_File_read(&file, response->body.value, fileSize);
+            System_File_readBytes(&file, response->body.value, fileSize);
         }
         System_File_close(&file);
         System_String8Dictionary_add(response->header, "Content-Length", System_UInt64_toString8base10(fileSize));

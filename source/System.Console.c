@@ -229,7 +229,7 @@ System_Size  System_Console_writeLineEmpty(void) {
     Returns the length of the string.
 **/
 System_Size  System_Console_writeLine__string(String8 string) {
-    return System_Console_writeLine(string, 0);
+    return System_Console_writeLine("{0:string}", 1, string);
 }
 
 /** function System_Console_writeLine

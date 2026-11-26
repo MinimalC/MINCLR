@@ -22,7 +22,7 @@ int System_MemoryStream_test_main (int argc, String8 argv[]) {
 
     Char8 buffer[65536]; Stack_clear(buffer);
     Size bytes = 0;
-    while (0 < (bytes = System_File_read(file, buffer, 65536)))
+    while (0 < (bytes = System_File_readBytes(file, buffer, 65536)))
         System_MemoryStream_write__string_size(stream, buffer, bytes);
 
     System_File_close(file);

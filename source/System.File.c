@@ -11,6 +11,9 @@
 #if !defined(have_System_Exception)
 #include <min/System.Exception.h>
 #endif
+#if !defined(have_System_MemoryStream)
+#include <min/System.MemoryStream.h>
+#endif
 #if !defined(code_System_File)
 #define code_System_File
 
@@ -104,17 +107,76 @@ void  System_File_free(File that) {
     System_File_close(that);
 }
 
-/** function System_File_read
+/** function System_File_readBytes
     Read into System_String8 value, with System_Size count bytes.
     argument System_File that
     argument System_String8 value
     argument System_Size count
     Returns the count of bytes actually read.
 */
-Size  System_File_read(File that, String8 value, Size count) {
+Size  System_File_readBytes(File that, String8 value, Size count) {
 /*  return ISO_fread(value, 1, count, (ISO_File)that->fileId); */
     Size length = System_Syscall_read(that->fileId, value, count);
     return length;
+}
+
+/** function System_File_readLine
+    Read a line of text.
+    argument System_File that
+    Returns String8.
+*/
+String8  System_File_readLine(File that) {
+    struct System_MemoryStream stream; System_Stack_clear(stream);
+    System_Char8 scratch[4096];
+    Size length, i;
+    do {
+        System_Stack_clear(scratch);
+        length = System_File_readBytes(that, scratch, 4096);
+        if (!length) break;
+        for (i = 0; i < length; ++i) {
+            if (scratch[i] == '\n') break;
+            if (scratch[i] == '\0') break;
+        }
+        if (i < length) {
+            if (scratch[i] == '\n') 
+                System_File_seek(that, i - length + 1, Origin_Current);
+            if (scratch[i] == '\0')
+                System_File_seek(that, i - length, Origin_Current);
+            System_MemoryStream_write__string_size(&stream, scratch, i);
+            break;
+        }
+        if (scratch[length] == '\n')
+            System_File_seek(that, 1, Origin_Current);
+        System_MemoryStream_write__string_size(&stream, scratch, length);
+    } while (length);
+    return System_MemoryStream_final(&stream);
+}
+
+/** function System_File_readText
+    Read all text.
+    argument System_File that
+    Returns String8.
+*/
+String8  System_File_readText(File that) {
+    struct System_MemoryStream stream; System_Stack_clear(stream);
+    System_Char8 scratch[4096];
+    Size length, i;
+    do {
+        System_Stack_clear(scratch);
+        length = System_File_readBytes(that, scratch, 4096);
+        if (!length) break;
+        for (i = 0; i < length; ++i) {
+            if (scratch[i] == '\0') break;
+        }
+        if (i < length) {
+            if (scratch[i] == '\0')
+                System_File_seek(that, i - length, Origin_Current);
+            System_MemoryStream_write__string_size(&stream, scratch, i);
+            break;
+        }
+        System_MemoryStream_write__string_size(&stream, scratch, length);
+    } while (length);
+    return System_MemoryStream_final(&stream);
 }
 
 /** function System_File_write__string_size
@@ -185,7 +247,7 @@ Size  System_File_write(File that, String8 format, ...) {
     Returns the length of the string + 1.
 */
 Size  System_File_writeLine__string(File that, String8 string) {
-    return System_File_writeLine(that, string, 0);
+    return System_File_writeLine(that, "{0:string}", 1, string);
 }
 
 /** function System_File_writeLine
@@ -284,7 +346,9 @@ struct System_Type_FunctionInfo  System_FileTypeFunctions[] = {
     { .function = base_System_Object_free, .value = System_File_free },
     { .function = base_System_IStream_write__string_size, .value = System_File_write__string_size },
     { .function = base_System_IStream_sync, .value = System_File_sync },
-    { .function = base_System_IStream_read, .value = System_File_read },
+    { .function = base_System_IStream_readBytes, .value = System_File_readBytes },
+    { .function = base_System_IStream_readLine, .value = System_File_readLine },
+    { .function = base_System_IStream_readText, .value = System_File_readText },
     { .function = base_System_IStream_seek, .value = System_File_seek },
     { .function = base_System_IStream_get_Position, .value = System_File_get_Position },
     { .function = base_System_IStream_set_Position, .value = System_File_set_Position },

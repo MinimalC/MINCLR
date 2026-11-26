@@ -101,7 +101,9 @@ export System_Size  System_File_writeLine(System_File that, System_String8 forma
 export System_Size  System_File_writeEnd__arguments(System_File that, System_String8 format, System_Char8 suffix, System_Size argc, System_Var argv[]);
 export void  System_File_sync(System_File that);
 export System_Size  System_File_seek(System_File that, System_SSize offset, System_Origin origin);
-export System_Size  System_File_read(System_File that, System_String8 value, System_Size count);
+export System_Size  System_File_readBytes(System_File that, System_String8 value, System_Size count);
+export System_String8  System_File_readLine(System_File that);
+export System_String8  System_File_readText(System_File that);
 export System_Size  System_File_get_Position(System_File that);
 export void  System_File_set_Position(System_File that, System_Size value);
 export System_Size  System_File_get_Length(System_File that);
@@ -127,7 +129,9 @@ export void  System_File_close(System_File that);
 #define File_writeEnd__arguments  System_File_writeEnd__arguments
 #define File_sync  System_File_sync
 #define File_seek  System_File_seek
-#define File_read  System_File_read
+#define File_readBytes  System_File_readBytes
+#define File_readLine  System_File_readLine
+#define File_readText  System_File_readText
 #define File_get_Position  System_File_get_Position
 #define File_set_Position  System_File_set_Position
 #define File_get_Length  System_File_get_Length

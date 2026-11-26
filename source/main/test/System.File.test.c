@@ -29,7 +29,18 @@ int System_Runtime_main(int argc, char * argv[]) {
 	/* Test04: Read from the File */
     Char8 text[6]; Stack_clear(text);
 
-    Size count =  File_read(file, text, 5);
+    Size count =  File_readBytes(file, text, 5);
+
+    if (count == 5 && String8_equals(HALLO, text))
+        Console_writeLine("{0:string} is correct, {1:uint} bytes read", 2, text, count);
+    else
+        Console_writeLine("{0:string} is NOT correct, {1:uint} bytes read", 2, text, count);
+
+    File_seek(file, -5, Origin_Current);
+
+    Stack_clear(text);
+
+    count =  File_readBytes(file, text, 5);
 
     if (count == 5 && String8_equals(HALLO, text))
         Console_writeLine("{0:string} is correct, {1:uint} bytes read", 2, text, count);

@@ -120,8 +120,8 @@ System_Type System_Type_getBySipHash__name(System_UInt64 hash, System_String8 na
         }
     } while (symbol);
 
-Console_debugLine("System_Type_getBySipHash({0:uint:hex}, \"{1:string}\"): returns null.", 2, hash, !System_String8_isNullOrEmpty(name) ? name : "<Unknown>");
-    return null;
+Console_debugLine("System_Type_getBySipHash({0:uint:hex}, \"{1:string}\"): returns void.", 2, hash, !System_String8_isNullOrEmpty(name) ? name : "<Unknown>");
+    return &System_VoidType;
 }
 
 System_Type System_Type_getBySipHash(System_UInt64 hash) {

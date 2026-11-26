@@ -512,7 +512,7 @@ Network_HTTPResponse  ECSXService_serve(Network_HTTPRequest request, System_Stri
         File_set_Position(&output, 0);
         bufferSize = File_get_Length(&output);
         buffer = Memory_allocArray(typeof(Char8), bufferSize + 1);
-        System_File_read(&output, buffer, bufferSize);
+        System_File_readBytes(&output, buffer, bufferSize);
 
         Network_HTTPResponse response = Network_HTTPResponse_create(Network_HTTPStatus_Error);
         response->body.length = bufferSize;
@@ -641,7 +641,7 @@ Network_HTTPResponse HTTPService_serve(Network_HTTPRequest request) {
         String8 buffer = Memory_allocArray(typeof(Char8), fileSize + 1);
         struct File file; Stack_clear(file); 
         if (stack_System_File_open(&file, requestPath, System_File_Mode_readOnly)) 
-            System_File_read(&file, buffer, fileSize);
+            System_File_readBytes(&file, buffer, fileSize);
         System_File_free(&file);
         if (response = ECSXService_serve(request, requestPath, buffer, fileSize)) {
             System_Memory_free(requestPath);

@@ -277,12 +277,20 @@
  function System_File_free
     Close the File and free the System_String8 name.
     argument System_File that
- function System_File_read
+ function System_File_readBytes
     Read into System_String8 value, with System_Size count bytes.
     argument System_File that
     argument System_String8 value
     argument System_Size count
     Returns the count of bytes actually read.
+ function System_File_readLine
+    Read a line of text.
+    argument System_File that
+    Returns String8.
+ function System_File_readText
+    Read all text.
+    argument System_File that
+    Returns String8.
  function System_File_write__string_size
     Write a System_String8 value, with System_Size count bytes.
     argument System_File that

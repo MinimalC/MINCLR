@@ -37,7 +37,7 @@ int CubeHash256_main(int argc, char * argv[]) {
                 continue;
             }
             String8 text = System_Memory_allocArray(typeof(System_Char8), fileSize + 1);
-            System_File_read(&file, text, fileSize);
+            System_File_readBytes(&file, text, fileSize);
             System_File_close(&file);
 
             CubeHash512_update(&cubeHash512, text, fileSize);

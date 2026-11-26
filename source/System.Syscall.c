@@ -122,7 +122,7 @@ System_Size  System_Syscall_write(System_IntPtr fileId, const System_Var buf, Sy
     return System_Syscall_call03(System_Syscall_Command_write, fileId, (System_IntPtr)buf, count);
 }
 
-System_Size  System_Syscall_lseek(System_IntPtr fileId, System_Size offset, System_IntPtr whence) {
+System_Size  System_Syscall_lseek(System_IntPtr fileId, System_SSize offset, System_IntPtr whence) {
     return System_Syscall_call03(System_Syscall_Command_lseek, fileId, offset, whence);
 }
 

@@ -86,7 +86,7 @@ System_ECQLite System_ECQLite_open(System_String8 filename) {
     if (!file) return null;
 
     struct System_ECQLite_Database database; Stack_clear(database);
-    if (!System_File_read(file, (System_String8)&database, sizeof(struct System_ECQLite_Database))) {
+    if (!System_File_readBytes(file, (System_String8)&database, sizeof(struct System_ECQLite_Database))) {
         // CREATE DATABASE
         String8_copyTo("ECQLite", database.intro);
         database.size = database.tableSize = 0xFFFFULL + 1;

@@ -65,7 +65,7 @@ void System_ELF64Assembly_read__print(System_ELF64Assembly assembly, System_Stri
     System_Size fileSize = System_File_get_Length(&file);
 
     assembly->buffer = System_Memory_allocArray(typeof(System_Char8), fileSize);
-    System_File_read(&file, assembly->buffer, fileSize);
+    System_File_readBytes(&file, assembly->buffer, fileSize);
     System_File_close(&file);
 
     /* Read ELFAssembly_Header */
